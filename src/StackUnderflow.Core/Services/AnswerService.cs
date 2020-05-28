@@ -1,4 +1,4 @@
-namespace StackUnderflow.Core.Models
+namespace StackUnderflow.Core.Services
 {
     public class AnswerService
     {

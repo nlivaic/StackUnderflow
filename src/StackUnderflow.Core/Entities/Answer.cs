@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StackUnderflow.Core.Models
+namespace StackUnderflow.Core.Entities
 {
     public class Answer : BaseEntity<Guid>
     {
