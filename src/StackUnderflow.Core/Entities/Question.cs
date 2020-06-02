@@ -7,6 +7,7 @@ namespace StackUnderflow.Core.Entities
 {
     public class Question : BaseEntity<Guid>
     {
+        public Guid OwnerId { get; private set; }
         public string Title { get; private set; }
         public string Body { get; private set; }
         public bool HasAcceptedAnswer { get; private set; }
@@ -33,22 +34,23 @@ namespace StackUnderflow.Core.Entities
                 : new List<Tag>(tags);
         }
 
-        public void Answer(Answer answer)
-        {
-            if (_answers.Any(a => a.Id == answer.Id))
-            {
-                throw new ArgumentException($"Answer '{answer.Id}' has already been submitted.");
-            }
-            _answers.Add(answer);
-            // @nl: Raise an event!
-        }
+        // @nl: ovo nema smisla ako idemo u anemic model.
+        // public void Answer(Answer answer)
+        // {
+        //     if (_answers.Any(a => a.OwnerId == answer.OwnerId))
+        //     {
+        //         throw new ArgumentException($"User '{answer.OwnerId}' has already submitted an answer.");
+        //     }
+        //     _answers.Add(answer);
+        //     // @nl: Raise an event!
+        // }
 
         public void AcceptAnswer()
         {
             HasAcceptedAnswer = true;
         }
 
-        public Question Create(Guid ownerId, string title, string body, List<Tag> tags)
+        public static Question Create(Guid ownerId, string title, string body, IEnumerable<Tag> tags)
         {
             var question = new Question(Guid.NewGuid());
             question.Title = title ?? throw new ArgumentException("Question must have a title.");

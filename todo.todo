@@ -1,1 +1,2 @@
-☐ New Question use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. Check eShopOnWeb (Specification pattern).
+☐ New Question use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. 
+  Check eShopOnWeb (Specification pattern).
