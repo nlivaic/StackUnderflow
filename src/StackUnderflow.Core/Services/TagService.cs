@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using StackUnderflow.Common.Query;
+using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 
@@ -20,7 +20,8 @@ namespace StackUnderflow.Core.Services
         public async Task<IEnumerable<Tag>> GetTagsAsync(IEnumerable<Guid> tagIds)
         {
             // @nl: check generated SQL
-            IEnumerable<Tag> tags = await _tagRepository.ListAllAsync(t => tagIds.Contains(t.Id));
+            // IEnumerable<Tag> tags = await _tagRepository.ListAllAsync(t => tagIds.Contains(t.Id));
+            var tags = await _tagRepository.ListAllAsync(t => tagIds.Contains(t.Id));
             var nonExistingTags = tagIds.Except(tags.Select(t => t.Id));
             if (nonExistingTags.Any())
             {

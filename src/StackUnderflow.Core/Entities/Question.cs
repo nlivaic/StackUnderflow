@@ -11,10 +11,11 @@ namespace StackUnderflow.Core.Entities
         public string Title { get; private set; }
         public string Body { get; private set; }
         public bool HasAcceptedAnswer { get; private set; }
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedOn { get; private set; }
         public IEnumerable<Answer> Answers => _answers;
         public IEnumerable<Comment> Comments => _comments;
         public IEnumerable<Tag> Tags => _tags;
+
 
         private List<Answer> _answers;
         private List<Comment> _comments;
@@ -56,7 +57,7 @@ namespace StackUnderflow.Core.Entities
             question.Title = title ?? throw new ArgumentException("Question must have a title.");
             question.Body = body ?? throw new ArgumentException("Question must have a body.");
             question.HasAcceptedAnswer = false;
-            question.CreatedAt = DateTime.UtcNow;
+            question.CreatedOn = DateTime.UtcNow;
             question._tags = tags == null || tags.Count() == 0
                 ? throw new ArgumentException("Question must have a body.")
                 : new List<Tag>(tags);

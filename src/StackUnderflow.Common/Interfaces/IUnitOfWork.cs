@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Common.Query
+namespace StackUnderflow.Common.Interfaces
 {
     public interface IUnitOfWork
     {

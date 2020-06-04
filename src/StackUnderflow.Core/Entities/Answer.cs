@@ -11,6 +11,7 @@ namespace StackUnderflow.Core.Entities
         public string Body { get; private set; }
         public bool IsAcceptedAnswer { get; private set; }
         public DateTime? AcceptedOn { get; private set; }
+        public DateTime CreatedOn { get; private set; }
         public Question Question { get; private set; }
         public Guid QuestionId { get; private set; }
         public IEnumerable<Comment> Comments => _comments;
@@ -31,12 +32,18 @@ namespace StackUnderflow.Core.Entities
             _comments = comments == null || comments.Count() == 0
                 ? new List<Comment>()
                 : new List<Comment>(comments);
+            CreatedOn = DateTime.UtcNow;
         }
 
         public void AcceptedAnswer()
         {
             IsAcceptedAnswer = true;
             AcceptedOn = DateTime.UtcNow;
+        }
+
+        public void Edit(string body)
+        {
+            Body = body;
         }
 
         public static Answer Create(Guid ownerId, string body, Question question)

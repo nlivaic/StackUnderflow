@@ -1,2 +1,5 @@
 ☐ New Question use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. 
   Check eShopOnWeb (Specification pattern).
+  ☐ It's all bullshit. Discard repositories and work with DbContext directly.
+☐ Move Specification's queries into standalone query object. Research this further.
+☐ Which layer does StackUnderflowDbContext and Queries go to?
