@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Core.Services
 {
@@ -14,7 +15,10 @@ namespace StackUnderflow.Core.Services
         private readonly IRepository<Answer> _answerRepository;
         private readonly IDeadlineService _deadlineService;
 
-        public AnswerService(IUnitOfWork uow, IRepository<Question> questionRepository, IRepository<Answer> answerRepository, IDeadlineService deadlineService)
+        public AnswerService(IUnitOfWork uow,
+            IRepository<Question> questionRepository,
+            IRepository<Answer> answerRepository,
+            IDeadlineService deadlineService)
         {
             _uow = uow;
             _questionRepository = questionRepository;
@@ -22,48 +26,47 @@ namespace StackUnderflow.Core.Services
             _deadlineService = deadlineService;
         }
 
-        public async Task PostAnswer(Guid questionId, Guid ownerId, string body)
+        public async Task PostAnswer(AnswerCreateModel answerModel)
         {
             // @nl: check if null.
             // var owner = _ownerRepository.GetByIdAsync(ownerId);
             // if (owner == null)
             // {
             // }
-            var question = await _questionRepository.GetByIdAsync(questionId);
+            var question = await _questionRepository.GetByIdAsync(answerModel.QuestionId);
             if (question == null)
             {
-                throw new ArgumentException($"Question '{questionId}' does not exist!");
+                throw new ArgumentException($"Question '{answerModel.QuestionId}' does not exist!");
             }
-            if ((await _answerRepository.ListAllAsync(a => a.QuestionId == questionId && a.OwnerId == ownerId)).SingleOrDefault() != null)
+            if ((await _answerRepository.ListAllAsync(a => a.QuestionId == answerModel.QuestionId && a.OwnerId == answerModel.OwnerId)).SingleOrDefault() != null)
             {
-                throw new ArgumentException($"User '{ownerId}' has already submitted an answer to question '{questionId.ToString()}'.");
+                throw new ArgumentException($"User '{answerModel.OwnerId}' has already submitted an answer to question '{answerModel.QuestionId.ToString()}'.");
             }
-            var answer = Answer.Create(ownerId, body, question);
+            var answer = Answer.Create(answerModel.OwnerId, answerModel.Body, question);
             await _answerRepository.AddAsync(answer);
             await _uow.SaveAsync();
             // @nl: Raise an event! Message must be sent to the inbox.
         }
 
-        public async Task EditAnswer(Guid answerOwnerId, Guid answerId, string body)
+        public async Task EditAnswer(AnswerEditModel answerModel)
         {
-            var answer = (await _answerRepository.ListAllAsync(a => a.Id == answerId && a.OwnerId == answerOwnerId)).SingleOrDefault()
-                ?? throw new ArgumentException($"Answer with id '{answerId}' belonging to owner '{answerOwnerId}' does not exist.");
+            var answer = (await _answerRepository.ListAllAsync(a => a.Id == answerModel.AnswerId && a.OwnerId == answerModel.OwnerId)).SingleOrDefault()
+                ?? throw new ArgumentException($"Answer with id '{answerModel.AnswerId}' belonging to owner '{answerModel.OwnerId}' does not exist.");
             if (answer.CreatedOn.Add(_deadlineService.AnswerEditDeadline) > DateTime.UtcNow)
             {
-                throw new ArgumentException($"Answer with id '{answerId}' cannot be edited since more than '{_deadlineService.AnswerEditDeadline.Minutes}' minutes passed.");
+                throw new ArgumentException($"Answer with id '{answerModel.AnswerId}' cannot be edited since more than '{_deadlineService.AnswerEditDeadline.Minutes}' minutes passed.");
             }
-            answer.Edit(body);
+            answer.Edit(answerModel.Body);
             await _uow.SaveAsync();
-
         }
 
-        public async Task AcceptAnswer(Guid questionOwnerId, Guid questionId, Guid answerId)
+        public async Task AcceptAnswer(AnswerAcceptModel answerModel)
         {
-            var question = (await _questionRepository.GetByIdAsync(questionId))
-                ?? throw new ArgumentException($"Question '{questionId}' does not exist!");
-            var answer = question.Answers.SingleOrDefault(a => a.Id == answerId)
-                ?? throw new ArgumentException($"Answer '{answerId}' is not associated with question '{questionId}'!");
-            if (question.OwnerId != questionOwnerId)
+            var question = (await _questionRepository.GetByIdAsync(answerModel.QuestionId))
+                ?? throw new ArgumentException($"Question '{answerModel.QuestionId}' does not exist!");
+            var answer = question.Answers.SingleOrDefault(a => a.Id == answerModel.AnswerId)
+                ?? throw new ArgumentException($"Answer '{answerModel.AnswerId}' is not associated with question '{answerModel.QuestionId}'!");
+            if (question.OwnerId != answerModel.QuestionOwnerId)
             {
                 throw new ArgumentException("Only question owner can accept an answer!");
             }

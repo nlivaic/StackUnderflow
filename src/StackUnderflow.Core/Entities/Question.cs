@@ -21,7 +21,7 @@ namespace StackUnderflow.Core.Entities
         private List<Comment> _comments;
         private List<Tag> _tags;
 
-        public Question(Guid id)
+        private Question(Guid id)
         {
             Id = id;
         }
@@ -58,8 +58,9 @@ namespace StackUnderflow.Core.Entities
             question.Body = body ?? throw new ArgumentException("Question must have a body.");
             question.HasAcceptedAnswer = false;
             question.CreatedOn = DateTime.UtcNow;
-            question._tags = tags == null || tags.Count() == 0
-                ? throw new ArgumentException("Question must have a body.")
+            var tagCount = tags.Count();
+            question._tags = tags == null || tagCount < 1 || tagCount > 5
+                ? throw new ArgumentException("Question must be tagged with at least one and no more than five tags.")
                 : new List<Tag>(tags);
             question._comments = new List<Comment>();
             question._answers = new List<Answer>();

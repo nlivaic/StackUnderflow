@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using StackUnderflow.Common.Interfaces;
@@ -31,10 +30,10 @@ namespace StackUnderflow.Core.Services
         public async Task<QuestionModel> GetQuestion(Guid questionId) =>
             await _questionRepository.GetQuestionWithAnswersAndAllCommentsAsync(questionId);
 
-        public async Task AskQuestionAsync(Guid ownerId, string title, string body, IEnumerable<Guid> tagIds)
+        public async Task AskQuestionAsync(QuestionCreateModel questionModel)
         {
-            var tags = await _tagService.GetTagsAsync(tagIds);
-            var question = Question.Create(ownerId, title, body, tags);
+            var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
+            var question = Question.Create(questionModel.OwnerId, questionModel.Title, questionModel.Body, tags);
             await _questionRepository.AddAsync(question);
             await _uow.SaveAsync();
         }
