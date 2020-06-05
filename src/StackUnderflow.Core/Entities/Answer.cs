@@ -1,4 +1,5 @@
 using StackUnderflow.Common.Base;
+using StackUnderflow.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,22 +19,17 @@ namespace StackUnderflow.Core.Entities
 
         private List<Comment> _comments;
 
-        public Answer(Guid id)
-        {
-            Id = id;
-        }
-
-        public Answer(string body, Guid questionId, IEnumerable<Comment> comments)
-        {
-            Body = body ?? throw new ArgumentException("Answer must have a body.");
-            QuestionId = questionId == Guid.Empty
-                ? throw new ArgumentException("Answer must relate to a question.")
-                : questionId;
-            _comments = comments == null || comments.Count() == 0
-                ? new List<Comment>()
-                : new List<Comment>(comments);
-            CreatedOn = DateTime.UtcNow;
-        }
+        // public Answer(string body, Guid questionId, IEnumerable<Comment> comments)
+        // {
+        //     Body = body ?? throw new ArgumentException("Answer must have a body.");
+        //     QuestionId = questionId == Guid.Empty
+        //         ? throw new ArgumentException("Answer must relate to a question.")
+        //         : questionId;
+        //     _comments = comments == null || comments.Count() == 0
+        //         ? new List<Comment>()
+        //         : new List<Comment>(comments);
+        //     CreatedOn = DateTime.UtcNow;
+        // }
 
         public void AcceptedAnswer()
         {
@@ -41,19 +37,31 @@ namespace StackUnderflow.Core.Entities
             AcceptedOn = DateTime.UtcNow;
         }
 
-        public void Edit(string body)
+        public void Edit(Guid ownerId, string body, ILimits limits)
         {
+            if (OwnerId != ownerId)
+            {
+                throw new ArgumentException("Question can be edited only by owner.");
+            }
+            if (CreatedOn.Add(limits.AnswerEditDeadline) > DateTime.UtcNow)
+            {
+                throw new ArgumentException($"Answer with id '{Id}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
+            }
             Body = body;
         }
 
-        public static Answer Create(Guid ownerId, string body, Question question)
+        public static Answer Create(Guid ownerId, string body, Question question, ILimits limits)
         {
-            var answer = new Answer(Guid.NewGuid());
+            var answer = new Answer();
+            answer.Id = Guid.NewGuid();
             answer.OwnerId = ownerId;
-            answer.Body = body;
+            if (body.Length < limits.AnswerBodyMinimumLength)
+            {
+                throw new ArgumentException($"Answer body must be at least '{limits.AnswerBodyMinimumLength}' characters.");
+            }
+            answer.Body = body ?? throw new ArgumentException("Answer must have a body.");
             answer.IsAcceptedAnswer = false;
-            answer.Question = question;
-            answer.QuestionId = question.Id;
+            answer.CreatedOn = DateTime.UtcNow;
             return answer;
         }
     }

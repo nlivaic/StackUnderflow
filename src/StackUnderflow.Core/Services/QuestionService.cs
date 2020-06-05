@@ -13,18 +13,18 @@ namespace StackUnderflow.Core.Services
         private readonly IQuestionRepository _questionRepository;
         private readonly IUnitOfWork _uow;
         private readonly ITagService _tagService;
-        private readonly IDeadlineService _deadlineService;
+        private readonly ILimits _limits;
 
         public QuestionService(
             IQuestionRepository questionRepository,
             IUnitOfWork uow,
             ITagService tagService,
-            IDeadlineService deadlineService)
+            ILimits limits)
         {
             _questionRepository = questionRepository;
             _uow = uow;
             _tagService = tagService;
-            _deadlineService = deadlineService;
+            _limits = limits;
         }
 
         public async Task<QuestionModel> GetQuestion(Guid questionId) =>
@@ -33,7 +33,7 @@ namespace StackUnderflow.Core.Services
         public async Task AskQuestionAsync(QuestionCreateModel questionModel)
         {
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
-            var question = Question.Create(questionModel.OwnerId, questionModel.Title, questionModel.Body, tags);
+            var question = Question.Create(questionModel.OwnerId, questionModel.Title, questionModel.Body, tags, _limits);
             await _questionRepository.AddAsync(question);
             await _uow.SaveAsync();
         }
@@ -41,16 +41,11 @@ namespace StackUnderflow.Core.Services
         public async Task EditQuestion(QuestionEditModel questionModel)
         {
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
-            // @nl move this query into a standalone query object.
             var question = (await _questionRepository
                 .ListAllAsync(q => q.Id == questionModel.QuestionId && q.OwnerId != questionModel.QuestionOwnerId))
                 .SingleOrDefault()
                 ?? throw new ArgumentException($"Question with id '{questionModel.QuestionId}' belonging to owner '{questionModel.QuestionOwnerId}' does not exist.");
-            if (question.CreatedOn.Add(_deadlineService.QuestionEditDeadline) > DateTime.UtcNow)
-            {
-                throw new ArgumentException($"Question with id '{questionModel.QuestionId}' cannot be edited since more than '{_deadlineService.QuestionEditDeadline.Minutes}' minutes passed.");
-            }
-            question.Edit(questionModel.Title, questionModel.Body, tags);
+            question.Edit(questionModel.QuestionOwnerId, questionModel.Title, questionModel.Body, tags, _limits);
             await _uow.SaveAsync();
         }
 
@@ -59,7 +54,7 @@ namespace StackUnderflow.Core.Services
             // @nl move this query into a standalone query object.
             var question = (await _questionRepository
                 .GetQuestionWithAnswersAndCommentsAsync(questionId));
-            if (question.OwnerId != questionOwnerId)
+            if (question == null || question.OwnerId != questionOwnerId)
             {
                 throw new ArgumentException($"Question with id '{questionId}' belonging to owner '{questionOwnerId}' does not exist.");
             }

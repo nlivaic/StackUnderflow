@@ -11,19 +11,19 @@ namespace StackUnderflow.Core.Services
     public class AnswerService
     {
         private readonly IUnitOfWork _uow;
-        private readonly IRepository<Question> _questionRepository;
+        private readonly IQuestionRepository _questionRepository;
         private readonly IRepository<Answer> _answerRepository;
-        private readonly IDeadlineService _deadlineService;
+        private readonly ILimits _limits;
 
         public AnswerService(IUnitOfWork uow,
-            IRepository<Question> questionRepository,
+            IQuestionRepository questionRepository,
             IRepository<Answer> answerRepository,
-            IDeadlineService deadlineService)
+            ILimits limits)
         {
             _uow = uow;
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
-            _deadlineService = deadlineService;
+            _limits = limits;
         }
 
         public async Task PostAnswer(AnswerCreateModel answerModel)
@@ -33,17 +33,10 @@ namespace StackUnderflow.Core.Services
             // if (owner == null)
             // {
             // }
-            var question = await _questionRepository.GetByIdAsync(answerModel.QuestionId);
-            if (question == null)
-            {
-                throw new ArgumentException($"Question '{answerModel.QuestionId}' does not exist!");
-            }
-            if ((await _answerRepository.ListAllAsync(a => a.QuestionId == answerModel.QuestionId && a.OwnerId == answerModel.OwnerId)).SingleOrDefault() != null)
-            {
-                throw new ArgumentException($"User '{answerModel.OwnerId}' has already submitted an answer to question '{answerModel.QuestionId.ToString()}'.");
-            }
-            var answer = Answer.Create(answerModel.OwnerId, answerModel.Body, question);
-            await _answerRepository.AddAsync(answer);
+            var question = (await _questionRepository.GetQuestionWithAnswersAsync(answerModel.QuestionId))
+                ?? throw new ArgumentException($"Question '{answerModel.QuestionId}' does not exist!");
+            var answer = Answer.Create(answerModel.OwnerId, answerModel.Body, question, _limits);
+            question.Answer(answer);
             await _uow.SaveAsync();
             // @nl: Raise an event! Message must be sent to the inbox.
         }
@@ -52,11 +45,7 @@ namespace StackUnderflow.Core.Services
         {
             var answer = (await _answerRepository.ListAllAsync(a => a.Id == answerModel.AnswerId && a.OwnerId == answerModel.OwnerId)).SingleOrDefault()
                 ?? throw new ArgumentException($"Answer with id '{answerModel.AnswerId}' belonging to owner '{answerModel.OwnerId}' does not exist.");
-            if (answer.CreatedOn.Add(_deadlineService.AnswerEditDeadline) > DateTime.UtcNow)
-            {
-                throw new ArgumentException($"Answer with id '{answerModel.AnswerId}' cannot be edited since more than '{_deadlineService.AnswerEditDeadline.Minutes}' minutes passed.");
-            }
-            answer.Edit(answerModel.Body);
+            answer.Edit(answerModel.OwnerId, answerModel.Body, _limits);
             await _uow.SaveAsync();
         }
 
