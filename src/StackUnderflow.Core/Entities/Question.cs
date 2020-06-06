@@ -1,4 +1,3 @@
-using StackUnderflow.Common.Base;
 using StackUnderflow.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -6,7 +5,7 @@ using System.Linq;
 
 namespace StackUnderflow.Core.Entities
 {
-    public class Question : BaseEntity<Guid>
+    public class Question : BaseVoteable
     {
         public Guid OwnerId { get; private set; }
         public string Title { get; private set; }
@@ -16,7 +15,6 @@ namespace StackUnderflow.Core.Entities
         public IEnumerable<Answer> Answers => _answers;
         public IEnumerable<Comment> Comments => _comments;
         public IEnumerable<Tag> Tags => _tags;
-
 
         private List<Answer> _answers;
         private List<Comment> _comments;

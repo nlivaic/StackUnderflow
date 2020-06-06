@@ -1,5 +1,16 @@
-☐ New Question use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. 
+✘ New Question use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. @cancelled (07. 06. 2020. 01:20:26)
   Check eShopOnWeb (Specification pattern).
-  ☐ It's all bullshit. Discard repositories and work with DbContext directly.
-☐ Move Specification's queries into standalone query object. Research this further.
-☐ Which layer does StackUnderflowDbContext and Queries go to?
+  ✘ It's all bullshit. Discard repositories and work with DbContext directly. @cancelled (07. 06. 2020. 01:20:25)
+✘ Move Specification's queries into standalone query object. Research this further. @cancelled (07. 06. 2020. 01:20:23)
+✘ Which layer does StackUnderflowDbContext and Queries go to? @cancelled (07. 06. 2020. 01:20:21)
+✔ Voting: @done (07. 06. 2020. 01:20:34)
+  ✔ Domain @done (05. 06. 2020. 23:14:17)
+  ✔ Service @done (05. 06. 2020. 23:14:22)
+  ✔ Druge klase (q/a/c), da li zbrajaju bodove koristeći IVotable? @done (05. 06. 2020. 23:19:56)
+☐ Razraditi unit testove.
+☐ Razraditi bazu
+☐ Razraditi basic Web API
+☐ Razraditi jobove
+☐ Razraditi evente i event handling
+☐ Bacam puno ArgumentExceptiona. Neki od njih (npr. VoteRepository) su ustvari tehničke prirode, a neki (npr. po domeni) su biznis errori.
+✔ Obrnuo sam odnose odnose. Povukao sam (Vote + Q), iz čega proizlazi da ako ne postoji ta kombinacija da nikad nije taj owner dao vote tom questionu, a rezultat toga je da sam dobio null i nemam s čime više raditi. Mislim da je esencija problema loše složen repozitorij. Trebam to bolje napraviti: esencijalno trebam dobiti (q/a/c + 0..1 vote), to je dovoljno da mogu provesti business rule. Drugi pristup je da vote gledam potpuno zasebno, ali to trebam dodatno promisliti (eventi, računanje VotingSum, računanje bodova). @done (07. 06. 2020. 01:20:03)

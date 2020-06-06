@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
-using StackUnderflow.Core.Services;
 
 namespace StackUnderflow.Data.Repositories
 {

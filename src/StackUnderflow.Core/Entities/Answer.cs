@@ -1,12 +1,10 @@
-using StackUnderflow.Common.Base;
 using StackUnderflow.Core.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StackUnderflow.Core.Entities
 {
-    public class Answer : BaseEntity<Guid>
+    public class Answer : BaseVoteable
     {
         public Guid OwnerId { get; private set; }
         public string Body { get; private set; }

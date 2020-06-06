@@ -1,10 +1,9 @@
-using StackUnderflow.Common.Base;
 using StackUnderflow.Core.Interfaces;
 using System;
 
 namespace StackUnderflow.Core.Entities
 {
-    public class Comment : BaseEntity<Guid>
+    public class Comment : BaseVoteable
     {
         public Guid OwnerId { get; set; }
         public string Body { get; set; }
