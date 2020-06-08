@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
@@ -25,7 +26,7 @@ namespace StackUnderflow.Core.Services
             var nonExistingTags = tagIds.Except(tags.Select(t => t.Id));
             if (nonExistingTags.Any())
             {
-                throw new ArgumentException($"Tags '{string.Join(", ", nonExistingTags.Select(t => t.ToString()))}' do not exist.");
+                throw new BusinessException($"Tags '{string.Join(", ", nonExistingTags.Select(t => t.ToString()))}' do not exist.");
             }
             return tags;
         }

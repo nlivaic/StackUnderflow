@@ -1,4 +1,4 @@
-✘ New Question use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. @cancelled (07. 06. 2020. 01:20:26)
+✘ Question.Create use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. @cancelled (07. 06. 2020. 01:20:26)
   Check eShopOnWeb (Specification pattern).
   ✘ It's all bullshit. Discard repositories and work with DbContext directly. @cancelled (07. 06. 2020. 01:20:25)
 ✘ Move Specification's queries into standalone query object. Research this further. @cancelled (07. 06. 2020. 01:20:23)

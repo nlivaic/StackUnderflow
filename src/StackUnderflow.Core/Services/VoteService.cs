@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
@@ -43,7 +44,7 @@ namespace StackUnderflow.Core.Services
                 .SingleOrDefault();
             if (vote != null)
             {
-                throw new ArgumentException($"User already voted on {voteModel.VoteTarget.ToString()} on '{vote.CreatedAt}'.");
+                throw new BusinessException($"User already voted on {voteModel.VoteTarget.ToString()} on '{vote.CreatedAt}'.");
             }
             BaseVoteable target = await GetVoteableFromRepository(voteModel.VoteTarget, voteModel.TargetId);
             target.ApplyVote(vote);
@@ -55,9 +56,9 @@ namespace StackUnderflow.Core.Services
         {
             var vote = (await _voteRepository
                 .GetVote(voteModel.OwnerId, voteModel.VoteId))
-                ?? throw new ArgumentException("No vote to revoke or user not owner of target vote.");
+                ?? throw new BusinessException("No vote to revoke or user not owner of target vote.");
             if (vote.CreatedAt.Add(_limits.VoteEditDeadline) < DateTime.UtcNow)
-                throw new ArgumentException($"Vote with id '{voteModel.VoteId}' cannot be edited since more than '{_limits.VoteEditDeadline.Minutes}' minutes passed.");
+                throw new BusinessException($"Vote with id '{voteModel.VoteId}' cannot be edited since more than '{_limits.VoteEditDeadline.Minutes}' minutes passed.");
             var voteable = GetVoteable(vote);
             voteable.RevokeVote(vote);
             RemoveVoteableFromRepository(voteModel.VoteTarget, vote);
@@ -85,7 +86,7 @@ namespace StackUnderflow.Core.Services
             else if (vote.Comment != null)
                 return vote.Comment;
             else
-                throw new ArgumentException($"Vote '{vote.Id}' does not have any targets mapped.");
+                throw new BusinessException($"Vote '{vote.Id}' does not have any targets mapped.");
         }
 
         private async Task AddVoteableToRepository(VoteTargetEnum voteTarget, BaseVoteable voteable)

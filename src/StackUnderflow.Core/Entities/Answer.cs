@@ -1,3 +1,4 @@
+using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace StackUnderflow.Core.Entities
         public Guid QuestionId { get; private set; }
         public IEnumerable<Comment> Comments => _comments;
 
-        private List<Comment> _comments;
+        private List<Comment> _comments = new List<Comment>();
 
         // public Answer(string body, Guid questionId, IEnumerable<Comment> comments)
         // {
@@ -39,11 +40,11 @@ namespace StackUnderflow.Core.Entities
         {
             if (OwnerId != ownerId)
             {
-                throw new ArgumentException("Question can be edited only by owner.");
+                throw new BusinessException("Question can be edited only by owner.");
             }
             if (CreatedOn.Add(limits.AnswerEditDeadline) > DateTime.UtcNow)
             {
-                throw new ArgumentException($"Answer with id '{Id}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
+                throw new BusinessException($"Answer with id '{Id}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
             }
             Body = body;
         }
@@ -55,9 +56,9 @@ namespace StackUnderflow.Core.Entities
             answer.OwnerId = ownerId;
             if (body.Length < limits.AnswerBodyMinimumLength)
             {
-                throw new ArgumentException($"Answer body must be at least '{limits.AnswerBodyMinimumLength}' characters.");
+                throw new BusinessException($"Answer body must be at least '{limits.AnswerBodyMinimumLength}' characters.");
             }
-            answer.Body = body ?? throw new ArgumentException("Answer must have a body.");
+            answer.Body = body ?? throw new BusinessException("Answer must have a body.");
             answer.IsAcceptedAnswer = false;
             answer.CreatedOn = DateTime.UtcNow;
             return answer;

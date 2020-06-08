@@ -12,5 +12,7 @@ namespace StackUnderflow.Core.Services
         public int QuestionBodyMinimumLength => 100;
         public int AnswerBodyMinimumLength => 100;
         public int CommentBodyMinimumLength => 30;
+        public int TagMinimumCount => 1;
+        public int TagMaximumCount => 5;
     }
 }

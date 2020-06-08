@@ -10,5 +10,7 @@ namespace StackUnderflow.Core.Interfaces
         int QuestionBodyMinimumLength { get; }
         int AnswerBodyMinimumLength { get; }
         int CommentBodyMinimumLength { get; }
+        int TagMinimumCount { get; }
+        int TagMaximumCount { get; }
     }
 }

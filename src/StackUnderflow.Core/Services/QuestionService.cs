@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
@@ -44,7 +45,7 @@ namespace StackUnderflow.Core.Services
             var question = (await _questionRepository
                 .ListAllAsync(q => q.Id == questionModel.QuestionId && q.OwnerId != questionModel.QuestionOwnerId))
                 .SingleOrDefault()
-                ?? throw new ArgumentException($"Question with id '{questionModel.QuestionId}' belonging to owner '{questionModel.QuestionOwnerId}' does not exist.");
+                ?? throw new BusinessException($"Question with id '{questionModel.QuestionId}' belonging to owner '{questionModel.QuestionOwnerId}' does not exist.");
             question.Edit(questionModel.QuestionOwnerId, questionModel.Title, questionModel.Body, tags, _limits);
             await _uow.SaveAsync();
         }
@@ -56,11 +57,11 @@ namespace StackUnderflow.Core.Services
                 .GetQuestionWithAnswersAndCommentsAsync(questionId));
             if (question == null || question.OwnerId != questionOwnerId)
             {
-                throw new ArgumentException($"Question with id '{questionId}' belonging to owner '{questionOwnerId}' does not exist.");
+                throw new BusinessException($"Question with id '{questionId}' belonging to owner '{questionOwnerId}' does not exist.");
             }
             if (question.Answers.Any() == true)
             {
-                throw new ArgumentException($"Cannot delete question '{questionId}' because associated answers exist.");
+                throw new BusinessException($"Cannot delete question '{questionId}' because associated answers exist.");
             }
             _questionRepository.Delete(question);
             await _uow.SaveAsync();

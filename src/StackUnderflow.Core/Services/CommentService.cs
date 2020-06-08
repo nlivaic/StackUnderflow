@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
@@ -27,16 +29,21 @@ namespace StackUnderflow.Core.Services
 
         public async Task CommentOnQuestion(CommentCreateModel commentModel)
         {
-            var question = (await _questionRepository.GetByIdAsync(commentModel.QuestionId))
-                ?? throw new ArgumentException($"Question with id '{commentModel.QuestionId}' does not exist.");
-            var comment = Comment.Create(commentModel.OwnerId, commentModel.Body, _limits);
+            var question = (await _questionRepository.GetQuestionWithCommentsAsync(commentModel.QuestionId))
+                ?? throw new BusinessException($"Question with id '{commentModel.QuestionId}' does not exist.");
+            var commentOrderNumber = question
+                .Comments
+                .Select(c => c.OrderNumber)
+                .OrderByDescending(c => c)
+                .FirstOrDefault() + 1;
+            var comment = Comment.Create(commentModel.OwnerId, commentModel.Body, commentOrderNumber, _limits);
             question.Comment(comment);
         }
 
         public async Task Edit(CommentEditModel commentModel)
         {
             var comment = (await _commentRepository.GetByIdAsync(commentModel.CommentId))
-                ?? throw new ArgumentException($"Comment with id '{commentModel.CommentId}' does not exist.");
+                ?? throw new BusinessException($"Comment with id '{commentModel.CommentId}' does not exist.");
             comment.Edit(commentModel.OwnerId, commentModel.Body, _limits);
             await _uow.SaveAsync();
             // @nl: raise an event?
