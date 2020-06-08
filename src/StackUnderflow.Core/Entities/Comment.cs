@@ -20,25 +20,36 @@ namespace StackUnderflow.Core.Entities
             {
                 throw new BusinessException("Comment can be edited only by owner.");
             }
-            if (body.Length < limits.CommentBodyMinimumLength)
-            {
-                throw new BusinessException($"Answer body must be at least '{limits.CommentBodyMinimumLength}' characters.");
-            }
+            Validate(ownerId, body, limits);
             Body = body;
         }
 
         public static Comment Create(Guid ownerId, string body, int orderNumber, ILimits limits)
         {
+            Validate(ownerId, body, limits);
+
+            if (orderNumber < 1)
+            {
+                throw new BusinessException("Order number must be positive.");
+            }
             var comment = new Comment();
             comment.Id = Guid.NewGuid();
             comment.OwnerId = ownerId;
-            if (body.Length < limits.CommentBodyMinimumLength)
-            {
-                throw new BusinessException($"Comment body must be at least '{limits.CommentBodyMinimumLength}' characters.");
-            }
             comment.Body = body;
             comment.OrderNumber = orderNumber;
             return comment;
+        }
+
+        private static void Validate(Guid ownerId, string body, ILimits limits)
+        {
+            if (ownerId == default(Guid))
+            {
+                throw new BusinessException("Owner id cannot be default Guid.");
+            }
+            if (body.Length < limits.CommentBodyMinimumLength)
+            {
+                throw new BusinessException($"Answer body must be at least '{limits.CommentBodyMinimumLength}' characters.");
+            }
         }
     }
 }

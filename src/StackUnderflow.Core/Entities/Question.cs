@@ -57,6 +57,14 @@ namespace StackUnderflow.Core.Entities
 
         public void Comment(Comment comment)
         {
+            var lastOrderNumber = Comments
+                .Select(c => c.OrderNumber)
+                .OrderByDescending(c => c)
+                .FirstOrDefault();
+            if (lastOrderNumber >= comment.OrderNumber)
+            {
+                throw new BusinessException("Comment must be added as last in order.");
+            }
             _comments.Add(comment);
         }
 

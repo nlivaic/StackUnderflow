@@ -7,8 +7,6 @@ namespace StackUnderflow.Core.Tests.Builders
 {
     public class TagBuilder
     {
-        private List<Tag> _target;
-
         public List<Tag> Build(int tagCount) =>
             Builder<Tag>
                 .CreateListOfSize(tagCount)

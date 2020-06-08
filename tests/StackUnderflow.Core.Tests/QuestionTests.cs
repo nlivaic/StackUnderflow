@@ -8,8 +8,6 @@ using Xunit;
 
 namespace StackUnderflow.Core.Tests
 {
-    // Question_CommentsAreInProperOrder_Successfully
-
     public class QuestionTests
     {
         [Fact]
@@ -51,10 +49,7 @@ namespace StackUnderflow.Core.Tests
         public void Question_CreatingWithInvalidData_FailsValidation(string ownerId, int tagCount, string title, string body)
         {
             // Arrange
-            var tags = Builder<Tag>
-                .CreateListOfSize(tagCount)
-                .Build()
-                .ToList();
+            var tags = new TagBuilder().Build(tagCount);
             var limits = new LimitsBuilder().Build();
 
             // Act, Assert
@@ -203,13 +198,13 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Fact]
-        public void Question_CommentsAreAddedInOrder_Successfully()
+        public void Question_CommentsAreAddedInIncreasingOrder_Successfully()
         {
             // Arrange
             var target = new QuestionBuilder().SetupValidQuestion().Build();
             var firstComment = new CommentBuilder().SetupValidComment(1).Build();
             var secondComment = new CommentBuilder().SetupValidComment(2).Build();
-            var thirdComment = new CommentBuilder().SetupValidComment(3).Build();
+            var thirdComment = new CommentBuilder().SetupValidComment(7).Build();  // Not back-to-back.
 
             // Act
             target.Comment(firstComment);
@@ -223,7 +218,22 @@ namespace StackUnderflow.Core.Tests
             Assert.Contains(secondComment, target.Comments);
             Assert.Equal(2, secondComment.OrderNumber);
             Assert.Contains(thirdComment, target.Comments);
-            Assert.Equal(3, thirdComment.OrderNumber);
+            Assert.Equal(7, thirdComment.OrderNumber);
+        }
+
+        [Fact]
+        public void Question_CommentOutOfOrder_Throws()
+        {
+            // Arrange
+            var target = new QuestionBuilder().SetupValidQuestion().Build();
+            var firstComment = new CommentBuilder().SetupValidComment(1).Build();
+            var secondComment = new CommentBuilder().SetupValidComment(2).Build();
+            var targetComment = new CommentBuilder().SetupValidComment(2).Build();  // Repeat the order number.
+            target.Comment(firstComment);
+            target.Comment(secondComment);
+
+            // Act, Assert
+            Assert.Throws<BusinessException>(() => target.Comment(targetComment));
         }
     }
 }
