@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using static StackUnderflow.Core.Entities.Vote;
 
@@ -13,14 +16,34 @@ namespace StackUnderflow.Core.Entities
         public void ApplyVote(Vote vote)
         {
             var targetId = vote.QuestionId ?? vote.AnswerId ?? vote.CommentId.Value;
+            if (_votes.SingleOrDefault(v => v.OwnerId == vote.OwnerId) != null)
+            {
+                throw new BusinessException($"User '{vote.OwnerId}' has already voted on {Target(vote)} '{TargetId(vote)}'.");
+            }
             _votes.Add(vote);
-            AssignVote(vote);
+            switch (vote.VoteType)
+            {
+                case VoteTypeEnum.Upvote:
+                    VotesSum++;
+                    break;
+                case VoteTypeEnum.Downvote:
+                    VotesSum--;
+                    break;
+            }
             // @nl: Tell (q/a/c) target owner that they received an upvote/downvote (use inbox).
             // @nl: initiate point recalculation for (q/a/c) target owner.
         }
 
-        public void RevokeVote(Vote vote)
+        public void RevokeVote(Vote vote, ILimits limits)
         {
+            if (_votes.SingleOrDefault(v => v.OwnerId == vote.OwnerId) == null)
+            {
+                throw new BusinessException($"Vote does not exist on {Target(vote)} '{TargetId(vote)}'.");
+            }
+            if (vote.CreatedOn.Add(limits.VoteEditDeadline) < DateTime.UtcNow)
+            {
+                throw new BusinessException($"{Target(vote)} with id '{TargetId(vote)}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
+            }
             switch (vote.VoteType)
             {
                 case VoteTypeEnum.Upvote:
@@ -34,17 +57,14 @@ namespace StackUnderflow.Core.Entities
             // @nl: initiate point recalculation for (q/a/c) target owner.
         }
 
-        private void AssignVote(Vote vote)
-        {
-            switch (vote.VoteType)
-            {
-                case VoteTypeEnum.Upvote:
-                    VotesSum++;
-                    break;
-                case VoteTypeEnum.Downvote:
-                    VotesSum--;
-                    break;
-            }
-        }
+        private string Target(Vote vote) =>
+            vote.QuestionId.HasValue
+                ? "question"
+                : vote.AnswerId.HasValue
+                    ? "answer"
+                    : "comment";
+
+        private Guid TargetId(Vote vote) =>
+            vote.QuestionId ?? vote.AnswerId ?? vote.CommentId.Value;
     }
 }

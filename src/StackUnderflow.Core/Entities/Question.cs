@@ -54,9 +54,32 @@ namespace StackUnderflow.Core.Entities
             // @nl: Raise an event!
         }
 
-        public void AcceptAnswer()
+        public void AcceptAnswer(Answer answer)
         {
+            if (_answers.Find(a => a.Id == answer.Id) == null)
+            {
+                throw new BusinessException($"Answer '{answer.Id}' not associated with question '{this.Id}'.");
+            }
+            if (HasAcceptedAnswer)
+            {
+                throw new BusinessException($"Question '{this.Id}' already has an accepted answer.");
+            }
+            answer.AcceptedAnswer();
             HasAcceptedAnswer = true;
+        }
+
+        public void UndoAcceptAnswer(Answer answer, ILimits limits)
+        {
+            if (_answers.Find(a => a.Id == answer.Id) == null)
+            {
+                throw new BusinessException($"Answer '{answer.Id}' not associated with question '{this.Id}'.");
+            }
+            if (answer.AcceptedOn + limits.AcceptAnswerDeadline < DateTime.UtcNow)
+            {
+                throw new BusinessException($"You cannot undo accepting the answer '{this.Id}' since more than '{limits.AcceptAnswerDeadline.Minutes}' minutes passed.");
+            }
+            answer.UndoAcceptedAnswer();
+            HasAcceptedAnswer = false;
         }
 
         public void Comment(Comment comment) =>
@@ -64,7 +87,7 @@ namespace StackUnderflow.Core.Entities
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 
-        public void RevokeVote(Vote vote) => _voteable.RevokeVote(vote);
+        public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
         public static Question Create(Guid ownerId,
             string title,

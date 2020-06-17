@@ -40,6 +40,12 @@ namespace StackUnderflow.Core.Entities
             AcceptedOn = DateTime.UtcNow;
         }
 
+        public void UndoAcceptedAnswer()
+        {
+            IsAcceptedAnswer = false;
+            AcceptedOn = null;
+        }
+
         public void Edit(Guid ownerId, string body, ILimits limits)
         {
             if (OwnerId != ownerId)
@@ -58,7 +64,7 @@ namespace StackUnderflow.Core.Entities
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 
-        public void RevokeVote(Vote vote) => _voteable.RevokeVote(vote);
+        public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
         public static Answer Create(
             Guid ownerId,

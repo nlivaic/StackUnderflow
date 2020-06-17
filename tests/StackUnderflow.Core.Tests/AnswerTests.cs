@@ -168,5 +168,30 @@ namespace StackUnderflow.Core.Tests
             Assert.True(target.IsAcceptedAnswer);
             Assert.True(DateTime.UtcNow - target.AcceptedOn < TimeSpan.FromSeconds(1));
         }
+
+        [Fact]
+        public void Answer_UndoAcceptedAnswer_Successfully()
+        {
+            // Arrange
+            var question = new QuestionBuilder().SetupValidQuestion().Build();
+            var target = new AnswerBuilder().SetupValidAnswer(question).Build();
+            var originalId = target.Id;
+            var originalOwnerId = target.OwnerId;
+            var originalBody = target.Body;
+            var originalCreatedOn = target.CreatedOn;
+            var originalQuestion = target.Question;
+
+            // Act
+            target.AcceptedAnswer();
+            target.UndoAcceptedAnswer();
+
+            // Assert
+            Assert.Equal(originalId, target.Id);
+            Assert.Equal(originalOwnerId, target.OwnerId);
+            Assert.Equal(originalBody, target.Body);
+            Assert.Equal(originalCreatedOn, target.CreatedOn);
+            Assert.False(target.IsAcceptedAnswer);
+            Assert.Null(target.AcceptedOn);
+        }
     }
 }

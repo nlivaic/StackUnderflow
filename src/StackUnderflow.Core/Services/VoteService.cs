@@ -6,7 +6,6 @@ using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
-using static StackUnderflow.Core.Models.VoteCreateModel;
 
 namespace StackUnderflow.Core.Services
 {
@@ -44,7 +43,7 @@ namespace StackUnderflow.Core.Services
                 .SingleOrDefault();
             if (vote != null)
             {
-                throw new BusinessException($"User already voted on {voteModel.VoteTarget.ToString()} on '{vote.CreatedAt}'.");
+                throw new BusinessException($"User already voted on {voteModel.VoteTarget.ToString()} on '{vote.CreatedOn}'.");
             }
             IVoteable target = await GetVoteableFromRepository(voteModel.VoteTarget, voteModel.TargetId);
             target.ApplyVote(vote);
@@ -57,10 +56,10 @@ namespace StackUnderflow.Core.Services
             var vote = (await _voteRepository
                 .GetVote(voteModel.OwnerId, voteModel.VoteId))
                 ?? throw new BusinessException("No vote to revoke or user not owner of target vote.");
-            if (vote.CreatedAt.Add(_limits.VoteEditDeadline) < DateTime.UtcNow)
+            if (vote.CreatedOn.Add(_limits.VoteEditDeadline) < DateTime.UtcNow)
                 throw new BusinessException($"Vote with id '{voteModel.VoteId}' cannot be edited since more than '{_limits.VoteEditDeadline.Minutes}' minutes passed.");
             var voteable = GetVoteable(vote);
-            voteable.RevokeVote(vote);
+            voteable.RevokeVote(vote, _limits);
             RemoveVoteableFromRepository(voteModel.VoteTarget, vote);
             await _uow.SaveAsync();
         }

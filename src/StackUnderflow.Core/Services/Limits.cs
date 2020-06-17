@@ -10,6 +10,7 @@ namespace StackUnderflow.Core.Services
         public TimeSpan QuestionEditDeadline => new TimeSpan(0, 10, 0);
         public TimeSpan CommentEditDeadline => new TimeSpan(0, 10, 0);
         public TimeSpan VoteEditDeadline => new TimeSpan(0, 10, 0);
+        public TimeSpan AcceptAnswerDeadline => new TimeSpan(0, 10, 0);
         public int QuestionBodyMinimumLength => 100;
         public int AnswerBodyMinimumLength => 100;
         public int CommentBodyMinimumLength => 30;

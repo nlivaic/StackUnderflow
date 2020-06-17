@@ -234,10 +234,76 @@ namespace StackUnderflow.Core.Tests
             target.Answer(answer);
 
             // Act
-            target.AcceptAnswer();
+            target.AcceptAnswer(answer);
 
             // Assert
             Assert.True(target.HasAcceptedAnswer);
+        }
+
+        [Fact]
+        public void Question_MoreThanOneAcceptedAnswer_Throws()
+        {
+            // Arrange
+            var target = new QuestionBuilder().SetupValidQuestion().Build();
+            var firstAnswer = new AnswerBuilder().SetupValidAnswer(target).Build();
+            var secondAnswer = new AnswerBuilder().SetupAnotherValidAnswer(target).Build();
+            target.Answer(firstAnswer);
+            target.Answer(secondAnswer);
+            target.AcceptAnswer(firstAnswer);
+
+            // Act, Assert
+            Assert.Throws<BusinessException>(() => target.AcceptAnswer(secondAnswer));
+        }
+
+        [Fact]
+        public void Question_NonExistingAnswerCannotBeAccepted_Throws()
+        {
+            // Arrange
+            var limits = new LimitsBuilder().Build();
+            var target = new QuestionBuilder().SetupValidQuestion().Build();
+            var firstAnswer = new AnswerBuilder().SetupValidAnswer(target).Build();
+            var secondAnswer = new AnswerBuilder().SetupAnotherValidAnswer(target).Build();
+            target.Answer(firstAnswer);
+
+            // Act, Assert
+            Assert.Throws<BusinessException>(() => target.AcceptAnswer(secondAnswer));
+        }
+
+        [Fact]
+        public void Question_UndoAcceptedAnswerWithinDeadline_Successfully()
+        {
+            // Arrange
+            var limits = new LimitsBuilder().Build();
+            var target = new QuestionBuilder().SetupValidQuestion().Build();
+            var answer = new AnswerBuilder().SetupValidAnswer(target).Build();
+            target.Answer(answer);
+            target.AcceptAnswer(answer);
+
+            // Act
+            target.UndoAcceptAnswer(answer, limits);
+
+            // Assert
+            Assert.False(target.HasAcceptedAnswer);
+            Assert.False(answer.IsAcceptedAnswer);
+            Assert.Null(answer.AcceptedOn);
+        }
+
+        [Fact]
+        public void Question_UndoAcceptedAnswerOutsideDeadline_Throws()
+        {
+            // Arrange
+            var limits = new LimitsBuilder().Build();
+            var target = new QuestionBuilder().SetupValidQuestion().Build();
+            var answer = new AnswerBuilder().SetupValidAnswer(target).Build();
+            target.Answer(answer);
+            target.AcceptAnswer(answer);
+            // 1 minute past deadline
+            answer.SetProperty(
+                nameof(answer.AcceptedOn),
+                DateTime.UtcNow.AddMinutes(-1 - limits.AcceptAnswerDeadline.Minutes));
+
+            // Act, Assert
+            Assert.Throws<BusinessException>(() => target.UndoAcceptAnswer(answer, limits));
         }
     }
 }

@@ -70,8 +70,7 @@ namespace StackUnderflow.Core.Services
             {
                 throw new BusinessException($"Question already has an accepted answer!");
             }
-            question.AcceptAnswer();
-            answer.AcceptedAnswer();
+            question.AcceptAnswer(answer);
             await _uow.SaveAsync();
             // @nl: calculate points.
             // @nl: raise an event. Message must be sent to answer owner's inbox.

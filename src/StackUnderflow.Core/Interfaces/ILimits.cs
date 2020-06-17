@@ -8,6 +8,7 @@ namespace StackUnderflow.Core.Interfaces
         TimeSpan AnswerEditDeadline { get; }
         TimeSpan CommentEditDeadline { get; }
         TimeSpan VoteEditDeadline { get; }
+        TimeSpan AcceptAnswerDeadline { get; }
         int QuestionBodyMinimumLength { get; }
         int AnswerBodyMinimumLength { get; }
         int CommentBodyMinimumLength { get; }

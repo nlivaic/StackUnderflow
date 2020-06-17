@@ -37,7 +37,7 @@ namespace StackUnderflow.Core.Entities
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 
-        public void RevokeVote(Vote vote) => _voteable.RevokeVote(vote);
+        public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
         public static Comment Create(Guid ownerId,
             string body,
