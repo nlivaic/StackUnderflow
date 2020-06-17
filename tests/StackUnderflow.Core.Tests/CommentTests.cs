@@ -1,5 +1,6 @@
 using System;
 using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Tests.Builders;
 using Xunit;
@@ -102,6 +103,22 @@ namespace StackUnderflow.Core.Tests
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
                target.Edit(new Guid(ownerId), body, limits));
+        }
+
+        [Fact]
+        public void Comment_CreatingWithoutVoteable_Fails()
+        {
+            // Arrange
+            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            string body = "BodyNormal";
+            var limits = new LimitsBuilder().Build();
+            var orderNumber = 1;
+            IVoteable voteable = null;
+            var commentable = new Commentable();
+
+            // Act, Assert
+            Assert.Throws<ArgumentException>(() =>
+                Comment.Create(ownerId, body, orderNumber, limits, voteable));
         }
     }
 }

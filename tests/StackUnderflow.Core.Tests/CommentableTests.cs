@@ -35,7 +35,7 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Fact]
-        public void Question_CommentOutOfOrder_Throws()
+        public void Commentable_CommentOutOfOrder_Throws()
         {
             // Arrange
             var target = new Commentable();

@@ -9,11 +9,13 @@
   ✔ Druge klase (q/a/c), da li zbrajaju bodove koristeći IVotable? @done (05. 06. 2020. 23:19:56)
 ☐ Razraditi unit testove.
   ✔ Question @done (08. 06. 2020. 23:54:16)
-  ☐ Answer
-  ☐ Comment
-    ☐ Search for all "NotImplementedException".
-    ☐ Edit WithinDeadline.
-    ☐ Edit with invalid data.
+  ✔ Answer @done (17. 06. 2020. 18:55:09)
+  ✔ Comment @done (17. 06. 2020. 18:55:06)
+    ✔ Search for all "NotImplementedException". @done (17. 06. 2020. 18:54:15)
+    ✔ Edit WithinDeadline. @done (17. 06. 2020. 18:54:17)
+    ✔ Edit with invalid data. @done (17. 06. 2020. 18:55:02)
+  ☐ QuestionTests - CannotAcceptMoreThanOneAnswer
+  ☐ CommentTests - Comment_CreatingWithoutVoteable_Fails
   ☐ IVoteable - dodati za q/a/c posebno.
 ☐ Maknuti sve vezano za komentare u ICommentable.
 ☐ Razraditi bazu

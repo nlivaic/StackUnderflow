@@ -145,7 +145,6 @@ namespace StackUnderflow.Core.Tests
                target.Edit(new Guid(ownerId), body, limits));
         }
 
-
         [Fact]
         public void Answer_AcceptedAnswer_Successfully()
         {

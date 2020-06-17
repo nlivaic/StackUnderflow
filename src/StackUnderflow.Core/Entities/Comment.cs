@@ -56,7 +56,7 @@ namespace StackUnderflow.Core.Entities
             comment.Body = body;
             comment.OrderNumber = orderNumber;
             comment.CreatedOn = DateTime.UtcNow;
-            comment._voteable = voteable;
+            comment._voteable = voteable ?? throw new ArgumentException($"Missing {nameof(IVoteable)} parameter.");
             return comment;
         }
 
