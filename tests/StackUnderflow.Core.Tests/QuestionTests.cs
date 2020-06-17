@@ -121,7 +121,7 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Fact]
-        public void Question_CanBeEditedWithinDeadline_Successfully()
+        public void Question_EditingWithValidDataWithinDeadline_Successfully()
         {
             // Arrange - Build Question
             var target = new QuestionBuilder().SetupValidQuestion().Build();
@@ -150,7 +150,7 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Fact]
-        public void Question_EditedOutsideDeadline_Fails()
+        public void Question_EditingOutsideDeadline_Fails()
         {
             // Arrange - Build Question, 1 minute after deadline.
             var limits = new LimitsBuilder().Build();
@@ -180,7 +180,7 @@ namespace StackUnderflow.Core.Tests
         [InlineData("00000000-0000-0000-0000-000000000001", 3, "", "123456789")]
         [InlineData("00000000-0000-0000-0000-000000000001", 1, "TitleNormal", "BodyNormal")]
         [InlineData("00000000-0000-0000-0000-000000000001", 6, "TitleNormal", "BodyNormal")]
-        public void Question_EditedWithInvalidData_FailsValidation(string ownerId, int tagCount, string title, string body)
+        public void Question_EditingWithInvalidData_FailsValidation(string ownerId, int tagCount, string title, string body)
         {
             // Arrange - Build Question
             var target = new QuestionBuilder().SetupValidQuestion().Build();

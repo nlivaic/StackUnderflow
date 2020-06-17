@@ -44,37 +44,64 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Fact]
-        public void Comment_CanBeEditedWithinDeadline_Successfully()
+        public void Comment_EditingWithValidDataWithinDeadline_Successfully()
         {
-            throw new NotImplementedException("Comment_CanBeEditedWithinDeadline_Successfully");
+            // Arrange
+            var target = new CommentBuilder().SetupValidComment().Build();
+            var originalId = target.Id;
+            var originalOwnerId = target.OwnerId;
+            var originalCreatedOn = target.CreatedOn;
+            var originalParentQuestion = target.ParentQuestion;
+            var originalParentAnswer = target.ParentAnswer;
+
+            var ownerId = new Guid("00000000-0000-0000-0000-000000000002");
+            var newBody = "NewBodyNormal";
+            var limits = new LimitsBuilder().Build();
+
+            // Act
+            target.Edit(ownerId, newBody, limits);
+
+            // Assert
+            Assert.Equal(originalId, target.Id);
+            Assert.Equal(originalOwnerId, target.OwnerId);
+            Assert.Equal(originalCreatedOn, target.CreatedOn);
+            Assert.Equal(originalParentQuestion, target.ParentQuestion);
+            Assert.Equal(originalParentAnswer, target.ParentAnswer);
+            Assert.Equal(newBody, target.Body);
         }
 
         [Fact]
-        public void Comment_EditedOutsideDeadline_Fails()
+        public void Comment_EditingOutsideDeadline_Fails()
         {
-            throw new NotImplementedException("Comment_CanBeEditedWithinDeadline_Successfully");
             // Arrange - Build Question, 1 minute after deadline.
             var limits = new LimitsBuilder().Build();
-            var target = new QuestionBuilder()
-                .SetupValidQuestion()
+            var target = new CommentBuilder()
+                .SetupValidComment()
                 .MakeTimeGoBy()
                 .Build();
 
             // Arrange - Edit Data
-            string editedTitle = "TitleNormal";
             string editedBody = "BodyNormal";
-            int editedTagCount = 5;
-            var editedTags = new TagBuilder().Build(editedTagCount);
 
-            // Act
+            // Act, Assert
             Assert.Throws<BusinessException>(() =>
-               target.Edit(target.OwnerId, editedTitle, editedBody, editedTags, limits));
+               target.Edit(target.OwnerId, editedBody, limits));
         }
 
-        // [Fact]
-        // public void Comment_EditingWithInvalidData_FailsValidation(string ownerId, int orderNumber, string body)
-        // {
-        //     throw new NotImplementedException("Comment_EditingWithInvalidData_FailsValidation");
-        // }
+        [Theory]
+        [InlineData("00000000-0000-0000-0000-000000000000", "BodyNormal")]
+        [InlineData("00000000-0000-0000-0000-000000000001", "")]
+        [InlineData("00000000-0000-0000-0000-000000000001", "  ")]
+        [InlineData("00000000-0000-0000-0000-000000000001", "123456789")]
+        public void Comment_EditingWithInvalidData_FailsValidation(string ownerId, string body)
+        {
+            // Arrange
+            var target = new CommentBuilder().SetupValidComment().Build();
+            var limits = new LimitsBuilder().Build();
+
+            // Act, Assert
+            Assert.Throws<BusinessException>(() =>
+               target.Edit(new Guid(ownerId), body, limits));
+        }
     }
 }

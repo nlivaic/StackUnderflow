@@ -84,7 +84,7 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Fact]
-        public void Answer_CanBeEditedWithinDeadline_Successfully()
+        public void Answer_EditingWithValidDataWithinDeadline_Successfully()
         {
             // Arrange - Build Question
             var question = new QuestionBuilder().SetupValidQuestion().Build();
@@ -108,52 +108,66 @@ namespace StackUnderflow.Core.Tests
             Assert.Empty(result.Comments);
         }
 
-        // [Fact]
-        // public void Question_EditedOutsideDeadline_Fails()
-        // {
-        //     // Arrange - Build Question, 1 minute after deadline.
-        //     var limits = new LimitsBuilder().Build();
-        //     var target = new QuestionBuilder()
-        //         .SetupValidQuestion()
-        //         .MakeTimeGoBy()
-        //         .Build();
+        [Fact]
+        public void Answer_EditingOutsideDeadline_Fails()
+        {
+            // Arrange - Build Answer, 1 minute after deadline.
+            var limits = new LimitsBuilder().Build();
+            var question = new QuestionBuilder().SetupValidQuestion().Build();
+            var target = new AnswerBuilder()
+                .SetupValidAnswer(question)
+                .MakeTimeGoBy()
+                .Build();
 
-        //     // Arrange - Edit Data
-        //     string editedTitle = "TitleNormal";
-        //     string editedBody = "BodyNormal";
-        //     int editedTagCount = 5;
-        //     var editedTags = new TagBuilder().Build(editedTagCount);
+            // Arrange - Edit Data
+            string editedBody = "BodyNormal";
 
-        //     // Act
-        //     Assert.Throws<BusinessException>(() =>
-        //        target.Edit(target.OwnerId, editedTitle, editedBody, editedTags, limits));
-        // }
+            // Act
+            Assert.Throws<BusinessException>(() =>
+               target.Edit(target.OwnerId, editedBody, limits));
+        }
 
-        // [Theory]
-        // [InlineData("00000000-0000-0000-0000-000000000000", 3, "TitleNormal", "BodyNormal")]
-        // [InlineData("00000000-0000-0000-0000-000000000001", 3, "", "")]
-        // [InlineData("00000000-0000-0000-0000-000000000001", 3, "  ", "")]
-        // [InlineData("00000000-0000-0000-0000-000000000001", 3, "", "  ")]
-        // [InlineData("00000000-0000-0000-0000-000000000001", 3, "  ", "  ")]
-        // [InlineData("00000000-0000-0000-0000-000000000001", 3, "123456789", "")]
-        // [InlineData("00000000-0000-0000-0000-000000000001", 3, "", "123456789")]
-        // [InlineData("00000000-0000-0000-0000-000000000001", 1, "TitleNormal", "BodyNormal")]
-        // [InlineData("00000000-0000-0000-0000-000000000001", 6, "TitleNormal", "BodyNormal")]
-        // public void Question_EditedWithInvalidData_FailsValidation(string ownerId, int tagCount, string title, string body)
-        // {
-        //     // Arrange - Build Question
-        //     var target = new QuestionBuilder().SetupValidQuestion().Build();
-        //     var limits = new LimitsBuilder().Build();
+        [Theory]
+        [InlineData("00000000-0000-0000-0000-000000000000", "BodyNormal")]
+        [InlineData("00000000-0000-0000-0000-000000000001", "")]
+        [InlineData("00000000-0000-0000-0000-000000000001", "  ")]
+        [InlineData("00000000-0000-0000-0000-000000000001", "123456789")]
+        [InlineData("00000000-0000-0000-0000-000000000001", "BodyNormal")]
+        public void Answer_EditingWithInvalidData_FailsValidation(string ownerId, string body)
+        {
+            // Arrange - Build Answer
+            var question = new QuestionBuilder().SetupValidQuestion().Build();
+            var target = new AnswerBuilder().SetupValidAnswer(question).Build();
+            var limits = new LimitsBuilder().Build();
 
-        //     // Arrange - Edit Data
-        //     var editedTags = new TagBuilder().Build(tagCount);
+            // Act, Assert
+            Assert.Throws<BusinessException>(() =>
+               target.Edit(new Guid(ownerId), body, limits));
+        }
 
-        //     // Act
-        //     Assert.Throws<BusinessException>(() =>
-        //        target.Edit(new Guid(ownerId), title, body, editedTags, limits));
-        // }
 
-        // Answer_AcceptedAnswer_Successfully
+        [Fact]
+        public void Answer_AcceptedAnswer_Successfully()
+        {
+            // Arrange
+            var question = new QuestionBuilder().SetupValidQuestion().Build();
+            var target = new AnswerBuilder().SetupValidAnswer(question).Build();
+            var originalId = target.Id;
+            var originalOwnerId = target.OwnerId;
+            var originalBody = target.Body;
+            var originalCreatedOn = target.CreatedOn;
+            var originalQuestion = target.Question;
 
+            // Act
+            target.AcceptedAnswer();
+
+            // Assert
+            Assert.Equal(originalId, target.Id);
+            Assert.Equal(originalOwnerId, target.OwnerId);
+            Assert.Equal(originalBody, target.Body);
+            Assert.Equal(originalCreatedOn, target.CreatedOn);
+            Assert.True(target.IsAcceptedAnswer);
+            Assert.True(DateTime.UtcNow - target.AcceptedOn < TimeSpan.FromSeconds(1));
+        }
     }
 }

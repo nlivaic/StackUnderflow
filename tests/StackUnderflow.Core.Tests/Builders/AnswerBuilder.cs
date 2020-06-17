@@ -19,7 +19,7 @@ namespace StackUnderflow.Core.Tests.Builders
 
         public AnswerBuilder SetupAnotherValidAnswer(Question question)
         {
-            Guid ownerId = new Guid();
+            Guid ownerId = Guid.NewGuid();
             string body = "BodyNormal";
             _target = Answer.Create(ownerId, body, question, _limits, new Voteable(), new Commentable());
             return this;

@@ -18,6 +18,14 @@ namespace StackUnderflow.Core.Tests.Builders
             return this;
         }
 
+        public CommentBuilder MakeTimeGoBy()
+        {
+            _target.SetProperty(
+                nameof(_target.CreatedOn),
+                DateTime.UtcNow.AddMinutes(-1 - _limits.CommentEditDeadline.Minutes));
+            return this;
+        }
+
         public Comment Build() => _target;
     }
 }

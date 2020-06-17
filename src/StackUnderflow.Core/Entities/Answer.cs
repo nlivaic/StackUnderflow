@@ -46,7 +46,7 @@ namespace StackUnderflow.Core.Entities
             {
                 throw new BusinessException("Question can be edited only by owner.");
             }
-            if (CreatedOn.Add(limits.AnswerEditDeadline) > DateTime.UtcNow)
+            if (CreatedOn.Add(limits.AnswerEditDeadline) < DateTime.UtcNow)
             {
                 throw new BusinessException($"Answer with id '{Id}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
             }

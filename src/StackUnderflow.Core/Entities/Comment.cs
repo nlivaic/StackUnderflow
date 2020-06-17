@@ -10,6 +10,7 @@ namespace StackUnderflow.Core.Entities
     {
         public Guid OwnerId { get; private set; }
         public string Body { get; private set; }
+        public DateTime CreatedOn { get; private set; }
         public Question ParentQuestion { get; private set; }
         public Guid ParentQuestionId { get; private set; }
         public Answer ParentAnswer { get; private set; }
@@ -26,6 +27,10 @@ namespace StackUnderflow.Core.Entities
             {
                 throw new BusinessException("Comment can be edited only by owner.");
             }
+            if (CreatedOn.Add(limits.CommentEditDeadline) < DateTime.UtcNow)
+            {
+                throw new BusinessException($"Comment with id '{Id}' cannot be edited since more than '{limits.CommentEditDeadline.Minutes}' minutes passed.");
+            }
             Validate(ownerId, body, limits);
             Body = body;
         }
@@ -41,7 +46,6 @@ namespace StackUnderflow.Core.Entities
             IVoteable voteable)
         {
             Validate(ownerId, body, limits);
-
             if (orderNumber < 1)
             {
                 throw new BusinessException("Order number must be positive.");
@@ -51,6 +55,7 @@ namespace StackUnderflow.Core.Entities
             comment.OwnerId = ownerId;
             comment.Body = body;
             comment.OrderNumber = orderNumber;
+            comment.CreatedOn = DateTime.UtcNow;
             comment._voteable = voteable;
             return comment;
         }
