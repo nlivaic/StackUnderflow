@@ -1,3 +1,4 @@
+using StackUnderflow.Common.Base;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using System;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace StackUnderflow.Core.Entities
 {
-    public class Question : BaseVoteable
+    public class Question : BaseEntity<Guid>, IVoteable, ICommentable
     {
         public Guid OwnerId { get; private set; }
         public string Title { get; private set; }
@@ -14,12 +15,15 @@ namespace StackUnderflow.Core.Entities
         public bool HasAcceptedAnswer { get; private set; }
         public DateTime CreatedOn { get; private set; }
         public IEnumerable<Answer> Answers => _answers;
-        public IEnumerable<Comment> Comments => _comments;
+        public IEnumerable<Comment> Comments => _commentable.Comments;
         public IEnumerable<Tag> Tags => _tags;
+        public int VotesSum => _voteable.VotesSum;
+        public IEnumerable<Vote> Votes => _voteable.Votes;
 
         private List<Answer> _answers = new List<Answer>();
-        private List<Comment> _comments = new List<Comment>();
         private List<Tag> _tags = new List<Tag>();
+        private IVoteable _voteable;
+        private ICommentable _commentable;
 
         private Question()
         { }
@@ -55,20 +59,20 @@ namespace StackUnderflow.Core.Entities
             HasAcceptedAnswer = true;
         }
 
-        public void Comment(Comment comment)
-        {
-            var lastOrderNumber = Comments
-                .Select(c => c.OrderNumber)
-                .OrderByDescending(c => c)
-                .FirstOrDefault();
-            if (lastOrderNumber >= comment.OrderNumber)
-            {
-                throw new BusinessException("Comment must be added as last in order.");
-            }
-            _comments.Add(comment);
-        }
+        public void Comment(Comment comment) =>
+            _commentable.Comment(comment);
 
-        public static Question Create(Guid ownerId, string title, string body, IEnumerable<Tag> tags, ILimits limits)
+        public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
+
+        public void RevokeVote(Vote vote) => _voteable.RevokeVote(vote);
+
+        public static Question Create(Guid ownerId,
+            string title,
+            string body,
+            IEnumerable<Tag> tags,
+            ILimits limits,
+            IVoteable voteable,
+            ICommentable commentable)
         {
             var question = new Question();
             question.Id = Guid.NewGuid();
@@ -79,6 +83,8 @@ namespace StackUnderflow.Core.Entities
             question.HasAcceptedAnswer = false;
             question.CreatedOn = DateTime.UtcNow;
             question._tags = new List<Tag>(tags);
+            question._voteable = voteable ?? throw new ArgumentException($"Missing {nameof(IVoteable)} parameter.");
+            question._commentable = commentable ?? throw new ArgumentException($"Missing {nameof(ICommentable)} parameter.");
             return question;
         }
 

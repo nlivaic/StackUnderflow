@@ -13,7 +13,7 @@ namespace StackUnderflow.Core.Tests.Builders
         {
             Guid ownerId = new Guid("00000000-0000-0000-0000-000000000002");
             string body = "BodyNormal";
-            _target = Answer.Create(ownerId, body, question, _limits);
+            _target = Answer.Create(ownerId, body, question, _limits, new Voteable(), new Commentable());
             return this;
         }
 
@@ -21,7 +21,15 @@ namespace StackUnderflow.Core.Tests.Builders
         {
             Guid ownerId = new Guid();
             string body = "BodyNormal";
-            _target = Answer.Create(ownerId, body, question, _limits);
+            _target = Answer.Create(ownerId, body, question, _limits, new Voteable(), new Commentable());
+            return this;
+        }
+
+        public AnswerBuilder MakeTimeGoBy()
+        {
+            _target.SetProperty(
+                nameof(_target.CreatedOn),
+                DateTime.UtcNow.AddMinutes(-1 - _limits.AnswerEditDeadline.Minutes));
             return this;
         }
 

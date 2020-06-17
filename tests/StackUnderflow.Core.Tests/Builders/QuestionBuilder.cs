@@ -16,7 +16,9 @@ namespace StackUnderflow.Core.Tests.Builders
             string title = "TitleNormal";
             string body = "BodyNormal";
             var tags = new TagBuilder().Build(tagCount);
-            _target = Question.Create(ownerId, title, body, tags, _limits);
+            var voteable = new Voteable();
+            var commentable = new Commentable();
+            _target = Question.Create(ownerId, title, body, tags, _limits, voteable, commentable);
             return this;
         }
 

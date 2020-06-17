@@ -1,13 +1,10 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using StackUnderflow.Common.Base;
+using StackUnderflow.Core.Interfaces;
 using static StackUnderflow.Core.Entities.Vote;
 
 namespace StackUnderflow.Core.Entities
 {
-    public abstract class BaseVoteable : BaseEntity<Guid>
+    public class Voteable : IVoteable
     {
         public int VotesSum { get; private set; } = 0;
         public IEnumerable<Vote> Votes => _votes;
@@ -33,7 +30,6 @@ namespace StackUnderflow.Core.Entities
                     VotesSum++;
                     break;
             }
-
             // @nl: Tell (q/a/c) target owner that they received an upvote/downvote (use inbox).
             // @nl: initiate point recalculation for (q/a/c) target owner.
         }

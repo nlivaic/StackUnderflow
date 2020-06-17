@@ -3,6 +3,7 @@ using System.Linq;
 using FizzWare.NBuilder;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Tests.Builders;
 using Xunit;
 
@@ -20,9 +21,11 @@ namespace StackUnderflow.Core.Tests
             string body = "BodyNormal";
             var tags = new TagBuilder().Build(tagCount);
             var limits = new LimitsBuilder().Build();
+            var voteable = new Voteable();
+            var commentable = new Commentable();
 
             // Act
-            var result = Question.Create(ownerId, title, body, tags, limits);
+            var result = Question.Create(ownerId, title, body, tags, limits, voteable, commentable);
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
@@ -51,10 +54,48 @@ namespace StackUnderflow.Core.Tests
             // Arrange
             var tags = new TagBuilder().Build(tagCount);
             var limits = new LimitsBuilder().Build();
+            var voteable = new Voteable();
+            var commentable = new Commentable();
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Question.Create(new Guid(ownerId), title, body, tags, limits));
+                Question.Create(new Guid(ownerId), title, body, tags, limits, voteable, commentable));
+        }
+
+        [Fact]
+        public void Question_CreatingWithoutVoteable_Fails()
+        {
+            // Arrange
+            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            int tagCount = 3;
+            string title = "TitleNormal";
+            string body = "BodyNormal";
+            var tags = new TagBuilder().Build(tagCount);
+            var limits = new LimitsBuilder().Build();
+            IVoteable voteable = null;
+            var commentable = new Commentable();
+
+            // Act, Assert
+            Assert.Throws<ArgumentException>(() =>
+                Question.Create(ownerId, title, body, tags, limits, voteable, commentable));
+        }
+
+        [Fact]
+        public void Question_CreatingWithoutCommentable_Fails()
+        {
+            // Arrange
+            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            int tagCount = 3;
+            string title = "TitleNormal";
+            string body = "BodyNormal";
+            var tags = new TagBuilder().Build(tagCount);
+            var limits = new LimitsBuilder().Build();
+            var voteable = new Voteable();
+            ICommentable commentable = null;
+
+            // Act, Assert
+            Assert.Throws<ArgumentException>(() =>
+                Question.Create(ownerId, title, body, tags, limits, voteable, commentable));
         }
 
         [Theory]
@@ -71,10 +112,12 @@ namespace StackUnderflow.Core.Tests
                 .Build()
                 .ToList();
             var limits = new LimitsBuilder().Build();
+            var voteable = new Voteable();
+            var commentable = new Commentable();
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Question.Create(ownerId, title, body, tags, limits));
+                Question.Create(ownerId, title, body, tags, limits, voteable, commentable));
         }
 
         [Fact]
@@ -195,45 +238,6 @@ namespace StackUnderflow.Core.Tests
 
             // Assert
             Assert.True(target.HasAcceptedAnswer);
-        }
-
-        [Fact]
-        public void Question_CommentsAreAddedInIncreasingOrder_Successfully()
-        {
-            // Arrange
-            var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var firstComment = new CommentBuilder().SetupValidComment(1).Build();
-            var secondComment = new CommentBuilder().SetupValidComment(2).Build();
-            var thirdComment = new CommentBuilder().SetupValidComment(7).Build();  // Not back-to-back.
-
-            // Act
-            target.Comment(firstComment);
-            target.Comment(secondComment);
-            target.Comment(thirdComment);
-
-            // Assert
-            Assert.Equal(3, target.Comments.Count());
-            Assert.Contains(firstComment, target.Comments);
-            Assert.Equal(1, firstComment.OrderNumber);
-            Assert.Contains(secondComment, target.Comments);
-            Assert.Equal(2, secondComment.OrderNumber);
-            Assert.Contains(thirdComment, target.Comments);
-            Assert.Equal(7, thirdComment.OrderNumber);
-        }
-
-        [Fact]
-        public void Question_CommentOutOfOrder_Throws()
-        {
-            // Arrange
-            var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var firstComment = new CommentBuilder().SetupValidComment(1).Build();
-            var secondComment = new CommentBuilder().SetupValidComment(2).Build();
-            var targetComment = new CommentBuilder().SetupValidComment(2).Build();  // Repeat the order number.
-            target.Comment(firstComment);
-            target.Comment(secondComment);
-
-            // Act, Assert
-            Assert.Throws<BusinessException>(() => target.Comment(targetComment));
         }
     }
 }

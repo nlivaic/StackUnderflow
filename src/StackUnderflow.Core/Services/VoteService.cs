@@ -46,7 +46,7 @@ namespace StackUnderflow.Core.Services
             {
                 throw new BusinessException($"User already voted on {voteModel.VoteTarget.ToString()} on '{vote.CreatedAt}'.");
             }
-            BaseVoteable target = await GetVoteableFromRepository(voteModel.VoteTarget, voteModel.TargetId);
+            IVoteable target = await GetVoteableFromRepository(voteModel.VoteTarget, voteModel.TargetId);
             target.ApplyVote(vote);
             await AddVoteableToRepository(voteModel.VoteTarget, target);
             await _uow.SaveAsync();
@@ -65,9 +65,9 @@ namespace StackUnderflow.Core.Services
             await _uow.SaveAsync();
         }
 
-        private async Task<BaseVoteable> GetVoteableFromRepository(VoteTargetEnum voteTarget, Guid voteTargetId)
+        private async Task<IVoteable> GetVoteableFromRepository(VoteTargetEnum voteTarget, Guid voteTargetId)
         {
-            BaseVoteable target = null;
+            IVoteable target = null;
             return voteTarget switch
             {
                 VoteTargetEnum.Question => target = await _questionRepository.GetByIdAsync(voteTargetId),
@@ -77,7 +77,7 @@ namespace StackUnderflow.Core.Services
             };
         }
 
-        private BaseVoteable GetVoteable(Vote vote)
+        private IVoteable GetVoteable(Vote vote)
         {
             if (vote.Question != null)
                 return vote.Question;
@@ -89,7 +89,7 @@ namespace StackUnderflow.Core.Services
                 throw new BusinessException($"Vote '{vote.Id}' does not have any targets mapped.");
         }
 
-        private async Task AddVoteableToRepository(VoteTargetEnum voteTarget, BaseVoteable voteable)
+        private async Task AddVoteableToRepository(VoteTargetEnum voteTarget, IVoteable voteable)
         {
             var task = voteTarget switch
             {

@@ -1,10 +1,12 @@
+using StackUnderflow.Common.Base;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace StackUnderflow.Core.Entities
 {
-    public class Comment : BaseVoteable
+    public class Comment : BaseEntity<Guid>, IVoteable
     {
         public Guid OwnerId { get; private set; }
         public string Body { get; private set; }
@@ -13,6 +15,10 @@ namespace StackUnderflow.Core.Entities
         public Answer ParentAnswer { get; private set; }
         public Guid ParentAnswerId { get; private set; }
         public int OrderNumber { get; private set; }
+        public int VotesSum => _voteable.VotesSum;
+        public IEnumerable<Vote> Votes => _voteable.Votes;
+
+        private IVoteable _voteable;
 
         public void Edit(Guid ownerId, string body, ILimits limits)
         {
@@ -24,7 +30,15 @@ namespace StackUnderflow.Core.Entities
             Body = body;
         }
 
-        public static Comment Create(Guid ownerId, string body, int orderNumber, ILimits limits)
+        public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
+
+        public void RevokeVote(Vote vote) => _voteable.RevokeVote(vote);
+
+        public static Comment Create(Guid ownerId,
+            string body,
+            int orderNumber,
+            ILimits limits,
+            IVoteable voteable)
         {
             Validate(ownerId, body, limits);
 
@@ -37,6 +51,7 @@ namespace StackUnderflow.Core.Entities
             comment.OwnerId = ownerId;
             comment.Body = body;
             comment.OrderNumber = orderNumber;
+            comment._voteable = voteable;
             return comment;
         }
 

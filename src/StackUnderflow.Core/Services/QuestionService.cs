@@ -15,17 +15,23 @@ namespace StackUnderflow.Core.Services
         private readonly IUnitOfWork _uow;
         private readonly ITagService _tagService;
         private readonly ILimits _limits;
+        private readonly IVoteable _voteable;
+        private readonly ICommentable _commentable;
 
         public QuestionService(
             IQuestionRepository questionRepository,
             IUnitOfWork uow,
             ITagService tagService,
-            ILimits limits)
+            ILimits limits,
+            IVoteable voteable,
+            ICommentable commentable)
         {
             _questionRepository = questionRepository;
             _uow = uow;
             _tagService = tagService;
             _limits = limits;
+            _voteable = voteable;
+            _commentable = commentable;
         }
 
         public async Task<QuestionModel> GetQuestion(Guid questionId) =>
@@ -34,7 +40,7 @@ namespace StackUnderflow.Core.Services
         public async Task AskQuestionAsync(QuestionCreateModel questionModel)
         {
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
-            var question = Question.Create(questionModel.OwnerId, questionModel.Title, questionModel.Body, tags, _limits);
+            var question = Question.Create(questionModel.OwnerId, questionModel.Title, questionModel.Body, tags, _limits, _voteable, _commentable);
             await _questionRepository.AddAsync(question);
             await _uow.SaveAsync();
         }

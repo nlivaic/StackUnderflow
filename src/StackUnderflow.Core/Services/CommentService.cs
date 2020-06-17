@@ -15,16 +15,19 @@ namespace StackUnderflow.Core.Services
         private readonly IRepository<Comment> _commentRepository;
         private readonly IUnitOfWork _uow;
         private readonly ILimits _limits;
+        private readonly IVoteable _voteable;
 
         public CommentService(IQuestionRepository questionRepository,
             IRepository<Comment> commentRepository,
             IUnitOfWork unitOfWork,
-            ILimits limits)
+            ILimits limits,
+            IVoteable voteable)
         {
             _questionRepository = questionRepository;
             _commentRepository = commentRepository;
             _uow = unitOfWork;
             _limits = limits;
+            _voteable = voteable;
         }
 
         public async Task CommentOnQuestion(CommentCreateModel commentModel)
@@ -36,7 +39,7 @@ namespace StackUnderflow.Core.Services
                 .Select(c => c.OrderNumber)
                 .OrderByDescending(c => c)
                 .FirstOrDefault() + 1;
-            var comment = Comment.Create(commentModel.OwnerId, commentModel.Body, commentOrderNumber, _limits);
+            var comment = Comment.Create(commentModel.OwnerId, commentModel.Body, commentOrderNumber, _limits, _voteable);
             question.Comment(comment);
         }
 

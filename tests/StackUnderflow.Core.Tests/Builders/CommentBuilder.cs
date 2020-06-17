@@ -13,7 +13,8 @@ namespace StackUnderflow.Core.Tests.Builders
         {
             Guid ownerId = new Guid("00000000-0000-0000-0000-000000000002");
             string body = "BodyNormal";
-            _target = Comment.Create(ownerId, body, orderNumber, _limits);
+            var voteable = new Voteable();
+            _target = Comment.Create(ownerId, body, orderNumber, _limits, voteable);
             return this;
         }
 

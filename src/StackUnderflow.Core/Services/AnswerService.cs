@@ -15,16 +15,22 @@ namespace StackUnderflow.Core.Services
         private readonly IQuestionRepository _questionRepository;
         private readonly IRepository<Answer> _answerRepository;
         private readonly ILimits _limits;
+        private readonly IVoteable _voteable;
+        private readonly ICommentable _commentable;
 
         public AnswerService(IUnitOfWork uow,
             IQuestionRepository questionRepository,
             IRepository<Answer> answerRepository,
-            ILimits limits)
+            ILimits limits,
+            IVoteable voteable,
+            ICommentable commentable)
         {
             _uow = uow;
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
             _limits = limits;
+            _voteable = voteable;
+            _commentable = commentable;
         }
 
         public async Task PostAnswer(AnswerCreateModel answerModel)
@@ -36,7 +42,7 @@ namespace StackUnderflow.Core.Services
             // }
             var question = (await _questionRepository.GetQuestionWithAnswersAsync(answerModel.QuestionId))
                 ?? throw new BusinessException($"Question '{answerModel.QuestionId}' does not exist!");
-            var answer = Answer.Create(answerModel.OwnerId, answerModel.Body, question, _limits);
+            var answer = Answer.Create(answerModel.OwnerId, answerModel.Body, question, _limits, _voteable, _commentable);
             question.Answer(answer);
             await _uow.SaveAsync();
             // @nl: Raise an event! Message must be sent to the inbox.
