@@ -58,6 +58,7 @@ namespace StackUnderflow.Core.Services
 
         public async Task AcceptAnswer(AnswerAcceptModel answerModel)
         {
+            // @nl: a da povučem (question+svi answeri)? Ili (question+taj specifičan answer)? Da idem iz repoa dva puta na bazu?
             var question = (await _questionRepository.GetByIdAsync(answerModel.QuestionId))
                 ?? throw new BusinessException($"Question '{answerModel.QuestionId}' does not exist!");
             var answer = question.Answers.SingleOrDefault(a => a.Id == answerModel.AnswerId)

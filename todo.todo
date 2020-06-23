@@ -14,12 +14,39 @@
     ✔ Search for all "NotImplementedException". @done (17. 06. 2020. 18:54:15)
     ✔ Edit WithinDeadline. @done (17. 06. 2020. 18:54:17)
     ✔ Edit with invalid data. @done (17. 06. 2020. 18:55:02)
-  ☐ QuestionTests - CannotAcceptMoreThanOneAnswer
-  ☐ CommentTests - Comment_CreatingWithoutVoteable_Fails
-  ☐ IVoteable - dodati za q/a/c posebno.
-☐ Maknuti sve vezano za komentare u ICommentable.
-☐ Razraditi bazu
+  ✔ QuestionTests - CannotAcceptMoreThanOneAnswer @done (17. 06. 2020. 21:59:17)
+  ✔ CommentTests - Comment_CreatingWithoutVoteable_Fails @done (17. 06. 2020. 19:06:24)
+  ✔ IVoteable - dodati za q/a/c posebno. @done (17. 06. 2020. 23:22:44)
+✔ Maknuti sve vezano za komentare u ICommentable. @done (17. 06. 2020. 23:22:48)
 ☐ Razraditi basic Web API
+  ☐ Create in-memory database with a basic seeder
+  ☐ Startup.cs
+    ☐ Routes and endpoints
+    ☐ services.AddController()
+    ☐ app.UseDeveloperExceptionPage()
+    ☐ app.ExceptionHandler()
+    ☐ InvalidModelStateResponseFactory
+  ☐ Controllers
+    ☐ QuestionsController
+      ✔ [ApiController] @done (18. 06. 2020. 22:12:14)
+      ☐ Get, Post, Put, Delete
+      ☐ Request and Response Models
+      ☐ Automapper
+      ☐ FluentValidation
+    ☐ AnswersController
+    ☐ CommentsController
+    ☐ VotesController
+    ☐ inherit from ControllerBase
+    ☐ action method type ActionResult<T>
+    ☐ return Ok()
+  ☐ Filtering and searching
+  ☐ Cacheing
+  ☐ Swagger
+  ☐ Logging
+  ☐ Review RESTful project for clues
+  ☐ Security
+☐ Razraditi bazu
+  ☐ dotnet remove package Microsoft.EntityFrameworkCore.InMemory
 ☐ Razraditi jobove
 ☐ Razraditi evente i event handling
 ✔ Bacam puno ArgumentExceptiona. Neki od njih (npr. VoteRepository) su ustvari tehničke prirode, a neki (npr. po domeni) su biznis errori. @done (08. 06. 2020. 23:54:23)
