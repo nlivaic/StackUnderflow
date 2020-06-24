@@ -20,6 +20,7 @@
 ✔ Maknuti sve vezano za komentare u ICommentable. @done (17. 06. 2020. 23:22:48)
 ☐ Razraditi basic Web API
   ☐ Create in-memory database with a basic seeder
+    ☐ Tokom seedanja kaže da već postoji Tag sa tim i tim Id. Da nije možda da se na neku foru stvaraju nove instance Tagova, sa istim ID-jem?
   ☐ Startup.cs
     ☐ Routes and endpoints
     ☐ services.AddController()

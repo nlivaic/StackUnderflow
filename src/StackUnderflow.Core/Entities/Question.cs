@@ -16,12 +16,12 @@ namespace StackUnderflow.Core.Entities
         public DateTime CreatedOn { get; private set; }
         public IEnumerable<Answer> Answers => _answers;
         public IEnumerable<Comment> Comments => _commentable.Comments;
-        public IEnumerable<Tag> Tags => _tags;
+        public IEnumerable<QuestionTag> QuestionTags => _questionTags;
         public int VotesSum => _voteable.VotesSum;
         public IEnumerable<Vote> Votes => _voteable.Votes;
 
         private List<Answer> _answers = new List<Answer>();
-        private List<Tag> _tags = new List<Tag>();
+        private List<QuestionTag> _questionTags = new List<QuestionTag>();
         private IVoteable _voteable;
         private ICommentable _commentable;
 
@@ -41,7 +41,7 @@ namespace StackUnderflow.Core.Entities
             Validate(ownerId, title, body, tags, limits);
             Title = title;
             Body = body;
-            _tags = new List<Tag>(tags);
+            _questionTags = new List<QuestionTag>(tags.Select(t => new QuestionTag { Question = this, Tag = t }));
         }
 
         public void Answer(Answer answer)
@@ -105,7 +105,7 @@ namespace StackUnderflow.Core.Entities
             question.Body = body;
             question.HasAcceptedAnswer = false;
             question.CreatedOn = DateTime.UtcNow;
-            question._tags = new List<Tag>(tags);
+            question._questionTags = new List<QuestionTag>(tags.Select(t => new QuestionTag { Question = question, Tag = t }));
             question._voteable = voteable ?? throw new ArgumentException($"Missing {nameof(IVoteable)} parameter.");
             question._commentable = commentable ?? throw new ArgumentException($"Missing {nameof(ICommentable)} parameter.");
             return question;

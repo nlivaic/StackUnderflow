@@ -10,12 +10,14 @@ namespace StackUnderflow.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private readonly IConfiguration _configuration;
+        private readonly IHostEnvironment _hostEnvironment;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
+        {
+            _configuration = configuration;
+            _hostEnvironment = hostEnvironment;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -23,8 +25,11 @@ namespace StackUnderflow.Api
             services.AddControllers();
 
             services.AddDbContext<StackUnderflowDbContext>(options =>
-                options.UseInMemoryDatabase(databaseName: "StackUnderflowInMemoryDb")
-            );
+            {
+                options.UseInMemoryDatabase(databaseName: "StackUnderflowInMemoryDb");
+                if (_hostEnvironment.IsDevelopment())
+                    options.EnableSensitiveDataLogging(true);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

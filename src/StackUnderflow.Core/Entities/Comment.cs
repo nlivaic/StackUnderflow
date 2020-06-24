@@ -21,6 +21,10 @@ namespace StackUnderflow.Core.Entities
 
         private IVoteable _voteable;
 
+        private Comment()
+        {
+        }
+
         public void Edit(Guid ownerId, string body, ILimits limits)
         {
             if (OwnerId != ownerId)

@@ -20,6 +20,10 @@ namespace StackUnderflow.Core.Entities
         public Guid? CommentId { get; private set; }
         public VoteTypeEnum VoteType { get; private set; }
 
+        private Vote()
+        {
+        }
+
         private Vote(Guid ownerId, Question question, VoteTypeEnum voteType)
         {
             OwnerId = ownerId;

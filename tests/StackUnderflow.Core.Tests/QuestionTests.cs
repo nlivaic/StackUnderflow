@@ -36,7 +36,7 @@ namespace StackUnderflow.Core.Tests
             Assert.True(DateTime.UtcNow - result.CreatedOn < TimeSpan.FromSeconds(1));
             Assert.Empty(result.Answers);
             Assert.Empty(result.Comments);
-            Assert.Equal(3, result.Tags.Count());
+            Assert.Equal(3, result.QuestionTags.Count());
         }
 
         [Theory]
@@ -146,7 +146,7 @@ namespace StackUnderflow.Core.Tests
             Assert.False(result.HasAcceptedAnswer);
             Assert.Empty(result.Answers);
             Assert.Empty(result.Comments);
-            Assert.Equal(5, result.Tags.Count());
+            Assert.Equal(5, result.QuestionTags.Count());
         }
 
         [Fact]
