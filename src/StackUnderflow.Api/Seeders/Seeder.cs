@@ -16,7 +16,7 @@ namespace StackUnderflow.Api.Seeders
         private static List<Tag> _tags => Builder<Tag>.CreateListOfSize(5).Build().ToList();
         private static ILimits _limits = new Core.Services.Limits();
 
-        private static List<Guid> Owners =>
+        private static List<Guid> Users =>
             new List<Guid>
             {
                 new Guid("00000000-0000-0000-0000-000000000001"),
@@ -53,38 +53,38 @@ namespace StackUnderflow.Api.Seeders
 
         private static List<Question> BuildQuestions(DbSet<Tag> tags)
         {
-            var q1 = GenerateQuestion(Owners[0], tags.ById(1), tags.ById(4));
-            q1.Comment(GenerateComent(Owners[0], 1));
-            q1.Comment(GenerateComent(Owners[1], 2));
-            q1.Comment(GenerateComent(Owners[3], 3));
-            q1.Answer(GenerateAnswer(Owners[2], q1));
+            var q1 = GenerateQuestion(Users[0], tags.ById(1), tags.ById(4));
+            q1.Comment(GenerateComent(Users[0], 1));
+            q1.Comment(GenerateComent(Users[1], 2));
+            q1.Comment(GenerateComent(Users[3], 3));
+            q1.Answer(GenerateAnswer(Users[2], q1));
             q1.AcceptAnswer(q1.Answers.ToList()[0]);
 
-            var q2 = GenerateQuestion(Owners[1], tags.ById(2), tags.ById(3));
-            q2.Comment(GenerateComent(Owners[1], 1));
-            q2.Comment(GenerateComent(Owners[2], 2));
-            q2.Comment(GenerateComent(Owners[1], 3));
+            var q2 = GenerateQuestion(Users[1], tags.ById(2), tags.ById(3));
+            q2.Comment(GenerateComent(Users[1], 1));
+            q2.Comment(GenerateComent(Users[2], 2));
+            q2.Comment(GenerateComent(Users[1], 3));
 
-            var q3 = GenerateQuestion(Owners[2], tags.ById(1), tags.ById(2), tags.ById(3), tags.ById(4));
-            // q3.Comment(GenerateComent(Owners[2], 1));
-            // q3.Comment(GenerateComent(Owners[1], 2));
-            // q3.Comment(GenerateComent(Owners[4], 3));
-            // q3.Answer(GenerateAnswer(Owners[2], q3));
-            // q3.Answer(GenerateAnswer(Owners[3], q3));
-            // q3.Answer(GenerateAnswer(Owners[4], q3));
+            var q3 = GenerateQuestion(Users[2], tags.ById(1), tags.ById(2), tags.ById(3), tags.ById(4));
+            q3.Comment(GenerateComent(Users[2], 1));
+            q3.Comment(GenerateComent(Users[1], 2));
+            q3.Comment(GenerateComent(Users[4], 3));
+            q3.Answer(GenerateAnswer(Users[2], q3));
+            q3.Answer(GenerateAnswer(Users[3], q3));
+            q3.Answer(GenerateAnswer(Users[4], q3));
 
-            // var q4 = GenerateQuestion(Owners[3], _tags[0], _tags[3], _tags[4]);
-            // q4.Comment(GenerateComent(Owners[2], 1));
-            // q4.Comment(GenerateComent(Owners[1], 2));
-            // q4.Comment(GenerateComent(Owners[4], 3));
-            // q4.Comment(GenerateComent(Owners[4], 4));
-            // q4.Comment(GenerateComent(Owners[4], 5));
+            var q4 = GenerateQuestion(Users[3], _tags[0], _tags[3], _tags[4]);
+            q4.Comment(GenerateComent(Users[2], 1));
+            q4.Comment(GenerateComent(Users[1], 2));
+            q4.Comment(GenerateComent(Users[4], 3));
+            q4.Comment(GenerateComent(Users[4], 4));
+            q4.Comment(GenerateComent(Users[4], 5));
 
-            // var q5 = GenerateQuestion(Owners[1], _tags[0], _tags[1], _tags[3]);
-            // q5.Answer(GenerateAnswer(Owners[0], q5));
-            // q5.Answer(GenerateAnswer(Owners[1], q5));
-            // q5.Answer(GenerateAnswer(Owners[4], q5));
-            // q5.AcceptAnswer(q5.Answers.ToList()[2]);
+            var q5 = GenerateQuestion(Users[1], _tags[0], _tags[1], _tags[3]);
+            q5.Answer(GenerateAnswer(Users[0], q5));
+            q5.Answer(GenerateAnswer(Users[1], q5));
+            q5.Answer(GenerateAnswer(Users[4], q5));
+            q5.AcceptAnswer(q5.Answers.ToList()[2]);
 
             var questions = new List<Question> { q1, q2, q3/*, q4, q5*/ };
             return questions;
@@ -92,9 +92,9 @@ namespace StackUnderflow.Api.Seeders
 
         private static string GenerateBody() => string.Join(" ", Faker.Lorem.Sentences(5));
 
-        private static Question GenerateQuestion(Guid ownerId, params Tag[] tags) =>
+        private static Question GenerateQuestion(Guid userId, params Tag[] tags) =>
             Question.Create(
-                ownerId,
+                userId,
                 Faker.Lorem.Sentence(),
                 GenerateBody(),
                 new List<Tag>(tags),
@@ -102,18 +102,18 @@ namespace StackUnderflow.Api.Seeders
                 new Voteable(),
                 new Commentable());
 
-        private static Comment GenerateComent(Guid ownerId, int orderNumber) =>
+        private static Comment GenerateComent(Guid userId, int orderNumber) =>
             Comment.Create(
-                ownerId,
+                userId,
                 GenerateBody(),
                 orderNumber,
                 _limits,
                  new Voteable()
             );
 
-        private static Answer GenerateAnswer(Guid ownerId, Question question) =>
+        private static Answer GenerateAnswer(Guid userId, Question question) =>
             Answer.Create(
-                ownerId,
+                userId,
                 GenerateBody(),
                 question,
                 _limits,

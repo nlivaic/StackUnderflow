@@ -10,7 +10,7 @@ namespace StackUnderflow.Core.Tests
     {
         private Vote _target;
         private readonly Question _question;
-        private Guid _ownerId;
+        private Guid _userId;
         private readonly Answer _answer;
         private readonly Comment _comment;
         private VoteTypeEnum _voteType;
@@ -44,15 +44,15 @@ namespace StackUnderflow.Core.Tests
             return this;
         }
 
-        public VoteBuilder ByOneOwner()
+        public VoteBuilder ByOneUser()
         {
-            _ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            _userId = new Guid("00000000-0000-0000-0000-000000000001");
             return this;
         }
 
-        public VoteBuilder ByAnotherOwner()
+        public VoteBuilder ByAnotherUser()
         {
-            _ownerId = new Guid("00000000-0000-0000-0000-000000000002");
+            _userId = new Guid("00000000-0000-0000-0000-000000000002");
             return this;
         }
 
@@ -66,15 +66,15 @@ namespace StackUnderflow.Core.Tests
         {
             if (_question != null)
             {
-                _target = Vote.CreateVote(_ownerId, _question, _voteType);
+                _target = Vote.CreateVote(_userId, _question, _voteType);
             }
             else if (_answer != null)
             {
-                _target = Vote.CreateVote(_ownerId, _answer, _voteType);
+                _target = Vote.CreateVote(_userId, _answer, _voteType);
             }
             else
             {
-                _target = Vote.CreateVote(_ownerId, _comment, _voteType);
+                _target = Vote.CreateVote(_userId, _comment, _voteType);
             }
             _target.SetProperty(
                 nameof(_target.CreatedOn),

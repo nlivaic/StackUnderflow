@@ -16,12 +16,12 @@ namespace StackUnderflow.Data.Repositories
             : base(context)
         { }
 
-        public async Task<Vote> GetVote(Guid voteOwnerId, Guid voteId) =>
+        public async Task<Vote> GetVote(Guid voteUserId, Guid voteId) =>
             await _context
                 .Votes
-                .SingleOrDefaultAsync(v => v.OwnerId == voteOwnerId && v.Id == voteId);
+                .SingleOrDefaultAsync(v => v.UserId == voteUserId && v.Id == voteId);
 
-        public async Task<Vote> GetVote(Guid voteOwnerId, Guid? questionId, Guid? answerId, Guid? commentId)
+        public async Task<Vote> GetVote(Guid voteUserId, Guid? questionId, Guid? answerId, Guid? commentId)
         {
             IQueryable<Vote> query = _context
                 .Votes;
@@ -42,7 +42,7 @@ namespace StackUnderflow.Data.Repositories
                 throw new BusinessException("At least one linked identifier must be provided when querying for votes.");
             }
             return await query
-                .Where(v => v.QuestionId == questionId && v.OwnerId == voteOwnerId)
+                .Where(v => v.QuestionId == questionId && v.UserId == voteUserId)
                 .SingleOrDefaultAsync();
         }
     }

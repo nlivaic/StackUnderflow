@@ -36,7 +36,7 @@ namespace StackUnderflow.Core.Services
         public async Task CastVote(VoteCreateModel voteModel)
         {
             var vote = (await _voteRepository
-                .ListAllAsync(v => v.OwnerId == voteModel.OwnerId
+                .ListAllAsync(v => v.UserId == voteModel.UserId
                     && (v.QuestionId == null || v.QuestionId == voteModel.TargetId)
                     && (v.AnswerId == null || v.AnswerId == voteModel.TargetId)
                     && (v.CommentId == null || v.CommentId == voteModel.TargetId)))
@@ -54,8 +54,8 @@ namespace StackUnderflow.Core.Services
         public async Task RevokeVote(VoteRevokeModel voteModel)
         {
             var vote = (await _voteRepository
-                .GetVote(voteModel.OwnerId, voteModel.VoteId))
-                ?? throw new BusinessException("No vote to revoke or user not owner of target vote.");
+                .GetVote(voteModel.UserId, voteModel.VoteId))
+                ?? throw new BusinessException("No vote to revoke or user not user of target vote.");
             if (vote.CreatedOn.Add(_limits.VoteEditDeadline) < DateTime.UtcNow)
                 throw new BusinessException($"Vote with id '{voteModel.VoteId}' cannot be edited since more than '{_limits.VoteEditDeadline.Minutes}' minutes passed.");
             var voteable = GetVoteable(vote);

@@ -2,7 +2,7 @@ namespace StackUnderflow.Core.Models
 {
     public class CommentModel
     {
-        public string OwnerId { get; set; }
+        public string UserId { get; set; }
         public string Body { get; set; }
     }
 }

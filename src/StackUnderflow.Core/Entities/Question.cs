@@ -9,7 +9,8 @@ namespace StackUnderflow.Core.Entities
 {
     public class Question : BaseEntity<Guid>, IVoteable, ICommentable
     {
-        public Guid OwnerId { get; private set; }
+        public Guid UserId { get; private set; }
+        public User User { get; private set; }
         public string Title { get; private set; }
         public string Body { get; private set; }
         public bool HasAcceptedAnswer { get; private set; }
@@ -28,17 +29,17 @@ namespace StackUnderflow.Core.Entities
         private Question()
         { }
 
-        public void Edit(Guid ownerId, string title, string body, IEnumerable<Tag> tags, ILimits limits)
+        public void Edit(Guid userId, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {
-            if (OwnerId != ownerId)
+            if (UserId != userId)
             {
-                throw new BusinessException("Question can be edited only by owner.");
+                throw new BusinessException("Question can be edited only by user.");
             }
             if (CreatedOn.Add(limits.QuestionEditDeadline) < DateTime.UtcNow)
             {
                 throw new BusinessException($"Question with id '{Id}' cannot be edited since more than '{limits.QuestionEditDeadline.Minutes}' minutes passed.");
             }
-            Validate(ownerId, title, body, tags, limits);
+            Validate(userId, title, body, tags, limits);
             Title = title;
             Body = body;
             _questionTags = new List<QuestionTag>(tags.Select(t => new QuestionTag { Question = this, Tag = t }));
@@ -46,9 +47,9 @@ namespace StackUnderflow.Core.Entities
 
         public void Answer(Answer answer)
         {
-            if (_answers.Any(a => a.OwnerId == answer.OwnerId))
+            if (_answers.Any(a => a.UserId == answer.UserId))
             {
-                throw new BusinessException($"User '{answer.OwnerId}' has already submitted an answer.");
+                throw new BusinessException($"User '{answer.UserId}' has already submitted an answer.");
             }
             _answers.Add(answer);
             // @nl: Raise an event!
@@ -89,7 +90,7 @@ namespace StackUnderflow.Core.Entities
 
         public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
-        public static Question Create(Guid ownerId,
+        public static Question Create(Guid userId,
             string title,
             string body,
             IEnumerable<Tag> tags,
@@ -99,8 +100,8 @@ namespace StackUnderflow.Core.Entities
         {
             var question = new Question();
             question.Id = Guid.NewGuid();
-            question.OwnerId = ownerId;
-            Validate(ownerId, title, body, tags, limits);
+            question.UserId = userId;
+            Validate(userId, title, body, tags, limits);
             question.Title = title;
             question.Body = body;
             question.HasAcceptedAnswer = false;
@@ -111,11 +112,11 @@ namespace StackUnderflow.Core.Entities
             return question;
         }
 
-        private static void Validate(Guid ownerId, string title, string body, IEnumerable<Tag> tags, ILimits limits)
+        private static void Validate(Guid userId, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {
-            if (ownerId == default(Guid))
+            if (userId == default(Guid))
             {
-                throw new BusinessException("Owner id cannot be default Guid.");
+                throw new BusinessException("User id cannot be default Guid.");
             }
             if (body == null || body.Length < limits.QuestionBodyMinimumLength)
             {

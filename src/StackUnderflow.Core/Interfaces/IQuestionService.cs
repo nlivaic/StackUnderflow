@@ -9,6 +9,6 @@ namespace StackUnderflow.Core.Interfaces
         Task<QuestionModel> GetQuestion(Guid questionId);
         Task AskQuestionAsync(QuestionCreateModel questionModel);
         Task EditQuestion(QuestionEditModel questionModel);
-        Task DeleteQuestion(Guid questionOwnerId, Guid questionId);
+        Task DeleteQuestion(Guid questionUserId, Guid questionId);
     }
 }

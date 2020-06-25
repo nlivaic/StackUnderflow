@@ -11,14 +11,14 @@ namespace StackUnderflow.Core.Tests.Builders
 
         public QuestionBuilder SetupValidQuestion()
         {
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
             int tagCount = 3;
             string title = "TitleNormal";
             string body = "BodyNormal";
             var tags = new TagBuilder().Build(tagCount);
             var voteable = new Voteable();
             var commentable = new Commentable();
-            _target = Question.Create(ownerId, title, body, tags, _limits, voteable, commentable);
+            _target = Question.Create(userId, title, body, tags, _limits, voteable, commentable);
             return this;
         }
 

@@ -12,7 +12,7 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var vote = new VoteBuilder(target).SetupValidUpvote().ByOneOwner().Build();
+            var vote = new VoteBuilder(target).SetupValidUpvote().ByOneUser().Build();
 
             // Act
             target.ApplyVote(vote);
@@ -28,7 +28,7 @@ namespace StackUnderflow.Core.Tests
             // Arrange
             var question = new QuestionBuilder().SetupValidQuestion().Build();
             var target = new AnswerBuilder().SetupValidAnswer(question).Build();
-            var vote = new VoteBuilder(target).SetupValidUpvote().ByOneOwner().Build();
+            var vote = new VoteBuilder(target).SetupValidUpvote().ByOneUser().Build();
 
             // Act
             target.ApplyVote(vote);
@@ -43,7 +43,7 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var target = new CommentBuilder().SetupValidComment().Build();
-            var vote = new VoteBuilder(target).SetupValidUpvote().ByOneOwner().Build();
+            var vote = new VoteBuilder(target).SetupValidUpvote().ByOneUser().Build();
 
             // Act
             target.ApplyVote(vote);
@@ -54,12 +54,12 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Fact]
-        public void Voteable_SameOwnerCannotApplyVoteTwice_Throws()
+        public void Voteable_SameUserCannotApplyVoteTwice_Throws()
         {
             // Arrange
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var firstVote = new VoteBuilder(target).SetupValidUpvote().ByOneOwner().Build();
-            var secondVote = new VoteBuilder(target).SetupValidUpvote().ByOneOwner().Build();
+            var firstVote = new VoteBuilder(target).SetupValidUpvote().ByOneUser().Build();
+            var secondVote = new VoteBuilder(target).SetupValidUpvote().ByOneUser().Build();
             target.ApplyVote(firstVote);
 
             // Act, Assert
@@ -71,7 +71,7 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var vote = new VoteBuilder(target).SetupValidUpvote().ByOneOwner().Build();
+            var vote = new VoteBuilder(target).SetupValidUpvote().ByOneUser().Build();
             var limits = new LimitsBuilder().Build();
             target.ApplyVote(vote);
 
@@ -90,7 +90,7 @@ namespace StackUnderflow.Core.Tests
             var limits = new LimitsBuilder().Build();
             var firstVote = new VoteBuilder(target)
                 .SetupValidUpvote()
-                .ByOneOwner()
+                .ByOneUser()
                 .MakeTimeGoBy()
                 .Build();
             target.ApplyVote(firstVote);
@@ -105,8 +105,8 @@ namespace StackUnderflow.Core.Tests
             // Arrange
             var target = new QuestionBuilder().SetupValidQuestion().Build();
             var limits = new LimitsBuilder().Build();
-            var firstVote = new VoteBuilder(target).SetupValidUpvote().ByOneOwner().Build();
-            var secondVote = new VoteBuilder(target).SetupValidUpvote().ByAnotherOwner().Build();
+            var firstVote = new VoteBuilder(target).SetupValidUpvote().ByOneUser().Build();
+            var secondVote = new VoteBuilder(target).SetupValidUpvote().ByAnotherUser().Build();
             target.ApplyVote(firstVote);
 
             // Act, Assert

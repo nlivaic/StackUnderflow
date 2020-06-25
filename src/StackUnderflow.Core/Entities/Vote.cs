@@ -10,7 +10,8 @@ namespace StackUnderflow.Core.Entities
             Upvote = 1,
             Downvote = 2
         }
-        public Guid OwnerId { get; private set; }
+        public Guid UserId { get; private set; }
+        public User User { get; private set; }
         public DateTime CreatedOn { get; private set; }
         public Question Question { get; private set; }
         public Guid? QuestionId { get; private set; }
@@ -24,37 +25,37 @@ namespace StackUnderflow.Core.Entities
         {
         }
 
-        private Vote(Guid ownerId, Question question, VoteTypeEnum voteType)
+        private Vote(Guid userId, Question question, VoteTypeEnum voteType)
         {
-            OwnerId = ownerId;
+            UserId = userId;
             QuestionId = question.Id;
             VoteType = voteType;
             CreatedOn = DateTime.UtcNow;
         }
 
-        private Vote(Guid ownerId, Answer answer, VoteTypeEnum voteType)
+        private Vote(Guid userId, Answer answer, VoteTypeEnum voteType)
         {
-            OwnerId = ownerId;
+            UserId = userId;
             AnswerId = answer.Id;
             VoteType = voteType;
             CreatedOn = DateTime.UtcNow;
         }
 
-        private Vote(Guid ownerId, Comment comment, VoteTypeEnum voteType)
+        private Vote(Guid userId, Comment comment, VoteTypeEnum voteType)
         {
-            OwnerId = ownerId;
+            UserId = userId;
             CommentId = comment.Id;
             VoteType = voteType;
             CreatedOn = DateTime.UtcNow;
         }
 
-        public static Vote CreateVote(Guid ownerId, Question question, VoteTypeEnum voteType) =>
-            new Vote(ownerId, question, voteType);
+        public static Vote CreateVote(Guid userId, Question question, VoteTypeEnum voteType) =>
+            new Vote(userId, question, voteType);
 
-        public static Vote CreateVote(Guid ownerId, Answer answer, VoteTypeEnum voteType) =>
-            new Vote(ownerId, answer, voteType);
+        public static Vote CreateVote(Guid userId, Answer answer, VoteTypeEnum voteType) =>
+            new Vote(userId, answer, voteType);
 
-        public static Vote CreateVote(Guid ownerId, Comment comment, VoteTypeEnum voteType) =>
-            new Vote(ownerId, comment, voteType);
+        public static Vote CreateVote(Guid userId, Comment comment, VoteTypeEnum voteType) =>
+            new Vote(userId, comment, voteType);
     }
 }

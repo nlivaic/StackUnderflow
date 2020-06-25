@@ -13,17 +13,17 @@ namespace StackUnderflow.Core.Tests
         public void Comment_CanGetCreatedWithValidData_Successfully()
         {
             // Arrange
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
             var body = "BodyNormal";
             var orderNumber = 1;
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
 
             // Act
-            var result = Comment.Create(ownerId, body, orderNumber, limits, voteable);
+            var result = Comment.Create(userId, body, orderNumber, limits, voteable);
 
             // Assert
-            Assert.Equal(ownerId, result.OwnerId);
+            Assert.Equal(userId, result.UserId);
             Assert.Equal(body, result.Body);
             Assert.Equal(orderNumber, result.OrderNumber);
         }
@@ -34,14 +34,14 @@ namespace StackUnderflow.Core.Tests
         [InlineData("00000000-0000-0000-0000-000000000001", 1, "  ")]
         [InlineData("00000000-0000-0000-0000-000000000001", 1, "123456789")]
         [InlineData("00000000-0000-0000-0000-000000000000", -1, "BodyNormal")]
-        public void Comment_CreatingWithInvalidData_FailsValidation(string ownerId, int orderNumber, string body)
+        public void Comment_CreatingWithInvalidData_FailsValidation(string userId, int orderNumber, string body)
         {
             // Arrange
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
 
             // Act, Assert
-            Assert.Throws<BusinessException>(() => Comment.Create(new Guid(ownerId), body, orderNumber, limits, voteable));
+            Assert.Throws<BusinessException>(() => Comment.Create(new Guid(userId), body, orderNumber, limits, voteable));
         }
 
         [Fact]
@@ -50,21 +50,21 @@ namespace StackUnderflow.Core.Tests
             // Arrange
             var target = new CommentBuilder().SetupValidComment().Build();
             var originalId = target.Id;
-            var originalOwnerId = target.OwnerId;
+            var originalUserId = target.UserId;
             var originalCreatedOn = target.CreatedOn;
             var originalParentQuestion = target.ParentQuestion;
             var originalParentAnswer = target.ParentAnswer;
 
-            var ownerId = new Guid("00000000-0000-0000-0000-000000000002");
+            var userId = new Guid("00000000-0000-0000-0000-000000000002");
             var newBody = "NewBodyNormal";
             var limits = new LimitsBuilder().Build();
 
             // Act
-            target.Edit(ownerId, newBody, limits);
+            target.Edit(userId, newBody, limits);
 
             // Assert
             Assert.Equal(originalId, target.Id);
-            Assert.Equal(originalOwnerId, target.OwnerId);
+            Assert.Equal(originalUserId, target.UserId);
             Assert.Equal(originalCreatedOn, target.CreatedOn);
             Assert.Equal(originalParentQuestion, target.ParentQuestion);
             Assert.Equal(originalParentAnswer, target.ParentAnswer);
@@ -86,7 +86,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-               target.Edit(target.OwnerId, editedBody, limits));
+               target.Edit(target.UserId, editedBody, limits));
         }
 
         [Theory]
@@ -94,7 +94,7 @@ namespace StackUnderflow.Core.Tests
         [InlineData("00000000-0000-0000-0000-000000000001", "")]
         [InlineData("00000000-0000-0000-0000-000000000001", "  ")]
         [InlineData("00000000-0000-0000-0000-000000000001", "123456789")]
-        public void Comment_EditingWithInvalidData_FailsValidation(string ownerId, string body)
+        public void Comment_EditingWithInvalidData_FailsValidation(string userId, string body)
         {
             // Arrange
             var target = new CommentBuilder().SetupValidComment().Build();
@@ -102,14 +102,14 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-               target.Edit(new Guid(ownerId), body, limits));
+               target.Edit(new Guid(userId), body, limits));
         }
 
         [Fact]
         public void Comment_CreatingWithoutVoteable_Fails()
         {
             // Arrange
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
             string body = "BodyNormal";
             var limits = new LimitsBuilder().Build();
             var orderNumber = 1;
@@ -118,7 +118,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Comment.Create(ownerId, body, orderNumber, limits, voteable));
+                Comment.Create(userId, body, orderNumber, limits, voteable));
         }
     }
 }

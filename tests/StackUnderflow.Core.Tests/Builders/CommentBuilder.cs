@@ -11,10 +11,10 @@ namespace StackUnderflow.Core.Tests.Builders
 
         public CommentBuilder SetupValidComment(int orderNumber = 1)
         {
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000002");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000002");
             string body = "BodyNormal";
             var voteable = new Voteable();
-            _target = Comment.Create(ownerId, body, orderNumber, _limits, voteable);
+            _target = Comment.Create(userId, body, orderNumber, _limits, voteable);
             return this;
         }
 

@@ -15,7 +15,7 @@ namespace StackUnderflow.Core.Tests
         public void Question_CanBeCreated_Successfully()
         {
             // Arrange
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
             int tagCount = 3;
             string title = "TitleNormal";
             string body = "BodyNormal";
@@ -25,11 +25,11 @@ namespace StackUnderflow.Core.Tests
             var commentable = new Commentable();
 
             // Act
-            var result = Question.Create(ownerId, title, body, tags, limits, voteable, commentable);
+            var result = Question.Create(userId, title, body, tags, limits, voteable, commentable);
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
-            Assert.Equal(ownerId, result.OwnerId);
+            Assert.Equal(userId, result.UserId);
             Assert.Equal(title, result.Title);
             Assert.Equal(body, result.Body);
             Assert.False(result.HasAcceptedAnswer);
@@ -49,7 +49,7 @@ namespace StackUnderflow.Core.Tests
         [InlineData("00000000-0000-0000-0000-000000000001", 3, "", "123456789")]
         [InlineData("00000000-0000-0000-0000-000000000001", 1, "TitleNormal", "BodyNormal")]
         [InlineData("00000000-0000-0000-0000-000000000001", 6, "TitleNormal", "BodyNormal")]
-        public void Question_CreatingWithInvalidData_FailsValidation(string ownerId, int tagCount, string title, string body)
+        public void Question_CreatingWithInvalidData_FailsValidation(string userId, int tagCount, string title, string body)
         {
             // Arrange
             var tags = new TagBuilder().Build(tagCount);
@@ -59,14 +59,14 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Question.Create(new Guid(ownerId), title, body, tags, limits, voteable, commentable));
+                Question.Create(new Guid(userId), title, body, tags, limits, voteable, commentable));
         }
 
         [Fact]
         public void Question_CreatingWithoutVoteable_Fails()
         {
             // Arrange
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
             int tagCount = 3;
             string title = "TitleNormal";
             string body = "BodyNormal";
@@ -77,14 +77,14 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Question.Create(ownerId, title, body, tags, limits, voteable, commentable));
+                Question.Create(userId, title, body, tags, limits, voteable, commentable));
         }
 
         [Fact]
         public void Question_CreatingWithoutCommentable_Fails()
         {
             // Arrange
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
             int tagCount = 3;
             string title = "TitleNormal";
             string body = "BodyNormal";
@@ -95,7 +95,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Question.Create(ownerId, title, body, tags, limits, voteable, commentable));
+                Question.Create(userId, title, body, tags, limits, voteable, commentable));
         }
 
         [Theory]
@@ -104,7 +104,7 @@ namespace StackUnderflow.Core.Tests
         public void Question_CreatingWithWrongNumberOfTags_Fails(int tagCount)
         {
             // Arrange
-            var ownerId = Guid.NewGuid();
+            var userId = Guid.NewGuid();
             var title = "TitleNormal";
             var body = "BodyNormal";
             var tags = Builder<Tag>
@@ -117,7 +117,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Question.Create(ownerId, title, body, tags, limits, voteable, commentable));
+                Question.Create(userId, title, body, tags, limits, voteable, commentable));
         }
 
         [Fact]
@@ -125,7 +125,7 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange - Build Question
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var ownerId = target.OwnerId;
+            var userId = target.UserId;
 
             // Arrange - Edit Data
             string editedTitle = "TitleNormal";
@@ -135,12 +135,12 @@ namespace StackUnderflow.Core.Tests
             var editedTags = new TagBuilder().Build(editedTagCount);
 
             // Act
-            target.Edit(target.OwnerId, editedTitle, editedBody, editedTags, limits);
+            target.Edit(target.UserId, editedTitle, editedBody, editedTags, limits);
             var result = target;
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
-            Assert.Equal(ownerId, result.OwnerId);
+            Assert.Equal(userId, result.UserId);
             Assert.Equal(editedTitle, result.Title);
             Assert.Equal(editedBody, result.Body);
             Assert.False(result.HasAcceptedAnswer);
@@ -167,7 +167,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act
             Assert.Throws<BusinessException>(() =>
-               target.Edit(target.OwnerId, editedTitle, editedBody, editedTags, limits));
+               target.Edit(target.UserId, editedTitle, editedBody, editedTags, limits));
         }
 
         [Theory]
@@ -180,7 +180,7 @@ namespace StackUnderflow.Core.Tests
         [InlineData("00000000-0000-0000-0000-000000000001", 3, "", "123456789")]
         [InlineData("00000000-0000-0000-0000-000000000001", 1, "TitleNormal", "BodyNormal")]
         [InlineData("00000000-0000-0000-0000-000000000001", 6, "TitleNormal", "BodyNormal")]
-        public void Question_EditingWithInvalidData_FailsValidation(string ownerId, int tagCount, string title, string body)
+        public void Question_EditingWithInvalidData_FailsValidation(string userId, int tagCount, string title, string body)
         {
             // Arrange - Build Question
             var target = new QuestionBuilder().SetupValidQuestion().Build();
@@ -191,7 +191,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act
             Assert.Throws<BusinessException>(() =>
-               target.Edit(new Guid(ownerId), title, body, editedTags, limits));
+               target.Edit(new Guid(userId), title, body, editedTags, limits));
         }
 
         [Fact]

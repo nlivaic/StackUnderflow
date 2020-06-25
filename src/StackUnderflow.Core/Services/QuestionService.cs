@@ -40,7 +40,7 @@ namespace StackUnderflow.Core.Services
         public async Task AskQuestionAsync(QuestionCreateModel questionModel)
         {
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
-            var question = Question.Create(questionModel.OwnerId, questionModel.Title, questionModel.Body, tags, _limits, _voteable, _commentable);
+            var question = Question.Create(questionModel.UserId, questionModel.Title, questionModel.Body, tags, _limits, _voteable, _commentable);
             await _questionRepository.AddAsync(question);
             await _uow.SaveAsync();
         }
@@ -49,21 +49,20 @@ namespace StackUnderflow.Core.Services
         {
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
             var question = (await _questionRepository
-                .ListAllAsync(q => q.Id == questionModel.QuestionId && q.OwnerId != questionModel.QuestionOwnerId))
+                .ListAllAsync(q => q.Id == questionModel.QuestionId && q.UserId != questionModel.QuestionUserId))
                 .SingleOrDefault()
-                ?? throw new BusinessException($"Question with id '{questionModel.QuestionId}' belonging to owner '{questionModel.QuestionOwnerId}' does not exist.");
-            question.Edit(questionModel.QuestionOwnerId, questionModel.Title, questionModel.Body, tags, _limits);
+                ?? throw new BusinessException($"Question with id '{questionModel.QuestionId}' belonging to user '{questionModel.QuestionUserId}' does not exist.");
+            question.Edit(questionModel.QuestionUserId, questionModel.Title, questionModel.Body, tags, _limits);
             await _uow.SaveAsync();
         }
 
-        public async Task DeleteQuestion(Guid questionOwnerId, Guid questionId)
+        public async Task DeleteQuestion(Guid questionUserId, Guid questionId)
         {
-            // @nl move this query into a standalone query object.
             var question = (await _questionRepository
                 .GetQuestionWithAnswersAndCommentsAsync(questionId));
-            if (question == null || question.OwnerId != questionOwnerId)
+            if (question == null || question.UserId != questionUserId)
             {
-                throw new BusinessException($"Question with id '{questionId}' belonging to owner '{questionOwnerId}' does not exist.");
+                throw new BusinessException($"Question with id '{questionId}' belonging to user '{questionUserId}' does not exist.");
             }
             if (question.Answers.Any() == true)
             {

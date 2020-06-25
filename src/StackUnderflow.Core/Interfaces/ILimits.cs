@@ -14,5 +14,8 @@ namespace StackUnderflow.Core.Interfaces
         int CommentBodyMinimumLength { get; }
         int TagMinimumCount { get; }
         int TagMaximumCount { get; }
+        int UsernameMinimumLength { get; }
+        int UsernameMaximumLength { get; }
+        int AboutMeMaximumLength { get; }
     }
 }

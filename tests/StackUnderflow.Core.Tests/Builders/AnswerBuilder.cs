@@ -11,17 +11,17 @@ namespace StackUnderflow.Core.Tests.Builders
 
         public AnswerBuilder SetupValidAnswer(Question question)
         {
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000002");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000002");
             string body = "BodyNormal";
-            _target = Answer.Create(ownerId, body, question, _limits, new Voteable(), new Commentable());
+            _target = Answer.Create(userId, body, question, _limits, new Voteable(), new Commentable());
             return this;
         }
 
         public AnswerBuilder SetupAnotherValidAnswer(Question question)
         {
-            Guid ownerId = Guid.NewGuid();
+            Guid userId = Guid.NewGuid();
             string body = "BodyNormal";
-            _target = Answer.Create(ownerId, body, question, _limits, new Voteable(), new Commentable());
+            _target = Answer.Create(userId, body, question, _limits, new Voteable(), new Commentable());
             return this;
         }
 

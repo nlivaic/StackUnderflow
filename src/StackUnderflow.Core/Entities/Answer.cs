@@ -8,7 +8,8 @@ namespace StackUnderflow.Core.Entities
 {
     public class Answer : BaseEntity<Guid>, IVoteable, ICommentable
     {
-        public Guid OwnerId { get; private set; }
+        public Guid UserId { get; private set; }
+        public User User { get; private set; }
         public string Body { get; private set; }
         public bool IsAcceptedAnswer { get; private set; }
         public DateTime? AcceptedOn { get; private set; }
@@ -46,11 +47,11 @@ namespace StackUnderflow.Core.Entities
             AcceptedOn = null;
         }
 
-        public void Edit(Guid ownerId, string body, ILimits limits)
+        public void Edit(Guid userId, string body, ILimits limits)
         {
-            if (OwnerId != ownerId)
+            if (UserId != userId)
             {
-                throw new BusinessException("Question can be edited only by owner.");
+                throw new BusinessException("Question can be edited only by user.");
             }
             if (CreatedOn.Add(limits.AnswerEditDeadline) < DateTime.UtcNow)
             {
@@ -67,17 +68,17 @@ namespace StackUnderflow.Core.Entities
         public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
         public static Answer Create(
-            Guid ownerId,
+            Guid userId,
             string body,
             Question question,
             ILimits limits,
             IVoteable voteable,
             ICommentable commentable)
         {
-            Validate(ownerId, body, limits);
+            Validate(userId, body, limits);
             var answer = new Answer();
             answer.Id = Guid.NewGuid();
-            answer.OwnerId = ownerId;
+            answer.UserId = userId;
             answer.Body = body;
             answer.IsAcceptedAnswer = false;
             answer.CreatedOn = DateTime.UtcNow;
@@ -86,11 +87,11 @@ namespace StackUnderflow.Core.Entities
             return answer;
         }
 
-        private static void Validate(Guid ownerId, string body, ILimits limits)
+        private static void Validate(Guid userId, string body, ILimits limits)
         {
-            if (ownerId == default(Guid))
+            if (userId == default(Guid))
             {
-                throw new BusinessException("Owner id cannot be default Guid.");
+                throw new BusinessException("User id cannot be default Guid.");
             }
             if (string.IsNullOrWhiteSpace(body) || body.Length < limits.AnswerBodyMinimumLength)
             {

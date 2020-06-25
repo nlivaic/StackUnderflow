@@ -5,7 +5,7 @@ namespace StackUnderflow.Core.Models
 {
     public class QuestionEditModel
     {
-        public Guid QuestionOwnerId { get; set; }
+        public Guid QuestionUserId { get; set; }
         public Guid QuestionId { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }

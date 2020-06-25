@@ -4,6 +4,7 @@ using FizzWare.NBuilder;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Api.Controllers
 {
@@ -11,6 +12,13 @@ namespace StackUnderflow.Api.Controllers
     [Route("api/[controller]")]
     public class QuestionsController : ControllerBase
     {
+        private readonly IQuestionRepository _questionRepository;
+
+        public QuestionsController(IQuestionRepository questionRepository)
+        {
+            _questionRepository = questionRepository;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<QuestionResponse>> Get()
         {
@@ -20,6 +28,7 @@ namespace StackUnderflow.Api.Controllers
         [HttpGet("{id}")]
         public ActionResult<QuestionResponse> Get(Guid id)
         {
+            _questionRepository.GetByIdAsync(id);
             throw new NotImplementedException("");
         }
 

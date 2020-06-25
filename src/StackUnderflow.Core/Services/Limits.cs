@@ -16,5 +16,11 @@ namespace StackUnderflow.Core.Services
         public int CommentBodyMinimumLength => 30;
         public int TagMinimumCount => 1;
         public int TagMaximumCount => 5;
+
+        public int UsernameMinimumLength => 5;
+
+        public int UsernameMaximumLength => 15;
+
+        public int AboutMeMaximumLength => 400;
     }
 }

@@ -16,9 +16,9 @@ namespace StackUnderflow.Core.Entities
         public void ApplyVote(Vote vote)
         {
             var targetId = vote.QuestionId ?? vote.AnswerId ?? vote.CommentId.Value;
-            if (_votes.SingleOrDefault(v => v.OwnerId == vote.OwnerId) != null)
+            if (_votes.SingleOrDefault(v => v.UserId == vote.UserId) != null)
             {
-                throw new BusinessException($"User '{vote.OwnerId}' has already voted on {Target(vote)} '{TargetId(vote)}'.");
+                throw new BusinessException($"User '{vote.UserId}' has already voted on {Target(vote)} '{TargetId(vote)}'.");
             }
             _votes.Add(vote);
             switch (vote.VoteType)
@@ -36,7 +36,7 @@ namespace StackUnderflow.Core.Entities
 
         public void RevokeVote(Vote vote, ILimits limits)
         {
-            if (_votes.SingleOrDefault(v => v.OwnerId == vote.OwnerId) == null)
+            if (_votes.SingleOrDefault(v => v.UserId == vote.UserId) == null)
             {
                 throw new BusinessException($"Vote does not exist on {Target(vote)} '{TargetId(vote)}'.");
             }

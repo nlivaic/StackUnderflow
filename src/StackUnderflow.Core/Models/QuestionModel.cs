@@ -5,8 +5,8 @@ namespace StackUnderflow.Core.Models
 {
     public class QuestionModel
     {
-        public string OwnerId { get; set; }
-        public string OwnerName { get; set; }
+        public string UserId { get; set; }
+        public string UserName { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
         public DateTime CreatedAt { get; set; }

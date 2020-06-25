@@ -7,6 +7,14 @@
   ✔ Domain @done (05. 06. 2020. 23:14:17)
   ✔ Service @done (05. 06. 2020. 23:14:22)
   ✔ Druge klase (q/a/c), da li zbrajaju bodove koristeći IVotable? @done (05. 06. 2020. 23:19:56)
+☐ User
+  ✔ Rename OwnerId to UserId @done (25. 06. 2020. 17:15:24)
+  ✔ Add User property to q/a/c @done (25. 06. 2020. 17:18:16)
+  ✔ Find all "@nl" regarding "owner" @done (25. 06. 2020. 17:23:57)
+  ✔ Do existing unit tests work out ok? @done (25. 06. 2020. 17:23:58)
+  ☐ Unit tests
+  ☐ Add to DbContext
+  ☐ Add to Seeder
 ☐ Razraditi unit testove.
   ✔ Question @done (08. 06. 2020. 23:54:16)
   ✔ Answer @done (17. 06. 2020. 18:55:09)

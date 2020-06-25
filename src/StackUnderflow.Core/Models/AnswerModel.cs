@@ -2,7 +2,7 @@ namespace StackUnderflow.Core.Models
 {
     public class AnswerModel
     {
-        public string OwnerId { get; set; }
+        public string UserId { get; set; }
         public string Body { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace StackUnderflow.Data.Repositories
                 .Include(q => q.Comments)
                 .Select(q => new QuestionModel
                 {
-                    OwnerName = "@nl",      // @nl
+                    UserName = "@nl",      // @nl
                     Title = q.Title,
                     Body = q.Body,
                     CreatedAt = q.CreatedOn,

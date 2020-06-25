@@ -5,7 +5,7 @@ namespace StackUnderflow.Core.Models
 {
     public class VoteRevokeModel
     {
-        public Guid OwnerId { get; set; }
+        public Guid UserId { get; set; }
         public Guid VoteId { get; set; }
         public Guid TargetId { get; set; }
         public VoteTargetEnum VoteTarget { get; set; }

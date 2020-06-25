@@ -14,18 +14,18 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var question = new QuestionBuilder().SetupValidQuestion().Build();
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
             string body = "BodyNormal";
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
             var commentable = new Commentable();
 
             // Act
-            var result = Answer.Create(ownerId, body, question, limits, voteable, commentable);
+            var result = Answer.Create(userId, body, question, limits, voteable, commentable);
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
-            Assert.Equal(ownerId, result.OwnerId);
+            Assert.Equal(userId, result.UserId);
             Assert.Equal(body, result.Body);
             Assert.False(result.IsAcceptedAnswer);
             Assert.Null(result.AcceptedOn);
@@ -38,7 +38,7 @@ namespace StackUnderflow.Core.Tests
         [InlineData("00000000-0000-0000-0000-000000000001", "")]
         [InlineData("00000000-0000-0000-0000-000000000001", "  ")]
         [InlineData("00000000-0000-0000-0000-000000000001", "123456789")]
-        public void Answer_CreatingWithInvalidData_FailsValidation(string ownerId, string body)
+        public void Answer_CreatingWithInvalidData_FailsValidation(string userId, string body)
         {
             // Arrange
             var question = new QuestionBuilder().SetupValidQuestion().Build();
@@ -48,7 +48,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Answer.Create(new Guid(ownerId), body, question, limits, voteable, commentable));
+                Answer.Create(new Guid(userId), body, question, limits, voteable, commentable));
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var question = new QuestionBuilder().SetupValidQuestion().Build();
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
             string body = "BodyNormal";
             var limits = new LimitsBuilder().Build();
             IVoteable voteable = null;
@@ -64,7 +64,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Answer.Create(ownerId, body, question, limits, voteable, commentable));
+                Answer.Create(userId, body, question, limits, voteable, commentable));
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var question = new QuestionBuilder().SetupValidQuestion().Build();
-            Guid ownerId = new Guid("00000000-0000-0000-0000-000000000001");
+            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
             string body = "BodyNormal";
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
@@ -80,7 +80,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Answer.Create(ownerId, body, question, limits, voteable, commentable));
+                Answer.Create(userId, body, question, limits, voteable, commentable));
         }
 
         [Fact]
@@ -91,19 +91,19 @@ namespace StackUnderflow.Core.Tests
             var target = new AnswerBuilder()
                 .SetupValidAnswer(question)
                 .Build();
-            var ownerId = target.OwnerId;
+            var userId = target.UserId;
 
             // Arrange - Edit Data
             string editedBody = "BodyNormal";
             var limits = new LimitsBuilder().Build();
 
             // Act
-            target.Edit(target.OwnerId, editedBody, limits);
+            target.Edit(target.UserId, editedBody, limits);
             var result = target;
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
-            Assert.Equal(ownerId, result.OwnerId);
+            Assert.Equal(userId, result.UserId);
             Assert.Equal(editedBody, result.Body);
             Assert.Empty(result.Comments);
         }
@@ -124,7 +124,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act
             Assert.Throws<BusinessException>(() =>
-               target.Edit(target.OwnerId, editedBody, limits));
+               target.Edit(target.UserId, editedBody, limits));
         }
 
         [Theory]
@@ -133,7 +133,7 @@ namespace StackUnderflow.Core.Tests
         [InlineData("00000000-0000-0000-0000-000000000001", "  ")]
         [InlineData("00000000-0000-0000-0000-000000000001", "123456789")]
         [InlineData("00000000-0000-0000-0000-000000000001", "BodyNormal")]
-        public void Answer_EditingWithInvalidData_FailsValidation(string ownerId, string body)
+        public void Answer_EditingWithInvalidData_FailsValidation(string userId, string body)
         {
             // Arrange - Build Answer
             var question = new QuestionBuilder().SetupValidQuestion().Build();
@@ -142,7 +142,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-               target.Edit(new Guid(ownerId), body, limits));
+               target.Edit(new Guid(userId), body, limits));
         }
 
         [Fact]
@@ -152,7 +152,7 @@ namespace StackUnderflow.Core.Tests
             var question = new QuestionBuilder().SetupValidQuestion().Build();
             var target = new AnswerBuilder().SetupValidAnswer(question).Build();
             var originalId = target.Id;
-            var originalOwnerId = target.OwnerId;
+            var originalUserId = target.UserId;
             var originalBody = target.Body;
             var originalCreatedOn = target.CreatedOn;
             var originalQuestion = target.Question;
@@ -162,7 +162,7 @@ namespace StackUnderflow.Core.Tests
 
             // Assert
             Assert.Equal(originalId, target.Id);
-            Assert.Equal(originalOwnerId, target.OwnerId);
+            Assert.Equal(originalUserId, target.UserId);
             Assert.Equal(originalBody, target.Body);
             Assert.Equal(originalCreatedOn, target.CreatedOn);
             Assert.True(target.IsAcceptedAnswer);
@@ -176,7 +176,7 @@ namespace StackUnderflow.Core.Tests
             var question = new QuestionBuilder().SetupValidQuestion().Build();
             var target = new AnswerBuilder().SetupValidAnswer(question).Build();
             var originalId = target.Id;
-            var originalOwnerId = target.OwnerId;
+            var originalUserId = target.UserId;
             var originalBody = target.Body;
             var originalCreatedOn = target.CreatedOn;
             var originalQuestion = target.Question;
@@ -187,7 +187,7 @@ namespace StackUnderflow.Core.Tests
 
             // Assert
             Assert.Equal(originalId, target.Id);
-            Assert.Equal(originalOwnerId, target.OwnerId);
+            Assert.Equal(originalUserId, target.UserId);
             Assert.Equal(originalBody, target.Body);
             Assert.Equal(originalCreatedOn, target.CreatedOn);
             Assert.False(target.IsAcceptedAnswer);

@@ -39,7 +39,7 @@ namespace StackUnderflow.Core.Services
                 .Select(c => c.OrderNumber)
                 .OrderByDescending(c => c)
                 .FirstOrDefault() + 1;
-            var comment = Comment.Create(commentModel.OwnerId, commentModel.Body, commentOrderNumber, _limits, _voteable);
+            var comment = Comment.Create(commentModel.UserId, commentModel.Body, commentOrderNumber, _limits, _voteable);
             question.Comment(comment);
         }
 
@@ -47,7 +47,7 @@ namespace StackUnderflow.Core.Services
         {
             var comment = (await _commentRepository.GetByIdAsync(commentModel.CommentId))
                 ?? throw new BusinessException($"Comment with id '{commentModel.CommentId}' does not exist.");
-            comment.Edit(commentModel.OwnerId, commentModel.Body, _limits);
+            comment.Edit(commentModel.UserId, commentModel.Body, _limits);
             await _uow.SaveAsync();
             // @nl: raise an event?
         }
