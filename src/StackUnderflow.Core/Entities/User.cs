@@ -13,7 +13,7 @@ namespace StackUnderflow.Core.Entities
         public MailAddress Email { get; private set; }
         public Uri WebsiteUrl { get; private set; }
         public string AboutMe { get; private set; }
-        public DateTime CreatedAt { get; private set; }
+        public DateTime CreatedOn { get; private set; }
         public DateTime LastSeen { get; private set; }
         public IEnumerable<Question> Questions { get; private set; } = new List<Question>();
         public IEnumerable<Answer> Answers { get; private set; } = new List<Answer>();
@@ -32,7 +32,7 @@ namespace StackUnderflow.Core.Entities
                 ? null
                 : new Uri(websiteUrl);
             AboutMe = aboutMe;
-            CreatedAt = DateTime.UtcNow;
+            CreatedOn = DateTime.UtcNow;
             LastSeen = DateTime.UtcNow;
         }
 
@@ -46,10 +46,13 @@ namespace StackUnderflow.Core.Entities
                 ? null
                 : new Uri(websiteUrl);
             user.AboutMe = aboutMe;
-            user.CreatedAt = DateTime.UtcNow;
+            user.CreatedOn = DateTime.UtcNow;
             user.LastSeen = DateTime.UtcNow;
             return user;
         }
+
+        public void SeenNow() =>
+            LastSeen = DateTime.UtcNow;
 
         private static void Validate(string username, string email, string websiteUrl, string aboutMe, ILimits limits)
         {
