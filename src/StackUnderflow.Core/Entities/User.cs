@@ -15,9 +15,9 @@ namespace StackUnderflow.Core.Entities
         public string AboutMe { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime LastSeen { get; private set; }
-        public IEnumerable<Question> Questions { get; private set; }
-        public IEnumerable<Answer> Answers { get; private set; }
-        public IEnumerable<Comment> Comments { get; private set; }
+        public IEnumerable<Question> Questions { get; private set; } = new List<Question>();
+        public IEnumerable<Answer> Answers { get; private set; } = new List<Answer>();
+        public IEnumerable<Comment> Comments { get; private set; } = new List<Comment>();
 
         private User()
         {
@@ -28,7 +28,9 @@ namespace StackUnderflow.Core.Entities
             Validate(username, email, websiteUrl, aboutMe, limits);
             Username = username;
             Email = new MailAddress(email);
-            WebsiteUrl = new Uri(websiteUrl);
+            WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
+                ? null
+                : new Uri(websiteUrl);
             AboutMe = aboutMe;
             CreatedAt = DateTime.UtcNow;
             LastSeen = DateTime.UtcNow;
@@ -40,7 +42,9 @@ namespace StackUnderflow.Core.Entities
             User user = new User();
             user.Username = username;
             user.Email = new MailAddress(email);
-            user.WebsiteUrl = new Uri(websiteUrl);
+            user.WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
+                ? null
+                : new Uri(websiteUrl);
             user.AboutMe = aboutMe;
             user.CreatedAt = DateTime.UtcNow;
             user.LastSeen = DateTime.UtcNow;
@@ -62,7 +66,7 @@ namespace StackUnderflow.Core.Entities
             {
                 throw new BusinessException("Email is not valid.");
             }
-            if (!Uri.TryCreate(websiteUrl, UriKind.Absolute, out var _))
+            if (!string.IsNullOrWhiteSpace(websiteUrl) && !Uri.TryCreate(websiteUrl, UriKind.Absolute, out var _))
             {
                 throw new BusinessException("Website Url is not valid.");
             }
