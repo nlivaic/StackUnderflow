@@ -12,7 +12,7 @@
   ✔ Add User property to q/a/c @done (25. 06. 2020. 17:18:16)
   ✔ Find all "@nl" regarding "owner" @done (25. 06. 2020. 17:23:57)
   ✔ Do existing unit tests work out ok? @done (25. 06. 2020. 17:23:58)
-  ☐ Unit tests
+  ✔ Unit tests @done (26. 06. 2020. 09:04:51)
   ☐ Add to DbContext
   ☐ Add to Seeder
 ☐ Core Domain

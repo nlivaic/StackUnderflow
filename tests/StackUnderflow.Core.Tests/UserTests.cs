@@ -26,8 +26,9 @@ namespace StackUnderflow.Core.Tests
             // Assert
             var resultWebsiteUrl = result.WebsiteUrl?.ToString();
             Assert.NotNull(result);
+            Assert.NotEqual(result.Id, default(Guid));
             Assert.Equal(result.Username, username);
-            Assert.Equal(result.Email.Address, email);
+            Assert.Equal(result.Email, email);
             Assert.Equal(resultWebsiteUrl, string.IsNullOrWhiteSpace(websiteUrl) ? null : websiteUrl);
             Assert.Equal(result.AboutMe, aboutMe);
             Assert.True(DateTime.UtcNow - result.CreatedOn < TimeSpan.FromSeconds(1));
@@ -61,14 +62,16 @@ namespace StackUnderflow.Core.Tests
             // Arrange
             var limits = new LimitsBuilder().Build();
             var target = new UserBuilder().BuildValidUser().Build();
+            var originalId = target.Id;
 
             // Act
             target.Edit(username, email, websiteUrl, aboutMe, limits);
 
             // Assert
             var resultWebsiteUrl = target.WebsiteUrl?.ToString();
+            Assert.Equal(target.Id, originalId);
             Assert.Equal(target.Username, username);
-            Assert.Equal(target.Email.Address, email);
+            Assert.Equal(target.Email, email);
             Assert.Equal(resultWebsiteUrl, string.IsNullOrWhiteSpace(websiteUrl) ? null : websiteUrl);
             Assert.Equal(target.AboutMe, aboutMe);
             Assert.True(DateTime.UtcNow - target.CreatedOn < TimeSpan.FromSeconds(1));

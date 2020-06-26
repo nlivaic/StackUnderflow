@@ -10,7 +10,7 @@ namespace StackUnderflow.Core.Entities
     public class User : BaseEntity<Guid>
     {
         public string Username { get; private set; }
-        public MailAddress Email { get; private set; }
+        public string Email { get; private set; }
         public Uri WebsiteUrl { get; private set; }
         public string AboutMe { get; private set; }
         public DateTime CreatedOn { get; private set; }
@@ -27,7 +27,7 @@ namespace StackUnderflow.Core.Entities
         {
             Validate(username, email, websiteUrl, aboutMe, limits);
             Username = username;
-            Email = new MailAddress(email);
+            Email = email;
             WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
                 ? null
                 : new Uri(websiteUrl);
@@ -40,8 +40,9 @@ namespace StackUnderflow.Core.Entities
         {
             Validate(username, email, websiteUrl, aboutMe, limits);
             User user = new User();
+            user.Id = Guid.NewGuid();
             user.Username = username;
-            user.Email = new MailAddress(email);
+            user.Email = email;
             user.WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
                 ? null
                 : new Uri(websiteUrl);
