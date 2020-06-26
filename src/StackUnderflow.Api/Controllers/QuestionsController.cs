@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using FizzWare.NBuilder;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Models;
-using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Api.Controllers
@@ -12,11 +10,11 @@ namespace StackUnderflow.Api.Controllers
     [Route("api/[controller]")]
     public class QuestionsController : ControllerBase
     {
-        private readonly IQuestionRepository _questionRepository;
+        private readonly IQuestionService _questionService;
 
-        public QuestionsController(IQuestionRepository questionRepository)
+        public QuestionsController(IQuestionService questionService)
         {
-            _questionRepository = questionRepository;
+            _questionService = questionService;
         }
 
         [HttpGet]
@@ -26,10 +24,9 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<QuestionResponse> Get(Guid id)
+        public ActionResult<Core.Models.QuestionModel> Get(Guid id)
         {
-            _questionRepository.GetByIdAsync(id);
-            throw new NotImplementedException("");
+            return Ok(_questionService.GetQuestion(id));
         }
 
         [HttpPost]

@@ -4,7 +4,7 @@ using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Core.Interfaces
 {
-    interface IQuestionService
+    public interface IQuestionService
     {
         Task<QuestionModel> GetQuestion(Guid questionId);
         Task AskQuestionAsync(QuestionCreateModel questionModel);

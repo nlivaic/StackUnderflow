@@ -14,28 +14,20 @@ namespace StackUnderflow.Data.Repositories
             : base(context)
         { }
 
+        public async Task<Question> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
+            await _context
+                .Questions
+                .Where(q => q.Id == questionId)
+                .Include(q => q.User)
+                .Include(q => q.Comments)
+                .ThenInclude(c => c.User)
+                .SingleOrDefaultAsync();
+
         public async Task<Question> GetQuestionWithAnswersAsync(Guid questionId) =>
             await _context
                 .Questions
                 .Where(q => q.Id == questionId)
                 .Include(q => q.Answers)
-                .SingleOrDefaultAsync();
-
-        public async Task<QuestionModel> GetQuestionWithAnswersAndAllCommentsAsync(Guid questionId) =>
-            await _context
-                .Questions
-                .Where(q => q.Id == questionId)
-                .Include(q => q.Answers)
-                .ThenInclude(a => a.Comments)
-                .Include(q => q.Comments)
-                .Select(q => new QuestionModel
-                {
-                    UserName = "@nl",      // @nl
-                    Title = q.Title,
-                    Body = q.Body,
-                    CreatedAt = q.CreatedOn,
-                    // Comments = new List<Comment>         // @nl Automapper Project To
-                })
                 .SingleOrDefaultAsync();
 
         public async Task<Question> GetQuestionWithAnswersAndCommentsAsync(Guid questionId) =>

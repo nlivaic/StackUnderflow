@@ -6,6 +6,7 @@ using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
+using AutoMapper;
 
 namespace StackUnderflow.Core.Services
 {
@@ -17,6 +18,7 @@ namespace StackUnderflow.Core.Services
         private readonly ILimits _limits;
         private readonly IVoteable _voteable;
         private readonly ICommentable _commentable;
+        private readonly IMapper mapper;
 
         public QuestionService(
             IQuestionRepository questionRepository,
@@ -24,7 +26,8 @@ namespace StackUnderflow.Core.Services
             ITagService tagService,
             ILimits limits,
             IVoteable voteable,
-            ICommentable commentable)
+            ICommentable commentable,
+            IMapper mapper)
         {
             _questionRepository = questionRepository;
             _uow = uow;
@@ -32,10 +35,15 @@ namespace StackUnderflow.Core.Services
             _limits = limits;
             _voteable = voteable;
             _commentable = commentable;
+            this.mapper = mapper;
         }
 
-        public async Task<QuestionModel> GetQuestion(Guid questionId) =>
-            await _questionRepository.GetQuestionWithAnswersAndAllCommentsAsync(questionId);
+        public async Task<QuestionModel> GetQuestion(Guid questionId)
+        {
+            var q = await _questionRepository.GetQuestionWithUserAndAllCommentsAsync(questionId);
+            return mapper.Map<QuestionModel>(q);
+
+        }
 
         public async Task AskQuestionAsync(QuestionCreateModel questionModel)
         {

@@ -1,3 +1,47 @@
+
+☐ Core Domain
+  ☐ Are BusinessExceptions ok for invalid inputs?
+✔ Create in-memory database with a basic seeder @done (26. 06. 2020. 10:01:20)
+  ✔ Tokom seedanja kaže da već postoji Tag sa tim i tim Id. Da nije možda da se na neku foru stvaraju nove instance Tagova, sa istim ID-jem? @done (26. 06. 2020. 10:01:19)
+☐ Startup.cs
+  ☐ Tidy up all the registrations.
+  ☐ How to create IRepository<T> without registering all of them one by one?
+  ☐ We have a problem with InMemoryDb. Maybe the ctx injected into the repos is not the same one used in the seeder? Try creating a new scope in the seeder and do Question.Where()
+  ☐ Routes and endpoints
+  ☐ services.AddController()
+  ☐ app.UseDeveloperExceptionPage()
+  ☐ app.ExceptionHandler()
+  ☐ InvalidModelStateResponseFactory
+☐ Controllers
+  ☐ QuestionsController
+    ✔ [ApiController] @done (18. 06. 2020. 22:12:14)
+    ☐ To facilitate Get(id):
+      ✔ Automapper - add package @done (26. 06. 2020. 10:44:30)
+      ☐ (Question, User, Comments) -> (QuestionModel)
+      QuestionModel questionModel = AutoMapper.Mapper.Map<QuestionModel>(questionSource);
+      ☐ Try to map in query projection.
+    ☐ Get, Post, Put, Delete
+    ☐ Request and Response Models
+    ☐ Automapper
+    ☐ FluentValidation
+  ☐ AnswersController
+  ☐ CommentsController
+  ☐ VotesController
+  ☐ inherit from ControllerBase
+  ☐ action method type ActionResult<T>
+  ☐ return Ok()
+☐ API Advanced
+  ☐ Filtering and searching
+  ☐ Cacheing
+  ☐ Swagger
+  ☐ Logging
+  ☐ Review RESTful project for clues
+  ☐ Security
+☐ Razraditi bazu
+☐ dotnet remove package Microsoft.EntityFrameworkCore.InMemory
+☐ Razraditi jobove
+☐ Razraditi evente i event handling
+
 ✘ Question.Create use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. @cancelled (07. 06. 2020. 01:20:26)
   Check eShopOnWeb (Specification pattern).
   ✘ It's all bullshit. Discard repositories and work with DbContext directly. @cancelled (07. 06. 2020. 01:20:25)
@@ -7,17 +51,15 @@
   ✔ Domain @done (05. 06. 2020. 23:14:17)
   ✔ Service @done (05. 06. 2020. 23:14:22)
   ✔ Druge klase (q/a/c), da li zbrajaju bodove koristeći IVotable? @done (05. 06. 2020. 23:19:56)
-☐ User
+✔ User @done (26. 06. 2020. 10:00:33)
   ✔ Rename OwnerId to UserId @done (25. 06. 2020. 17:15:24)
   ✔ Add User property to q/a/c @done (25. 06. 2020. 17:18:16)
   ✔ Find all "@nl" regarding "owner" @done (25. 06. 2020. 17:23:57)
   ✔ Do existing unit tests work out ok? @done (25. 06. 2020. 17:23:58)
   ✔ Unit tests @done (26. 06. 2020. 09:04:51)
-  ☐ Add to DbContext
-  ☐ Add to Seeder
-☐ Core Domain
-  ☐ Are BusinessExceptions ok for invalid inputs?
-☐ Razraditi unit testove.
+  ✔ Add to DbContext @done (26. 06. 2020. 10:00:29)
+  ✔ Add to Seeder @done (26. 06. 2020. 10:00:29)
+✔ Razraditi unit testove. @done (26. 06. 2020. 10:00:41)
   ✔ Question @done (08. 06. 2020. 23:54:16)
   ✔ Answer @done (17. 06. 2020. 18:55:09)
   ✔ Comment @done (17. 06. 2020. 18:55:06)
@@ -28,37 +70,5 @@
   ✔ CommentTests - Comment_CreatingWithoutVoteable_Fails @done (17. 06. 2020. 19:06:24)
   ✔ IVoteable - dodati za q/a/c posebno. @done (17. 06. 2020. 23:22:44)
 ✔ Maknuti sve vezano za komentare u ICommentable. @done (17. 06. 2020. 23:22:48)
-☐ Razraditi basic Web API
-  ☐ Create in-memory database with a basic seeder
-    ☐ Tokom seedanja kaže da već postoji Tag sa tim i tim Id. Da nije možda da se na neku foru stvaraju nove instance Tagova, sa istim ID-jem?
-  ☐ Startup.cs
-    ☐ Routes and endpoints
-    ☐ services.AddController()
-    ☐ app.UseDeveloperExceptionPage()
-    ☐ app.ExceptionHandler()
-    ☐ InvalidModelStateResponseFactory
-  ☐ Controllers
-    ☐ QuestionsController
-      ✔ [ApiController] @done (18. 06. 2020. 22:12:14)
-      ☐ Get, Post, Put, Delete
-      ☐ Request and Response Models
-      ☐ Automapper
-      ☐ FluentValidation
-    ☐ AnswersController
-    ☐ CommentsController
-    ☐ VotesController
-    ☐ inherit from ControllerBase
-    ☐ action method type ActionResult<T>
-    ☐ return Ok()
-  ☐ Filtering and searching
-  ☐ Cacheing
-  ☐ Swagger
-  ☐ Logging
-  ☐ Review RESTful project for clues
-  ☐ Security
-☐ Razraditi bazu
-  ☐ dotnet remove package Microsoft.EntityFrameworkCore.InMemory
-☐ Razraditi jobove
-☐ Razraditi evente i event handling
 ✔ Bacam puno ArgumentExceptiona. Neki od njih (npr. VoteRepository) su ustvari tehničke prirode, a neki (npr. po domeni) su biznis errori. @done (08. 06. 2020. 23:54:23)
 ✔ Obrnuo sam odnose odnose. Povukao sam (Vote + Q), iz čega proizlazi da ako ne postoji ta kombinacija da nikad nije taj owner dao vote tom questionu, a rezultat toga je da sam dobio null i nemam s čime više raditi. Mislim da je esencija problema loše složen repozitorij. Trebam to bolje napraviti: esencijalno trebam dobiti (q/a/c + 0..1 vote), to je dovoljno da mogu provesti business rule. Drugi pristup je da vote gledam potpuno zasebno, ali to trebam dodatno promisliti (eventi, računanje VotingSum, računanje bodova). @done (07. 06. 2020. 01:20:03)
