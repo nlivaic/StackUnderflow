@@ -27,7 +27,12 @@ namespace StackUnderflow.Core.Entities
         private ICommentable _commentable;
 
         private Question()
-        { }
+        {
+            _commentable = new Commentable();
+            _voteable = new Voteable();
+        }
+
+        private ILimits _limits;
 
         public void Edit(Guid userId, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {

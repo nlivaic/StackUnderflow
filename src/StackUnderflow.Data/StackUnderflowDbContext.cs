@@ -5,7 +5,7 @@ namespace StackUnderflow.Data
 {
     public class StackUnderflowDbContext : DbContext
     {
-        public StackUnderflowDbContext(DbContextOptions<StackUnderflowDbContext> options)
+        public StackUnderflowDbContext(DbContextOptions options)
             : base(options)
         { }
 
@@ -15,6 +15,7 @@ namespace StackUnderflow.Data
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<QuestionTag> QuestionTags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
