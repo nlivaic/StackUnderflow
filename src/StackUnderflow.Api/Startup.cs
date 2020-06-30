@@ -12,7 +12,6 @@ using StackUnderflow.Data.Repositories;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Services;
 using StackUnderflow.Common.Interfaces;
-using Microsoft.Data.Sqlite;
 
 namespace StackUnderflow.Api
 {
@@ -34,16 +33,13 @@ namespace StackUnderflow.Api
 
             services.AddDbContext<StackUnderflowDbContext>(options =>
             {
-                // options.UseInMemoryDatabase(databaseName: "StackUnderflowInMemoryDb");
-                options.UseSqlite(new SqliteConnection("DataSource=:memory:"));
+                options.UseNpgsql(_configuration.GetConnectionString("StackUnderflowDbConnection"));
                 if (_hostEnvironment.IsDevelopment())
                     options.EnableSensitiveDataLogging(true);
-                var context = new StackUnderflowDbContext(options.Options);
-                context.Database.OpenConnection();
-                context.Database.EnsureCreated();
             });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRepository<Tag>, Repository<Tag>>();        // @nl
+            services.AddScoped<IRepository<User>, Repository<User>>();        // @nl
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddTransient<ITagService, TagService>();
             services.AddSingleton<ILimits, Limits>();

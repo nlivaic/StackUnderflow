@@ -28,15 +28,15 @@ namespace StackUnderflow.Core.Entities
 
         private Question()
         {
-            _commentable = new Commentable();
-            _voteable = new Voteable();
+            // _commentable = new Commentable();        // @nl
+            // _voteable = new Voteable();
         }
 
         private ILimits _limits;
 
-        public void Edit(Guid userId, string title, string body, IEnumerable<Tag> tags, ILimits limits)
+        public void Edit(User user, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {
-            if (UserId != userId)
+            if (User.Id != user.Id)
             {
                 throw new BusinessException("Question can be edited only by user.");
             }
@@ -44,7 +44,7 @@ namespace StackUnderflow.Core.Entities
             {
                 throw new BusinessException($"Question with id '{Id}' cannot be edited since more than '{limits.QuestionEditDeadline.Minutes}' minutes passed.");
             }
-            Validate(userId, title, body, tags, limits);
+            Validate(user, title, body, tags, limits);
             Title = title;
             Body = body;
             _questionTags = new List<QuestionTag>(tags.Select(t => new QuestionTag { Question = this, Tag = t }));
@@ -52,7 +52,7 @@ namespace StackUnderflow.Core.Entities
 
         public void Answer(Answer answer)
         {
-            if (_answers.Any(a => a.UserId == answer.UserId))
+            if (_answers.Any(a => a.User.Id == answer.User.Id))
             {
                 throw new BusinessException($"User '{answer.UserId}' has already submitted an answer.");
             }
@@ -95,7 +95,7 @@ namespace StackUnderflow.Core.Entities
 
         public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
-        public static Question Create(Guid userId,
+        public static Question Create(User user,
             string title,
             string body,
             IEnumerable<Tag> tags,
@@ -105,8 +105,8 @@ namespace StackUnderflow.Core.Entities
         {
             var question = new Question();
             question.Id = Guid.NewGuid();
-            question.UserId = userId;
-            Validate(userId, title, body, tags, limits);
+            question.User = user;
+            Validate(user, title, body, tags, limits);
             question.Title = title;
             question.Body = body;
             question.HasAcceptedAnswer = false;
@@ -117,9 +117,9 @@ namespace StackUnderflow.Core.Entities
             return question;
         }
 
-        private static void Validate(Guid userId, string title, string body, IEnumerable<Tag> tags, ILimits limits)
+        private static void Validate(User user, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {
-            if (userId == default(Guid))
+            if (user.Id == default(Guid))
             {
                 throw new BusinessException("User id cannot be default Guid.");
             }

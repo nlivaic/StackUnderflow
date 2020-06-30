@@ -14,18 +14,18 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var question = new QuestionBuilder().SetupValidQuestion().Build();
-            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
+            var user = new UserBuilder().BuildValidUser().Build();
             string body = "BodyNormal";
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
             var commentable = new Commentable();
 
             // Act
-            var result = Answer.Create(userId, body, question, limits, voteable, commentable);
+            var result = Answer.Create(user, body, question, limits, voteable, commentable);
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
-            Assert.Equal(userId, result.UserId);
+            Assert.Equal(user, result.User);
             Assert.Equal(body, result.Body);
             Assert.False(result.IsAcceptedAnswer);
             Assert.Null(result.AcceptedOn);
@@ -45,10 +45,11 @@ namespace StackUnderflow.Core.Tests
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
             var commentable = new Commentable();
+            var user = new UserBuilder().BuildUser(new Guid(userId)).Build();
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Answer.Create(new Guid(userId), body, question, limits, voteable, commentable));
+                Answer.Create(user, body, question, limits, voteable, commentable));
         }
 
         [Fact]
@@ -56,7 +57,7 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var question = new QuestionBuilder().SetupValidQuestion().Build();
-            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
+            var user = new UserBuilder().BuildValidUser().Build();
             string body = "BodyNormal";
             var limits = new LimitsBuilder().Build();
             IVoteable voteable = null;
@@ -64,7 +65,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Answer.Create(userId, body, question, limits, voteable, commentable));
+                Answer.Create(user, body, question, limits, voteable, commentable));
         }
 
         [Fact]
@@ -72,7 +73,7 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var question = new QuestionBuilder().SetupValidQuestion().Build();
-            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
+            var user = new UserBuilder().BuildValidUser().Build();
             string body = "BodyNormal";
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
@@ -80,7 +81,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Answer.Create(userId, body, question, limits, voteable, commentable));
+                Answer.Create(user, body, question, limits, voteable, commentable));
         }
 
         [Fact]
@@ -98,7 +99,7 @@ namespace StackUnderflow.Core.Tests
             var limits = new LimitsBuilder().Build();
 
             // Act
-            target.Edit(target.UserId, editedBody, limits);
+            target.Edit(target.User, editedBody, limits);
             var result = target;
 
             // Assert
@@ -124,7 +125,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act
             Assert.Throws<BusinessException>(() =>
-               target.Edit(target.UserId, editedBody, limits));
+               target.Edit(target.User, editedBody, limits));
         }
 
         [Theory]
@@ -139,10 +140,11 @@ namespace StackUnderflow.Core.Tests
             var question = new QuestionBuilder().SetupValidQuestion().Build();
             var target = new AnswerBuilder().SetupValidAnswer(question).Build();
             var limits = new LimitsBuilder().Build();
+            var user = new UserBuilder().BuildUser(new Guid(userId)).Build();
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-               target.Edit(new Guid(userId), body, limits));
+               target.Edit(user, body, limits));
         }
 
         [Fact]

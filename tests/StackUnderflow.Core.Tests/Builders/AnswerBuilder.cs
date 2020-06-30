@@ -9,19 +9,20 @@ namespace StackUnderflow.Core.Tests.Builders
         private Answer _target;
         private ILimits _limits = new LimitsBuilder().Build();
 
-        public AnswerBuilder SetupValidAnswer(Question question)
+        public AnswerBuilder SetupValidAnswer(Question question, Guid? userId = null)
         {
-            Guid userId = new Guid("00000000-0000-0000-0000-000000000002");
             string body = "BodyNormal";
-            _target = Answer.Create(userId, body, question, _limits, new Voteable(), new Commentable());
+            userId = userId ?? Guid.NewGuid();
+            var user = new UserBuilder().BuildUser(userId.Value).Build();
+            _target = Answer.Create(user, body, question, _limits, new Voteable(), new Commentable());
             return this;
         }
 
         public AnswerBuilder SetupAnotherValidAnswer(Question question)
         {
-            Guid userId = Guid.NewGuid();
             string body = "BodyNormal";
-            _target = Answer.Create(userId, body, question, _limits, new Voteable(), new Commentable());
+            var user = new UserBuilder().BuildValidUser().Build();
+            _target = Answer.Create(user, body, question, _limits, new Voteable(), new Commentable());
             return this;
         }
 

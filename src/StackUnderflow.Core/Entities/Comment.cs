@@ -13,9 +13,9 @@ namespace StackUnderflow.Core.Entities
         public string Body { get; private set; }
         public DateTime CreatedOn { get; private set; }
         public Question ParentQuestion { get; private set; }
-        public Guid ParentQuestionId { get; private set; }
+        public Guid? ParentQuestionId { get; private set; }
         public Answer ParentAnswer { get; private set; }
-        public Guid ParentAnswerId { get; private set; }
+        public Guid? ParentAnswerId { get; private set; }
         public int OrderNumber { get; private set; }
         public int VotesSum => _voteable.VotesSum;
         public IEnumerable<Vote> Votes => _voteable.Votes;
@@ -26,9 +26,9 @@ namespace StackUnderflow.Core.Entities
         {
         }
 
-        public void Edit(Guid userId, string body, ILimits limits)
+        public void Edit(User user, string body, ILimits limits)
         {
-            if (UserId != userId)
+            if (User.Id != user.Id)
             {
                 throw new BusinessException("Comment can be edited only by user.");
             }
@@ -36,7 +36,7 @@ namespace StackUnderflow.Core.Entities
             {
                 throw new BusinessException($"Comment with id '{Id}' cannot be edited since more than '{limits.CommentEditDeadline.Minutes}' minutes passed.");
             }
-            Validate(userId, body, limits);
+            Validate(user, body, limits);
             Body = body;
         }
 
@@ -44,20 +44,20 @@ namespace StackUnderflow.Core.Entities
 
         public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
-        public static Comment Create(Guid userId,
+        public static Comment Create(User user,
             string body,
             int orderNumber,
             ILimits limits,
             IVoteable voteable)
         {
-            Validate(userId, body, limits);
+            Validate(user, body, limits);
             if (orderNumber < 1)
             {
                 throw new BusinessException("Order number must be positive.");
             }
             var comment = new Comment();
             comment.Id = Guid.NewGuid();
-            comment.UserId = userId;
+            comment.User = user;
             comment.Body = body;
             comment.OrderNumber = orderNumber;
             comment.CreatedOn = DateTime.UtcNow;
@@ -65,11 +65,11 @@ namespace StackUnderflow.Core.Entities
             return comment;
         }
 
-        private static void Validate(Guid userId, string body, ILimits limits)
+        private static void Validate(User user, string body, ILimits limits)
         {
-            if (userId == default(Guid))
+            if (user.Id == default(Guid))
             {
-                throw new BusinessException("User id cannot be default Guid.");
+                throw new BusinessException("User id cannot be default Guid.");     // @nl: ovo je glupo ovdje kontrolirati, to treba User kontrolirati. Cijeli q/a/c ima ovu validaciju.
             }
             if (body.Length < limits.CommentBodyMinimumLength)
             {

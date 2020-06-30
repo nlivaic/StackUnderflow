@@ -15,7 +15,7 @@ namespace StackUnderflow.Core.Tests
         public void Question_CanBeCreated_Successfully()
         {
             // Arrange
-            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
+            var user = new UserBuilder().BuildValidUser().Build();
             int tagCount = 3;
             string title = "TitleNormal";
             string body = "BodyNormal";
@@ -25,11 +25,11 @@ namespace StackUnderflow.Core.Tests
             var commentable = new Commentable();
 
             // Act
-            var result = Question.Create(userId, title, body, tags, limits, voteable, commentable);
+            var result = Question.Create(user, title, body, tags, limits, voteable, commentable);
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
-            Assert.Equal(userId, result.UserId);
+            Assert.Equal(user, result.User);
             Assert.Equal(title, result.Title);
             Assert.Equal(body, result.Body);
             Assert.False(result.HasAcceptedAnswer);
@@ -52,6 +52,7 @@ namespace StackUnderflow.Core.Tests
         public void Question_CreatingWithInvalidData_FailsValidation(string userId, int tagCount, string title, string body)
         {
             // Arrange
+            var user = new UserBuilder().BuildUser(new Guid(userId)).Build();
             var tags = new TagBuilder().Build(tagCount);
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
@@ -59,14 +60,14 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Question.Create(new Guid(userId), title, body, tags, limits, voteable, commentable));
+                Question.Create(user, title, body, tags, limits, voteable, commentable));
         }
 
         [Fact]
         public void Question_CreatingWithoutVoteable_Fails()
         {
             // Arrange
-            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
+            var user = new UserBuilder().BuildValidUser().Build();
             int tagCount = 3;
             string title = "TitleNormal";
             string body = "BodyNormal";
@@ -77,14 +78,14 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Question.Create(userId, title, body, tags, limits, voteable, commentable));
+                Question.Create(user, title, body, tags, limits, voteable, commentable));
         }
 
         [Fact]
         public void Question_CreatingWithoutCommentable_Fails()
         {
             // Arrange
-            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
+            var user = new UserBuilder().BuildValidUser().Build();
             int tagCount = 3;
             string title = "TitleNormal";
             string body = "BodyNormal";
@@ -95,7 +96,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Question.Create(userId, title, body, tags, limits, voteable, commentable));
+                Question.Create(user, title, body, tags, limits, voteable, commentable));
         }
 
         [Theory]
@@ -104,7 +105,7 @@ namespace StackUnderflow.Core.Tests
         public void Question_CreatingWithWrongNumberOfTags_Fails(int tagCount)
         {
             // Arrange
-            var userId = Guid.NewGuid();
+            var user = new UserBuilder().BuildValidUser().Build();
             var title = "TitleNormal";
             var body = "BodyNormal";
             var tags = Builder<Tag>
@@ -117,7 +118,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Question.Create(userId, title, body, tags, limits, voteable, commentable));
+                Question.Create(user, title, body, tags, limits, voteable, commentable));
         }
 
         [Fact]
@@ -125,7 +126,6 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange - Build Question
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var userId = target.UserId;
 
             // Arrange - Edit Data
             string editedTitle = "TitleNormal";
@@ -135,12 +135,11 @@ namespace StackUnderflow.Core.Tests
             var editedTags = new TagBuilder().Build(editedTagCount);
 
             // Act
-            target.Edit(target.UserId, editedTitle, editedBody, editedTags, limits);
+            target.Edit(target.User, editedTitle, editedBody, editedTags, limits);
             var result = target;
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
-            Assert.Equal(userId, result.UserId);
             Assert.Equal(editedTitle, result.Title);
             Assert.Equal(editedBody, result.Body);
             Assert.False(result.HasAcceptedAnswer);
@@ -167,7 +166,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act
             Assert.Throws<BusinessException>(() =>
-               target.Edit(target.UserId, editedTitle, editedBody, editedTags, limits));
+               target.Edit(target.User, editedTitle, editedBody, editedTags, limits));
         }
 
         [Theory]
@@ -183,6 +182,7 @@ namespace StackUnderflow.Core.Tests
         public void Question_EditingWithInvalidData_FailsValidation(string userId, int tagCount, string title, string body)
         {
             // Arrange - Build Question
+            var user = new UserBuilder().BuildUser(new Guid(userId)).Build();
             var target = new QuestionBuilder().SetupValidQuestion().Build();
             var limits = new LimitsBuilder().Build();
 
@@ -191,7 +191,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act
             Assert.Throws<BusinessException>(() =>
-               target.Edit(new Guid(userId), title, body, editedTags, limits));
+               target.Edit(user, title, body, editedTags, limits));
         }
 
         [Fact]
@@ -217,8 +217,8 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var firstAnswer = new AnswerBuilder().SetupValidAnswer(target).Build();
-            var secondAnswer = new AnswerBuilder().SetupValidAnswer(target).Build();
+            var firstAnswer = new AnswerBuilder().SetupValidAnswer(target, new Guid("00000000-0000-0000-0000-000000000001")).Build();
+            var secondAnswer = new AnswerBuilder().SetupValidAnswer(target, new Guid("00000000-0000-0000-0000-000000000001")).Build();
             target.Answer(firstAnswer);
 
             // Act, Assert

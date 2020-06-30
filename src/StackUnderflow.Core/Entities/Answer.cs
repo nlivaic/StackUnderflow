@@ -47,9 +47,9 @@ namespace StackUnderflow.Core.Entities
             AcceptedOn = null;
         }
 
-        public void Edit(Guid userId, string body, ILimits limits)
+        public void Edit(User user, string body, ILimits limits)
         {
-            if (UserId != userId)
+            if (User.Id != user.Id)
             {
                 throw new BusinessException("Question can be edited only by user.");
             }
@@ -68,17 +68,17 @@ namespace StackUnderflow.Core.Entities
         public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
         public static Answer Create(
-            Guid userId,
+            User user,
             string body,
             Question question,
             ILimits limits,
             IVoteable voteable,
             ICommentable commentable)
         {
-            Validate(userId, body, limits);
+            Validate(user, body, limits);
             var answer = new Answer();
             answer.Id = Guid.NewGuid();
-            answer.UserId = userId;
+            answer.User = user;
             answer.Body = body;
             answer.IsAcceptedAnswer = false;
             answer.CreatedOn = DateTime.UtcNow;
@@ -87,9 +87,9 @@ namespace StackUnderflow.Core.Entities
             return answer;
         }
 
-        private static void Validate(Guid userId, string body, ILimits limits)
+        private static void Validate(User user, string body, ILimits limits)
         {
-            if (userId == default(Guid))
+            if (user.Id == default(Guid))       // @nl: glupo!!!
             {
                 throw new BusinessException("User id cannot be default Guid.");
             }

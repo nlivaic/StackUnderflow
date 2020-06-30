@@ -19,6 +19,19 @@ namespace StackUnderflow.Core.Tests.Builders
             return this;
         }
 
+        public UserBuilder BuildUser(Guid id)
+        {
+            _target = User.Create(
+                "normal_username",
+                "normal.user.name@some_email.com",
+                "http://normal_web_site.com/",
+                "about_me",
+                new LimitsBuilder().Build()
+            );
+            _target.SetProperty(nameof(_target.Id), id);
+            return this;
+        }
+
         public UserBuilder MakeTimeGoBack()
         {
             _target.SetProperty(

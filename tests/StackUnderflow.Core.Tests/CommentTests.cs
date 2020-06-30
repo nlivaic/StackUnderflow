@@ -13,17 +13,17 @@ namespace StackUnderflow.Core.Tests
         public void Comment_CanGetCreatedWithValidData_Successfully()
         {
             // Arrange
-            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
+            var user = new UserBuilder().BuildValidUser().Build();
             var body = "BodyNormal";
             var orderNumber = 1;
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
 
             // Act
-            var result = Comment.Create(userId, body, orderNumber, limits, voteable);
+            var result = Comment.Create(user, body, orderNumber, limits, voteable);
 
             // Assert
-            Assert.Equal(userId, result.UserId);
+            Assert.Equal(user, result.User);
             Assert.Equal(body, result.Body);
             Assert.Equal(orderNumber, result.OrderNumber);
         }
@@ -39,9 +39,10 @@ namespace StackUnderflow.Core.Tests
             // Arrange
             var limits = new LimitsBuilder().Build();
             var voteable = new Voteable();
+            var user = new UserBuilder().BuildUser(new Guid(userId)).Build();
 
             // Act, Assert
-            Assert.Throws<BusinessException>(() => Comment.Create(new Guid(userId), body, orderNumber, limits, voteable));
+            Assert.Throws<BusinessException>(() => Comment.Create(user, body, orderNumber, limits, voteable));
         }
 
         [Fact]
@@ -60,7 +61,7 @@ namespace StackUnderflow.Core.Tests
             var limits = new LimitsBuilder().Build();
 
             // Act
-            target.Edit(userId, newBody, limits);
+            target.Edit(target.User, newBody, limits);
 
             // Assert
             Assert.Equal(originalId, target.Id);
@@ -86,7 +87,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-               target.Edit(target.UserId, editedBody, limits));
+               target.Edit(target.User, editedBody, limits));
         }
 
         [Theory]
@@ -99,10 +100,11 @@ namespace StackUnderflow.Core.Tests
             // Arrange
             var target = new CommentBuilder().SetupValidComment().Build();
             var limits = new LimitsBuilder().Build();
+            var user = new UserBuilder().BuildUser(new Guid(userId)).Build();
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-               target.Edit(new Guid(userId), body, limits));
+               target.Edit(user, body, limits));
         }
 
         [Fact]
@@ -110,6 +112,7 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
+            var user = new UserBuilder().BuildValidUser().Build();
             string body = "BodyNormal";
             var limits = new LimitsBuilder().Build();
             var orderNumber = 1;
@@ -118,7 +121,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() =>
-                Comment.Create(userId, body, orderNumber, limits, voteable));
+                Comment.Create(user, body, orderNumber, limits, voteable));
         }
     }
 }

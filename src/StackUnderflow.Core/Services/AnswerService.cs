@@ -14,6 +14,7 @@ namespace StackUnderflow.Core.Services
         private readonly IUnitOfWork _uow;
         private readonly IQuestionRepository _questionRepository;
         private readonly IRepository<Answer> _answerRepository;
+        private readonly IRepository<User> _userRepository;
         private readonly ILimits _limits;
         private readonly IVoteable _voteable;
         private readonly ICommentable _commentable;
@@ -21,6 +22,7 @@ namespace StackUnderflow.Core.Services
         public AnswerService(IUnitOfWork uow,
             IQuestionRepository questionRepository,
             IRepository<Answer> answerRepository,
+            IRepository<User> userRepository,
             ILimits limits,
             IVoteable voteable,
             ICommentable commentable)
@@ -28,6 +30,7 @@ namespace StackUnderflow.Core.Services
             _uow = uow;
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
+            _userRepository = userRepository;
             _limits = limits;
             _voteable = voteable;
             _commentable = commentable;
@@ -42,7 +45,8 @@ namespace StackUnderflow.Core.Services
             // }
             var question = (await _questionRepository.GetQuestionWithAnswersAsync(answerModel.QuestionId))
                 ?? throw new BusinessException($"Question '{answerModel.QuestionId}' does not exist!");
-            var answer = Answer.Create(answerModel.UserId, answerModel.Body, question, _limits, _voteable, _commentable);
+            var user = await _userRepository.GetByIdAsync(answerModel.UserId);
+            var answer = Answer.Create(user, answerModel.Body, question, _limits, _voteable, _commentable);
             question.Answer(answer);
             await _uow.SaveAsync();
             // @nl: Raise an event! Message must be sent to the inbox.
@@ -52,7 +56,8 @@ namespace StackUnderflow.Core.Services
         {
             var answer = (await _answerRepository.ListAllAsync(a => a.Id == answerModel.AnswerId && a.UserId == answerModel.UserId)).SingleOrDefault()
                 ?? throw new BusinessException($"Answer with id '{answerModel.AnswerId}' belonging to user '{answerModel.UserId}' does not exist.");
-            answer.Edit(answerModel.UserId, answerModel.Body, _limits);
+            var user = await _userRepository.GetByIdAsync(answerModel.UserId);
+            answer.Edit(user, answerModel.Body, _limits);
             await _uow.SaveAsync();
         }
 

@@ -17,8 +17,8 @@ namespace StackUnderflow.Api.Seeders
         private static List<Tag> _tags { get; set; }
         private static List<User> _users { get; set; }
 
-        private static List<Question> ExecuteSeeder(DbSet<Tag> tags, DbSet<User> users) =>
-            BuildQuestions(tags, users);
+        private static List<Question> ExecuteSeeder() =>
+            BuildQuestions();
 
         private static void BuildTags() =>
             _tags = Builder<Tag>.CreateListOfSize(5).Build().ToList();
@@ -41,79 +41,63 @@ namespace StackUnderflow.Api.Seeders
                 using (var scope = host.Services.CreateScope())
                 {
                     StackUnderflowDbContext context = (StackUnderflowDbContext)scope.ServiceProvider.GetService(typeof(StackUnderflowDbContext));
-                    BuildTags();
-                    BuildUsers();
-                    context.Tags.AddRange(_tags);
-                    context.SaveChanges();
-                    context.Users.AddRange(_users);
-                    context.SaveChanges();
-                    var questions = ExecuteSeeder(context.Tags, context.Users);
-                    context.Questions.Add(questions[0]);
-                    // context.Entry(questions[0].Comments.First()).State = EntityState.Added;
-                    context.SaveChanges();
-                    // context.Questions.AddRange(questions[1]);
-                    // context.SaveChanges();
-                    // context.Questions.AddRange(questions[2]);
-                    // context.SaveChanges();
-                }
-                using (var scope = host.Services.CreateScope())
-                {
-                    StackUnderflowDbContext context = (StackUnderflowDbContext)scope.ServiceProvider.GetService(typeof(StackUnderflowDbContext));
-                    var q = context
-                        .Questions
-                        //.Include(q => q.User)
-                        // .Include(q => q.QuestionTags)
-                        // .ThenInclude(qt => qt.Tag)
-                        .ToList();
+                    if (!context.Questions.Any())
+                    {
+                        BuildTags();
+                        BuildUsers();
+                        var questions = ExecuteSeeder();
+                        context.Questions.AddRange(questions);
+                        context.SaveChanges();
+                    }
                 }
             }
             return host;
         }
 
-        private static List<Question> BuildQuestions(DbSet<Tag> tags, DbSet<User> users)
+        private static List<Question> BuildQuestions()
         {
-            var q1 = GenerateQuestion(users.ByIndex(0).Id, tags.ById(1), tags.ById(4));
-            // q1.Comment(GenerateComent(users.ByIndex(0).Id, 1));
-            // q1.Comment(GenerateComent(_users[1].Id, 2));
-            // q1.Comment(GenerateComent(_users[3].Id, 3));
-            // q1.Answer(GenerateAnswer(_users[2].Id, q1));
-            // q1.AcceptAnswer(q1.Answers.ToList()[0]);
+            var q1 = GenerateQuestion(_users[0], _tags[0], _tags[3]);
+            q1.Comment(GenerateComent(_users[0], 1));
+            q1.Comment(GenerateComent(_users[1], 2));
+            q1.Comment(GenerateComent(_users[3], 3));
+            q1.Answer(GenerateAnswer(_users[2], q1));
+            q1.AcceptAnswer(q1.Answers.ToList()[0]);
 
-            var q2 = GenerateQuestion(users.ByIndex(1).Id, tags.ById(2), tags.ById(3));
-            q2.Comment(GenerateComent(users.ByIndex(1).Id, 1));
-            q2.Comment(GenerateComent(users.ByIndex(2).Id, 2));
-            q2.Comment(GenerateComent(users.ByIndex(1).Id, 3));
+            var q2 = GenerateQuestion(_users[1], _tags[1], _tags[2]);
+            q2.Comment(GenerateComent(_users[1], 1));
+            q2.Comment(GenerateComent(_users[2], 2));
+            q2.Comment(GenerateComent(_users[1], 3));
 
-            var q3 = GenerateQuestion(users.ByIndex(2).Id, tags.ById(1), tags.ById(2), tags.ById(3), tags.ById(4));
-            q3.Comment(GenerateComent(users.ByIndex(2).Id, 1));
-            q3.Comment(GenerateComent(users.ByIndex(1).Id, 2));
-            q3.Comment(GenerateComent(users.ByIndex(4).Id, 3));
-            q3.Answer(GenerateAnswer(users.ByIndex(2).Id, q3));
-            q3.Answer(GenerateAnswer(users.ByIndex(3).Id, q3));
-            q3.Answer(GenerateAnswer(users.ByIndex(4).Id, q3));
+            var q3 = GenerateQuestion(_users[2], _tags[0], _tags[1], _tags[2], _tags[3]);
+            q3.Comment(GenerateComent(_users[2], 1));
+            q3.Comment(GenerateComent(_users[1], 2));
+            q3.Comment(GenerateComent(_users[4], 3));
+            q3.Answer(GenerateAnswer(_users[2], q3));
+            q3.Answer(GenerateAnswer(_users[3], q3));
+            q3.Answer(GenerateAnswer(_users[4], q3));
 
-            var q4 = GenerateQuestion(users.ByIndex(3).Id, _tags[0], _tags[3], _tags[4]);
-            q4.Comment(GenerateComent(users.ByIndex(2).Id, 1));
-            q4.Comment(GenerateComent(users.ByIndex(1).Id, 2));
-            q4.Comment(GenerateComent(users.ByIndex(4).Id, 3));
-            q4.Comment(GenerateComent(users.ByIndex(4).Id, 4));
-            q4.Comment(GenerateComent(users.ByIndex(4).Id, 5));
+            var q4 = GenerateQuestion(_users[3], _tags[0], _tags[3], _tags[4]);
+            q4.Comment(GenerateComent(_users[2], 1));
+            q4.Comment(GenerateComent(_users[1], 2));
+            q4.Comment(GenerateComent(_users[4], 3));
+            q4.Comment(GenerateComent(_users[4], 4));
+            q4.Comment(GenerateComent(_users[4], 5));
 
-            var q5 = GenerateQuestion(users.ByIndex(1).Id, _tags[0], _tags[1], _tags[3]);
-            q5.Answer(GenerateAnswer(users.ByIndex(0).Id, q5));
-            q5.Answer(GenerateAnswer(users.ByIndex(1).Id, q5));
-            q5.Answer(GenerateAnswer(users.ByIndex(4).Id, q5));
+            var q5 = GenerateQuestion(_users[1], _tags[0], _tags[1], _tags[3]);
+            q5.Answer(GenerateAnswer(_users[0], q5));
+            q5.Answer(GenerateAnswer(_users[1], q5));
+            q5.Answer(GenerateAnswer(_users[4], q5));
             q5.AcceptAnswer(q5.Answers.ToList()[2]);
 
-            var questions = new List<Question> { q1, q2, q3/*, q4, q5*/ };
+            var questions = new List<Question> { q1, q2, q3, q4, q5 };
             return questions;
         }
 
         private static string GenerateBody() => string.Join(" ", Faker.Lorem.Sentences(5));
 
-        private static Question GenerateQuestion(Guid userId, params Tag[] tags) =>
+        private static Question GenerateQuestion(User user, params Tag[] tags) =>
             Question.Create(
-                userId,
+                user,
                 Faker.Lorem.Sentence(),
                 GenerateBody(),
                 new List<Tag>(tags),
@@ -121,18 +105,18 @@ namespace StackUnderflow.Api.Seeders
                 new Voteable(),
                 new Commentable());
 
-        private static Comment GenerateComent(Guid userId, int orderNumber) =>
+        private static Comment GenerateComent(User user, int orderNumber) =>
             Comment.Create(
-                userId,
+                user,
                 GenerateBody(),
                 orderNumber,
                 _limits,
                  new Voteable()
             );
 
-        private static Answer GenerateAnswer(Guid userId, Question question) =>
+        private static Answer GenerateAnswer(User user, Question question) =>
             Answer.Create(
-                userId,
+                user,
                 GenerateBody(),
                 question,
                 _limits,
