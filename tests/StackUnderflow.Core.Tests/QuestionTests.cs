@@ -25,7 +25,7 @@ namespace StackUnderflow.Core.Tests
             var commentable = new Commentable();
 
             // Act
-            var result = Question.Create(user, title, body, tags, limits, voteable, commentable);
+            var result = Question.Create(user, title, body, tags, limits);
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
@@ -60,43 +60,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Question.Create(user, title, body, tags, limits, voteable, commentable));
-        }
-
-        [Fact]
-        public void Question_CreatingWithoutVoteable_Fails()
-        {
-            // Arrange
-            var user = new UserBuilder().BuildValidUser().Build();
-            int tagCount = 3;
-            string title = "TitleNormal";
-            string body = "BodyNormal";
-            var tags = new TagBuilder().Build(tagCount);
-            var limits = new LimitsBuilder().Build();
-            IVoteable voteable = null;
-            var commentable = new Commentable();
-
-            // Act, Assert
-            Assert.Throws<ArgumentException>(() =>
-                Question.Create(user, title, body, tags, limits, voteable, commentable));
-        }
-
-        [Fact]
-        public void Question_CreatingWithoutCommentable_Fails()
-        {
-            // Arrange
-            var user = new UserBuilder().BuildValidUser().Build();
-            int tagCount = 3;
-            string title = "TitleNormal";
-            string body = "BodyNormal";
-            var tags = new TagBuilder().Build(tagCount);
-            var limits = new LimitsBuilder().Build();
-            var voteable = new Voteable();
-            ICommentable commentable = null;
-
-            // Act, Assert
-            Assert.Throws<ArgumentException>(() =>
-                Question.Create(user, title, body, tags, limits, voteable, commentable));
+                Question.Create(user, title, body, tags, limits));
         }
 
         [Theory]
@@ -118,7 +82,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Question.Create(user, title, body, tags, limits, voteable, commentable));
+                Question.Create(user, title, body, tags, limits));
         }
 
         [Fact]

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.Controllers
 {
@@ -24,9 +26,10 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Core.Models.QuestionModel> Get(Guid id)
+        public async Task<ActionResult<QuestionModel>> Get(Guid id)
         {
-            return Ok(_questionService.GetQuestion(id));
+            var q = await _questionService.GetQuestionAsync(id);
+            return Ok(q);
         }
 
         [HttpPost]

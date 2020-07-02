@@ -21,7 +21,7 @@ namespace StackUnderflow.Core.Tests
             var commentable = new Commentable();
 
             // Act
-            var result = Answer.Create(user, body, question, limits, voteable, commentable);
+            var result = Answer.Create(user, body, question, limits);
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
@@ -49,39 +49,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Answer.Create(user, body, question, limits, voteable, commentable));
-        }
-
-        [Fact]
-        public void Answer_CreatingWithoutVoteable_Fails()
-        {
-            // Arrange
-            var question = new QuestionBuilder().SetupValidQuestion().Build();
-            var user = new UserBuilder().BuildValidUser().Build();
-            string body = "BodyNormal";
-            var limits = new LimitsBuilder().Build();
-            IVoteable voteable = null;
-            var commentable = new Commentable();
-
-            // Act, Assert
-            Assert.Throws<ArgumentException>(() =>
-                Answer.Create(user, body, question, limits, voteable, commentable));
-        }
-
-        [Fact]
-        public void Question_CreatingWithoutCommentable_Fails()
-        {
-            // Arrange
-            var question = new QuestionBuilder().SetupValidQuestion().Build();
-            var user = new UserBuilder().BuildValidUser().Build();
-            string body = "BodyNormal";
-            var limits = new LimitsBuilder().Build();
-            var voteable = new Voteable();
-            Commentable commentable = null;
-
-            // Act, Assert
-            Assert.Throws<ArgumentException>(() =>
-                Answer.Create(user, body, question, limits, voteable, commentable));
+                Answer.Create(user, body, question, limits));
         }
 
         [Fact]

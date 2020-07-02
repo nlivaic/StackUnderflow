@@ -17,9 +17,7 @@ namespace StackUnderflow.Core.Services
         private readonly IUnitOfWork _uow;
         private readonly ITagService _tagService;
         private readonly ILimits _limits;
-        private readonly IVoteable _voteable;
-        private readonly ICommentable _commentable;
-        private readonly IMapper mapper;
+        private readonly IMapper _mapper;
 
         public QuestionService(
             IQuestionRepository questionRepository,
@@ -27,8 +25,6 @@ namespace StackUnderflow.Core.Services
             IUnitOfWork uow,
             ITagService tagService,
             ILimits limits,
-            IVoteable voteable,
-            ICommentable commentable,
             IMapper mapper)
         {
             _questionRepository = questionRepository;
@@ -36,28 +32,25 @@ namespace StackUnderflow.Core.Services
             _uow = uow;
             _tagService = tagService;
             _limits = limits;
-            _voteable = voteable;
-            _commentable = commentable;
-            this.mapper = mapper;
+            _mapper = mapper;
         }
 
-        public async Task<QuestionModel> GetQuestion(Guid questionId)
+        public async Task<QuestionModel> GetQuestionAsync(Guid questionId)
         {
-            var q = await _questionRepository.GetQuestionWithUserAndAllCommentsAsync(questionId);
-            return mapper.Map<QuestionModel>(q);
-
+            var questionModel = await _questionRepository.GetQuestionWithUserAndAllCommentsAsync(questionId);
+            return questionModel;
         }
 
         public async Task AskQuestionAsync(QuestionCreateModel questionModel)
         {
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
             var user = await _userRepository.GetByIdAsync(questionModel.UserId);
-            var question = Question.Create(user, questionModel.Title, questionModel.Body, tags, _limits, _voteable, _commentable);
+            var question = Question.Create(user, questionModel.Title, questionModel.Body, tags, _limits);
             await _questionRepository.AddAsync(question);
             await _uow.SaveAsync();
         }
 
-        public async Task EditQuestion(QuestionEditModel questionModel)
+        public async Task EditQuestionAsync(QuestionEditModel questionModel)
         {
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
             var user = await _userRepository.GetByIdAsync(questionModel.QuestionUserId);
@@ -69,7 +62,7 @@ namespace StackUnderflow.Core.Services
             await _uow.SaveAsync();
         }
 
-        public async Task DeleteQuestion(Guid questionUserId, Guid questionId)
+        public async Task DeleteQuestionAsync(Guid questionUserId, Guid questionId)
         {
             var question = (await _questionRepository
                 .GetQuestionWithAnswersAndCommentsAsync(questionId));

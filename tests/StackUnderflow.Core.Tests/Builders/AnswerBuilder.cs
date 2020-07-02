@@ -14,7 +14,7 @@ namespace StackUnderflow.Core.Tests.Builders
             string body = "BodyNormal";
             userId = userId ?? Guid.NewGuid();
             var user = new UserBuilder().BuildUser(userId.Value).Build();
-            _target = Answer.Create(user, body, question, _limits, new Voteable(), new Commentable());
+            _target = Answer.Create(user, body, question, _limits);
             return this;
         }
 
@@ -22,7 +22,7 @@ namespace StackUnderflow.Core.Tests.Builders
         {
             string body = "BodyNormal";
             var user = new UserBuilder().BuildValidUser().Build();
-            _target = Answer.Create(user, body, question, _limits, new Voteable(), new Commentable());
+            _target = Answer.Create(user, body, question, _limits);
             return this;
         }
 

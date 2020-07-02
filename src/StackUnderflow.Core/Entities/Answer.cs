@@ -23,17 +23,11 @@ namespace StackUnderflow.Core.Entities
         private IVoteable _voteable;
         private ICommentable _commentable;
 
-        // public Answer(string body, Guid questionId, IEnumerable<Comment> comments)
-        // {
-        //     Body = body ?? throw new ArgumentException("Answer must have a body.");
-        //     QuestionId = questionId == Guid.Empty
-        //         ? throw new ArgumentException("Answer must relate to a question.")
-        //         : questionId;
-        //     _comments = comments == null || comments.Count() == 0
-        //         ? new List<Comment>()
-        //         : new List<Comment>(comments);
-        //     CreatedOn = DateTime.UtcNow;
-        // }
+        private Answer()
+        {
+            _commentable = new Commentable();
+            _voteable = new Voteable();
+        }
 
         public void AcceptedAnswer()
         {
@@ -71,9 +65,7 @@ namespace StackUnderflow.Core.Entities
             User user,
             string body,
             Question question,
-            ILimits limits,
-            IVoteable voteable,
-            ICommentable commentable)
+            ILimits limits)
         {
             Validate(user, body, limits);
             var answer = new Answer();
@@ -82,8 +74,6 @@ namespace StackUnderflow.Core.Entities
             answer.Body = body;
             answer.IsAcceptedAnswer = false;
             answer.CreatedOn = DateTime.UtcNow;
-            answer._voteable = voteable ?? throw new ArgumentException($"Missing {nameof(IVoteable)} parameter."); ;
-            answer._commentable = commentable ?? throw new ArgumentException($"Missing {nameof(ICommentable)} parameter.");
             return answer;
         }
 

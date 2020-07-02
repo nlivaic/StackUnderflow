@@ -24,6 +24,7 @@ namespace StackUnderflow.Core.Entities
 
         private Comment()
         {
+            _voteable = new Voteable();
         }
 
         public void Edit(User user, string body, ILimits limits)
@@ -47,8 +48,7 @@ namespace StackUnderflow.Core.Entities
         public static Comment Create(User user,
             string body,
             int orderNumber,
-            ILimits limits,
-            IVoteable voteable)
+            ILimits limits)
         {
             Validate(user, body, limits);
             if (orderNumber < 1)
@@ -61,7 +61,6 @@ namespace StackUnderflow.Core.Entities
             comment.Body = body;
             comment.OrderNumber = orderNumber;
             comment.CreatedOn = DateTime.UtcNow;
-            comment._voteable = voteable ?? throw new ArgumentException($"Missing {nameof(IVoteable)} parameter.");
             return comment;
         }
 

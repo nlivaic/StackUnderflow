@@ -14,7 +14,7 @@ namespace StackUnderflow.Core.Tests.Builders
             var user = new UserBuilder().BuildUser(new Guid("00000000-0000-0000-0000-000000000002")).Build();
             string body = "BodyNormal";
             var voteable = new Voteable();
-            _target = Comment.Create(user, body, orderNumber, _limits, voteable);
+            _target = Comment.Create(user, body, orderNumber, _limits);
             return this;
         }
 

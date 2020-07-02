@@ -46,7 +46,7 @@ namespace StackUnderflow.Core.Services
             var question = (await _questionRepository.GetQuestionWithAnswersAsync(answerModel.QuestionId))
                 ?? throw new BusinessException($"Question '{answerModel.QuestionId}' does not exist!");
             var user = await _userRepository.GetByIdAsync(answerModel.UserId);
-            var answer = Answer.Create(user, answerModel.Body, question, _limits, _voteable, _commentable);
+            var answer = Answer.Create(user, answerModel.Body, question, _limits);
             question.Answer(answer);
             await _uow.SaveAsync();
             // @nl: Raise an event! Message must be sent to the inbox.

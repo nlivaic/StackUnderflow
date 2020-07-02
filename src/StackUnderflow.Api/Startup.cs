@@ -40,13 +40,13 @@ namespace StackUnderflow.Api
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRepository<Tag>, Repository<Tag>>();        // @nl
             services.AddScoped<IRepository<User>, Repository<User>>();        // @nl
+            services.AddScoped<IRepository<Question>, Repository<Question>>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddTransient<ITagService, TagService>();
             services.AddSingleton<ILimits, Limits>();
-            services.AddTransient<IVoteable, Voteable>();
-            services.AddTransient<ICommentable, Commentable>();
-            services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionRepository).Assembly);
             services.AddTransient<IQuestionService, QuestionService>();
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionRepository).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -43,7 +43,7 @@ namespace StackUnderflow.Core.Services
                 .Select(c => c.OrderNumber)
                 .OrderByDescending(c => c)
                 .FirstOrDefault() + 1;
-            var comment = Comment.Create(user, commentModel.Body, commentOrderNumber, _limits, _voteable);
+            var comment = Comment.Create(user, commentModel.Body, commentOrderNumber, _limits);
             question.Comment(comment);
         }
 

@@ -2,7 +2,7 @@
   ☐ Are BusinessExceptions ok for invalid inputs?
 ✔ Create in-memory database with a basic seeder @done (26. 06. 2020. 10:01:20)
   ✔ Tokom seedanja kaže da već postoji Tag sa tim i tim Id. Da nije možda da se na neku foru stvaraju nove instance Tagova, sa istim ID-jem? @done (26. 06. 2020. 10:01:19)
-☐ Data and Database and EF Core issues
+✔ Data and Database and EF Core issues @done (01. 07. 2020. 23:18:46)
     ✔ -- insert into "Users" values ('00000000-0000-0000-0000-000000000001', 'foo', 'foo@foo.foo', null, null, current_timestamp, current_timestamp); @done (01. 07. 2020. 00:20:30)
     ✔ --insert into "Questions" values ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001', 'Title', 'Body', false, current_timestamp); @done (01. 07. 2020. 00:20:31)
     ✔ --insert into "Comments" values ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001', 'Body', current_timestamp, '00000000-0000-0000-0000-000000000001', null, 1); @done (01. 07. 2020. 00:20:32)
@@ -12,9 +12,10 @@
   ✔ Nanovo napraviti i izvršiti migraciju. @done (01. 07. 2020. 00:20:54)
     ✔ dotnet ef --startup-project ../StackUnderflow.Api migrations add Initial --context StackUnderflowDbContext @done (01. 07. 2020. 00:20:54)
     ✔ dotnet ef --startup-project ../StackUnderflow.Api database update --context StackUnderflowDbContext @done (01. 07. 2020. 00:20:55)
-  ☐ Nakon što smo gotovi s ovim dijelom, treba pregledati kod za privremene izmjene napravljene tokom istraživanja ovog problema:
-    ☐ Questions.cs
+  ✔ Nakon što smo gotovi s ovim dijelom, treba pregledati kod za privremene izmjene napravljene tokom istraživanja ovog problema: @done (01. 07. 2020. 23:18:43)
+    ✔ Questions.cs @done (01. 07. 2020. 23:18:43)
     ✔ Seeder.cs @done (01. 07. 2020. 00:23:29)
+    ☐ Dobivam stalno neki error oko Json object cycle.
 ☐ Startup.cs
   ☐ Tidy up all the registrations.
   ☐ How to create IRepository<T> without registering all of them one by one?

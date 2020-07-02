@@ -20,7 +20,7 @@ namespace StackUnderflow.Core.Tests
             var voteable = new Voteable();
 
             // Act
-            var result = Comment.Create(user, body, orderNumber, limits, voteable);
+            var result = Comment.Create(user, body, orderNumber, limits);
 
             // Assert
             Assert.Equal(user, result.User);
@@ -42,7 +42,7 @@ namespace StackUnderflow.Core.Tests
             var user = new UserBuilder().BuildUser(new Guid(userId)).Build();
 
             // Act, Assert
-            Assert.Throws<BusinessException>(() => Comment.Create(user, body, orderNumber, limits, voteable));
+            Assert.Throws<BusinessException>(() => Comment.Create(user, body, orderNumber, limits));
         }
 
         [Fact]
@@ -105,23 +105,6 @@ namespace StackUnderflow.Core.Tests
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
                target.Edit(user, body, limits));
-        }
-
-        [Fact]
-        public void Comment_CreatingWithoutVoteable_Fails()
-        {
-            // Arrange
-            Guid userId = new Guid("00000000-0000-0000-0000-000000000001");
-            var user = new UserBuilder().BuildValidUser().Build();
-            string body = "BodyNormal";
-            var limits = new LimitsBuilder().Build();
-            var orderNumber = 1;
-            IVoteable voteable = null;
-            var commentable = new Commentable();
-
-            // Act, Assert
-            Assert.Throws<ArgumentException>(() =>
-                Comment.Create(user, body, orderNumber, limits, voteable));
         }
     }
 }

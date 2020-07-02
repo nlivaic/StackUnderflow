@@ -28,11 +28,9 @@ namespace StackUnderflow.Core.Entities
 
         private Question()
         {
-            // _commentable = new Commentable();        // @nl
-            // _voteable = new Voteable();
+            _commentable = new Commentable();
+            _voteable = new Voteable();
         }
-
-        private ILimits _limits;
 
         public void Edit(User user, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {
@@ -99,9 +97,7 @@ namespace StackUnderflow.Core.Entities
             string title,
             string body,
             IEnumerable<Tag> tags,
-            ILimits limits,
-            IVoteable voteable,
-            ICommentable commentable)
+            ILimits limits)
         {
             var question = new Question();
             question.Id = Guid.NewGuid();
@@ -112,8 +108,6 @@ namespace StackUnderflow.Core.Entities
             question.HasAcceptedAnswer = false;
             question.CreatedOn = DateTime.UtcNow;
             question._questionTags = new List<QuestionTag>(tags.Select(t => new QuestionTag { Question = question, Tag = t }));
-            question._voteable = voteable ?? throw new ArgumentException($"Missing {nameof(IVoteable)} parameter.");
-            question._commentable = commentable ?? throw new ArgumentException($"Missing {nameof(ICommentable)} parameter.");
             return question;
         }
 

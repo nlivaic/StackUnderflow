@@ -18,7 +18,7 @@ namespace StackUnderflow.Core.Tests.Builders
             var tags = new TagBuilder().Build(tagCount);
             var voteable = new Voteable();
             var commentable = new Commentable();
-            _target = Question.Create(user, title, body, tags, _limits, voteable, commentable);
+            _target = Question.Create(user, title, body, tags, _limits);
             return this;
         }
 

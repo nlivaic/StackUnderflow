@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
@@ -10,17 +12,22 @@ namespace StackUnderflow.Data.Repositories
 {
     public class QuestionRepository : Repository<Question>, IQuestionRepository
     {
-        public QuestionRepository(StackUnderflowDbContext context)
-            : base(context)
-        { }
+        private readonly IMapper _mapper;
 
-        public async Task<Question> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
+        public QuestionRepository(StackUnderflowDbContext context, IMapper mapper)
+            : base(context)
+        {
+            _mapper = mapper;
+        }
+
+        public async Task<QuestionModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
             await _context
                 .Questions
                 .Where(q => q.Id == questionId)
                 .Include(q => q.User)
                 .Include(q => q.Comments)
                 .ThenInclude(c => c.User)
+                .ProjectTo<QuestionModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
         public async Task<Question> GetQuestionWithAnswersAsync(Guid questionId) =>

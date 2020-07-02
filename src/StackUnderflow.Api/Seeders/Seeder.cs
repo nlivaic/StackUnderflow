@@ -101,28 +101,21 @@ namespace StackUnderflow.Api.Seeders
                 Faker.Lorem.Sentence(),
                 GenerateBody(),
                 new List<Tag>(tags),
-                _limits,
-                new Voteable(),
-                new Commentable());
+                _limits);
 
         private static Comment GenerateComent(User user, int orderNumber) =>
             Comment.Create(
                 user,
                 GenerateBody(),
                 orderNumber,
-                _limits,
-                 new Voteable()
-            );
+                _limits);
 
         private static Answer GenerateAnswer(User user, Question question) =>
             Answer.Create(
                 user,
                 GenerateBody(),
                 question,
-                _limits,
-                 new Voteable(),
-                new Commentable()
-            );
+                _limits);
 
         private static User GenerateUser() =>
             User.Create(
