@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Interfaces;
@@ -13,10 +14,12 @@ namespace StackUnderflow.Api.Controllers
     public class QuestionsController : ControllerBase
     {
         private readonly IQuestionService _questionService;
+        private readonly IMapper _mapper;
 
-        public QuestionsController(IQuestionService questionService)
+        public QuestionsController(IQuestionService questionService, IMapper mapper)
         {
             _questionService = questionService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -26,7 +29,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<QuestionWithUserAndAllCommentsModel>> Get(Guid id)
+        public async Task<ActionResult<QuestionWithUserAndAllCommentsViewModel>> Get(Guid id)
         {
             var q = await _questionService.GetQuestionWithUserAndAllCommentsAsync(id);
             return Ok(q);

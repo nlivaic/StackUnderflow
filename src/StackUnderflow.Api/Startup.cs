@@ -12,6 +12,7 @@ using StackUnderflow.Data.Repositories;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Services;
 using StackUnderflow.Common.Interfaces;
+using StackUnderflow.Core.Profiles;
 
 namespace StackUnderflow.Api
 {
@@ -46,7 +47,7 @@ namespace StackUnderflow.Api
             services.AddSingleton<ILimits, Limits>();
             services.AddTransient<IQuestionService, QuestionService>();
 
-            services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionRepository).Assembly);
+            services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionProfile).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

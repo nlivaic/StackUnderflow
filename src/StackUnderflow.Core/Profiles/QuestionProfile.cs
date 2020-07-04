@@ -14,7 +14,9 @@ namespace StackUnderflow.Core.Profiles
                 .ForMember(dest => dest.Username,
                     opts => opts.MapFrom(src => src.User.Username))
                 .ForMember(dest => dest.CreatedOn,
-                    opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")));
+                    opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")))
+                .ForMember(dest => dest.Tags,
+                    opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)));
 
             CreateMap<Question, QuestionSummaryModel>()
                 .ForMember(dest => dest.Username,

@@ -28,6 +28,8 @@ namespace StackUnderflow.Data.Repositories
                 .Include(q => q.User)
                 .Include(q => q.Comments)
                 .ThenInclude(c => c.User)
+                .Include(q => q.QuestionTags)
+                .ThenInclude(qt => qt.Tag)
                 .ProjectTo<QuestionWithUserAndAllCommentsModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
