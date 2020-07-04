@@ -5,7 +5,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.Controllers
 {
@@ -14,26 +13,15 @@ namespace StackUnderflow.Api.Controllers
     public class QuestionsController : ControllerBase
     {
         private readonly IQuestionService _questionService;
-        private readonly IMapper _mapper;
 
         public QuestionsController(IQuestionService questionService, IMapper mapper)
         {
             _questionService = questionService;
-            _mapper = mapper;
-        }
-
-        [HttpGet]
-        public ActionResult<IEnumerable<QuestionResponse>> Get()
-        {
-            throw new NotImplementedException("");
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<QuestionWithUserAndAllCommentsViewModel>> Get(Guid id)
-        {
-            var q = await _questionService.GetQuestionWithUserAndAllCommentsAsync(id);
-            return Ok(q);
-        }
+        public async Task<ActionResult<QuestionGetViewModel>> Get(Guid id) =>
+            Ok(await _questionService.GetQuestionWithUserAndAllCommentsAsync(id));
 
         [HttpPost]
         public IActionResult Post([FromBody] QuestionCreateRequest request)

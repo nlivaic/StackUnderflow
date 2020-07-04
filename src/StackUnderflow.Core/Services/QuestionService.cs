@@ -36,15 +36,12 @@ namespace StackUnderflow.Core.Services
             _mapper = mapper;
         }
 
-        public async Task<QuestionWithUserAndAllCommentsModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId)
+        public async Task<IEnumerable<QuestionSummaryGetModel>> GetQuestionSummaries() =>
+            await _questionRepository.GetQuestionSummaries();
+
+        public async Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId)
         {
             var questionModel = await _questionRepository.GetQuestionWithUserAndAllCommentsAsync(questionId);
-            return questionModel;
-        }
-
-        public async Task<IEnumerable<QuestionSummaryModel>> GetQuestionsSummary()
-        {
-            var questionModel = await _questionRepository.GetQuestionsSummary();
             return questionModel;
         }
 

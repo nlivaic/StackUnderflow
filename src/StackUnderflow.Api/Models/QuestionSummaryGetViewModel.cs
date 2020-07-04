@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 
-namespace StackUnderflow.Core.Models
+namespace StackUnderflow.Api.Models
 {
-    public class QuestionSummaryModel
+    public class QuestionSummaryGetViewModel
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Username { get; set; }
         public string CreatedOn { get; set; }
         public bool HasAcceptedAnswer { get; set; }
-        public IEnumerable<TagGetModel> Tags { get; set; } = new List<TagGetModel>();
+        public IEnumerable<string> Tags { get; set; } = new List<string>();
         public int Answers { get; set; }
         public int VotesSum { get; set; }
     }

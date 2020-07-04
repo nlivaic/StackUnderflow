@@ -21,7 +21,7 @@ namespace StackUnderflow.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<QuestionWithUserAndAllCommentsModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
+        public async Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
             await _context
                 .Questions
                 .Where(q => q.Id == questionId)
@@ -30,16 +30,16 @@ namespace StackUnderflow.Data.Repositories
                 .ThenInclude(c => c.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
-                .ProjectTo<QuestionWithUserAndAllCommentsModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<QuestionSummaryModel>> GetQuestionsSummary() =>
+        public async Task<IEnumerable<QuestionSummaryGetModel>> GetQuestionSummaries() =>
             await _context
                 .Questions
                 .Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
-                .ProjectTo<QuestionSummaryModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<QuestionSummaryGetModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
         public async Task<Question> GetQuestionWithAnswersAsync(Guid questionId) =>
@@ -56,6 +56,7 @@ namespace StackUnderflow.Data.Repositories
                 .Include(q => q.Answers)
                 .Include(q => q.Comments)
                 .SingleOrDefaultAsync();
+
         public async Task<Question> GetQuestionWithCommentsAsync(Guid questionId) =>
             await _context
                 .Questions

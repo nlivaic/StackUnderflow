@@ -1,5 +1,83 @@
+☐ Endpoints
+  ☐ /api/questionssummary
+    ✔ GET @done (04. 07. 2020. 23:30:32)
+    ☐ Paging
+    ☐ Searching and filtering
+  ☐ /api/questions/{id}
+    ✔ GET @done (04. 07. 2020. 23:30:19)
+    ☐ PUT
+    ☐ DELETE
+  ☐ /api/questions/
+    ☐ POST
+  ☐ /api/questions/{questionId}/comments
+    ☐ GET
+    ☐ POST
+  ☐ /api/questions/{questionId}/comments/{id}
+    ☐ GET
+    ☐ PUT
+    ☐ DELETE
+  ☐ /api/questions/{questionId}/answers
+    ☐ GET
+    ☐ POST
+    ☐ Paging
+  ☐ /api/questions/{questionId}/answers/{id}
+    ☐ GET
+    ☐ PUT
+    ☐ DELETE
+  ☐ /api/questions/{questionId}/answers/{answerId}/comments
+    ☐ GET
+    ☐ POST
+  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{id}
+    ☐ GET
+    ☐ PUT
+    ☐ DELETE
+  ☐ /api/questions/{id}/vote
+    ☐ POST
+  ☐ /api/questions/{id}/vote/{id}
+    ☐ DELETE
+    ☐ Think the concept through. It is ok to post a new vote and get a vote id back. But I don't think it is ok to delete against all the votes. Logged in user will get the id of his vote back and there (thank to HATEOAS) it will say it is ok to delete the vote!
+  ☐ /api/questions/{questionId}/comments/{commentId}/vote
+    ☐ POST
+  ☐ /api/questions/{questionId}/comments/{commentId}/vote/{id}
+    ☐ DELETE
+  ☐ /api/questions/{questionId}/answers/{answerId}/vote
+    ☐ POST
+  ☐ /api/questions/{questionId}/answers/{answerId}/vote/{id}
+    ☐ DELETE
+  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{commentId}/vote
+    ☐ POST
+  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{commentId}/vote/{id}
+    ☐ DELETE
+  ☐ /api/tags
+    ☐ GET
+    ☐ POST
+  ☐ /api/tags/{id}
+    ☐ GET
+    ☐ This will need more thinking through.
+  ☐ /api/users
+    ☐ This will need more thinking through.
+☐ Startup.cs
+  ☐ Tidy up all the registrations.
+  ☐ How to create IRepository<T> without registering all of them one by one?
+  ☐ Routes and endpoints
+  ☐ services.AddController()
+  ☐ app.UseDeveloperExceptionPage()
+  ☐ app.ExceptionHandler()
+  ☐ InvalidModelStateResponseFactory
+☐ API Advanced
+  ☐ Filtering and searching
+  ☐ Cacheing
+  ☐ Swagger
+  ☐ Logging
+  ☐ Review RESTful project for clues
+  ☐ Security
 ☐ Core Domain
   ☐ Are BusinessExceptions ok for invalid inputs?
+☐ Razraditi jobove
+☐ Razraditi evente i event handling
+☐ Security: connection stringove razraditi: dev, prod
+✔ Razraditi bazu @done (04. 07. 2020. 23:36:09)
+✔ dotnet remove package Microsoft.EntityFrameworkCore.InMemory @done (04. 07. 2020. 23:36:15)
 ✔ Create in-memory database with a basic seeder @done (26. 06. 2020. 10:01:20)
   ✔ Tokom seedanja kaže da već postoji Tag sa tim i tim Id. Da nije možda da se na neku foru stvaraju nove instance Tagova, sa istim ID-jem? @done (26. 06. 2020. 10:01:19)
 ✔ Data and Database and EF Core issues @done (01. 07. 2020. 23:18:46)
@@ -16,70 +94,13 @@
     ✔ Questions.cs @done (01. 07. 2020. 23:18:43)
     ✔ Seeder.cs @done (01. 07. 2020. 00:23:29)
     ✔ Dobivam stalno neki error oko Json object cycle. @done (04. 07. 2020. 22:05:25)
-☐ ViewModels vs Dtos
-  ☐ Dtos žive u Coreu. Oni služe za a) vraćanje podataka u queryjima i b) davanje podataka coreu.
-    ☐ Naming convention: 
-    ☐ Dto se mapira u domain model i obrnuto - u Core projektu. Profile treba u Core napraviti.
-  ☐ View modeli žive u Web projektu
-    ☐ Naming convention: QuestionSummaryGetViewModel, QuestionGetViewModel, QuestionCreateViewModel, QuestionEditViewModel.
-    ☐ Dto se mapira u ViewModel i obrnuto - u Web projektu. Profile treba u Webu napraviti.
-☐ Endpoints
-  ☐ /api/questions/ - POST
-  ☐ /api/questions/{id} - GET, PUT, DELETE
-  ☐ /api/questions/{questionId}/comments - GET, POST
-  ☐ /api/questionssummary - GET
-  ☐ /api/questions/{questionId}/comments/{id} - GET, PUT, DELETE
-  ☐ /api/questions/{questionId}/answers - GET, POST
-  ☐ /api/questions/{questionId}/answers/{id} - GET, PUT, DELETE
-  ☐ /api/questions/{questionId}/answers/{answerId}/comments - GET, POST
-  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{id} - GET, PUT, DELETE
-  ☐ /api/questions/{id}/vote  - POST
-  ☐ /api/questions/{id}/vote/{id}  - DELETE
-    ☐ Think the concept through. It is ok to post a new vote and get a vote id back. But I don't think it is ok to delete against all the votes. Logged in user will get the id of his vote back and there (thank to HATEOAS) it will say it is ok to delete the vote!
-  ☐ /api/questions/{questionId}/comments/{commentId}/vote  - POST
-  ☐ /api/questions/{questionId}/comments/{commentId}/vote/{id}  - DELETE
-  ☐ /api/questions/{questionId}/answers/{answerId}/vote - POST
-  ☐ /api/questions/{questionId}/answers/{answerId}/vote/{id} - DELETE
-  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{commentId}/vote - POST
-  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{commentId}/vote/{id} - DELETE
-  ☐ /api/tags - GET, POST
-  ☐ /api/tags/{id} - GET
-    ☐ This will need more thinking through.
-☐ Startup.cs
-  ☐ Tidy up all the registrations.
-  ☐ How to create IRepository<T> without registering all of them one by one?
-  ☐ Routes and endpoints
-  ☐ services.AddController()
-  ☐ app.UseDeveloperExceptionPage()
-  ☐ app.ExceptionHandler()
-  ☐ InvalidModelStateResponseFactory
-☐ Controllers
-  ☐ QuestionsController
-    ✔ [ApiController] @done (18. 06. 2020. 22:12:14)
-    ☐ Test GetQuestionsSummary.
-    ☐ Get, Post, Put, Delete
-    ☐ Request and Response Models
-    ☐ Automapper
-    ☐ FluentValidation
-  ☐ AnswersController
-  ☐ CommentsController
-  ☐ VotesController
-  ☐ inherit from ControllerBase
-  ☐ action method type ActionResult<T>
-  ☐ return Ok()
-☐ API Advanced
-  ☐ Filtering and searching
-  ☐ Cacheing
-  ☐ Swagger
-  ☐ Logging
-  ☐ Review RESTful project for clues
-  ☐ Security
-☐ Razraditi bazu
-☐ dotnet remove package Microsoft.EntityFrameworkCore.InMemory
-☐ Razraditi jobove
-☐ Razraditi evente i event handling
-☐ Security: connection stringove razraditi: dev, prod
-
+✔ ViewModels vs Dtos @done (04. 07. 2020. 23:37:45)
+  ✔ Dtos žive u Coreu. Oni služe za a) vraćanje podataka u queryjima i b) davanje podataka coreu. @done (04. 07. 2020. 23:30:01)
+    ✔ Naming convention: @done (04. 07. 2020. 23:30:02)
+    ✔ Dto se mapira u domain model i obrnuto - u Core projektu. Profile treba u Core napraviti. @done (04. 07. 2020. 23:30:04)
+  ✔ View modeli žive u Web projektu @done (04. 07. 2020. 23:30:05)
+    ✔ Naming convention: QuestionSummaryGetViewModel, QuestionGetViewModel, QuestionCreateViewModel, QuestionEditViewModel. @done (04. 07. 2020. 23:30:10)
+    ✔ Dto se mapira u ViewModel i obrnuto - u Web projektu. Profile treba u Webu napraviti. @done (04. 07. 2020. 23:30:11)
 ✘ Question.Create use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. @cancelled (07. 06. 2020. 01:20:26)
   Check eShopOnWeb (Specification pattern).
   ✘ It's all bullshit. Discard repositories and work with DbContext directly. @cancelled (07. 06. 2020. 01:20:25)

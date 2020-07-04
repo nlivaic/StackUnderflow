@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace StackUnderflow.Core.Models
 {
-    public class QuestionWithUserAndAllCommentsModel
+    public class QuestionGetModel
     {
         public Guid Id { get; set; }
         public string Username { get; set; }
