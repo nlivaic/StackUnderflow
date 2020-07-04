@@ -15,7 +15,36 @@
   ✔ Nakon što smo gotovi s ovim dijelom, treba pregledati kod za privremene izmjene napravljene tokom istraživanja ovog problema: @done (01. 07. 2020. 23:18:43)
     ✔ Questions.cs @done (01. 07. 2020. 23:18:43)
     ✔ Seeder.cs @done (01. 07. 2020. 00:23:29)
-    ☐ Dobivam stalno neki error oko Json object cycle.
+    ✔ Dobivam stalno neki error oko Json object cycle. @done (04. 07. 2020. 22:05:25)
+☐ ViewModels vs Dtos
+  ☐ Dtos žive u Coreu. Oni služe za a) vraćanje podataka u queryjima i b) davanje podataka coreu.
+    ☐ Naming convention: 
+    ☐ Dto se mapira u domain model i obrnuto - u Core projektu. Profile treba u Core napraviti.
+  ☐ View modeli žive u Web projektu
+    ☐ Naming convention: QuestionSummaryGetViewModel, QuestionGetViewModel, QuestionCreateViewModel, QuestionEditViewModel.
+    ☐ Dto se mapira u ViewModel i obrnuto - u Web projektu. Profile treba u Webu napraviti.
+☐ Endpoints
+  ☐ /api/questions/ - POST
+  ☐ /api/questions/{id} - GET, PUT, DELETE
+  ☐ /api/questions/{questionId}/comments - GET, POST
+  ☐ /api/questionssummary - GET
+  ☐ /api/questions/{questionId}/comments/{id} - GET, PUT, DELETE
+  ☐ /api/questions/{questionId}/answers - GET, POST
+  ☐ /api/questions/{questionId}/answers/{id} - GET, PUT, DELETE
+  ☐ /api/questions/{questionId}/answers/{answerId}/comments - GET, POST
+  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{id} - GET, PUT, DELETE
+  ☐ /api/questions/{id}/vote  - POST
+  ☐ /api/questions/{id}/vote/{id}  - DELETE
+    ☐ Think the concept through. It is ok to post a new vote and get a vote id back. But I don't think it is ok to delete against all the votes. Logged in user will get the id of his vote back and there (thank to HATEOAS) it will say it is ok to delete the vote!
+  ☐ /api/questions/{questionId}/comments/{commentId}/vote  - POST
+  ☐ /api/questions/{questionId}/comments/{commentId}/vote/{id}  - DELETE
+  ☐ /api/questions/{questionId}/answers/{answerId}/vote - POST
+  ☐ /api/questions/{questionId}/answers/{answerId}/vote/{id} - DELETE
+  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{commentId}/vote - POST
+  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{commentId}/vote/{id} - DELETE
+  ☐ /api/tags - GET, POST
+  ☐ /api/tags/{id} - GET
+    ☐ This will need more thinking through.
 ☐ Startup.cs
   ☐ Tidy up all the registrations.
   ☐ How to create IRepository<T> without registering all of them one by one?

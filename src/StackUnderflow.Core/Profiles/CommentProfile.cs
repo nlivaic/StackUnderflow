@@ -3,7 +3,7 @@ using AutoMapper;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Models;
 
-namespace StackUnderflow.Api.Profiles
+namespace StackUnderflow.Core.Profiles
 {
     public class CommentProfile : Profile
     {

@@ -21,23 +21,23 @@ namespace StackUnderflow.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
+        public async Task<QuestionWithUserAndAllCommentsModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
             await _context
                 .Questions
                 .Where(q => q.Id == questionId)
                 .Include(q => q.User)
                 .Include(q => q.Comments)
                 .ThenInclude(c => c.User)
-                .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<QuestionWithUserAndAllCommentsModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<QuestionSummaryGetModel>> GetQuestionsSummary() =>
+        public async Task<IEnumerable<QuestionSummaryModel>> GetQuestionsSummary() =>
             await _context
                 .Questions
                 .Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
-                .ProjectTo<QuestionSummaryGetModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<QuestionSummaryModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
         public async Task<Question> GetQuestionWithAnswersAsync(Guid questionId) =>
