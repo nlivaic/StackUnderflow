@@ -1,6 +1,6 @@
 namespace StackUnderflow.Core.Models
 {
-    public class TagModel
+    public class TagGetModel
     {
         public string Name { get; set; }
     }

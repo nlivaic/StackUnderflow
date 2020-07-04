@@ -26,9 +26,9 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<QuestionModel>> Get(Guid id)
+        public async Task<ActionResult<QuestionGetModel>> Get(Guid id)
         {
-            var q = await _questionService.GetQuestionAsync(id);
+            var q = await _questionService.GetQuestionWithUserAndAllCommentsAsync(id);
             return Ok(q);
         }
 

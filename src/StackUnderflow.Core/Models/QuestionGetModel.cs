@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace StackUnderflow.Core.Models
 {
-    public class QuestionModel
+    public class QuestionGetModel
     {
         public string Username { get; set; }
         public string Title { get; set; }
@@ -11,7 +11,7 @@ namespace StackUnderflow.Core.Models
         public bool HasAcceptedAnswer { get; set; }
         public string CreatedOn { get; set; }
         public int VotesSum { get; set; }
-        public IEnumerable<CommentModel> Comments { get; set; } = new List<CommentModel>();
-        public IEnumerable<TagModel> Tags { get; set; } = new List<TagModel>();
+        public IEnumerable<CommentGetModel> Comments { get; set; } = new List<CommentGetModel>();
+        public IEnumerable<TagGetModel> Tags { get; set; } = new List<TagGetModel>();
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
@@ -8,7 +9,8 @@ namespace StackUnderflow.Core.Interfaces
 {
     public interface IQuestionRepository : IRepository<Question>
     {
-        Task<QuestionModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId);
+        Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId);
+        Task<IEnumerable<QuestionSummaryGetModel>> GetQuestionsSummary();
         Task<Question> GetQuestionWithAnswersAsync(Guid questionId);
         Task<Question> GetQuestionWithAnswersAndCommentsAsync(Guid questionId);
         Task<Question> GetQuestionWithCommentsAsync(Guid questionId);

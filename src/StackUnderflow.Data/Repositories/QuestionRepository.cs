@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -20,15 +21,24 @@ namespace StackUnderflow.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<QuestionModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
+        public async Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
             await _context
                 .Questions
                 .Where(q => q.Id == questionId)
                 .Include(q => q.User)
                 .Include(q => q.Comments)
                 .ThenInclude(c => c.User)
-                .ProjectTo<QuestionModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
+
+        public async Task<IEnumerable<QuestionSummaryGetModel>> GetQuestionsSummary() =>
+            await _context
+                .Questions
+                .Include(q => q.User)
+                .Include(q => q.QuestionTags)
+                .ThenInclude(qt => qt.Tag)
+                .ProjectTo<QuestionSummaryGetModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
 
         public async Task<Question> GetQuestionWithAnswersAsync(Guid questionId) =>
             await _context

@@ -27,11 +27,7 @@
 ☐ Controllers
   ☐ QuestionsController
     ✔ [ApiController] @done (18. 06. 2020. 22:12:14)
-    ☐ To facilitate Get(id):
-      ✔ Automapper - add package @done (26. 06. 2020. 10:44:30)
-      ☐ (Question, User, Comments) -> (QuestionModel)
-      QuestionModel questionModel = AutoMapper.Mapper.Map<QuestionModel>(questionSource);
-      ☐ Try to map in query projection.
+    ☐ Test GetQuestionsSummary.
     ☐ Get, Post, Put, Delete
     ☐ Request and Response Models
     ☐ Automapper

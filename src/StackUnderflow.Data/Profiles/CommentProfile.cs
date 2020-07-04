@@ -9,7 +9,7 @@ namespace StackUnderflow.Api.Profiles
     {
         public CommentProfile()
         {
-            CreateMap<Comment, CommentModel>()
+            CreateMap<Comment, CommentGetModel>()
                 .ForMember(dest => dest.Username,
                 opts => opts.MapFrom(src => src.User.Username))
             .ForMember(dest => dest.CreatedOn,

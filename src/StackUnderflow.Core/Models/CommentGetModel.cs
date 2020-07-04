@@ -1,6 +1,6 @@
 namespace StackUnderflow.Core.Models
 {
-    public class CommentModel
+    public class CommentGetModel
     {
         public string Username { get; set; }
         public string Body { get; set; }

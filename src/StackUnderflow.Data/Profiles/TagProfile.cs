@@ -8,7 +8,7 @@ namespace StackUnderflow.Api.Profiles
     {
         public TagProfile()
         {
-            CreateMap<Tag, TagModel>();
+            CreateMap<Tag, TagGetModel>();
         }
     }
 }
