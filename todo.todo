@@ -3,6 +3,10 @@
     ✔ GET @done (04. 07. 2020. 23:30:32)
     ☐ Paging
     ☐ Searching and filtering
+      ☐ QuestionResourceParameters
+        ☐ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`.
+        ☐ Filter (strict!) on tags: property `string Tags`.
+        ☐ Search (relaxed) on title and body: property `string SearchQuery`.
   ☐ /api/questions/{id}
     ✔ GET @done (04. 07. 2020. 23:30:19)
     ☐ PUT
@@ -76,6 +80,7 @@
 ☐ Razraditi jobove
 ☐ Razraditi evente i event handling
 ☐ Security: connection stringove razraditi: dev, prod
+☐ .AsNoTracking() na sve read queryje
 ✔ Razraditi bazu @done (04. 07. 2020. 23:36:09)
 ✔ dotnet remove package Microsoft.EntityFrameworkCore.InMemory @done (04. 07. 2020. 23:36:15)
 ✔ Create in-memory database with a basic seeder @done (26. 06. 2020. 10:01:20)

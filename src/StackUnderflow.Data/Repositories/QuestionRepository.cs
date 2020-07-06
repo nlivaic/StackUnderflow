@@ -30,6 +30,7 @@ namespace StackUnderflow.Data.Repositories
                 .ThenInclude(c => c.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
+                .AsNoTracking()
                 .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
@@ -39,6 +40,7 @@ namespace StackUnderflow.Data.Repositories
                 .Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
+                .AsNoTracking()
                 .ProjectTo<QuestionSummaryGetModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
