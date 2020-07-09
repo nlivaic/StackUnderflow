@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using StackUnderflow.Common.Collections;
 using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Foo;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
+using StackUnderflow.Data.QueryableExtensions;
 
 namespace StackUnderflow.Data.Repositories
 {
@@ -34,15 +37,16 @@ namespace StackUnderflow.Data.Repositories
                 .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<QuestionSummaryGetModel>> GetQuestionSummaries() =>
+        public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummaries(QuestionResourceParameters questionResourceParameters) =>
             await _context
                 .Questions
+                .OrderBy(q => q.Id)           // @nl: ordering on Guid. Think this through!
                 .Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
                 .AsNoTracking()
-                .ProjectTo<QuestionSummaryGetModel>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .ApplyPagingAsync<Question, QuestionSummaryGetModel>(_mapper, questionResourceParameters.PageNumber, questionResourceParameters.PageSize);
+        // .ToListAsync();
 
         public async Task<Question> GetQuestionWithAnswersAsync(Guid questionId) =>
             await _context

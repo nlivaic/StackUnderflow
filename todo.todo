@@ -1,14 +1,16 @@
+☐ Next time
+  ☐ Getting questions must not return comments. Remove comments from query, query dto and view model. Comments belonging to a question will be returned in a standalone call.
 ☐ Endpoints
   ☐ /api/questionssummary
     ✔ GET @done (04. 07. 2020. 23:30:32)
-    ☐ Paging
-    ☐ Searching and filtering
-      ☐ QuestionResourceParameters
-        ☐ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`.
-        ☐ Filter (strict!) on tags: property `string Tags`.
-        ☐ Search (relaxed) on title and body: property `string SearchQuery`.
+    ☐ QuestionResourceParameters
+      ☐ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`. X-PAgination header.
+      ☐ Filter (strict!) on tags: property `string Tags`.
+      ☐ Search (relaxed) on title and body: property `string SearchQuery`.
+      ☐ Ordering
   ☐ /api/questions/{id}
-    ✔ GET @done (04. 07. 2020. 23:30:19)
+    ✘ GET @cancelled (08. 07. 2020. 22:35:06)
+      ☐ Must not return comments. Return comments in a separate request.
     ☐ PUT
     ☐ DELETE
   ☐ /api/questions/
@@ -26,11 +28,14 @@
     ☐ Paging
   ☐ /api/questions/{questionId}/answers/{id}
     ☐ GET
+      ☐ Must not return comments. Return comments in a separate request.
     ☐ PUT
     ☐ DELETE
   ☐ /api/questions/{questionId}/answers/{answerId}/comments
     ☐ GET
     ☐ POST
+  ☐ /api/questions/{questionId}/answersCollection/{answerId1,answerId2,answerId3}/comments
+    ☐ GET - make sure to group comments with answers.
   ☐ /api/questions/{questionId}/answers/{answerId}/comments/{id}
     ☐ GET
     ☐ PUT

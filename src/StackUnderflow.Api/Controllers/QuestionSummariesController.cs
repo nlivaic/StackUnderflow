@@ -1,9 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Models;
+using StackUnderflow.Core.Foo;
 using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Api.Controllers
@@ -20,7 +23,12 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> Get() =>
-            Ok(await _questionService.GetQuestionSummaries());
+        public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> Get([FromQuery] QuestionResourceParameters questionResourceParameters)
+        {
+            var pagedSummaries = await _questionService.GetQuestionSummaries(questionResourceParameters);
+            var pagingHeader = new PagingDto(pagedSummaries.CurrentPage, pagedSummaries.TotalPages, pagedSummaries.TotalItems);
+            HttpContext.Response.Headers.Add(Headers.Pagination, new StringValues(JsonSerializer.Serialize(pagingHeader)));
+            return Ok(pagedSummaries.Items);
+        }
     }
 }

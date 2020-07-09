@@ -56,66 +56,78 @@ namespace StackUnderflow.Api.Seeders
 
         private static List<Question> BuildQuestions()
         {
-            var q1 = GenerateQuestion(_users[0], _tags[0], _tags[3]);
-            q1.Comment(GenerateComent(_users[0], 1));
-            q1.Comment(GenerateComent(_users[1], 2));
-            q1.Comment(GenerateComent(_users[3], 3));
+            var q1 = GenerateQuestion(_users[0], 3, _tags[0], _tags[3]);
             q1.Answer(GenerateAnswer(_users[2], q1));
             q1.AcceptAnswer(q1.Answers.ToList()[0]);
 
-            var q2 = GenerateQuestion(_users[1], _tags[1], _tags[2]);
-            q2.Comment(GenerateComent(_users[1], 1));
-            q2.Comment(GenerateComent(_users[2], 2));
-            q2.Comment(GenerateComent(_users[1], 3));
+            var q2 = GenerateQuestion(_users[1], 3, _tags[1], _tags[2]);
 
-            var q3 = GenerateQuestion(_users[2], _tags[0], _tags[1], _tags[2], _tags[3]);
-            q3.Comment(GenerateComent(_users[2], 1));
-            q3.Comment(GenerateComent(_users[1], 2));
-            q3.Comment(GenerateComent(_users[4], 3));
+            var q3 = GenerateQuestion(_users[2], 3, _tags[0], _tags[1], _tags[2], _tags[3]);
             q3.Answer(GenerateAnswer(_users[2], q3));
             q3.Answer(GenerateAnswer(_users[3], q3));
             q3.Answer(GenerateAnswer(_users[4], q3));
 
-            var q4 = GenerateQuestion(_users[3], _tags[0], _tags[3], _tags[4]);
-            q4.Comment(GenerateComent(_users[2], 1));
-            q4.Comment(GenerateComent(_users[1], 2));
-            q4.Comment(GenerateComent(_users[4], 3));
-            q4.Comment(GenerateComent(_users[4], 4));
-            q4.Comment(GenerateComent(_users[4], 5));
+            var q4 = GenerateQuestion(_users[3], 5, _tags[0], _tags[3], _tags[4]);
 
-            var q5 = GenerateQuestion(_users[1], _tags[0], _tags[1], _tags[3]);
-            q5.Answer(GenerateAnswer(_users[0], q5));
-            q5.Answer(GenerateAnswer(_users[1], q5));
-            q5.Answer(GenerateAnswer(_users[4], q5));
+            var q5 = GenerateQuestion(_users[1], 0, _tags[0], _tags[1], _tags[3]);
+            q5.Answer(GenerateAnswer(_users[0], q5, 2));
+            q5.Answer(GenerateAnswer(_users[1], q5, 3));
+            q5.Answer(GenerateAnswer(_users[4], q5, 10));
             q5.AcceptAnswer(q5.Answers.ToList()[2]);
 
-            var questions = new List<Question> { q1, q2, q3, q4, q5 };
+            var q6 = GenerateQuestion(_users[1], 1, _tags[0], _tags[2], _tags[3]);
+            q6.Answer(GenerateAnswer(_users[0], q6, 4));
+            q6.Answer(GenerateAnswer(_users[1], q6, 5));
+            q6.Answer(GenerateAnswer(_users[4], q6, 6));
+            q6.AcceptAnswer(q6.Answers.ToList()[1]);
+
+            var q7 = GenerateQuestion(_users[1], 12, _tags[2], _tags[3], _tags[1]);
+            q7.Answer(GenerateAnswer(_users[0], q7));
+            q7.Answer(GenerateAnswer(_users[1], q7));
+            q7.Answer(GenerateAnswer(_users[4], q7));
+            q7.AcceptAnswer(q7.Answers.ToList()[0]);
+
+            var questions = new List<Question> { q1, q2, q3, q4, q5, q6, q7 };
             return questions;
         }
 
         private static string GenerateBody() => string.Join(" ", Faker.Lorem.Sentences(5));
 
-        private static Question GenerateQuestion(User user, params Tag[] tags) =>
-            Question.Create(
+        private static Question GenerateQuestion(User user, int commentCount, params Tag[] tags)
+        {
+            var question = Question.Create(
                 user,
                 Faker.Lorem.Sentence(),
                 GenerateBody(),
                 new List<Tag>(tags),
                 _limits);
+            for (int i = 0; i < commentCount; i++)
+            {
+                question.Comment(GenerateComment(_users[new Random().Next(5)], i + 1));
+            }
+            return question;
+        }
 
-        private static Comment GenerateComent(User user, int orderNumber) =>
+        private static Comment GenerateComment(User user, int orderNumber) =>
             Comment.Create(
                 user,
                 GenerateBody(),
                 orderNumber,
                 _limits);
 
-        private static Answer GenerateAnswer(User user, Question question) =>
-            Answer.Create(
+        private static Answer GenerateAnswer(User user, Question question, int commentCount = 0)
+        {
+            var answer = Answer.Create(
                 user,
                 GenerateBody(),
                 question,
                 _limits);
+            for (int i = 0; i < commentCount; i++)
+            {
+                answer.Comment(GenerateComment(_users[new Random().Next(5)], i + 1));
+            }
+            return answer;
+        }
 
         private static User GenerateUser() =>
             User.Create(

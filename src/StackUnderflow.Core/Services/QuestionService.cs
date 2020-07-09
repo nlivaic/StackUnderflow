@@ -7,7 +7,8 @@ using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using AutoMapper;
-using System.Collections.Generic;
+using StackUnderflow.Core.Foo;
+using StackUnderflow.Common.Collections;
 
 namespace StackUnderflow.Core.Services
 {
@@ -36,14 +37,11 @@ namespace StackUnderflow.Core.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<QuestionSummaryGetModel>> GetQuestionSummaries() =>
-            await _questionRepository.GetQuestionSummaries();
+        public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummaries(QuestionResourceParameters questionResourceParameters) =>
+            await _questionRepository.GetQuestionSummaries(questionResourceParameters);
 
-        public async Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId)
-        {
-            var questionModel = await _questionRepository.GetQuestionWithUserAndAllCommentsAsync(questionId);
-            return questionModel;
-        }
+        public async Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
+            await _questionRepository.GetQuestionWithUserAndAllCommentsAsync(questionId);
 
         public async Task AskQuestionAsync(QuestionCreateModel questionModel)
         {
