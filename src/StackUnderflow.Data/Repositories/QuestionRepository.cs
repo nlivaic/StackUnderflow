@@ -24,13 +24,11 @@ namespace StackUnderflow.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
+        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId) =>
             await _context
                 .Questions
                 .Where(q => q.Id == questionId)
                 .Include(q => q.User)
-                .Include(q => q.Comments)
-                .ThenInclude(c => c.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
                 .AsNoTracking()
@@ -46,7 +44,6 @@ namespace StackUnderflow.Data.Repositories
                 .ThenInclude(qt => qt.Tag)
                 .AsNoTracking()
                 .ApplyPagingAsync<Question, QuestionSummaryGetModel>(_mapper, questionResourceParameters.PageNumber, questionResourceParameters.PageSize);
-        // .ToListAsync();
 
         public async Task<Question> GetQuestionWithAnswersAsync(Guid questionId) =>
             await _context

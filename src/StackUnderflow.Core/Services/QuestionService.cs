@@ -40,8 +40,8 @@ namespace StackUnderflow.Core.Services
         public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummaries(QuestionResourceParameters questionResourceParameters) =>
             await _questionRepository.GetQuestionSummaries(questionResourceParameters);
 
-        public async Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId) =>
-            await _questionRepository.GetQuestionWithUserAndAllCommentsAsync(questionId);
+        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId) =>
+            await _questionRepository.GetQuestionWithUserAndTagsAsync(questionId);
 
         public async Task AskQuestionAsync(QuestionCreateModel questionModel)
         {

@@ -1,5 +1,4 @@
 ☐ Next time
-  ☐ Getting questions must not return comments. Remove comments from query, query dto and view model. Comments belonging to a question will be returned in a standalone call.
 ☐ Endpoints
   ☐ /api/questionssummary
     ✔ GET @done (04. 07. 2020. 23:30:32)

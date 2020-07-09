@@ -21,7 +21,7 @@ namespace StackUnderflow.Api.Controllers
 
         [HttpGet("{id}")]
         public async Task<ActionResult<QuestionGetViewModel>> Get(Guid id) =>
-            Ok(await _questionService.GetQuestionWithUserAndAllCommentsAsync(id));
+            Ok(await _questionService.GetQuestionWithUserAndTagsAsync(id));
 
         [HttpPost]
         public IActionResult Post([FromBody] QuestionCreateRequest request)

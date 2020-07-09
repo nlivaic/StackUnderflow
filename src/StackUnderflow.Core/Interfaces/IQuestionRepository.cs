@@ -11,7 +11,7 @@ namespace StackUnderflow.Core.Interfaces
 {
     public interface IQuestionRepository : IRepository<Question>
     {
-        Task<QuestionGetModel> GetQuestionWithUserAndAllCommentsAsync(Guid questionId);
+        Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId);
         Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummaries(QuestionResourceParameters questionResourceParameters);
         Task<Question> GetQuestionWithAnswersAsync(Guid questionId);
         Task<Question> GetQuestionWithAnswersAndCommentsAsync(Guid questionId);

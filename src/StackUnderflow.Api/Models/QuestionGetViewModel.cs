@@ -12,7 +12,6 @@ namespace StackUnderflow.Api.Models
         public bool HasAcceptedAnswer { get; set; }
         public string CreatedOn { get; set; }
         public int VotesSum { get; set; }
-        public IEnumerable<CommentGetViewModel> Comments { get; set; } = new List<CommentGetViewModel>();
         public IEnumerable<TagGetViewModel> Tags { get; set; } = new List<TagGetViewModel>();
     }
 }
