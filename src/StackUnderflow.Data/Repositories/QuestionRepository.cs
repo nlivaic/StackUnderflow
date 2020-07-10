@@ -7,7 +7,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflow.Common.Collections;
 using StackUnderflow.Core.Entities;
-using StackUnderflow.Core.Foo;
+using StackUnderflow.Core.QueryParameters;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Data.QueryableExtensions;
@@ -35,15 +35,34 @@ namespace StackUnderflow.Data.Repositories
                 .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
-        public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummaries(QuestionResourceParameters questionResourceParameters) =>
-            await _context
-                .Questions
+        public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummaries(QuestionQueryParameters questionQueryParameters)
+        {
+            var query = _context
+                .Questions as IQueryable<Question>;
+            if (questionQueryParameters.Tags.Any())
+            {
+                query = query.Where(q => q.QuestionTags.Any(qt => questionQueryParameters.Tags.Contains(qt.TagId)));
+            }
+            if (questionQueryParameters.Authors.Any())
+            {
+                query = query.Where(q => questionQueryParameters.Authors.Any(a => a == q.UserId));
+            }
+            if (!string.IsNullOrWhiteSpace(questionQueryParameters.SearchQuery))
+            {
+                var searchQueryLowercase = questionQueryParameters.SearchQuery.ToLower();
+                query = query.Where(q =>
+                    q.Title.ToLower().Contains(searchQueryLowercase) ||
+                    q.Body.ToLower().Contains(searchQueryLowercase));
+            }
+            query = query
                 .OrderBy(q => q.Id)           // @nl: ordering on Guid. Think this through!
                 .Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
-                .AsNoTracking()
-                .ApplyPagingAsync<Question, QuestionSummaryGetModel>(_mapper, questionResourceParameters.PageNumber, questionResourceParameters.PageSize);
+                .AsNoTracking();
+            return await query
+                .ApplyPagingAsync<Question, QuestionSummaryGetModel>(_mapper, questionQueryParameters.PageNumber, questionQueryParameters.PageSize);
+        }
 
         public async Task<Question> GetQuestionWithAnswersAsync(Guid questionId) =>
             await _context

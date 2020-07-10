@@ -1,12 +1,19 @@
-☐ Next time
+☐ Next time:
+  ☐ Tag treba imati samo name. U Fluent API-ju stavi da je to PK. Doradi seedere.
+  ☐ Kako u VS Codeu mogu vidjeti EF Core generirani SQL?
+  ☐ Kako u Postgresu mogu vidjeti izvršeni SQL?
+  ☐ QuestionSummary bi trebao sadržavati i user's id. Tako bi onda bilo moguće i queryati summary po user's id.
 ☐ Endpoints
   ☐ /api/questionssummary
     ✔ GET @done (04. 07. 2020. 23:30:32)
     ☐ QuestionResourceParameters
-      ☐ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`. X-PAgination header.
-      ☐ Filter (strict!) on tags: property `string Tags`.
-      ☐ Search (relaxed) on title and body: property `string SearchQuery`.
+      ✔ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`. X-PAgination header. @done (09. 07. 2020. 22:24:51)
+      ✔ Filter (strict!) on tags: property `string Tags`, `string Author`. @done (11. 07. 2020. 00:18:39)
+      ✔ Search (relaxed) on title and body: property `string SearchQuery`. @done (11. 07. 2020. 00:29:10)
       ☐ Ordering
+        ☐ Istražiti InvalidPropertyMappingException u Restful projektu i kod Kevina.
+        ☐ Property mapping.
+        ☐ OrderingDirectionDto
   ☐ /api/questions/{id}
     ✘ GET @cancelled (08. 07. 2020. 22:35:06)
       ☐ Must not return comments. Return comments in a separate request.

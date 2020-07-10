@@ -13,6 +13,10 @@ using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Services;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Profiles;
+using Microsoft.AspNetCore.Mvc.Filters;
+using StackUnderflow.Api.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace StackUnderflow.Api
 {
@@ -30,7 +34,27 @@ namespace StackUnderflow.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services
+                .AddControllers(configure =>
+                {
+                    configure.ReturnHttpNotAcceptable = true;
+                })
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = actionContext =>
+                    {
+                        var actionExecutingContext = actionContext as ActionExecutingContext;
+                        var validationProblemDetails = ValidationProblemDetailsFactory.Create(actionContext);
+                        if (actionContext.ModelState.ErrorCount > 0
+                            && actionExecutingContext?.ActionArguments.Count == actionContext.ActionDescriptor.Parameters.Count)
+                        {
+                            validationProblemDetails.Status = StatusCodes.Status422UnprocessableEntity;
+                            return new UnprocessableEntityObjectResult(validationProblemDetails);
+                        }
+                        validationProblemDetails.Status = StatusCodes.Status400BadRequest;
+                        return new BadRequestObjectResult(validationProblemDetails);
+                    };
+                });
 
             services.AddDbContext<StackUnderflowDbContext>(options =>
             {
