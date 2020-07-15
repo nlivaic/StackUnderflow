@@ -13,6 +13,7 @@ namespace StackUnderflow.Api.Profiles
             CreateMap<QuestionSummaryGetModel, QuestionSummaryGetViewModel>()
                 .ForMember(dest => dest.Tags,
                     opts => opts.MapFrom(src => src.Tags.Select(t => t.Name)));
+            CreateMap<QuestionCreateRequest, QuestionCreateModel>();
         }
     }
 }
