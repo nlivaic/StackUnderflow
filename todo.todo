@@ -74,9 +74,8 @@
   ✔ How to create IRepository<T> without registering all of them one by one? @done (15. 07. 2020. 22:12:34)
   ☐ Routes and endpoints
   ☐ services.AddController()
-  ☐ app.UseDeveloperExceptionPage()
-  ☐ app.ExceptionHandler()
-  ☐ InvalidModelStateResponseFactory
+  ✔ app.ExceptionHandler() @done (15. 07. 2020. 22:31:39)
+  ✔ InvalidModelStateResponseFactory @done (15. 07. 2020. 22:31:41)
 ☐ API Advanced
   ☐ Filtering and searching
   ☐ Cacheing
