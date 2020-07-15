@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -43,9 +43,9 @@ namespace StackUnderflow.Data.Repositories
             {
                 query = query.Where(q => q.QuestionTags.Any(qt => questionQueryParameters.Tags.Contains(qt.TagId)));
             }
-            if (questionQueryParameters.Authors.Any())
+            if (questionQueryParameters.Users.Any())
             {
-                query = query.Where(q => questionQueryParameters.Authors.Any(a => a == q.UserId));
+                query = query.Where(q => questionQueryParameters.Users.Any(a => a == q.UserId));
             }
             if (!string.IsNullOrWhiteSpace(questionQueryParameters.SearchQuery))
             {
@@ -54,13 +54,13 @@ namespace StackUnderflow.Data.Repositories
                     q.Title.ToLower().Contains(searchQueryLowercase) ||
                     q.Body.ToLower().Contains(searchQueryLowercase));
             }
-            query = query
+            return await query
                 .OrderBy(q => q.Id)           // @nl: ordering on Guid. Think this through!
                 .Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
-                .AsNoTracking();
-            return await query
+                .ApplySorting(questionQueryParameters.SortBy)
+                .AsNoTracking()
                 .ApplyPagingAsync<Question, QuestionSummaryGetModel>(_mapper, questionQueryParameters.PageNumber, questionQueryParameters.PageSize);
         }
 

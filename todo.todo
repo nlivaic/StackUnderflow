@@ -2,18 +2,17 @@
   ☐ Tag treba imati samo name. U Fluent API-ju stavi da je to PK. Doradi seedere.
   ☐ Kako u VS Codeu mogu vidjeti EF Core generirani SQL?
   ☐ Kako u Postgresu mogu vidjeti izvršeni SQL?
-  ☐ QuestionSummary bi trebao sadržavati i user's id. Tako bi onda bilo moguće i queryati summary po user's id.
+  ☐ Ordering summaries.
+  ☐ Da li q/a/c.VotesSum uistinu potreban? Razmisli o tome kako će se q/a/c queryati i da li je VotesSum uistinu optimizacija? Ako ćemo micati VotesSum, razmisliti kako će se taj podatak vidjeti onda na queryjima (join, count), te što je sa orderingom u toj situaciji?
+  ☐ Riješiti ovo gore prije nego odem predaleko. Onda treba QuestionSummary proglasiti gotovim i krenuti na idući endpoint na listi.
 ☐ Endpoints
   ☐ /api/questionssummary
     ✔ GET @done (04. 07. 2020. 23:30:32)
-    ☐ QuestionResourceParameters
-      ✔ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`. X-PAgination header. @done (09. 07. 2020. 22:24:51)
-      ✔ Filter (strict!) on tags: property `string Tags`, `string Author`. @done (11. 07. 2020. 00:18:39)
-      ✔ Search (relaxed) on title and body: property `string SearchQuery`. @done (11. 07. 2020. 00:29:10)
-      ☐ Ordering
-        ☐ Istražiti InvalidPropertyMappingException u Restful projektu i kod Kevina.
-        ☐ Property mapping.
-        ☐ OrderingDirectionDto
+    ✔ QuestionResourceParameters @done (15. 07. 2020. 22:00:04)
+      ✔ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`. X-PAgination header. @done (15. 07. 2020. 21:59:55)
+      ✔ Filter (strict!) on tags: property `string Tags`, `string Author`. @done (15. 07. 2020. 21:59:57)
+      ✔ Search (relaxed) on title and body: property `string SearchQuery`. @done (15. 07. 2020. 21:59:57)
+      ✔ Ordering @done (15. 07. 2020. 21:59:58)
   ☐ /api/questions/{id}
     ✘ GET @cancelled (08. 07. 2020. 22:35:06)
       ☐ Must not return comments. Return comments in a separate request.
@@ -50,7 +49,6 @@
     ☐ POST
   ☐ /api/questions/{id}/vote/{id}
     ☐ DELETE
-    ☐ Think the concept through. It is ok to post a new vote and get a vote id back. But I don't think it is ok to delete against all the votes. Logged in user will get the id of his vote back and there (thank to HATEOAS) it will say it is ok to delete the vote!
   ☐ /api/questions/{questionId}/comments/{commentId}/vote
     ☐ POST
   ☐ /api/questions/{questionId}/comments/{commentId}/vote/{id}
@@ -66,14 +64,14 @@
   ☐ /api/tags
     ☐ GET
     ☐ POST
-  ☐ /api/tags/{id}
+  ☐ /api/tags/{name}
     ☐ GET
     ☐ This will need more thinking through.
   ☐ /api/users
     ☐ This will need more thinking through.
 ☐ Startup.cs
   ☐ Tidy up all the registrations.
-  ☐ How to create IRepository<T> without registering all of them one by one?
+  ✔ How to create IRepository<T> without registering all of them one by one? @done (15. 07. 2020. 22:12:34)
   ☐ Routes and endpoints
   ☐ services.AddController()
   ☐ app.UseDeveloperExceptionPage()

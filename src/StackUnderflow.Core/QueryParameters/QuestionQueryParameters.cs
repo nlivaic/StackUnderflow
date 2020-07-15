@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using StackUnderflow.Core.QueryParameters.Sorting;
 
 namespace StackUnderflow.Core.QueryParameters
 {
-    public class QuestionQueryParameters
+    public class QuestionQueryParameters : ISortable
     {
         public int PageSize { get; set; } = 3;
         public int MaximumPageSize { get; set; } = 5;
@@ -11,5 +12,6 @@ namespace StackUnderflow.Core.QueryParameters
         public List<Guid> Tags { get; set; }
         public List<Guid> Users { get; set; }
         public string SearchQuery { get; set; }
+        public IEnumerable<SortCriteria> SortBy { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Primitives;
 using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
+using StackUnderflow.API.Services.Sorting;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.QueryParameters;
 
@@ -18,11 +19,13 @@ namespace StackUnderflow.Api.Controllers
     {
         private readonly IQuestionService _questionService;
         private readonly IMapper _mapper;
+        private readonly IPropertyMappingService _propertyMappingService;
 
-        public QuestionSummariesController(IQuestionService questionService, IMapper mapper)
+        public QuestionSummariesController(IQuestionService questionService, IMapper mapper, IPropertyMappingService propertyMappingService)
         {
             _questionService = questionService;
             _mapper = mapper;
+            _propertyMappingService = propertyMappingService;
         }
 
         [HttpGet]

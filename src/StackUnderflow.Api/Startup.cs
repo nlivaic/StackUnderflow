@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using StackUnderflow.Api.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StackUnderflow.API.Services.Sorting;
 
 namespace StackUnderflow.Api
 {
@@ -63,12 +64,11 @@ namespace StackUnderflow.Api
                     options.EnableSensitiveDataLogging(true);
             });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IRepository<Tag>, Repository<Tag>>();        // @nl
-            services.AddScoped<IRepository<User>, Repository<User>>();        // @nl
-            services.AddScoped<IRepository<Question>, Repository<Question>>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddTransient<ITagService, TagService>();
             services.AddSingleton<ILimits, Limits>();
+            services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
             services.AddTransient<IQuestionService, QuestionService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionProfile).Assembly);
