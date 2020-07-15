@@ -31,6 +31,9 @@ namespace StackUnderflow.Data
                 .HasOne(qt => qt.Tag)
                 .WithMany(t => t.QuestionTags)
                 .HasForeignKey(qt => qt.TagId);
+
+            modelBuilder.Entity<Tag>()
+                .HasIndex(t => t.Name);
         }
     }
 }

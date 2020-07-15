@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StackUnderflow.Data;
@@ -9,9 +10,10 @@ using StackUnderflow.Data;
 namespace StackUnderflow.Data.Migrations
 {
     [DbContext(typeof(StackUnderflowDbContext))]
-    partial class StackUnderflowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200715204403_TagNameIndex")]
+    partial class TagNameIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

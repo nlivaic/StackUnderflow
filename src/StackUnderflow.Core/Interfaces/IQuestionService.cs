@@ -10,7 +10,7 @@ namespace StackUnderflow.Core.Interfaces
     {
         Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummaries(QuestionQueryParameters questionQueryParameters);
         Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId);
-        Task AskQuestionAsync(QuestionCreateModel questionModel);
+        Task<QuestionGetModel> AskQuestionAsync(QuestionCreateModel questionModel);
         Task EditQuestionAsync(QuestionEditModel questionModel);
         Task DeleteQuestionAsync(Guid questionUserId, Guid questionId);
     }

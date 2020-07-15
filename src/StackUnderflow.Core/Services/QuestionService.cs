@@ -43,13 +43,14 @@ namespace StackUnderflow.Core.Services
         public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId) =>
             await _questionRepository.GetQuestionWithUserAndTagsAsync(questionId);
 
-        public async Task AskQuestionAsync(QuestionCreateModel questionModel)
+        public async Task<QuestionGetModel> AskQuestionAsync(QuestionCreateModel questionModel)
         {
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
             var user = await _userRepository.GetByIdAsync(questionModel.UserId);
             var question = Question.Create(user, questionModel.Title, questionModel.Body, tags, _limits);
             await _questionRepository.AddAsync(question);
             await _uow.SaveAsync();
+            return _mapper.Map<QuestionGetModel>(question);
         }
 
         public async Task EditQuestionAsync(QuestionEditModel questionModel)

@@ -1,12 +1,12 @@
 ☐ Next time:
-  ☐ Tag treba imati samo name. U Fluent API-ju stavi da je to PK. Doradi seedere.
+  ✔ Tag treba imati samo name. U Fluent API-ju stavi da je to PK. Doradi seedere. @done (15. 07. 2020. 23:11:35)
   ☐ Kako u VS Codeu mogu vidjeti EF Core generirani SQL?
   ☐ Kako u Postgresu mogu vidjeti izvršeni SQL?
-  ☐ Ordering summaries.
   ☐ Da li q/a/c.VotesSum uistinu potreban? Razmisli o tome kako će se q/a/c queryati i da li je VotesSum uistinu optimizacija? Ako ćemo micati VotesSum, razmisliti kako će se taj podatak vidjeti onda na queryjima (join, count), te što je sa orderingom u toj situaciji?
+  ☐ Repository<>.Update - da li je potrebno mijenjati state sa EntityState.Modified?
   ☐ Riješiti ovo gore prije nego odem predaleko. Onda treba QuestionSummary proglasiti gotovim i krenuti na idući endpoint na listi.
 ☐ Endpoints
-  ☐ /api/questionssummary
+  ✔ /api/questionssummary @done (15. 07. 2020. 22:33:31)
     ✔ GET @done (04. 07. 2020. 23:30:32)
     ✔ QuestionResourceParameters @done (15. 07. 2020. 22:00:04)
       ✔ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`. X-PAgination header. @done (15. 07. 2020. 21:59:55)
@@ -15,11 +15,12 @@
       ✔ Ordering @done (15. 07. 2020. 21:59:58)
   ☐ /api/questions/{id}
     ✘ GET @cancelled (08. 07. 2020. 22:35:06)
-      ☐ Must not return comments. Return comments in a separate request.
+      ✔ Must not return comments. Return comments in a separate request. @done (15. 07. 2020. 23:38:41)
     ☐ PUT
     ☐ DELETE
   ☐ /api/questions/
     ☐ POST
+      ☐ Validate model
   ☐ /api/questions/{questionId}/comments
     ☐ GET
     ☐ POST
