@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
@@ -16,7 +17,7 @@ namespace StackUnderflow.Api.Controllers
         private readonly IQuestionService _questionService;
         private readonly IMapper _mapper;
 
-        public QuestionsController(IQuestionService questionService, IMapper mapper)
+        public QuestionsController(IQuestionService questionService, IMapper mapper, Microsoft.Extensions.Logging.ILogger<QuestionsController> logger)
         {
             _questionService = questionService;
             _mapper = mapper;
