@@ -34,7 +34,7 @@ namespace StackUnderflow.Core.Entities
 
         public void Edit(User user, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {
-            if (User.Id != user.Id)
+            if (UserId != user.Id)
             {
                 throw new BusinessException("Question can be edited only by user.");
             }

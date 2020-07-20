@@ -1,10 +1,11 @@
 ☐ Next time:
   ✔ Tag treba imati samo name. U Fluent API-ju stavi da je to PK. Doradi seedere. @done (15. 07. 2020. 23:11:35)
-  ☐ Kako u VS Codeu mogu vidjeti EF Core generirani SQL?
-  ☐ Kako u Postgresu mogu vidjeti izvršeni SQL?
+  ✔ Kako u VS Codeu mogu vidjeti EF Core generirani SQL? @done (16. 07. 2020. 22:27:04)
+  ✔ Kako u Postgresu mogu vidjeti izvršeni SQL? @done (16. 07. 2020. 22:27:02)
   ☐ Da li q/a/c.VotesSum uistinu potreban? Razmisli o tome kako će se q/a/c queryati i da li je VotesSum uistinu optimizacija? Ako ćemo micati VotesSum, razmisliti kako će se taj podatak vidjeti onda na queryjima (join, count), te što je sa orderingom u toj situaciji?
   ☐ Repository<>.Update - da li je potrebno mijenjati state sa EntityState.Modified?
   ☐ Riješiti ovo gore prije nego odem predaleko. Onda treba QuestionSummary proglasiti gotovim i krenuti na idući endpoint na listi.
+  ☐ TagIds should be renamed to Tags.
 ☐ Endpoints
   ✔ /api/questionssummary @done (15. 07. 2020. 22:33:31)
     ✔ GET @done (04. 07. 2020. 23:30:32)
@@ -14,9 +15,10 @@
       ✔ Search (relaxed) on title and body: property `string SearchQuery`. @done (15. 07. 2020. 21:59:57)
       ✔ Ordering @done (15. 07. 2020. 21:59:58)
   ☐ /api/questions/{id}
-    ✘ GET @cancelled (08. 07. 2020. 22:35:06)
+    ✔ GET @done (16. 07. 2020. 22:27:28)
       ✔ Must not return comments. Return comments in a separate request. @done (15. 07. 2020. 23:38:41)
     ☐ PUT
+      ☐ Tracking does not work on collection elements.
     ☐ DELETE
   ☐ /api/questions/
     ☐ POST

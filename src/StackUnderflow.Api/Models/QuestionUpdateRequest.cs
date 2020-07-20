@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace StackUnderflow.Api.Models
 {
-    public class QuestionCreateRequest
+    public class QuestionUpdateRequest
     {
         public string Title { get; set; }
         public string Body { get; set; }

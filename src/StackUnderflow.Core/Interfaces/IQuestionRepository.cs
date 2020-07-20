@@ -15,5 +15,6 @@ namespace StackUnderflow.Core.Interfaces
         Task<Question> GetQuestionWithAnswersAsync(Guid questionId);
         Task<Question> GetQuestionWithAnswersAndCommentsAsync(Guid questionId);
         Task<Question> GetQuestionWithCommentsAsync(Guid questionId);
+        Task<Question> GetQuestionWithTagsAsync(Guid questionId);
     }
 }

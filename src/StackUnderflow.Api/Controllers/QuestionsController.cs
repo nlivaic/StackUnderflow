@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
@@ -17,7 +15,7 @@ namespace StackUnderflow.Api.Controllers
         private readonly IQuestionService _questionService;
         private readonly IMapper _mapper;
 
-        public QuestionsController(IQuestionService questionService, IMapper mapper, Microsoft.Extensions.Logging.ILogger<QuestionsController> logger)
+        public QuestionsController(IQuestionService questionService, IMapper mapper)
         {
             _questionService = questionService;
             _mapper = mapper;
@@ -34,6 +32,16 @@ namespace StackUnderflow.Api.Controllers
             question.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
             var questionModel = await _questionService.AskQuestionAsync(question);
             return CreatedAtRoute("GetQuestion", new { id = questionModel.Id }, questionModel);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put([FromRoute] Guid id, [FromBody] QuestionUpdateRequest request)
+        {
+            var question = _mapper.Map<QuestionEditModel>(request);
+            question.QuestionUserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            question.QuestionId = id;
+            await _questionService.EditQuestionAsync(question);
+            return NoContent();
         }
     }
 }

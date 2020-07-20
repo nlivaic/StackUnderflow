@@ -56,11 +56,10 @@ namespace StackUnderflow.Core.Services
         public async Task EditQuestionAsync(QuestionEditModel questionModel)
         {
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
-            var user = await _userRepository.GetByIdAsync(questionModel.QuestionUserId);
+            var user = await _userRepository.GetByIdAsync(questionModel.QuestionUserId, false);
             var question = (await _questionRepository
-                .ListAllAsync(q => q.Id == questionModel.QuestionId && q.UserId != questionModel.QuestionUserId))
-                .SingleOrDefault()
-                ?? throw new BusinessException($"Question with id '{questionModel.QuestionId}' belonging to user '{questionModel.QuestionUserId}' does not exist.");
+                .GetQuestionWithTagsAsync(questionModel.QuestionId))
+                ?? throw new BusinessException($"Question with id '{questionModel.QuestionId}'.");
             question.Edit(user, questionModel.Title, questionModel.Body, tags, _limits);
             await _uow.SaveAsync();
         }
