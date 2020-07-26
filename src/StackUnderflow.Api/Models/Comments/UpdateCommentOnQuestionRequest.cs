@@ -1,16 +1,15 @@
-using System;
 using FluentValidation;
 using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Api.Models
 {
-    public class CommentOnQuestionCreateRequest
+    public class UpdateCommentOnQuestionRequest
     {
         public string Body { get; set; }
 
-        public class CommentOnQuestionCreateRequestValidator : AbstractValidator<CommentOnQuestionCreateRequest>
+        public class UpdateCommentOnQuestionRequestValidator : AbstractValidator<UpdateCommentOnQuestionRequest>
         {
-            public CommentOnQuestionCreateRequestValidator(ILimits limits)
+            public UpdateCommentOnQuestionRequestValidator(ILimits limits)
             {
                 RuleFor(x => x.Body)
                     .MinimumLength(limits.CommentBodyMinimumLength)

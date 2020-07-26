@@ -10,5 +10,7 @@ namespace StackUnderflow.Core.Interfaces
     public interface ICommentRepository : IRepository<Comment>
     {
         Task<IEnumerable<CommentGetModel>> GetCommentsForQuestion(Guid questionId);
+        Task<CommentGetModel> GetCommentModel(Guid questionId, Guid commentId);
+        Task<Comment> GetCommentWithUser(Guid commentId);
     }
 }

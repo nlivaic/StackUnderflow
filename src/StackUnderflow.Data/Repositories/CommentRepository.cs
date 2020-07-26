@@ -27,5 +27,18 @@ namespace StackUnderflow.Data.Repositories
                 .Where(c => c.ParentQuestionId == questionId)
                 .ProjectTo<CommentGetModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
+
+        public async Task<CommentGetModel> GetCommentModel(Guid questionId, Guid commentId) =>
+            await _context
+                .Comments
+                .Where(c => c.ParentQuestionId == questionId && c.Id == commentId)
+                .ProjectTo<CommentGetModel>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+
+        public async Task<Comment> GetCommentWithUser(Guid commentId) =>
+            await _context
+                .Comments
+                .Include(c => c.User)
+                .SingleOrDefaultAsync(c => c.Id == commentId);
     }
 }

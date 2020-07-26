@@ -28,22 +28,65 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet("api/questions/{questionId}/[controller]")]
-        public async Task<ActionResult<IEnumerable<CommentGetViewModel>>> Get([FromRoute] Guid questionId)
+        public async Task<ActionResult<IEnumerable<CommentGetViewModel>>> GetCommentForQuestion([FromRoute] Guid questionId)
         {
-            IEnumerable<CommentGetViewModel> result = _mapper.Map<List<CommentGetViewModel>>(
-                await _commentRepository.GetCommentsForQuestion(questionId));
+            var comment = await _commentRepository.GetCommentsForQuestion(questionId);
+            IEnumerable<CommentGetViewModel> result = _mapper.Map<List<CommentGetViewModel>>(comment);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+        [HttpGet("api/questions/{questionId}/[controller]/{commentId}", Name = "GetForQuestion")]
+        public async Task<ActionResult<CommentGetViewModel>> GetCommentsForQuestion([FromRoute] Guid questionId, [FromRoute] Guid commentId)
+        {
+            var comment = await _commentRepository.GetCommentModel(questionId, commentId);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            CommentGetViewModel result = _mapper.Map<CommentGetViewModel>(comment);
             return Ok(result);
         }
 
         [HttpPost("/api/questions/{questionId}/[controller]")]
-        public async Task<ActionResult<CommentGetViewModel>> Post([FromRoute] Guid questionId, [FromBody] CommentOnQuestionCreateRequest request)
+        public async Task<ActionResult<CommentGetViewModel>> PostOnQuestion([FromRoute] Guid questionId, [FromBody] CommentOnQuestionCreateRequest request)
         {
             var comment = _mapper.Map<CommentOnQuestionCreateModel>(request);
             comment.QuestionId = questionId;
             comment.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
-            var commentModel = await _commentService.CommentOnQuestionAsync(comment);
+            CommentGetModel commentModel = null;
+            try
+            {
+                commentModel = await _commentService.CommentOnQuestionAsync(comment);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
             var result = _mapper.Map<CommentGetViewModel>(commentModel);
-            return Ok();
+            return CreatedAtRoute("GetForQuestion", new { questionId = questionId, commentId = commentModel.Id }, result);
+        }
+
+        [HttpPut("/api/questions/{questionId}/[controller]/{commentId}")]
+        public async Task<ActionResult> PutOnQuestion([FromRoute] Guid questionId, [FromRoute] Guid commentId, [FromBody] UpdateCommentOnQuestionRequest request)
+        {
+            var comment = _mapper.Map<CommentEditModel>(request);
+            comment.ParentQuestionId = questionId;
+            comment.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            comment.CommentId = commentId;
+            try
+            {
+                await _commentService.EditAsync(comment);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

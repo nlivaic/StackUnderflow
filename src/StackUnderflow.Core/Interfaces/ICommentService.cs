@@ -6,6 +6,6 @@ namespace StackUnderflow.Core.Interfaces
     public interface ICommentService
     {
         Task<CommentGetModel> CommentOnQuestionAsync(CommentOnQuestionCreateModel commentModel);
-        Task Edit(CommentEditModel commentModel);
+        Task EditAsync(CommentEditModel commentModel);
     }
 }

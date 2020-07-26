@@ -13,7 +13,7 @@ namespace StackUnderflow.Core.Services
     public class CommentService : ICommentService
     {
         private readonly IQuestionRepository _questionRepository;
-        private readonly IRepository<Comment> _commentRepository;
+        private readonly ICommentRepository _commentRepository;
         private readonly IRepository<User> _userRepository;
         private readonly IUnitOfWork _uow;
         private readonly ILimits _limits;
@@ -21,7 +21,7 @@ namespace StackUnderflow.Core.Services
         private readonly IMapper _mapper;
 
         public CommentService(IQuestionRepository questionRepository,
-            IRepository<Comment> commentRepository,
+            ICommentRepository commentRepository,
             IRepository<User> userRepository,
             IUnitOfWork unitOfWork,
             ILimits limits,
@@ -39,7 +39,7 @@ namespace StackUnderflow.Core.Services
         public async Task<CommentGetModel> CommentOnQuestionAsync(CommentOnQuestionCreateModel commentModel)
         {
             var question = (await _questionRepository.GetQuestionWithCommentsAsync(commentModel.QuestionId))
-                ?? throw new BusinessException($"Question with id '{commentModel.QuestionId}' does not exist.");
+                ?? throw new EntityNotFoundException(nameof(Question), commentModel.QuestionId);
             var user = await _userRepository.GetByIdAsync(commentModel.UserId);
             var commentOrderNumber = question
                 .Comments
@@ -53,10 +53,14 @@ namespace StackUnderflow.Core.Services
             return _mapper.Map<CommentGetModel>(comment);
         }
 
-        public async Task Edit(CommentEditModel commentModel)
+        public async Task EditAsync(CommentEditModel commentModel)
         {
-            var comment = (await _commentRepository.GetByIdAsync(commentModel.CommentId))
-                ?? throw new BusinessException($"Comment with id '{commentModel.CommentId}' does not exist.");
+            var comment = (await _commentRepository.GetCommentWithUser(commentModel.CommentId))
+                ?? throw new EntityNotFoundException(nameof(Comment), commentModel.CommentId);
+            if (comment.ParentQuestionId != commentModel.ParentQuestionId)
+            {
+                throw new EntityNotFoundException(nameof(Comment), commentModel.CommentId);
+            }
             var user = await _userRepository.GetByIdAsync(commentModel.UserId);
             comment.Edit(user, commentModel.Body, _limits);
             await _uow.SaveAsync();

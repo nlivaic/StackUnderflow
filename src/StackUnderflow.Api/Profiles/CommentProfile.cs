@@ -1,5 +1,6 @@
 using AutoMapper;
 using StackUnderflow.Api.Models;
+using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.Profiles
@@ -10,6 +11,7 @@ namespace StackUnderflow.Api.Profiles
         {
             CreateMap<CommentGetModel, CommentGetViewModel>();
             CreateMap<CommentOnQuestionCreateRequest, CommentOnQuestionCreateModel>();
+            CreateMap<UpdateCommentOnQuestionRequest, CommentEditModel>();
         }
     }
 }
