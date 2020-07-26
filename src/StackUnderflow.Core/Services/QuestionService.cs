@@ -76,6 +76,10 @@ namespace StackUnderflow.Core.Services
             {
                 throw new BusinessException($"Cannot delete question '{questionId}' because associated answers exist.");
             }
+            if (question.Votes.Any() == true)
+            {
+                throw new BusinessException($"Cannot delete question '{questionId}' because associated votes exist.");
+            }
             _questionRepository.Delete(question);
             await _uow.SaveAsync();
             // @nl: What if the question has any votes/points on it?

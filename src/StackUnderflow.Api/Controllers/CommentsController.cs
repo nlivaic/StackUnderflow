@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 
@@ -86,6 +87,20 @@ namespace StackUnderflow.Api.Controllers
                 return NotFound();
             }
 
+            return NoContent();
+        }
+
+        [HttpDelete("/api/questions/{questionId}/[controller]/{commentId}")]
+        public async Task<ActionResult> DeleteOnQuestion([FromRoute] Guid questionId, [FromRoute] Guid commentId, [FromBody] UpdateCommentOnQuestionRequest request)
+        {
+            try
+            {
+                await _commentService.DeleteAsync(questionId, commentId);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
             return NoContent();
         }
     }

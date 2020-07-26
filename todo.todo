@@ -22,12 +22,12 @@
   ✔ /api/questions/ @done (22. 07. 2020. 21:45:56)
     ✔ POST @done (22. 07. 2020. 21:45:55)
       ✔ Validate model @done (22. 07. 2020. 21:45:54)
-  ☐ /api/questions/{questionId}/comments
+  ✔ /api/questions/{questionId}/comments @done (26. 07. 2020. 18:06:22)
     ✔ GET @done (23. 07. 2020. 00:13:41)
     ✔ POST @done (26. 07. 2020. 14:43:27)
-  ☐ /api/questions/{questionId}/comments/{id}
-    ☐ GET
-    ☐ PUT
+  ✔ /api/questions/{questionId}/comments/{id} @done (26. 07. 2020. 18:06:22)
+    ✔ GET @done (26. 07. 2020. 18:06:03)
+    ✔ PUT @done (26. 07. 2020. 18:06:02)
     ☐ DELETE
   ☐ /api/questions/{questionId}/answers
     ☐ GET

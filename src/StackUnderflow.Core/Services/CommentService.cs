@@ -66,5 +66,20 @@ namespace StackUnderflow.Core.Services
             await _uow.SaveAsync();
             // @nl: raise an event?
         }
+
+        public async Task DeleteAsync(Guid questionId, Guid commentId)
+        {
+            var comment = await _commentRepository.GetByIdAsync(commentId);
+            if (comment == null || comment.ParentQuestionId != questionId)
+            {
+                throw new EntityNotFoundException(nameof(Comment), commentId);
+            }
+            if (comment.Votes.Any() == true)
+            {
+                throw new BusinessException($"Cannot delete comment '{commentId}' because associated votes exist.");
+            }
+            _commentRepository.Delete(comment);
+            await _uow.SaveAsync();
+        }
     }
 }
