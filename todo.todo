@@ -6,6 +6,7 @@
   ☐ Repository<>.Update - da li je potrebno mijenjati state sa EntityState.Modified?
   ☐ Riješiti ovo gore prije nego odem predaleko. Onda treba QuestionSummary proglasiti gotovim i krenuti na idući endpoint na listi.
   ☐ TagIds should be renamed to Tags.
+  ☐ Nema smisla da se Comment.OrderNumber računa negdje eksplicitno. Možemo ga jednostavno izračunati i assignati na Comment u sklopu Commentablea.
 ☐ Endpoints
   ✔ /api/questionssummary @done (15. 07. 2020. 22:33:31)
     ✔ GET @done (04. 07. 2020. 23:30:32)
@@ -14,18 +15,18 @@
       ✔ Filter (strict!) on tags: property `string Tags`, `string Author`. @done (15. 07. 2020. 21:59:57)
       ✔ Search (relaxed) on title and body: property `string SearchQuery`. @done (15. 07. 2020. 21:59:57)
       ✔ Ordering @done (15. 07. 2020. 21:59:58)
-  ☐ /api/questions/{id}
+  ✔ /api/questions/{id} @done (21. 07. 2020. 08:17:07)
     ✔ GET @done (16. 07. 2020. 22:27:28)
       ✔ Must not return comments. Return comments in a separate request. @done (15. 07. 2020. 23:38:41)
-    ☐ PUT
-      ☐ Tracking does not work on collection elements.
-    ☐ DELETE
-  ☐ /api/questions/
-    ☐ POST
-      ☐ Validate model
+    ✔ PUT @done (21. 07. 2020. 06:44:03)
+    ✔ DELETE @done (21. 07. 2020. 08:17:06)
+  ✔ /api/questions/ @done (22. 07. 2020. 21:45:56)
+    ✔ POST @done (22. 07. 2020. 21:45:55)
+      ✔ Validate model @done (22. 07. 2020. 21:45:54)
   ☐ /api/questions/{questionId}/comments
-    ☐ GET
+    ✔ GET @done (23. 07. 2020. 00:13:41)
     ☐ POST
+      ☐ Zajebava kreiranje, neki EF Core error.
   ☐ /api/questions/{questionId}/comments/{id}
     ☐ GET
     ☐ PUT

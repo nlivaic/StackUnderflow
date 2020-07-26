@@ -12,6 +12,6 @@ namespace StackUnderflow.Core.Interfaces
         Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId);
         Task<QuestionGetModel> AskQuestionAsync(QuestionCreateModel questionModel);
         Task EditQuestionAsync(QuestionEditModel questionModel);
-        Task DeleteQuestionAsync(Guid questionUserId, Guid questionId);
+        Task DeleteQuestionAsync(Guid questionId, Guid questionUserId);
     }
 }

@@ -86,8 +86,10 @@ namespace StackUnderflow.Core.Entities
             HasAcceptedAnswer = false;
         }
 
-        public void Comment(Comment comment) =>
+        public void Comment(Comment comment)
+        {
             _commentable.Comment(comment);
+        }
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 

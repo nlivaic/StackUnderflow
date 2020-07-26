@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using StackUnderflow.Core.Entities;
 using AutoMapper;
 using StackUnderflow.Data;
 using StackUnderflow.Data.Repositories;
@@ -18,6 +17,7 @@ using StackUnderflow.Api.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.API.Services.Sorting;
+using FluentValidation.AspNetCore;
 
 namespace StackUnderflow.Api
 {
@@ -55,7 +55,8 @@ namespace StackUnderflow.Api
                         validationProblemDetails.Status = StatusCodes.Status400BadRequest;
                         return new BadRequestObjectResult(validationProblemDetails);
                     };
-                });
+                })
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddDbContext<StackUnderflowDbContext>(options =>
             {
@@ -66,10 +67,12 @@ namespace StackUnderflow.Api
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddTransient<IQuestionService, QuestionService>();
+            services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<ITagService, TagService>();
             services.AddSingleton<ILimits, Limits>();
             services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
-            services.AddTransient<IQuestionService, QuestionService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionProfile).Assembly);
         }

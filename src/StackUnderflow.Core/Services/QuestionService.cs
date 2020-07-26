@@ -59,18 +59,18 @@ namespace StackUnderflow.Core.Services
             var user = await _userRepository.GetByIdAsync(questionModel.QuestionUserId, false);
             var question = (await _questionRepository
                 .GetQuestionWithTagsAsync(questionModel.QuestionId))
-                ?? throw new BusinessException($"Question with id '{questionModel.QuestionId}'.");
+                ?? throw new EntityNotFoundException(nameof(Question), questionModel.QuestionId);
             question.Edit(user, questionModel.Title, questionModel.Body, tags, _limits);
             await _uow.SaveAsync();
         }
 
-        public async Task DeleteQuestionAsync(Guid questionUserId, Guid questionId)
+        public async Task DeleteQuestionAsync(Guid questionId, Guid questionUserId)
         {
             var question = (await _questionRepository
                 .GetQuestionWithAnswersAndCommentsAsync(questionId));
             if (question == null || question.UserId != questionUserId)
             {
-                throw new BusinessException($"Question with id '{questionId}' belonging to user '{questionUserId}' does not exist.");
+                throw new EntityNotFoundException(nameof(Question), questionId);
             }
             if (question.Answers.Any() == true)
             {

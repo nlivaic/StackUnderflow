@@ -82,8 +82,8 @@ namespace StackUnderflow.Data.Repositories
         public async Task<Question> GetQuestionWithCommentsAsync(Guid questionId) =>
             await _context
                 .Questions
-                .Where(q => q.Id == questionId)
                 .Include(q => q.Comments)
+                .Where(q => q.Id == questionId)
                 .SingleOrDefaultAsync();
 
         public async Task<Question> GetQuestionWithTagsAsync(Guid questionId) =>
