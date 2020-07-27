@@ -56,5 +56,14 @@ namespace StackUnderflow.Data.Repositories
                 .Comments
                 .Include(c => c.User)
                 .SingleOrDefaultAsync(c => c.Id == commentId);
+
+        public async Task<Comment> GetCommentWithAnswer(Guid commentId) =>
+            await _context
+                .Comments
+                .Include(c => c.ParentAnswer)
+                .SingleOrDefaultAsync(c => c.Id == commentId);
+
+
+
     }
 }

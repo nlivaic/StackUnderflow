@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using StackUnderflow.Common.Exceptions;
@@ -74,12 +75,7 @@ namespace StackUnderflow.Core.Services
 
         public async Task EditAsync(CommentEditModel commentModel)
         {
-            var comment = (await _commentRepository.GetCommentWithUser(commentModel.CommentId))
-                ?? throw new EntityNotFoundException(nameof(Comment), commentModel.CommentId);
-            if (comment.ParentQuestionId != commentModel.ParentQuestionId)
-            {
-                throw new EntityNotFoundException(nameof(Comment), commentModel.CommentId);
-            }
+            var comment = await GetCommentOnEditOrDelete(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
             var user = await _userRepository.GetByIdAsync(commentModel.UserId);
             comment.Edit(user, commentModel.Body, _limits);
             await _uow.SaveAsync();
@@ -88,11 +84,7 @@ namespace StackUnderflow.Core.Services
 
         public async Task DeleteAsync(CommentDeleteModel commentModel)
         {
-            var comment = await _commentRepository.GetByIdAsync(commentModel.CommentId);
-            if (comment == null || comment.ParentQuestionId != commentModel.ParentQuestionId)
-            {
-                throw new EntityNotFoundException(nameof(Comment), commentModel.CommentId);
-            }
+            var comment = await GetCommentOnEditOrDelete(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
             if (comment.Votes.Any() == true)
             {
                 throw new BusinessException($"Cannot delete comment '{commentModel.CommentId}' because associated votes exist.");
@@ -101,5 +93,24 @@ namespace StackUnderflow.Core.Services
             await _uow.SaveAsync();
         }
 
+        private async Task<Comment> GetCommentOnEditOrDelete(Guid? parentQuestionId, Guid? parentAnswerId, Guid commentId)
+        {
+            Comment comment = null;
+            if (parentAnswerId.HasValue)
+            {
+                comment = await _commentRepository.GetCommentWithAnswer(commentId);
+                if (comment == null
+                    || comment.ParentAnswerId != parentAnswerId
+                    || comment.ParentAnswer.QuestionId != parentQuestionId)
+                    throw new EntityNotFoundException(nameof(Comment), commentId);
+            }
+            else if (parentQuestionId.HasValue)
+            {
+                comment = await _commentRepository.GetByIdAsync(commentId);
+                if (comment == null || comment.ParentQuestionId != parentQuestionId)
+                    throw new EntityNotFoundException(nameof(Comment), commentId);
+            }
+            return comment;
+        }
     }
 }

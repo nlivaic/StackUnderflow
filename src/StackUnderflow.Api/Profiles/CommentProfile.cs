@@ -16,9 +16,9 @@ namespace StackUnderflow.Api.Profiles
             CreateMap<CommentForAnswerGetModel, CommentForAnswerGetViewModel>()
                 .ForMember(dest => dest.CreatedOn,
                     opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")));
-            CreateMap<CommentOnQuestionCreateRequest, CommentOnQuestionCreateModel>();
-            CreateMap<CommentOnAnswerCreateRequest, CommentOnAnswerCreateModel>();
-            CreateMap<UpdateCommentOnQuestionRequest, CommentEditModel>();
+            CreateMap<CommentCreateRequest, CommentOnQuestionCreateModel>();
+            CreateMap<CommentCreateRequest, CommentOnAnswerCreateModel>();
+            CreateMap<UpdateCommentRequest, CommentEditModel>();
         }
     }
 }

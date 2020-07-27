@@ -3,13 +3,13 @@ using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Api.Models
 {
-    public class CommentOnQuestionCreateRequest
+    public class UpdateCommentRequest
     {
         public string Body { get; set; }
 
-        public class CommentOnQuestionCreateRequestValidator : AbstractValidator<CommentOnQuestionCreateRequest>
+        public class UpdateCommentRequestValidator : AbstractValidator<UpdateCommentRequest>
         {
-            public CommentOnQuestionCreateRequestValidator(ILimits limits)
+            public UpdateCommentRequestValidator(ILimits limits)
             {
                 RuleFor(x => x.Body)
                     .MinimumLength(limits.CommentBodyMinimumLength)

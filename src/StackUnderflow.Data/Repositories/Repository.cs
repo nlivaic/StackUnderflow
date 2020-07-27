@@ -18,27 +18,29 @@ namespace StackUnderflow.Data.Repositories
             _context = context;
         }
 
-        public async Task<T> GetByIdAsync(Guid id, bool isTracked = false)
+        public async Task<T> GetByIdAsync(Guid id, bool isTracked = true)
         {
             var q = _context.Set<T>() as IQueryable<T>;
-            if (isTracked)
-            {
+            if (!isTracked)
                 q = q.AsNoTracking();
-            }
             return await q.SingleOrDefaultAsync(t => t.Id == id);
         }
 
-        public async Task<IEnumerable<T>> ListAllAsync(Expression<Func<T, bool>> predicate = null, bool isTracked = false)
+        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, bool isTracked = true)
+        {
+            var q = _context.Set<T>() as IQueryable<T>;
+            if (!isTracked)
+                q = q.AsNoTracking();
+            return await q.SingleOrDefaultAsync(predicate);
+        }
+
+        public async Task<IEnumerable<T>> ListAllAsync(Expression<Func<T, bool>> predicate = null, bool isTracked = true)
         {
             var q = _context.Set<T>().AsQueryable();
             if (predicate != null)
-            {
                 q = q.Where(predicate);
-            }
-            if (isTracked)
-            {
+            if (!isTracked)
                 q = q.AsNoTracking();
-            }
             return await q.ToListAsync();
         }
 

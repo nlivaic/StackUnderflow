@@ -41,7 +41,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet("api/questions/{questionId}/[controller]/{commentId}", Name = "GetCommentForQuestion")]
-        public async Task<ActionResult<CommentForQuestionGetViewModel>> GetCommentsForQuestion([FromRoute] Guid questionId, [FromRoute] Guid commentId)
+        public async Task<ActionResult<CommentForQuestionGetViewModel>> GetCommentForQuestion([FromRoute] Guid questionId, [FromRoute] Guid commentId)
         {
             var comment = await _commentRepository.GetCommentModel(questionId, commentId);
             if (comment == null)
@@ -52,8 +52,9 @@ namespace StackUnderflow.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGetAttribute("/api/questions/{questionId}/answers/{answerIds}/[controller]", Name = "GetCommentsForAnswers")]
-        public async Task<ActionResult<IEnumerable<CommentForAnswerGetViewModel>>> GetCommentsForAnswers([FromRoute] Guid questionId,
+        [HttpGet("/api/questions/{questionId}/answers/{answerIds}/[controller]", Name = "GetCommentsForAnswers")]
+        public async Task<ActionResult<IEnumerable<CommentForAnswerGetViewModel>>> GetCommentsForAnswers(
+            [FromRoute] Guid questionId,
             [FromRoute][ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> answerIds)
         {
             var comments = await _commentRepository.GetCommentsForAnswers(answerIds);
@@ -61,16 +62,21 @@ namespace StackUnderflow.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGetAttribute("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}", Name = "GetCommentForAnswer")]
-        public async Task<ActionResult<CommentForAnswerGetViewModel>> GetCommentForAnswer([FromRoute] Guid questionId, [FromRoute] Guid answerId, [FromRoute] Guid commentId)
+        [HttpGet("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}", Name = "GetCommentForAnswer")]
+        public async Task<ActionResult<CommentForAnswerGetViewModel>> GetCommentForAnswer(
+            [FromRoute] Guid questionId,
+            [FromRoute] Guid answerId,
+            [FromRoute] Guid commentId)
         {
             var comment = await _commentRepository.GetCommentForAnswer(questionId, answerId, commentId);
+            if (comment == null)
+                return NotFound();
             var result = _mapper.Map<CommentForAnswerGetViewModel>(comment);
             return Ok(result);
         }
 
         [HttpPost("/api/questions/{questionId}/[controller]")]
-        public async Task<ActionResult<CommentForQuestionGetViewModel>> PostOnQuestion([FromRoute] Guid questionId, [FromBody] CommentOnQuestionCreateRequest request)
+        public async Task<ActionResult<CommentForQuestionGetViewModel>> PostOnQuestion([FromRoute] Guid questionId, [FromBody] CommentCreateRequest request)
         {
             var comment = _mapper.Map<CommentOnQuestionCreateModel>(request);
             comment.QuestionId = questionId;
@@ -92,7 +98,7 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult<CommentForAnswerGetViewModel>> PostOnAnswer(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId,
-            [FromBody] CommentOnAnswerCreateRequest request)
+            [FromBody] CommentCreateRequest request)
         {
             var comment = _mapper.Map<CommentOnAnswerCreateModel>(request);
             comment.QuestionId = questionId;
@@ -111,7 +117,10 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpPut("/api/questions/{questionId}/[controller]/{commentId}")]
-        public async Task<ActionResult> PutOnQuestion([FromRoute] Guid questionId, [FromRoute] Guid commentId, [FromBody] UpdateCommentOnQuestionRequest request)
+        public async Task<ActionResult> PutOnQuestion(
+            [FromRoute] Guid questionId,
+            [FromRoute] Guid commentId,
+            [FromBody] UpdateCommentRequest request)
         {
             var comment = _mapper.Map<CommentEditModel>(request);
             comment.ParentQuestionId = questionId;
@@ -125,16 +134,64 @@ namespace StackUnderflow.Api.Controllers
             {
                 return NotFound();
             }
+            return NoContent();
+        }
 
+        [HttpPut("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
+        public async Task<ActionResult> PutOnAnswer(
+            [FromRoute] Guid questionId,
+            [FromRoute] Guid answerId,
+            [FromRoute] Guid commentId,
+            [FromBody] UpdateCommentRequest request)
+        {
+            var comment = _mapper.Map<CommentEditModel>(request);
+            comment.ParentQuestionId = questionId;
+            comment.ParentAnswerId = answerId;
+            comment.CommentId = commentId;
+            comment.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            try
+            {
+                await _commentService.EditAsync(comment);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
             return NoContent();
         }
 
         [HttpDelete("/api/questions/{questionId}/[controller]/{commentId}")]
-        public async Task<ActionResult> DeleteOnQuestion([FromRoute] Guid questionId, [FromRoute] Guid commentId, [FromBody] UpdateCommentOnQuestionRequest request)
+        public async Task<ActionResult> DeleteOnQuestion(
+            [FromRoute] Guid questionId,
+            [FromRoute] Guid commentId,
+            [FromBody] UpdateCommentRequest request)
         {
             try
             {
                 await _commentService.DeleteAsync(new CommentDeleteModel { CommentId = commentId, ParentQuestionId = questionId });
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
+        public async Task<ActionResult> DeleteOnAnswer(
+            [FromRoute] Guid questionId,
+            [FromRoute] Guid answerId,
+            [FromRoute] Guid commentId)
+        {
+            var comment = new CommentDeleteModel
+            {
+                ParentQuestionId = questionId,
+                ParentAnswerId = answerId,
+                CommentId = commentId
+            };
+            try
+            {
+                await _commentService.DeleteAsync(comment);
             }
             catch (EntityNotFoundException)
             {
