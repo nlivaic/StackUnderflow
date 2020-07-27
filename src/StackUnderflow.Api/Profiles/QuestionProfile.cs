@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using AutoMapper;
 using StackUnderflow.Api.Models;
@@ -9,10 +10,14 @@ namespace StackUnderflow.Api.Profiles
     {
         public QuestionProfile()
         {
-            CreateMap<QuestionGetModel, QuestionGetViewModel>();
+            CreateMap<QuestionGetModel, QuestionGetViewModel>()
+                .ForMember(dest => dest.CreatedOn,
+                    opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")));
             CreateMap<QuestionSummaryGetModel, QuestionSummaryGetViewModel>()
                 .ForMember(dest => dest.Tags,
-                    opts => opts.MapFrom(src => src.Tags.Select(t => t.Name)));
+                    opts => opts.MapFrom(src => src.Tags.Select(t => t.Name)))
+                .ForMember(dest => dest.CreatedOn,
+                    opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")));
             CreateMap<QuestionCreateRequest, QuestionCreateModel>();
             CreateMap<QuestionUpdateRequest, QuestionEditModel>();
         }

@@ -9,11 +9,14 @@ namespace StackUnderflow.Core.Profiles
     {
         public CommentProfile()
         {
-            CreateMap<Comment, CommentGetModel>()
+            CreateMap<Comment, CommentForQuestionGetModel>()
                 .ForMember(dest => dest.Username,
-                opts => opts.MapFrom(src => src.User.Username))
-            .ForMember(dest => dest.CreatedOn,
-                opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")));
+                    opts => opts.MapFrom(src => src.User.Username));
+            CreateMap<Comment, CommentForAnswerGetModel>()
+                .ForMember(dest => dest.AnswerId,
+                    opts => opts.MapFrom(src => src.ParentAnswerId))
+                .ForMember(dest => dest.Username,
+                    opts => opts.MapFrom(src => src.User.Username));
         }
     }
 }

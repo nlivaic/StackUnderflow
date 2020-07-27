@@ -6,8 +6,9 @@ namespace StackUnderflow.Core.Interfaces
 {
     public interface ICommentService
     {
-        Task<CommentGetModel> CommentOnQuestionAsync(CommentOnQuestionCreateModel commentModel);
+        Task<CommentForQuestionGetModel> CommentOnQuestionAsync(CommentOnQuestionCreateModel commentModel);
+        Task<CommentForAnswerGetModel> CommentOnAnswerAsync(CommentOnAnswerCreateModel commentModel);
         Task EditAsync(CommentEditModel commentModel);
-        Task DeleteAsync(Guid questionId, Guid commentId);
+        Task DeleteAsync(CommentDeleteModel commentModel);
     }
 }

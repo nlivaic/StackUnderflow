@@ -14,6 +14,7 @@ namespace StackUnderflow.Core.Services
     {
         private readonly IQuestionRepository _questionRepository;
         private readonly ICommentRepository _commentRepository;
+        private readonly IAnswerRepository _answerRepository;
         private readonly IRepository<User> _userRepository;
         private readonly IUnitOfWork _uow;
         private readonly ILimits _limits;
@@ -22,12 +23,14 @@ namespace StackUnderflow.Core.Services
 
         public CommentService(IQuestionRepository questionRepository,
             ICommentRepository commentRepository,
+            IAnswerRepository answerRepository,
             IRepository<User> userRepository,
             IUnitOfWork unitOfWork,
             ILimits limits,
             IMapper mapper)
         {
             _questionRepository = questionRepository;
+            _answerRepository = answerRepository;
             _commentRepository = commentRepository;
             _userRepository = userRepository;
             _uow = unitOfWork;
@@ -36,7 +39,7 @@ namespace StackUnderflow.Core.Services
             _mapper = mapper;
         }
 
-        public async Task<CommentGetModel> CommentOnQuestionAsync(CommentOnQuestionCreateModel commentModel)
+        public async Task<CommentForQuestionGetModel> CommentOnQuestionAsync(CommentOnQuestionCreateModel commentModel)
         {
             var question = (await _questionRepository.GetQuestionWithCommentsAsync(commentModel.QuestionId))
                 ?? throw new EntityNotFoundException(nameof(Question), commentModel.QuestionId);
@@ -50,7 +53,23 @@ namespace StackUnderflow.Core.Services
             question.Comment(comment);
             await _commentRepository.AddAsync(comment);
             await _uow.SaveAsync();
-            return _mapper.Map<CommentGetModel>(comment);
+            return _mapper.Map<CommentForQuestionGetModel>(comment);
+        }
+
+        public async Task<CommentForAnswerGetModel> CommentOnAnswerAsync(CommentOnAnswerCreateModel commentModel)
+        {
+            var user = await _userRepository.GetByIdAsync(commentModel.UserId);
+            var answer = await _answerRepository.GetAnswerWithCommentsAsync(commentModel.QuestionId, commentModel.AnswerId);
+            var commentOrderNumber = answer
+                .Comments
+                .Select(c => c.OrderNumber)
+                .OrderByDescending(c => c)
+                .FirstOrDefault() + 1;
+            var comment = Comment.Create(user, commentModel.Body, commentOrderNumber, _limits);
+            answer.Comment(comment);
+            await _commentRepository.AddAsync(comment);
+            await _uow.SaveAsync();
+            return _mapper.Map<CommentForAnswerGetModel>(comment);
         }
 
         public async Task EditAsync(CommentEditModel commentModel)
@@ -67,19 +86,20 @@ namespace StackUnderflow.Core.Services
             // @nl: raise an event?
         }
 
-        public async Task DeleteAsync(Guid questionId, Guid commentId)
+        public async Task DeleteAsync(CommentDeleteModel commentModel)
         {
-            var comment = await _commentRepository.GetByIdAsync(commentId);
-            if (comment == null || comment.ParentQuestionId != questionId)
+            var comment = await _commentRepository.GetByIdAsync(commentModel.CommentId);
+            if (comment == null || comment.ParentQuestionId != commentModel.ParentQuestionId)
             {
-                throw new EntityNotFoundException(nameof(Comment), commentId);
+                throw new EntityNotFoundException(nameof(Comment), commentModel.CommentId);
             }
             if (comment.Votes.Any() == true)
             {
-                throw new BusinessException($"Cannot delete comment '{commentId}' because associated votes exist.");
+                throw new BusinessException($"Cannot delete comment '{commentModel.CommentId}' because associated votes exist.");
             }
             _commentRepository.Delete(comment);
             await _uow.SaveAsync();
         }
+
     }
 }

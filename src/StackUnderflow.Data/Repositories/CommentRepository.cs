@@ -21,18 +21,34 @@ namespace StackUnderflow.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CommentGetModel>> GetCommentsForQuestion(Guid questionId) =>
+        public async Task<IEnumerable<CommentForQuestionGetModel>> GetCommentsForQuestion(Guid questionId) =>
             await _context
                 .Comments
                 .Where(c => c.ParentQuestionId == questionId)
-                .ProjectTo<CommentGetModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<CommentForQuestionGetModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-        public async Task<CommentGetModel> GetCommentModel(Guid questionId, Guid commentId) =>
+        public async Task<CommentForAnswerGetModel> GetCommentForAnswer(Guid questionId, Guid answerId, Guid commentId) =>
+            await _context
+                .Comments
+                .Where(c => c.ParentAnswerId == answerId && c.Id == commentId)
+                .ProjectTo<CommentForAnswerGetModel>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+
+        public async Task<IEnumerable<CommentForAnswerGetModel>> GetCommentsForAnswers(IEnumerable<Guid> answerIds) =>
+            await _context
+                .Comments
+                .Where(c => c.ParentAnswerId.HasValue && answerIds.Contains(c.ParentAnswerId.Value))
+                .OrderBy(c => c.ParentAnswerId)
+                .ThenBy(c => c.OrderNumber)
+                .ProjectTo<CommentForAnswerGetModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+        public async Task<CommentForQuestionGetModel> GetCommentModel(Guid questionId, Guid commentId) =>
             await _context
                 .Comments
                 .Where(c => c.ParentQuestionId == questionId && c.Id == commentId)
-                .ProjectTo<CommentGetModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<CommentForQuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
         public async Task<Comment> GetCommentWithUser(Guid commentId) =>

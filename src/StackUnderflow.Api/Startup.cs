@@ -68,6 +68,7 @@ namespace StackUnderflow.Api
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IAnswerRepository, AnswerRepository>();
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<ITagService, TagService>();

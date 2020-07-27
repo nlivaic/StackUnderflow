@@ -1,8 +1,8 @@
 using System;
 
-namespace StackUnderflow.Core.Models
+namespace StackUnderflow.Api.Models
 {
-    public class CommentGetModel
+    public class CommentForQuestionGetViewModel
     {
         public Guid Id { get; set; }
         public string Username { get; set; }

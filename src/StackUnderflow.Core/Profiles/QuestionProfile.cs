@@ -13,8 +13,6 @@ namespace StackUnderflow.Core.Profiles
             CreateMap<Question, QuestionGetModel>()
                 .ForMember(dest => dest.Username,
                     opts => opts.MapFrom(src => src.User.Username))
-                .ForMember(dest => dest.CreatedOn,
-                    opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")))
                 .ForMember(dest => dest.Tags,
                     opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)));
 
@@ -23,8 +21,6 @@ namespace StackUnderflow.Core.Profiles
                     opts => opts.MapFrom(src => src.Body.Substring(0, 50) + "..."))
                 .ForMember(dest => dest.Username,
                     opts => opts.MapFrom(src => src.User.Username))
-                .ForMember(dest => dest.CreatedOn,
-                    opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")))
                 .ForMember(dest => dest.AnswersCount,
                     opts => opts.MapFrom(src => src.Answers.Count()))
                 .ForMember(dest => dest.Tags,

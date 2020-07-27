@@ -28,6 +28,14 @@
   ✔ /api/questions/{questionId}/comments/{id} @done (26. 07. 2020. 18:06:22)
     ✔ GET @done (26. 07. 2020. 18:06:03)
     ✔ PUT @done (26. 07. 2020. 18:06:02)
+    ✔ DELETE @done (26. 07. 2020. 23:42:00)
+  ✔ /api/questions/{questionId}/answers/{answerId}/comments @done (27. 07. 2020. 08:45:51)
+    ✔ POST @done (27. 07. 2020. 08:45:50)
+  ✔ /api/questions/{questionId}/answers/{answerId1,answerId2,answerId3}/comments @done (27. 07. 2020. 08:47:26)
+    ✔ GET @done (27. 07. 2020. 08:47:27)
+  ✔ /api/questions/{questionId}/answers/{answerId}/comments/{commentId} @done (27. 07. 2020. 08:47:38)
+    ✔ GET @done (27. 07. 2020. 08:47:39)
+    ☐ PUT
     ☐ DELETE
   ☐ /api/questions/{questionId}/answers
     ☐ GET
@@ -36,15 +44,6 @@
   ☐ /api/questions/{questionId}/answers/{id}
     ☐ GET
       ☐ Must not return comments. Return comments in a separate request.
-    ☐ PUT
-    ☐ DELETE
-  ☐ /api/questions/{questionId}/answers/{answerId}/comments
-    ☐ GET
-    ☐ POST
-  ☐ /api/questions/{questionId}/answersCollection/{answerId1,answerId2,answerId3}/comments
-    ☐ GET - make sure to group comments with answers.
-  ☐ /api/questions/{questionId}/answers/{answerId}/comments/{id}
-    ☐ GET
     ☐ PUT
     ☐ DELETE
   ☐ /api/questions/{id}/vote
