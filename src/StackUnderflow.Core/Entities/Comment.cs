@@ -17,10 +17,14 @@ namespace StackUnderflow.Core.Entities
         public Answer ParentAnswer { get; private set; }
         public Guid? ParentAnswerId { get; private set; }
         public int OrderNumber { get; private set; }
-        public int VotesSum => _voteable.VotesSum;
+        public int VotesSum
+        {
+            get => _voteable.VotesSum;
+            set => _voteable.VotesSum = value;
+        }
         public IEnumerable<Vote> Votes => _voteable.Votes;
 
-        private IVoteable _voteable;
+        private Voteable _voteable;
 
         private Comment()
         {

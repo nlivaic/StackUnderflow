@@ -55,7 +55,7 @@ namespace StackUnderflow.Data.Repositories
                     q.Body.ToLower().Contains(searchQueryLowercase));
             }
             return await query
-                .OrderBy(q => q.Id)           // @nl: ordering on Guid. Think this through!
+                // .OrderBy(q => q.Id)           // @nl: ordering on Guid. Think this through!
                 .Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)

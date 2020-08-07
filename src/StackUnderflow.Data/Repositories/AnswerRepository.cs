@@ -5,9 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using StackUnderflow.Common.Collections;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
+using StackUnderflow.Core.QueryParameters;
+using StackUnderflow.Data.QueryableExtensions;
+using System.Linq.Dynamic.Core;
 
 namespace StackUnderflow.Data.Repositories
 {
@@ -19,6 +23,26 @@ namespace StackUnderflow.Data.Repositories
             : base(context)
         {
             _mapper = mapper;
+        }
+
+        public async Task<AnswerGetModel> GetAnswerWithUserAsync(Guid questionId, Guid answerId) =>
+            await _context
+                .Answers
+                .Include(a => a.User)
+                .Where(a => a.QuestionId == questionId && a.Id == answerId)
+                .ProjectTo<AnswerGetModel>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync();
+
+        public async Task<PagedList<AnswerGetModel>> GetAnswersWithUserAsync(Guid questionId, AnswerQueryParameters queryParameters)
+        {
+            return await _context
+                .Answers
+                .Include(a => a.User)
+                .Where(a => a.QuestionId == questionId)
+                // .ApplySorting(queryParameters.SortBy)
+                .OrderBy("createdOn desc, votesSum asc")
+                .AsNoTracking()
+                .ApplyPagingAsync<Answer, AnswerGetModel>(_mapper, queryParameters.PageNumber, queryParameters.PageSize);
         }
 
         public async Task<CommentForAnswerGetModel> GetCommentModel(Guid questionId, Guid answerId, Guid commentId) =>

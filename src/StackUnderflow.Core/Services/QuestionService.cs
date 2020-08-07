@@ -7,8 +7,6 @@ using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using AutoMapper;
-using StackUnderflow.Core.QueryParameters;
-using StackUnderflow.Common.Collections;
 
 namespace StackUnderflow.Core.Services
 {
@@ -36,9 +34,6 @@ namespace StackUnderflow.Core.Services
             _limits = limits;
             _mapper = mapper;
         }
-
-        public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummaries(QuestionQueryParameters questionQueryParameters) =>
-            await _questionRepository.GetQuestionSummaries(questionQueryParameters);
 
         public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId) =>
             await _questionRepository.GetQuestionWithUserAndTagsAsync(questionId);

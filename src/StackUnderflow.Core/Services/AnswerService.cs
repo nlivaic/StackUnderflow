@@ -9,7 +9,7 @@ using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Core.Services
 {
-    public class AnswerService
+    public class AnswerService : IAnswerService
     {
         private readonly IUnitOfWork _uow;
         private readonly IQuestionRepository _questionRepository;
@@ -23,17 +23,15 @@ namespace StackUnderflow.Core.Services
             IQuestionRepository questionRepository,
             IRepository<Answer> answerRepository,
             IRepository<User> userRepository,
-            ILimits limits,
-            IVoteable voteable,
-            ICommentable commentable)
+            ILimits limits)
         {
             _uow = uow;
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
             _userRepository = userRepository;
             _limits = limits;
-            _voteable = voteable;
-            _commentable = commentable;
+            _voteable = new Voteable();
+            _commentable = new Commentable();
         }
 
         public async Task PostAnswer(AnswerCreateModel answerModel)

@@ -12,12 +12,12 @@ namespace StackUnderflow.Api.Profiles
         {
             CreateMap<QuestionGetModel, QuestionGetViewModel>()
                 .ForMember(dest => dest.CreatedOn,
-                    opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")));
+                    opts => opts.MapFrom(src => src.CreatedOn.ToString("yyyy-MM-dd hh:mm:ss")));
             CreateMap<QuestionSummaryGetModel, QuestionSummaryGetViewModel>()
                 .ForMember(dest => dest.Tags,
                     opts => opts.MapFrom(src => src.Tags.Select(t => t.Name)))
                 .ForMember(dest => dest.CreatedOn,
-                    opts => opts.MapFrom(src => ((DateTime)src.CreatedOn).ToString("yyyy-MM-dd hh:mm:ss")));
+                    opts => opts.MapFrom(src => src.CreatedOn.ToString("yyyy-MM-dd hh:mm:ss")));
             CreateMap<QuestionCreateRequest, QuestionCreateModel>();
             CreateMap<QuestionUpdateRequest, QuestionEditModel>();
         }

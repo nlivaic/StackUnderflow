@@ -18,13 +18,17 @@ namespace StackUnderflow.Core.Entities
         public IEnumerable<Answer> Answers => _answers;
         public IEnumerable<Comment> Comments => _commentable.Comments;
         public IEnumerable<QuestionTag> QuestionTags => _questionTags;
-        public int VotesSum => _voteable.VotesSum;
+        public int VotesSum
+        {
+            get => _voteable.VotesSum;
+            private set => _voteable.VotesSum = value;
+        }
         public IEnumerable<Vote> Votes => _voteable.Votes;
 
         private List<Answer> _answers = new List<Answer>();
         private List<QuestionTag> _questionTags = new List<QuestionTag>();
-        private IVoteable _voteable;
-        private ICommentable _commentable;
+        private Voteable _voteable;
+        private Commentable _commentable;
 
         private Question()
         {

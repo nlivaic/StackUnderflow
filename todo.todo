@@ -7,6 +7,11 @@
   ☐ TagIds should be renamed to Tags.
   ☐ Pregledati svaki query i vidjeti da li je Tracking ili NoTracking i da li je odabir ispravan.
   ☐ Na dosta mjesta u servisima povučemo usera da bi napravili neku ručnu validaciju down the line, ali nikad ne reagiramo ako tog usera nema u sustavu. Razmisliti.
+  ☐ Upravo sam išao implementirati novi resource parameters. Stvar je ajde-de, razumljiva, ali samo mapiranje propertyja između view modela i application modela (u PropertyMappingService.cs) je malo icky. Mislim da bi to trebalo izvesti preko atributa na view modelu.
+  ☐ QuestionSummariesController.Get(QuestionResourceParameters) : ne binda dobro questionResourceParameters.SortBy.
+  ☐ Potestirati AnswersController.Get(questionId, resourceParameters);
+  ☐ The LINQ expression .OrderBy(a => a.VotesSum) / .ThenBy(a => a.VotesSum) could not be translated.
+  ☐ Dockx je imao defaultnu vrijednost na OrderBy, ali ne kužim kako mu je to funkcioniralo. Klonirati njegov repo i pokrenuti to.
 ☐ Endpoints
   ✔ /api/questionssummary @done (15. 07. 2020. 22:33:31)
     ✔ GET @done (04. 07. 2020. 23:30:32)
@@ -36,17 +41,22 @@
     ✔ GET @done (27. 07. 2020. 08:47:27)
   ✔ /api/questions/{questionId}/answers/{answerId}/comments/{commentId} @done (27. 07. 2020. 08:47:38)
     ✔ GET @done (27. 07. 2020. 08:47:39)
+    ✔ PUT @done (28. 07. 2020. 01:08:47)
+    ✔ DELETE @done (28. 07. 2020. 01:08:48)
+  ☐ /api/questions/{questionId}/answers
+    ✔ GET @done (04. 08. 2020. 15:53:38)
+    ☐ Paging
+    ☐ POST
+  ☐ /api/questions/{questionId}/answers/{id}
+    ✔ GET @done (04. 08. 2020. 15:53:42)
     ☐ PUT
     ☐ DELETE
-  ☐ /api/questions/{questionId}/answers
+  ☐ /api/tags
     ☐ GET
     ☐ POST
-    ☐ Paging
-  ☐ /api/questions/{questionId}/answers/{id}
+  ☐ /api/tags/{name}
     ☐ GET
-      ☐ Must not return comments. Return comments in a separate request.
-    ☐ PUT
-    ☐ DELETE
+    ☐ This will need more thinking through.
   ☐ /api/questions/{id}/vote
     ☐ POST
   ☐ /api/questions/{id}/vote/{id}
@@ -63,12 +73,6 @@
     ☐ POST
   ☐ /api/questions/{questionId}/answers/{answerId}/comments/{commentId}/vote/{id}
     ☐ DELETE
-  ☐ /api/tags
-    ☐ GET
-    ☐ POST
-  ☐ /api/tags/{name}
-    ☐ GET
-    ☐ This will need more thinking through.
   ☐ /api/users
     ☐ This will need more thinking through.
 ☐ Startup.cs

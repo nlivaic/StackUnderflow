@@ -22,7 +22,10 @@ namespace StackUnderflow.API.Services.Sorting
                     .Add(nameof(QuestionSummaryGetViewModel.Username), $"{nameof(User)}.{nameof(User.Username)}")
                     .Add(nameof(QuestionSummaryGetViewModel.HasAcceptedAnswer), nameof(QuestionSummaryGetModel.HasAcceptedAnswer))
                     .Add(nameof(QuestionSummaryGetViewModel.CreatedOn), nameof(QuestionSummaryGetModel.CreatedOn))
-                    .Add(nameof(QuestionSummaryGetViewModel.VotesSum), nameof(QuestionSummaryGetModel.VotesSum))
+                    .Add(nameof(QuestionSummaryGetViewModel.VotesSum), nameof(QuestionSummaryGetModel.VotesSum)),
+                new PropertyMapping<AnswerGetViewModel, AnswerGetModel>()
+                    .Add(nameof(AnswerGetViewModel.CreatedOn), nameof(AnswerGetModel.CreatedOn))
+                    .Add(nameof(AnswerGetViewModel.VotesSum), nameof(AnswerGetModel.VotesSum))
             };
 
         public PropertyMappingValue GetMapping<TSource, TTarget>(string sourcePropertyName)

@@ -71,6 +71,7 @@ namespace StackUnderflow.Api
             services.AddScoped<IAnswerRepository, AnswerRepository>();
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<IAnswerService, AnswerService>();
             services.AddTransient<ITagService, TagService>();
             services.AddSingleton<ILimits, Limits>();
             services.AddSingleton<IPropertyMappingService, PropertyMappingService>();

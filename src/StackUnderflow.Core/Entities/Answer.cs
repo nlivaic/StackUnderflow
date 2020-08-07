@@ -17,11 +17,15 @@ namespace StackUnderflow.Core.Entities
         public Question Question { get; private set; }
         public Guid QuestionId { get; private set; }
         public IEnumerable<Comment> Comments => _commentable.Comments;
-        public int VotesSum => _voteable.VotesSum;
+        public int VotesSum
+        {
+            get => _voteable.VotesSum;
+            private set => _voteable.VotesSum = value;
+        }
         public IEnumerable<Vote> Votes => _voteable.Votes;
 
-        private IVoteable _voteable;
-        private ICommentable _commentable;
+        private Voteable _voteable;
+        private Commentable _commentable;
 
         private Answer()
         {

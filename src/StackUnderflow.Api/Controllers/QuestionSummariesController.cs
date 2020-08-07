@@ -18,12 +18,18 @@ namespace StackUnderflow.Api.Controllers
     public class QuestionSummariesController : ControllerBase
     {
         private readonly IQuestionService _questionService;
+        private readonly IQuestionRepository _questionRepository;
         private readonly IMapper _mapper;
         private readonly IPropertyMappingService _propertyMappingService;
 
-        public QuestionSummariesController(IQuestionService questionService, IMapper mapper, IPropertyMappingService propertyMappingService)
+        public QuestionSummariesController(
+            IQuestionService questionService,
+            IQuestionRepository questionRepository,
+            IMapper mapper,
+            IPropertyMappingService propertyMappingService)
         {
             _questionService = questionService;
+            _questionRepository = questionRepository;
             _mapper = mapper;
             _propertyMappingService = propertyMappingService;
         }
@@ -32,10 +38,10 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> Get([FromQuery] QuestionResourceParameters questionResourceParameters)
         {
             var questionQueryParameters = _mapper.Map<QuestionQueryParameters>(questionResourceParameters);
-            var pagedSummaries = await _questionService.GetQuestionSummaries(questionQueryParameters);
+            var pagedSummaries = await _questionRepository.GetQuestionSummaries(questionQueryParameters);
             var pagingHeader = new PagingDto(pagedSummaries.CurrentPage, pagedSummaries.TotalPages, pagedSummaries.TotalItems);
             HttpContext.Response.Headers.Add(Headers.Pagination, new StringValues(JsonSerializer.Serialize(pagingHeader)));
-            return Ok(pagedSummaries.Items);
+            return Ok(_mapper.Map<List<QuestionSummaryGetViewModel>>(pagedSummaries.Items));
         }
     }
 }

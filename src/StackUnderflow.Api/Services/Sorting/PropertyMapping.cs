@@ -14,14 +14,14 @@ namespace StackUnderflow.API.Services.Sorting
         private Dictionary<string, PropertyMappingValue> _propertyMappingValues
             = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase);
 
-        public PropertyMapping<TSource, TTarget> Add(bool revert, string sourcePropertyName, params string[] targetPropertyNames)
+        public PropertyMapping<TSource, TTarget> Add(bool areTargetPropertiesInReversedOrder, string sourcePropertyName, params string[] targetPropertyNames)
         {
             _propertyMappingValues.Add(
                 sourcePropertyName,
-                new PropertyMappingValue(sourcePropertyName, targetPropertyNames, revert)
-                );
+                new PropertyMappingValue(sourcePropertyName, targetPropertyNames, areTargetPropertiesInReversedOrder));
             return this;
         }
+
         public PropertyMapping<TSource, TTarget> Add(string sourcePropertyName, params string[] targetPropertyNames)
         {
             return Add(false, sourcePropertyName, targetPropertyNames);

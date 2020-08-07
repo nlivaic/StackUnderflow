@@ -9,7 +9,7 @@ namespace StackUnderflow.Core.Entities
 {
     public class Voteable : IVoteable
     {
-        public int VotesSum { get; private set; } = 0;
+        public int VotesSum { get; set; } = 0;
         public IEnumerable<Vote> Votes => _votes;
         private List<Vote> _votes = new List<Vote>();
 
