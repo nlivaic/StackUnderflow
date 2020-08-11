@@ -39,8 +39,7 @@ namespace StackUnderflow.Data.Repositories
                 .Answers
                 .Include(a => a.User)
                 .Where(a => a.QuestionId == questionId)
-                // .ApplySorting(queryParameters.SortBy)
-                .OrderBy("createdOn desc, votesSum asc")
+                .ApplySorting(queryParameters.SortBy)
                 .AsNoTracking()
                 .ApplyPagingAsync<Answer, AnswerGetModel>(_mapper, queryParameters.PageNumber, queryParameters.PageSize);
         }
