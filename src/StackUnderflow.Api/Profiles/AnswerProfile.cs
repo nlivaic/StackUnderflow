@@ -14,6 +14,7 @@ namespace StackUnderflow.Api.Profiles
                     opts => opts.MapFrom(
                         src => src.CreatedOn.ToString("yyyy-MM-dd hh:mm:ss")));
             CreateMap<AnswerCreateRequest, AnswerCreateModel>();
+            CreateMap<AnswerUpdateRequest, AnswerEditModel>();
         }
     }
 }

@@ -54,6 +54,10 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid answerId)
         {
             var result = await _answerRepository.GetAnswerWithUserAsync(questionId, answerId);
+            if (result == null)
+            {
+                return NotFound();
+            }
             return Ok(_mapper.Map<AnswerGetViewModel>(result));
         }
 
@@ -79,6 +83,46 @@ namespace StackUnderflow.Api.Controllers
             }
             var answerGetViewModel = _mapper.Map<AnswerGetViewModel>(answerGetModel);
             return CreatedAtRoute("Get", new { answerId = answerGetModel.Id, questionId }, answerGetViewModel);
+        }
+
+        [HttpPut("{answerId}")]
+        public async Task<ActionResult> Put(
+            [FromRoute] Guid questionId,
+            [FromRoute] Guid answerId,
+            [FromBody] AnswerUpdateRequest request)
+        {
+            var answer = _mapper.Map<AnswerEditModel>(request);
+            answer.AnswerId = answerId;
+            answer.QuestionId = questionId;
+            answer.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");
+            try
+            {
+                await _answerService.EditAnswer(answer);
+            }
+            catch (BusinessException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return UnprocessableEntity();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{answerId}")]
+        public async Task<ActionResult> Delete(
+            [FromRoute] Guid questionId,
+            [FromRoute] Guid answerId)
+        {
+            var userId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");
+            try
+            {
+                await _answerService.DeleteAnswer(userId, questionId, answerId);
+            }
+            catch (BusinessException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return UnprocessableEntity();
+            }
+            return NoContent();
         }
     }
 }

@@ -50,6 +50,7 @@ namespace StackUnderflow.Core.Services
             var user = await _userRepository.GetByIdAsync(answerModel.UserId);
             var answer = Answer.Create(user, answerModel.Body, question, _limits);
             question.Answer(answer);
+            await _answerRepository.AddAsync(answer);
             await _uow.SaveAsync();
             return _mapper.Map<AnswerGetModel>(answer);
             // @nl: Raise an event! Message must be sent to the inbox.
@@ -57,7 +58,13 @@ namespace StackUnderflow.Core.Services
 
         public async Task EditAnswer(AnswerEditModel answerModel)
         {
-            var answer = (await _answerRepository.ListAllAsync(a => a.Id == answerModel.AnswerId && a.UserId == answerModel.UserId)).SingleOrDefault()
+            var answer = (await
+                _answerRepository
+                    .ListAllAsync(a =>
+                        a.Id == answerModel.AnswerId
+                        && a.UserId == answerModel.UserId
+                        && a.QuestionId == answerModel.QuestionId))
+                    .SingleOrDefault()
                 ?? throw new BusinessException($"Answer with id '{answerModel.AnswerId}' belonging to user '{answerModel.UserId}' does not exist.");
             var user = await _userRepository.GetByIdAsync(answerModel.UserId);
             answer.Edit(user, answerModel.Body, _limits);
@@ -85,9 +92,15 @@ namespace StackUnderflow.Core.Services
             // @nl: raise an event. Message must be sent to answer owner's inbox.
         }
 
-        public async Task DeleteAnswer(Guid answerUserId, Guid answerId)
+        public async Task DeleteAnswer(Guid answerUserId, Guid questionId, Guid answerId)
         {
-            var answer = (await _answerRepository.ListAllAsync(a => a.UserId == answerUserId && a.Id == answerId)).SingleOrDefault()
+            var answer = (await
+                _answerRepository
+                    .ListAllAsync(a =>
+                        a.UserId == answerUserId
+                        && a.Id == answerId
+                        && a.QuestionId == questionId))
+                    .SingleOrDefault()
                 ?? throw new BusinessException($"Answer with id '{answerId}' belonging to user '{answerUserId}' does not exist.");
             if (answer.IsAcceptedAnswer)
             {

@@ -56,7 +56,7 @@ namespace StackUnderflow.Core.Entities
         {
             if (_answers.Any(a => a.UserId == answer.User.Id))
             {
-                throw new BusinessException($"User '{answer.UserId}' has already submitted an answer.");
+                throw new BusinessException($"User '{answer.User.Id}' has already submitted an answer.");
             }
             _answers.Add(answer);
             // @nl: Raise an event!
