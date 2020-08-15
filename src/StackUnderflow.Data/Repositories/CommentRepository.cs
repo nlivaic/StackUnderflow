@@ -21,14 +21,14 @@ namespace StackUnderflow.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CommentForQuestionGetModel>> GetCommentsForQuestion(Guid questionId) =>
+        public async Task<IEnumerable<CommentForQuestionGetModel>> GetCommentsForQuestionAsync(Guid questionId) =>
             await _context
                 .Comments
                 .Where(c => c.ParentQuestionId == questionId)
                 .ProjectTo<CommentForQuestionGetModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-        public async Task<CommentForAnswerGetModel> GetCommentForAnswer(Guid answerId, Guid commentId) =>
+        public async Task<CommentForAnswerGetModel> GetCommentForAnswerAsync(Guid answerId, Guid commentId) =>
             await _context
                 .Comments
                 .Include(c => c.ParentAnswer)
@@ -37,7 +37,7 @@ namespace StackUnderflow.Data.Repositories
                 .ProjectTo<CommentForAnswerGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<CommentForAnswerGetModel>> GetCommentsForAnswers(IEnumerable<Guid> answerIds) =>
+        public async Task<IEnumerable<CommentForAnswerGetModel>> GetCommentsForAnswersAsync(IEnumerable<Guid> answerIds) =>
             await _context
                 .Comments
                 .Where(c => c.ParentAnswerId.HasValue && answerIds.Contains(c.ParentAnswerId.Value))
@@ -46,20 +46,20 @@ namespace StackUnderflow.Data.Repositories
                 .ProjectTo<CommentForAnswerGetModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-        public async Task<CommentForQuestionGetModel> GetCommentModel(Guid questionId, Guid commentId) =>
+        public async Task<CommentForQuestionGetModel> GetCommentModelAsync(Guid questionId, Guid commentId) =>
             await _context
                 .Comments
                 .Where(c => c.ParentQuestionId == questionId && c.Id == commentId)
                 .ProjectTo<CommentForQuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
-        public async Task<Comment> GetCommentWithUser(Guid commentId) =>
+        public async Task<Comment> GetCommentWithUserAsync(Guid commentId) =>
             await _context
                 .Comments
                 .Include(c => c.User)
                 .SingleOrDefaultAsync(c => c.Id == commentId);
 
-        public async Task<Comment> GetCommentWithAnswer(Guid commentId) =>
+        public async Task<Comment> GetCommentWithAnswerAsync(Guid commentId) =>
             await _context
                 .Comments
                 .Include(c => c.ParentAnswer)

@@ -78,7 +78,7 @@ namespace StackUnderflow.Core.Services
 
         public async Task EditAsync(CommentEditModel commentModel)
         {
-            var comment = await GetCommentOnEditOrDelete(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
+            var comment = await GetCommentOnEditOrDeleteAsync(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
             var user = await _userRepository.GetByIdAsync(commentModel.UserId);
             comment.Edit(user, commentModel.Body, _limits);
             await _uow.SaveAsync();
@@ -87,7 +87,7 @@ namespace StackUnderflow.Core.Services
 
         public async Task DeleteAsync(CommentDeleteModel commentModel)
         {
-            var comment = await GetCommentOnEditOrDelete(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
+            var comment = await GetCommentOnEditOrDeleteAsync(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
             if (comment.Votes.Any() == true)
             {
                 throw new BusinessException($"Cannot delete comment '{commentModel.CommentId}' because associated votes exist.");
@@ -96,12 +96,12 @@ namespace StackUnderflow.Core.Services
             await _uow.SaveAsync();
         }
 
-        private async Task<Comment> GetCommentOnEditOrDelete(Guid? parentQuestionId, Guid? parentAnswerId, Guid commentId)
+        private async Task<Comment> GetCommentOnEditOrDeleteAsync(Guid? parentQuestionId, Guid? parentAnswerId, Guid commentId)
         {
             Comment comment = null;
             if (parentAnswerId.HasValue)
             {
-                comment = await _commentRepository.GetCommentWithAnswer(commentId);
+                comment = await _commentRepository.GetCommentWithAnswerAsync(commentId);
                 if (comment == null
                     || comment.ParentAnswerId != parentAnswerId
                     || comment.ParentAnswer.QuestionId != parentQuestionId)

@@ -13,6 +13,6 @@ namespace StackUnderflow.Core.Interfaces
         Task<AnswerGetModel> GetAnswerWithUserAsync(Guid questionId, Guid answerId);
         Task<PagedList<AnswerGetModel>> GetAnswersWithUserAsync(Guid questionId, AnswerQueryParameters queryParameters);
         Task<Answer> GetAnswerWithCommentsAsync(Guid questionId, Guid answerId);
-        Task<CommentForAnswerGetModel> GetCommentModel(Guid questionId, Guid answerId, Guid commentId);
+        Task<CommentForAnswerGetModel> GetCommentModelAsync(Guid questionId, Guid answerId, Guid commentId);
     }
 }

@@ -44,7 +44,7 @@ namespace StackUnderflow.Data.Repositories
                 .ApplyPagingAsync<Answer, AnswerGetModel>(_mapper, queryParameters.PageNumber, queryParameters.PageSize);
         }
 
-        public async Task<CommentForAnswerGetModel> GetCommentModel(Guid questionId, Guid answerId, Guid commentId) =>
+        public async Task<CommentForAnswerGetModel> GetCommentModelAsync(Guid questionId, Guid answerId, Guid commentId) =>
             await _context
                 .Comments
                 .Where(c => c.ParentQuestionId == questionId && c.ParentAnswerId == answerId && c.Id == commentId)

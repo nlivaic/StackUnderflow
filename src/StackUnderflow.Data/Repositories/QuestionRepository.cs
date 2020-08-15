@@ -35,7 +35,7 @@ namespace StackUnderflow.Data.Repositories
                 .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
-        public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummaries(QuestionQueryParameters questionQueryParameters)
+        public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummariesAsync(QuestionQueryParameters questionQueryParameters)
         {
             var query = _context
                 .Questions as IQueryable<Question>;

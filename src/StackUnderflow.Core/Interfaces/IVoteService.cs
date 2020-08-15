@@ -5,7 +5,7 @@ namespace StackUnderflow.Core.Interfaces
 {
     public interface IVoteService
     {
-        Task CastVote(VoteCreateModel voteModel);
-        Task RevokeVote(VoteRevokeModel voteModel);
+        Task CastVoteAsync(VoteCreateModel voteModel);
+        Task RevokeVoteAsync(VoteRevokeModel voteModel);
     }
 }

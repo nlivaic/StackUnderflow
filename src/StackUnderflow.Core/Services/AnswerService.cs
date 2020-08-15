@@ -38,7 +38,7 @@ namespace StackUnderflow.Core.Services
             _commentable = new Commentable();
         }
 
-        public async Task<AnswerGetModel> PostAnswer(AnswerCreateModel answerModel)
+        public async Task<AnswerGetModel> PostAnswerAsync(AnswerCreateModel answerModel)
         {
             // @nl: check if null.
             // var owner = _ownerRepository.GetByIdAsync(ownerId);
@@ -56,22 +56,21 @@ namespace StackUnderflow.Core.Services
             // @nl: Raise an event! Message must be sent to the inbox.
         }
 
-        public async Task EditAnswer(AnswerEditModel answerModel)
+        public async Task EditAnswerAsync(AnswerEditModel answerModel)
         {
             var answer = (await
                 _answerRepository
-                    .ListAllAsync(a =>
+                    .GetSingleAsync(a =>
                         a.Id == answerModel.AnswerId
                         && a.UserId == answerModel.UserId
                         && a.QuestionId == answerModel.QuestionId))
-                    .SingleOrDefault()
                 ?? throw new EntityNotFoundException(nameof(Answer), answerModel.AnswerId);
             var user = await _userRepository.GetByIdAsync(answerModel.UserId);
             answer.Edit(user, answerModel.Body, _limits);
             await _uow.SaveAsync();
         }
 
-        public async Task AcceptAnswer(AnswerAcceptModel answerModel)
+        public async Task AcceptAnswerAsync(AnswerAcceptModel answerModel)
         {
             // @nl: a da povučem (question+svi answeri)? Ili (question+taj specifičan answer)? Da idem iz repoa dva puta na bazu?
             var question = (await _questionRepository.GetByIdAsync(answerModel.QuestionId))
@@ -92,15 +91,14 @@ namespace StackUnderflow.Core.Services
             // @nl: raise an event. Message must be sent to answer owner's inbox.
         }
 
-        public async Task DeleteAnswer(Guid answerUserId, Guid questionId, Guid answerId)
+        public async Task DeleteAnswerAsync(Guid answerUserId, Guid questionId, Guid answerId)
         {
             var answer = (await
                 _answerRepository
-                    .ListAllAsync(a =>
+                    .GetSingleAsync(a =>
                         a.UserId == answerUserId
                         && a.Id == answerId
                         && a.QuestionId == questionId))
-                    .SingleOrDefault()
                 ?? throw new EntityNotFoundException(nameof(Answer), answerId);
             if (answer.IsAcceptedAnswer)
             {

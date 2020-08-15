@@ -35,10 +35,10 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> Get([FromQuery] QuestionResourceParameters questionResourceParameters)
+        public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> GetAsync([FromQuery] QuestionResourceParameters questionResourceParameters)
         {
             var questionQueryParameters = _mapper.Map<QuestionQueryParameters>(questionResourceParameters);
-            var pagedSummaries = await _questionRepository.GetQuestionSummaries(questionQueryParameters);
+            var pagedSummaries = await _questionRepository.GetQuestionSummariesAsync(questionQueryParameters);
             var pagingHeader = new PagingDto(pagedSummaries.CurrentPage, pagedSummaries.TotalPages, pagedSummaries.TotalItems);
             HttpContext.Response.Headers.Add(Headers.Pagination, new StringValues(JsonSerializer.Serialize(pagingHeader)));
             return Ok(_mapper.Map<List<QuestionSummaryGetViewModel>>(pagedSummaries.Items));

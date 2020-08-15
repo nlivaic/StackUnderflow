@@ -38,7 +38,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AnswerGetViewModel>>> GetForQuestion(
+        public async Task<ActionResult<IEnumerable<AnswerGetViewModel>>> GetForQuestionAsync(
             [FromRoute] Guid questionId,
             [FromQuery] AnswerResourceParameters answerResourceParameters)
         {
@@ -56,7 +56,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet("{answerId}", Name = "Get")]
-        public async Task<ActionResult<AnswerGetViewModel>> Get(
+        public async Task<ActionResult<AnswerGetViewModel>> GetAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId)
         {
@@ -69,7 +69,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AnswerGetViewModel>> Post(
+        public async Task<ActionResult<AnswerGetViewModel>> PostAsync(
             [FromRoute] Guid questionId,
             [FromBody] AnswerCreateRequest request)
         {
@@ -85,7 +85,7 @@ namespace StackUnderflow.Api.Controllers
             AnswerGetModel answerGetModel = null;
             try
             {
-                answerGetModel = await _answerService.PostAnswer(answer);
+                answerGetModel = await _answerService.PostAnswerAsync(answer);
             }
             catch (BusinessException ex)
             {
@@ -97,7 +97,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpPut("{answerId}")]
-        public async Task<ActionResult> Put(
+        public async Task<ActionResult> PutAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId,
             [FromBody] AnswerUpdateRequest request)
@@ -108,7 +108,7 @@ namespace StackUnderflow.Api.Controllers
             answer.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");
             try
             {
-                await _answerService.EditAnswer(answer);
+                await _answerService.EditAnswerAsync(answer);
             }
             catch (EntityNotFoundException)
             {
@@ -123,14 +123,14 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpDelete("{answerId}")]
-        public async Task<ActionResult> Delete(
+        public async Task<ActionResult> DeleteAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId)
         {
             var userId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");
             try
             {
-                await _answerService.DeleteAnswer(userId, questionId, answerId);
+                await _answerService.DeleteAnswerAsync(userId, questionId, answerId);
             }
             catch (EntityNotFoundException)
             {

@@ -16,12 +16,12 @@ namespace StackUnderflow.Data.Repositories
             : base(context)
         { }
 
-        public async Task<Vote> GetVote(Guid voteUserId, Guid voteId) =>
+        public async Task<Vote> GetVoteAsync(Guid voteUserId, Guid voteId) =>
             await _context
                 .Votes
                 .SingleOrDefaultAsync(v => v.UserId == voteUserId && v.Id == voteId);
 
-        public async Task<Vote> GetVote(Guid voteUserId, Guid? questionId, Guid? answerId, Guid? commentId)
+        public async Task<Vote> GetVoteAsync(Guid voteUserId, Guid? questionId, Guid? answerId, Guid? commentId)
         {
             IQueryable<Vote> query = _context
                 .Votes;

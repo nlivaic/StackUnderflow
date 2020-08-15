@@ -35,22 +35,22 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet("api/questions/{questionId}/[controller]")]
-        public async Task<ActionResult<IEnumerable<CommentForQuestionGetViewModel>>> GetCommentForQuestion([FromRoute] Guid questionId)
+        public async Task<ActionResult<IEnumerable<CommentForQuestionGetViewModel>>> GetCommentForQuestionAsync([FromRoute] Guid questionId)
         {
             if (!(await _questionRepository.ExistsAsync(questionId)))
             {
                 return NotFound();
             }
-            var comment = await _commentRepository.GetCommentsForQuestion(questionId);
+            var comment = await _commentRepository.GetCommentsForQuestionAsync(questionId);
             IEnumerable<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comment);
 
             return Ok(result);
         }
 
         [HttpGet("api/questions/{questionId}/[controller]/{commentId}", Name = "GetCommentForQuestion")]
-        public async Task<ActionResult<CommentForQuestionGetViewModel>> GetCommentForQuestion([FromRoute] Guid questionId, [FromRoute] Guid commentId)
+        public async Task<ActionResult<CommentForQuestionGetViewModel>> GetCommentForQuestionAsync([FromRoute] Guid questionId, [FromRoute] Guid commentId)
         {
-            var comment = await _commentRepository.GetCommentModel(questionId, commentId);
+            var comment = await _commentRepository.GetCommentModelAsync(questionId, commentId);
             if (comment == null)
             {
                 return NotFound();
@@ -60,7 +60,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpGet("/api/questions/{questionId}/answers/{answerIds}/[controller]", Name = "GetCommentsForAnswers")]
-        public async Task<ActionResult<IEnumerable<CommentForAnswerGetViewModel>>> GetCommentsForAnswers(
+        public async Task<ActionResult<IEnumerable<CommentForAnswerGetViewModel>>> GetCommentsForAnswersAsync(
             [FromRoute] Guid questionId,
             [FromRoute][ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> answerIds)
         {
@@ -68,18 +68,18 @@ namespace StackUnderflow.Api.Controllers
             {
                 return NotFound();
             }
-            var comments = await _commentRepository.GetCommentsForAnswers(answerIds);
+            var comments = await _commentRepository.GetCommentsForAnswersAsync(answerIds);
             var result = _mapper.Map<List<CommentForAnswerGetViewModel>>(comments);
             return Ok(result);
         }
 
         [HttpGet("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}", Name = "GetCommentForAnswer")]
-        public async Task<ActionResult<CommentForAnswerGetViewModel>> GetCommentForAnswer(
+        public async Task<ActionResult<CommentForAnswerGetViewModel>> GetCommentForAnswerAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId,
             [FromRoute] Guid commentId)
         {
-            var comment = await _commentRepository.GetCommentForAnswer(answerId, commentId);
+            var comment = await _commentRepository.GetCommentForAnswerAsync(answerId, commentId);
             if (comment == null || comment.QuestionId != questionId)
                 return NotFound();
             var result = _mapper.Map<CommentForAnswerGetViewModel>(comment);
@@ -87,7 +87,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpPost("/api/questions/{questionId}/[controller]")]
-        public async Task<ActionResult<CommentForQuestionGetViewModel>> PostOnQuestion([FromRoute] Guid questionId, [FromBody] CommentCreateRequest request)
+        public async Task<ActionResult<CommentForQuestionGetViewModel>> PostOnQuestionAsync([FromRoute] Guid questionId, [FromBody] CommentCreateRequest request)
         {
             var comment = _mapper.Map<CommentOnQuestionCreateModel>(request);
             comment.QuestionId = questionId;
@@ -106,7 +106,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpPost("/api/questions/{questionId}/answers/{answerId}/[controller]")]
-        public async Task<ActionResult<CommentForAnswerGetViewModel>> PostOnAnswer(
+        public async Task<ActionResult<CommentForAnswerGetViewModel>> PostOnAnswerAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId,
             [FromBody] CommentCreateRequest request)
@@ -128,7 +128,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpPut("/api/questions/{questionId}/[controller]/{commentId}")]
-        public async Task<ActionResult> PutOnQuestion(
+        public async Task<ActionResult> PutOnQuestionAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid commentId,
             [FromBody] UpdateCommentRequest request)
@@ -149,7 +149,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpPut("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
-        public async Task<ActionResult> PutOnAnswer(
+        public async Task<ActionResult> PutOnAnswerAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId,
             [FromRoute] Guid commentId,
@@ -172,7 +172,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpDelete("/api/questions/{questionId}/[controller]/{commentId}")]
-        public async Task<ActionResult> DeleteOnQuestion(
+        public async Task<ActionResult> DeleteOnQuestionAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid commentId,
             [FromBody] UpdateCommentRequest request)
@@ -189,7 +189,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         [HttpDelete("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
-        public async Task<ActionResult> DeleteOnAnswer(
+        public async Task<ActionResult> DeleteOnAnswerAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId,
             [FromRoute] Guid commentId)

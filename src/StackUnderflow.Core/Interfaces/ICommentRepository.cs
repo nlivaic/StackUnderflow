@@ -9,11 +9,11 @@ namespace StackUnderflow.Core.Interfaces
 {
     public interface ICommentRepository : IRepository<Comment>
     {
-        Task<IEnumerable<CommentForQuestionGetModel>> GetCommentsForQuestion(Guid questionId);
-        Task<IEnumerable<CommentForAnswerGetModel>> GetCommentsForAnswers(IEnumerable<Guid> answersIds);
-        Task<CommentForAnswerGetModel> GetCommentForAnswer(Guid answerId, Guid commentId);
-        Task<CommentForQuestionGetModel> GetCommentModel(Guid questionId, Guid commentId);
-        Task<Comment> GetCommentWithUser(Guid commentId);
-        Task<Comment> GetCommentWithAnswer(Guid commentId);
+        Task<IEnumerable<CommentForQuestionGetModel>> GetCommentsForQuestionAsync(Guid questionId);
+        Task<IEnumerable<CommentForAnswerGetModel>> GetCommentsForAnswersAsync(IEnumerable<Guid> answersIds);
+        Task<CommentForAnswerGetModel> GetCommentForAnswerAsync(Guid answerId, Guid commentId);
+        Task<CommentForQuestionGetModel> GetCommentModelAsync(Guid questionId, Guid commentId);
+        Task<Comment> GetCommentWithUserAsync(Guid commentId);
+        Task<Comment> GetCommentWithAnswerAsync(Guid commentId);
     }
 }

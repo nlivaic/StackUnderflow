@@ -33,28 +33,27 @@ namespace StackUnderflow.Core.Services
             _limits = limits;
         }
 
-        public async Task CastVote(VoteCreateModel voteModel)
+        public async Task CastVoteAsync(VoteCreateModel voteModel)
         {
             var vote = (await _voteRepository
-                .ListAllAsync(v => v.UserId == voteModel.UserId
+                .GetSingleAsync(v => v.UserId == voteModel.UserId
                     && (v.QuestionId == null || v.QuestionId == voteModel.TargetId)
                     && (v.AnswerId == null || v.AnswerId == voteModel.TargetId)
-                    && (v.CommentId == null || v.CommentId == voteModel.TargetId)))
-                .SingleOrDefault();
+                    && (v.CommentId == null || v.CommentId == voteModel.TargetId)));
             if (vote != null)
             {
                 throw new BusinessException($"User already voted on {voteModel.VoteTarget.ToString()} on '{vote.CreatedOn}'.");
             }
-            IVoteable target = await GetVoteableFromRepository(voteModel.VoteTarget, voteModel.TargetId);
+            IVoteable target = await GetVoteableFromRepositoryAsync(voteModel.VoteTarget, voteModel.TargetId);
             target.ApplyVote(vote);
-            await AddVoteableToRepository(voteModel.VoteTarget, target);
+            await AddVoteableToRepositoryAsync(voteModel.VoteTarget, target);
             await _uow.SaveAsync();
         }
 
-        public async Task RevokeVote(VoteRevokeModel voteModel)
+        public async Task RevokeVoteAsync(VoteRevokeModel voteModel)
         {
             var vote = (await _voteRepository
-                .GetVote(voteModel.UserId, voteModel.VoteId))
+                .GetVoteAsync(voteModel.UserId, voteModel.VoteId))
                 ?? throw new BusinessException("No vote to revoke or user not user of target vote.");
             if (vote.CreatedOn.Add(_limits.VoteEditDeadline) < DateTime.UtcNow)
                 throw new BusinessException($"Vote with id '{voteModel.VoteId}' cannot be edited since more than '{_limits.VoteEditDeadline.Minutes}' minutes passed.");
@@ -64,7 +63,7 @@ namespace StackUnderflow.Core.Services
             await _uow.SaveAsync();
         }
 
-        private async Task<IVoteable> GetVoteableFromRepository(VoteTargetEnum voteTarget, Guid voteTargetId)
+        private async Task<IVoteable> GetVoteableFromRepositoryAsync(VoteTargetEnum voteTarget, Guid voteTargetId)
         {
             IVoteable target = null;
             return voteTarget switch
@@ -88,7 +87,7 @@ namespace StackUnderflow.Core.Services
                 throw new BusinessException($"Vote '{vote.Id}' does not have any targets mapped.");
         }
 
-        private async Task AddVoteableToRepository(VoteTargetEnum voteTarget, IVoteable voteable)
+        private async Task AddVoteableToRepositoryAsync(VoteTargetEnum voteTarget, IVoteable voteable)
         {
             var task = voteTarget switch
             {
