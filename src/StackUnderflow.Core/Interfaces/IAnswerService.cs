@@ -9,6 +9,6 @@ namespace StackUnderflow.Core.Interfaces
         Task AcceptAnswer(AnswerAcceptModel answerModel);
         Task DeleteAnswer(Guid answerUserId, Guid answerId);
         Task EditAnswer(AnswerEditModel answerModel);
-        Task PostAnswer(AnswerCreateModel answerModel);
+        Task<AnswerGetModel> PostAnswer(AnswerCreateModel answerModel);
     }
 }

@@ -5,17 +5,20 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
+using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Core.Models;
 using StackUnderflow.Core.QueryParameters;
 
 namespace StackUnderflow.Api.Controllers
 {
     [ApiController]
     [Route("/api/questions/{questionId}/[controller]")]
-    public class AnswersController : ControllerBase
+    public class AnswersController : ApiControllerBase
     {
         private readonly IAnswerService _answerService;
         private readonly IAnswerRepository _answerRepository;
@@ -45,13 +48,37 @@ namespace StackUnderflow.Api.Controllers
             return Ok(_mapper.Map<List<AnswerGetViewModel>>(pagedAnswers.Items));
         }
 
-        [HttpGet("{answerId}")]
+        [HttpGet("{answerId}", Name = "Get")]
         public async Task<ActionResult<AnswerGetViewModel>> Get(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId)
         {
             var result = await _answerRepository.GetAnswerWithUserAsync(questionId, answerId);
             return Ok(_mapper.Map<AnswerGetViewModel>(result));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AnswerGetViewModel>> Post(
+            [FromRoute] Guid questionId,
+            [FromBody] AnswerCreateRequest request)
+        {
+            var answer = _mapper.Map<AnswerCreateModel>(request);
+            answer.QuestionId = questionId;
+            // Map answer to user fa11acfe-8234-4fa3-9733-19abe08f74e8 to force duplicate answer exception.
+            // Map answer to user 59405a18-8f1d-4ece-a4cd-ef91d5bd65ae to create a new answer. Will work only on first attempt!
+            answer.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            AnswerGetModel answerGetModel = null;
+            try
+            {
+                answerGetModel = await _answerService.PostAnswer(answer);
+            }
+            catch (BusinessException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return UnprocessableEntity();
+            }
+            var answerGetViewModel = _mapper.Map<AnswerGetViewModel>(answerGetModel);
+            return CreatedAtRoute("Get", new { answerId = answerGetModel.Id, questionId }, answerGetViewModel);
         }
     }
 }

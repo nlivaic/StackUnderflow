@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.API.Services.Sorting;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace StackUnderflow.Api
 {

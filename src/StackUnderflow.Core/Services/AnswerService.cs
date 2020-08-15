@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
@@ -15,6 +16,7 @@ namespace StackUnderflow.Core.Services
         private readonly IQuestionRepository _questionRepository;
         private readonly IRepository<Answer> _answerRepository;
         private readonly IRepository<User> _userRepository;
+        private readonly IMapper _mapper;
         private readonly ILimits _limits;
         private readonly IVoteable _voteable;
         private readonly ICommentable _commentable;
@@ -23,18 +25,20 @@ namespace StackUnderflow.Core.Services
             IQuestionRepository questionRepository,
             IRepository<Answer> answerRepository,
             IRepository<User> userRepository,
+            IMapper mapper,
             ILimits limits)
         {
             _uow = uow;
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
             _userRepository = userRepository;
+            _mapper = mapper;
             _limits = limits;
             _voteable = new Voteable();
             _commentable = new Commentable();
         }
 
-        public async Task PostAnswer(AnswerCreateModel answerModel)
+        public async Task<AnswerGetModel> PostAnswer(AnswerCreateModel answerModel)
         {
             // @nl: check if null.
             // var owner = _ownerRepository.GetByIdAsync(ownerId);
@@ -47,6 +51,7 @@ namespace StackUnderflow.Core.Services
             var answer = Answer.Create(user, answerModel.Body, question, _limits);
             question.Answer(answer);
             await _uow.SaveAsync();
+            return _mapper.Map<AnswerGetModel>(answer);
             // @nl: Raise an event! Message must be sent to the inbox.
         }
 
