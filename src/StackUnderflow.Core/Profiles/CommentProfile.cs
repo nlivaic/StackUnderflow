@@ -15,6 +15,8 @@ namespace StackUnderflow.Core.Profiles
             CreateMap<Comment, CommentForAnswerGetModel>()
                 .ForMember(dest => dest.AnswerId,
                     opts => opts.MapFrom(src => src.ParentAnswerId))
+                .ForMember(dest => dest.QuestionId,
+                    opts => opts.MapFrom(src => src.ParentAnswer.QuestionId))
                 .ForMember(dest => dest.Username,
                     opts => opts.MapFrom(src => src.User.Username));
         }

@@ -21,16 +21,19 @@ namespace StackUnderflow.Api.Controllers
     public class AnswersController : ApiControllerBase
     {
         private readonly IAnswerService _answerService;
+        private readonly IQuestionRepository _questionRepository;
         private readonly IAnswerRepository _answerRepository;
         private readonly IMapper _mapper;
 
         public AnswersController(
             IAnswerService answerService,
             IAnswerRepository answerRepository,
+            IQuestionRepository questionRepository,
             IMapper mapper)
         {
             _answerService = answerService;
             _answerRepository = answerRepository;
+            _questionRepository = questionRepository;
             _mapper = mapper;
         }
 
@@ -40,6 +43,10 @@ namespace StackUnderflow.Api.Controllers
             [FromQuery] AnswerResourceParameters answerResourceParameters)
         {
             var answerQueryParameters = _mapper.Map<AnswerQueryParameters>(answerResourceParameters);
+            if (await _questionRepository.ExistsAsync(questionId))
+            {
+                return NotFound();
+            }
             var pagedAnswers = await _answerRepository.GetAnswersWithUserAsync(questionId, answerQueryParameters);
             var pagingHeader = new PagingDto(pagedAnswers.CurrentPage, pagedAnswers.TotalPages, pagedAnswers.TotalItems);
             HttpContext.Response.Headers.Add(
@@ -66,6 +73,10 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromBody] AnswerCreateRequest request)
         {
+            if (await _questionRepository.ExistsAsync(questionId))
+            {
+                return NotFound();
+            }
             var answer = _mapper.Map<AnswerCreateModel>(request);
             answer.QuestionId = questionId;
             // Map answer to user fa11acfe-8234-4fa3-9733-19abe08f74e8 to force duplicate answer exception.
@@ -99,6 +110,10 @@ namespace StackUnderflow.Api.Controllers
             {
                 await _answerService.EditAnswer(answer);
             }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
             catch (BusinessException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
@@ -116,6 +131,10 @@ namespace StackUnderflow.Api.Controllers
             try
             {
                 await _answerService.DeleteAnswer(userId, questionId, answerId);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
             }
             catch (BusinessException ex)
             {

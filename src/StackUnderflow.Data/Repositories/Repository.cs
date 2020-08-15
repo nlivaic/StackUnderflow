@@ -44,6 +44,12 @@ namespace StackUnderflow.Data.Repositories
             return await q.ToListAsync();
         }
 
+        public async Task<bool> ExistsAsync(Guid id) =>
+            await _context.Set<T>().AnyAsync(x => x.Id == id);
+
+        public async Task<bool> ExistsAsync(IEnumerable<Guid> ids) =>
+            (await _context.Set<T>().CountAsync(x => ids.Contains(x.Id)) == ids.Count());
+
         public async Task AddAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);

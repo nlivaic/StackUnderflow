@@ -11,7 +11,7 @@ namespace StackUnderflow.Core.Interfaces
     {
         Task<IEnumerable<CommentForQuestionGetModel>> GetCommentsForQuestion(Guid questionId);
         Task<IEnumerable<CommentForAnswerGetModel>> GetCommentsForAnswers(IEnumerable<Guid> answersIds);
-        Task<CommentForAnswerGetModel> GetCommentForAnswer(Guid questionId, Guid answerId, Guid commentId);
+        Task<CommentForAnswerGetModel> GetCommentForAnswer(Guid answerId, Guid commentId);
         Task<CommentForQuestionGetModel> GetCommentModel(Guid questionId, Guid commentId);
         Task<Comment> GetCommentWithUser(Guid commentId);
         Task<Comment> GetCommentWithAnswer(Guid commentId);

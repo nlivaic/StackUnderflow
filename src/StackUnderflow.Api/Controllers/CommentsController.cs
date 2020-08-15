@@ -15,15 +15,21 @@ namespace StackUnderflow.Api.Controllers
     public class CommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
+        private readonly IQuestionRepository _questionRepository;
+        private readonly IAnswerRepository _answerRepository;
         private readonly ICommentService _commentService;
         private readonly IMapper _mapper;
 
         public CommentsController(
             ICommentRepository commentRepository,
+            IQuestionRepository questionRepository,
+            IAnswerRepository answerRepository,
             ICommentService commentService,
             IMapper mapper)
         {
             _commentRepository = commentRepository;
+            _questionRepository = questionRepository;
+            _answerRepository = answerRepository;
             _commentService = commentService;
             _mapper = mapper;
         }
@@ -31,12 +37,13 @@ namespace StackUnderflow.Api.Controllers
         [HttpGet("api/questions/{questionId}/[controller]")]
         public async Task<ActionResult<IEnumerable<CommentForQuestionGetViewModel>>> GetCommentForQuestion([FromRoute] Guid questionId)
         {
-            var comment = await _commentRepository.GetCommentsForQuestion(questionId);
-            IEnumerable<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comment);
-            if (comment == null)
+            if (!(await _questionRepository.ExistsAsync(questionId)))
             {
                 return NotFound();
             }
+            var comment = await _commentRepository.GetCommentsForQuestion(questionId);
+            IEnumerable<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comment);
+
             return Ok(result);
         }
 
@@ -57,6 +64,10 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromRoute][ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> answerIds)
         {
+            if (!(await _questionRepository.ExistsAsync(questionId)) || !(await _answerRepository.ExistsAsync(answerIds)))
+            {
+                return NotFound();
+            }
             var comments = await _commentRepository.GetCommentsForAnswers(answerIds);
             var result = _mapper.Map<List<CommentForAnswerGetViewModel>>(comments);
             return Ok(result);
@@ -68,8 +79,8 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid answerId,
             [FromRoute] Guid commentId)
         {
-            var comment = await _commentRepository.GetCommentForAnswer(questionId, answerId, commentId);
-            if (comment == null)
+            var comment = await _commentRepository.GetCommentForAnswer(answerId, commentId);
+            if (comment == null || comment.QuestionId != questionId)
                 return NotFound();
             var result = _mapper.Map<CommentForAnswerGetViewModel>(comment);
             return Ok(result);

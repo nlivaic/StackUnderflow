@@ -50,11 +50,11 @@ namespace StackUnderflow.Core.Services
 
         public async Task EditQuestionAsync(QuestionEditModel questionModel)
         {
-            var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
-            var user = await _userRepository.GetByIdAsync(questionModel.QuestionUserId, false);
             var question = (await _questionRepository
                 .GetQuestionWithTagsAsync(questionModel.QuestionId))
                 ?? throw new EntityNotFoundException(nameof(Question), questionModel.QuestionId);
+            var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
+            var user = await _userRepository.GetByIdAsync(questionModel.QuestionUserId, false);
             question.Edit(user, questionModel.Title, questionModel.Body, tags, _limits);
             await _uow.SaveAsync();
         }

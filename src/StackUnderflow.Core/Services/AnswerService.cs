@@ -65,7 +65,7 @@ namespace StackUnderflow.Core.Services
                         && a.UserId == answerModel.UserId
                         && a.QuestionId == answerModel.QuestionId))
                     .SingleOrDefault()
-                ?? throw new BusinessException($"Answer with id '{answerModel.AnswerId}' belonging to user '{answerModel.UserId}' does not exist.");
+                ?? throw new EntityNotFoundException(nameof(Answer), answerModel.AnswerId);
             var user = await _userRepository.GetByIdAsync(answerModel.UserId);
             answer.Edit(user, answerModel.Body, _limits);
             await _uow.SaveAsync();
@@ -101,7 +101,7 @@ namespace StackUnderflow.Core.Services
                         && a.Id == answerId
                         && a.QuestionId == questionId))
                     .SingleOrDefault()
-                ?? throw new BusinessException($"Answer with id '{answerId}' belonging to user '{answerUserId}' does not exist.");
+                ?? throw new EntityNotFoundException(nameof(Answer), answerId);
             if (answer.IsAcceptedAnswer)
             {
                 throw new BusinessException($"Answer with id '{answerId}' has been accepted on '{answer.AcceptedOn}'.");

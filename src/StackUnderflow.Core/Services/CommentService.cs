@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using StackUnderflow.Common.Exceptions;
@@ -61,6 +60,10 @@ namespace StackUnderflow.Core.Services
         {
             var user = await _userRepository.GetByIdAsync(commentModel.UserId);
             var answer = await _answerRepository.GetAnswerWithCommentsAsync(commentModel.QuestionId, commentModel.AnswerId);
+            if (answer == null)
+            {
+                throw new EntityNotFoundException(nameof(Answer), commentModel.AnswerId);
+            }
             var commentOrderNumber = answer
                 .Comments
                 .Select(c => c.OrderNumber)

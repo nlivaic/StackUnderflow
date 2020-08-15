@@ -28,9 +28,11 @@ namespace StackUnderflow.Data.Repositories
                 .ProjectTo<CommentForQuestionGetModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-        public async Task<CommentForAnswerGetModel> GetCommentForAnswer(Guid questionId, Guid answerId, Guid commentId) =>
+        public async Task<CommentForAnswerGetModel> GetCommentForAnswer(Guid answerId, Guid commentId) =>
             await _context
                 .Comments
+                .Include(c => c.ParentAnswer)
+                .ThenInclude(a => a.Question)
                 .Where(c => c.ParentAnswerId == answerId && c.Id == commentId)
                 .ProjectTo<CommentForAnswerGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
