@@ -73,7 +73,7 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromBody] AnswerCreateRequest request)
         {
-            if (await _questionRepository.ExistsAsync(questionId))
+            if (!(await _questionRepository.ExistsAsync(questionId)))
             {
                 return NotFound();
             }
@@ -142,6 +142,35 @@ namespace StackUnderflow.Api.Controllers
                 return UnprocessableEntity();
             }
             return NoContent();
+        }
+
+        [HttpPost("{answerId}/acceptAnswer")]
+        public async Task<ActionResult<AnswerGetViewModel>> AcceptAnswer(
+            [FromRoute] Guid questionId,
+            [FromRoute] Guid answerId)
+        {
+            var acceptAnswer = new AnswerAcceptModel
+            {
+                QuestionUserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8"),
+                QuestionId = questionId,
+                AnswerId = answerId
+            };
+            AnswerGetModel answerModel = null;
+            try
+            {
+                answerModel = await _answerService.AcceptAnswerAsync(acceptAnswer);
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (BusinessException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return UnprocessableEntity();
+            }
+            var answerViewModel = _mapper.Map<AnswerGetViewModel>(answerModel);
+            return CreatedAtRoute("Get", new { questionId, answerId }, answerViewModel);
         }
     }
 }

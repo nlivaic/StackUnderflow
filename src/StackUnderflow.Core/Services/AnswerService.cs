@@ -70,13 +70,13 @@ namespace StackUnderflow.Core.Services
             await _uow.SaveAsync();
         }
 
-        public async Task AcceptAnswerAsync(AnswerAcceptModel answerModel)
+        public async Task<AnswerGetModel> AcceptAnswerAsync(AnswerAcceptModel answerModel)
         {
             // @nl: a da povučem (question+svi answeri)? Ili (question+taj specifičan answer)? Da idem iz repoa dva puta na bazu?
             var question = (await _questionRepository.GetByIdAsync(answerModel.QuestionId))
-                ?? throw new BusinessException($"Question '{answerModel.QuestionId}' does not exist!");
-            var answer = question.Answers.SingleOrDefault(a => a.Id == answerModel.AnswerId)
-                ?? throw new BusinessException($"Answer '{answerModel.AnswerId}' is not associated with question '{answerModel.QuestionId}'!");
+                ?? throw new EntityNotFoundException(nameof(Question), answerModel.QuestionId);
+            var answer = await _answerRepository.GetSingleAsync(a => a.QuestionId == answerModel.QuestionId && a.Id == answerModel.AnswerId)
+                ?? throw new EntityNotFoundException(nameof(Answer), answerModel.AnswerId);
             if (question.UserId != answerModel.QuestionUserId)
             {
                 throw new BusinessException("Only question user can accept an answer!");
@@ -87,6 +87,7 @@ namespace StackUnderflow.Core.Services
             }
             question.AcceptAnswer(answer);
             await _uow.SaveAsync();
+            return _mapper.Map<AnswerGetModel>(answer);
             // @nl: calculate points.
             // @nl: raise an event. Message must be sent to answer owner's inbox.
         }
