@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Common.Exceptions;
@@ -24,6 +25,11 @@ namespace StackUnderflow.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get a single question.
+        /// </summary>
+        /// <param name="id">Question identifier</param>
+        /// <returns>Question data.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet("{id}", Name = "GetQuestion")]
@@ -37,6 +43,11 @@ namespace StackUnderflow.Api.Controllers
             return Ok(_mapper.Map<QuestionGetViewModel>(question));
         }
 
+        /// <summary>
+        /// Create a new question [requires authentication].
+        /// </summary>
+        /// <param name="request">Question create body.</param>
+        /// <returns>Newly created question.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [Produces("application/json")]
         [Consumes("application/json")]
@@ -49,6 +60,11 @@ namespace StackUnderflow.Api.Controllers
             return CreatedAtRoute("GetQuestion", new { id = questionModel.Id }, _mapper.Map<QuestionGetViewModel>(questionModel));
         }
 
+        /// <summary>
+        /// Edit question. Question can be edited only a certain amount of time after it was created [requires authentication].
+        /// </summary>
+        /// <param name="id">Question identifier.</param>
+        /// <param name="request">Question edit data.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Produces("application/json")]
         [Consumes("application/json")]
@@ -69,8 +85,13 @@ namespace StackUnderflow.Api.Controllers
             return NoContent();
         }
 
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        /// <summary>
+        /// Delete question. Question can be deleted only a certain amount of time after it was created [requires authentication].
+        /// </summary>
+        /// <param name="id">Question identifier.</param>
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [Produces("application/json")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using StackUnderflow.Api.Constants;
@@ -34,6 +35,13 @@ namespace StackUnderflow.Api.Controllers
             _propertyMappingService = propertyMappingService;
         }
 
+        /// <summary>
+        /// A list of question summaries (a brief overview of each question).
+        /// </summary>
+        /// <param name="questionResourceParameters">Resource parameters allowing paging, ordering, searching and filtering.</param>
+        /// <returns>A list of question summaries.</returns>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> GetAsync([FromQuery] QuestionResourceParameters questionResourceParameters)
         {
