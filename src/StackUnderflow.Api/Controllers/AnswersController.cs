@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using StackUnderflow.Api.BaseControllers;
@@ -37,13 +38,16 @@ namespace StackUnderflow.Api.Controllers
             _mapper = mapper;
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AnswerGetViewModel>>> GetForQuestionAsync(
             [FromRoute] Guid questionId,
             [FromQuery] AnswerResourceParameters answerResourceParameters)
         {
             var answerQueryParameters = _mapper.Map<AnswerQueryParameters>(answerResourceParameters);
-            if (await _questionRepository.ExistsAsync(questionId))
+            if (!(await _questionRepository.ExistsAsync(questionId)))
             {
                 return NotFound();
             }
@@ -55,6 +59,8 @@ namespace StackUnderflow.Api.Controllers
             return Ok(_mapper.Map<List<AnswerGetViewModel>>(pagedAnswers.Items));
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
         [HttpGet("{answerId}", Name = "Get")]
         public async Task<ActionResult<AnswerGetViewModel>> GetAsync(
             [FromRoute] Guid questionId,
@@ -68,6 +74,10 @@ namespace StackUnderflow.Api.Controllers
             return Ok(_mapper.Map<AnswerGetViewModel>(result));
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost]
         public async Task<ActionResult<AnswerGetViewModel>> PostAsync(
             [FromRoute] Guid questionId,
@@ -96,6 +106,9 @@ namespace StackUnderflow.Api.Controllers
             return CreatedAtRoute("Get", new { answerId = answerGetModel.Id, questionId }, answerGetViewModel);
         }
 
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Consumes("application/json")]
         [HttpPut("{answerId}")]
         public async Task<ActionResult> PutAsync(
             [FromRoute] Guid questionId,
@@ -122,6 +135,8 @@ namespace StackUnderflow.Api.Controllers
             return NoContent();
         }
 
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("{answerId}")]
         public async Task<ActionResult> DeleteAsync(
             [FromRoute] Guid questionId,
@@ -139,11 +154,15 @@ namespace StackUnderflow.Api.Controllers
             catch (BusinessException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-                return UnprocessableEntity();
+                return Conflict(ModelState);
             }
             return NoContent();
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost("{answerId}/acceptAnswer")]
         public async Task<ActionResult<AnswerGetViewModel>> AcceptAnswer(
             [FromRoute] Guid questionId,

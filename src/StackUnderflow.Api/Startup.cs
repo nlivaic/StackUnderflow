@@ -18,7 +18,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.API.Services.Sorting;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
 
 namespace StackUnderflow.Api
 {
@@ -40,6 +42,10 @@ namespace StackUnderflow.Api
                 .AddControllers(configure =>
                 {
                     configure.ReturnHttpNotAcceptable = true;
+                    configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
+                    configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status404NotFound));
+                    configure.Filters.Add(new ProducesResponseTypeAttribute(typeof(object), StatusCodes.Status406NotAcceptable));
+                    configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
                 })
                 .ConfigureApiBehaviorOptions(options =>
                 {
@@ -78,6 +84,33 @@ namespace StackUnderflow.Api
             services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionProfile).Assembly);
+
+            services.AddSwaggerGen(setupAction =>
+            {
+                setupAction.SwaggerDoc(
+                    "StackUnderflowOpenAPISpecification",
+                    new OpenApiInfo
+                    {
+                        Title = "Stack Underflow API",
+                        Version = "v1",
+                        Description = "This API allows access to the Stack Underflow Q&A.",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Nenad Livaic",
+                            Url = new Uri("https://github.com/nlivaic")
+                        },
+                        License = new OpenApiLicense
+                        {
+                            Name = "MIT",
+                            Url = new Uri("https://www.opensource.org/licenses/MIT")
+                        },
+                        TermsOfService = new Uri("https://www.my-terms-of-service.com")
+                    });
+                // A workaround for having multiple POST methods on one controller.
+                // setupAction.ResolveConflictingActions(r => r.First());
+                // setupAction.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "StackUnderflow.Api.xml"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,6 +134,12 @@ namespace StackUnderflow.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/StackUnderflowOpenAPISpecification/swagger.json", "Stack Underflow API");
+            });
 
             app.UseRouting();
 

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.API.Helpers;
 using StackUnderflow.Common.Exceptions;
@@ -12,7 +14,7 @@ using StackUnderflow.Core.Models;
 namespace StackUnderflow.Api.Controllers
 {
     [ApiController]
-    public class CommentsController : ControllerBase
+    public class CommentsController : ApiControllerBase
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IQuestionRepository _questionRepository;
@@ -34,6 +36,8 @@ namespace StackUnderflow.Api.Controllers
             _mapper = mapper;
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
         [HttpGet("api/questions/{questionId}/[controller]")]
         public async Task<ActionResult<IEnumerable<CommentForQuestionGetViewModel>>> GetCommentForQuestionAsync([FromRoute] Guid questionId)
         {
@@ -43,10 +47,11 @@ namespace StackUnderflow.Api.Controllers
             }
             var comment = await _commentRepository.GetCommentsForQuestionAsync(questionId);
             IEnumerable<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comment);
-
             return Ok(result);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
         [HttpGet("api/questions/{questionId}/[controller]/{commentId}", Name = "GetCommentForQuestion")]
         public async Task<ActionResult<CommentForQuestionGetViewModel>> GetCommentForQuestionAsync([FromRoute] Guid questionId, [FromRoute] Guid commentId)
         {
@@ -59,6 +64,8 @@ namespace StackUnderflow.Api.Controllers
             return Ok(result);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
         [HttpGet("/api/questions/{questionId}/answers/{answerIds}/[controller]", Name = "GetCommentsForAnswers")]
         public async Task<ActionResult<IEnumerable<CommentForAnswerGetViewModel>>> GetCommentsForAnswersAsync(
             [FromRoute] Guid questionId,
@@ -73,6 +80,8 @@ namespace StackUnderflow.Api.Controllers
             return Ok(result);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Produces("application/json")]
         [HttpGet("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}", Name = "GetCommentForAnswer")]
         public async Task<ActionResult<CommentForAnswerGetViewModel>> GetCommentForAnswerAsync(
             [FromRoute] Guid questionId,
@@ -86,6 +95,10 @@ namespace StackUnderflow.Api.Controllers
             return Ok(result);
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost("/api/questions/{questionId}/[controller]")]
         public async Task<ActionResult<CommentForQuestionGetViewModel>> PostOnQuestionAsync([FromRoute] Guid questionId, [FromBody] CommentCreateRequest request)
         {
@@ -105,6 +118,10 @@ namespace StackUnderflow.Api.Controllers
             return CreatedAtRoute("GetCommentForQuestion", new { questionId = questionId, commentId = commentModel.Id }, result);
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost("/api/questions/{questionId}/answers/{answerId}/[controller]")]
         public async Task<ActionResult<CommentForAnswerGetViewModel>> PostOnAnswerAsync(
             [FromRoute] Guid questionId,
@@ -127,6 +144,9 @@ namespace StackUnderflow.Api.Controllers
             return CreatedAtRoute("GetCommentForAnswer", new { questionId, answerId, commentId = result.Id }, _mapper.Map<CommentForAnswerGetViewModel>(result));
         }
 
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Consumes("application/json")]
         [HttpPut("/api/questions/{questionId}/[controller]/{commentId}")]
         public async Task<ActionResult> PutOnQuestionAsync(
             [FromRoute] Guid questionId,
@@ -148,6 +168,9 @@ namespace StackUnderflow.Api.Controllers
             return NoContent();
         }
 
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Consumes("application/json")]
         [HttpPut("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
         public async Task<ActionResult> PutOnAnswerAsync(
             [FromRoute] Guid questionId,
@@ -171,6 +194,8 @@ namespace StackUnderflow.Api.Controllers
             return NoContent();
         }
 
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("/api/questions/{questionId}/[controller]/{commentId}")]
         public async Task<ActionResult> DeleteOnQuestionAsync(
             [FromRoute] Guid questionId,
@@ -185,9 +210,16 @@ namespace StackUnderflow.Api.Controllers
             {
                 return NotFound();
             }
+            catch (BusinessException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Conflict(ModelState);
+            }
             return NoContent();
         }
 
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
         public async Task<ActionResult> DeleteOnAnswerAsync(
             [FromRoute] Guid questionId,
@@ -207,6 +239,11 @@ namespace StackUnderflow.Api.Controllers
             catch (EntityNotFoundException)
             {
                 return NotFound();
+            }
+            catch (BusinessException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Conflict(ModelState);
             }
             return NoContent();
         }
