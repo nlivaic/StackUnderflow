@@ -38,9 +38,16 @@ namespace StackUnderflow.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all answers associated with the target question.
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerResourceParameters">Resource parameters allowing paging, ordering, searching and filtering.</param>
+        /// <returns>List of answers.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AnswerGetViewModel>>> GetForQuestionAsync(
             [FromRoute] Guid questionId,
@@ -59,6 +66,12 @@ namespace StackUnderflow.Api.Controllers
             return Ok(_mapper.Map<List<AnswerGetViewModel>>(pagedAnswers.Items));
         }
 
+        /// <summary>
+        /// Get a single answer associated with the target question.
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerId">Answer identifier.</param>
+        /// <returns>Single answer.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet("{answerId}", Name = "Get")]
@@ -74,6 +87,12 @@ namespace StackUnderflow.Api.Controllers
             return Ok(_mapper.Map<AnswerGetViewModel>(result));
         }
 
+        /// <summary>
+        /// Create a new answer to the target question [requires authentication].
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="request">Answer create body.</param>
+        /// <returns>Newly created answer.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
@@ -106,8 +125,15 @@ namespace StackUnderflow.Api.Controllers
             return CreatedAtRoute("Get", new { answerId = answerGetModel.Id, questionId }, answerGetViewModel);
         }
 
+        /// <summary>
+        /// Edit answer. Answer can be edited only a certain amount of time after it was created [requires authentication]. 
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerId">Answer identifier.</param>
+        /// <param name="request">Answer edit data.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{answerId}")]
         public async Task<ActionResult> PutAsync(
@@ -135,8 +161,14 @@ namespace StackUnderflow.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete answer. Answer can be deleted only a certain amount of time after it was created [requires authentication].
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerId">Answer identifier.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
         [HttpDelete("{answerId}")]
         public async Task<ActionResult> DeleteAsync(
             [FromRoute] Guid questionId,
@@ -159,10 +191,15 @@ namespace StackUnderflow.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Accept the answer to the target question [requires authentication].
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerId">Answer identifier.</param>
+        /// <returns>Accepted answer.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
-        [Consumes("application/json")]
         [HttpPost("{answerId}/acceptAnswer")]
         public async Task<ActionResult<AnswerGetViewModel>> AcceptAnswer(
             [FromRoute] Guid questionId,

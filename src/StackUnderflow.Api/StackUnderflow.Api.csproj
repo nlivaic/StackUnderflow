@@ -26,6 +26,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>0579;1591</NoWarn>
   </PropertyGroup>
 
 

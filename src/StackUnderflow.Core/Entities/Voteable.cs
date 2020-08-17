@@ -21,6 +21,8 @@ namespace StackUnderflow.Core.Entities
                 throw new BusinessException($"User '{vote.UserId}' has already voted on {Target(vote)} '{TargetId(vote)}'.");
             }
             _votes.Add(vote);
+            // @nl: code below might be open to concurrency issues.
+            // Perhaps sum this up in a dedicated thread, using Hangfire.
             switch (vote.VoteType)
             {
                 case VoteTypeEnum.Upvote:

@@ -108,7 +108,7 @@ namespace StackUnderflow.Api
                     });
                 // A workaround for having multiple POST methods on one controller.
                 // setupAction.ResolveConflictingActions(r => r.First());
-                // setupAction.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "StackUnderflow.Api.xml"));
+                setupAction.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "StackUnderflow.Api.xml"));
             });
 
         }

@@ -36,10 +36,15 @@ namespace StackUnderflow.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all comments associated with the target question.
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <returns>List of comments.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet("api/questions/{questionId}/[controller]")]
-        public async Task<ActionResult<IEnumerable<CommentForQuestionGetViewModel>>> GetCommentForQuestionAsync([FromRoute] Guid questionId)
+        public async Task<ActionResult<IEnumerable<CommentForQuestionGetViewModel>>> GetCommentsForQuestionAsync([FromRoute] Guid questionId)
         {
             if (!(await _questionRepository.ExistsAsync(questionId)))
             {
@@ -50,6 +55,12 @@ namespace StackUnderflow.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Get a specific comment for a target question.
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="commentId">Comment identifier.</param>
+        /// <returns>Single comment.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet("api/questions/{questionId}/[controller]/{commentId}", Name = "GetCommentForQuestion")]
@@ -64,6 +75,12 @@ namespace StackUnderflow.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Get all comments associated with multiple target answers.
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerIds">List of answer identifiers.</param>
+        /// <returns>List of comments.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet("/api/questions/{questionId}/answers/{answerIds}/[controller]", Name = "GetCommentsForAnswers")]
@@ -80,6 +97,13 @@ namespace StackUnderflow.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Get a specific comment for a target answer.
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerId">Answer identifier.</param>
+        /// <param name="commentId">Comment identifier.</param>
+        /// <returns>Single comment.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}", Name = "GetCommentForAnswer")]
@@ -95,6 +119,12 @@ namespace StackUnderflow.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Create a new comment to the target question [requires authentication].
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="request">Comment create body.</param>
+        /// <returns>Newly created comment.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
@@ -118,6 +148,13 @@ namespace StackUnderflow.Api.Controllers
             return CreatedAtRoute("GetCommentForQuestion", new { questionId = questionId, commentId = commentModel.Id }, result);
         }
 
+        /// <summary>
+        /// Create a new comment to the target answer [requires authentication].
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerId">Answer identifier.</param>
+        /// <param name="request">Comment create body.</param>
+        /// <returns>Newly created comment.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
@@ -144,6 +181,12 @@ namespace StackUnderflow.Api.Controllers
             return CreatedAtRoute("GetCommentForAnswer", new { questionId, answerId, commentId = result.Id }, _mapper.Map<CommentForAnswerGetViewModel>(result));
         }
 
+        /// <summary>
+        /// Edit comment on target question. Comment can be edited only a certain amount of time after it was created [requires authentication]. 
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="commentId">Comment identifier.</param>
+        /// <param name="request">Comment edit data.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Consumes("application/json")]
@@ -168,6 +211,13 @@ namespace StackUnderflow.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Edit comment on target answer. Comment can be edited only a certain amount of time after it was created [requires authentication]. 
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerId">Answer identifier.</param>
+        /// <param name="commentId">Comment identifier.</param>
+        /// <param name="request">Comment edit data.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Consumes("application/json")]
@@ -194,13 +244,17 @@ namespace StackUnderflow.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete comment on target question. Comment can be deleted only a certain amount of time after it was created [requires authentication].
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="commentId">Comment identifier.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("/api/questions/{questionId}/[controller]/{commentId}")]
         public async Task<ActionResult> DeleteOnQuestionAsync(
             [FromRoute] Guid questionId,
-            [FromRoute] Guid commentId,
-            [FromBody] UpdateCommentRequest request)
+            [FromRoute] Guid commentId)
         {
             try
             {
@@ -218,6 +272,12 @@ namespace StackUnderflow.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete comment on target answer. Comment can be deleted only a certain amount of time after it was created [requires authentication].
+        /// </summary>
+        /// <param name="questionId">Question identifier.</param>
+        /// <param name="answerId">Answer identifier.</param>
+        /// <param name="commentId">Comment identifier.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
