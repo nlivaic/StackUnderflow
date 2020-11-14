@@ -21,6 +21,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace StackUnderflow.Api
 {
@@ -110,7 +111,10 @@ namespace StackUnderflow.Api
                 // setupAction.ResolveConflictingActions(r => r.First());
                 setupAction.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "StackUnderflow.Api.xml"));
             });
-
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -134,6 +138,7 @@ namespace StackUnderflow.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseSpaStaticFiles();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -148,6 +153,21 @@ namespace StackUnderflow.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    // This is used if starting both front end and back end with the same command.
+                    // spa.UseReactDevelopmentServer(npmScript: "start");
+                    // This is used if starting front end separately from the back end, most likely to get better
+                    // separation. Faster hot reload when changing only front end and not having to go through front end
+                    // rebuild every time you change something on the back end.
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+                }
             });
         }
     }
