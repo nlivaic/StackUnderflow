@@ -1,5 +1,5 @@
 {
-  "name": "foo",
+  "name": "stack-underflow",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

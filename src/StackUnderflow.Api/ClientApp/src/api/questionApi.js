@@ -10,7 +10,7 @@ export async function getQuestion(id) {
   }
 }
 
-export async function saveQuestion(question) {
+export async function askQuestion(question) {
   try {
     let response = await axios.post(`${apiUrl.API_URL}/questions`, question);
     console.log(response);

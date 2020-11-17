@@ -6,11 +6,11 @@ export function clearQuestion() {
   return { type: CLEAR_QUESTION };
 }
 
-export function saveQuestion(question) {
+export function askQuestion(question) {
   return (dispatch) => {
     dispatch(apiStatusActions.beginApiCall());
     try {
-        await questionApi.saveQuestion(question);
+        await questionApi.askQuestion(question);
         dispatch({type: CLEAR_QUESTION});
     }
     catch (error) {

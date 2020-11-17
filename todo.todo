@@ -1,9 +1,11 @@
 ☐ Front end
-  ☐ Continue working on QuestionSummariesList. Talking to the API does not return concrete data.
-  ☐ Redux je u procesu postavljanja. Stao sam na koraku 5: https://github.com/nlivaic/PluralsightReactRedux
+  ☐ Test with: https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
+  ☐ Comments (question and answer):
+    ☐ Runs three times !!! : https://localhost:5001/api/questions/29e0e472-6ae4-4d7e-a7d3-d5b4c707908a/comments
+  ☐ Add new question.
+  ☐ Kad se otvori React aplikacija, u tabu piše "Stack Underflow". Jel bi mogli napisati question title?
   ☐ How to reference proper port on which API is running on?
     ☐ settings.js for now, but for production maybe use environment variables.
-  ☐ Kad se otvori React aplikacija, u tabu piše "foo".
   ✔ How to run front end separately from back end? @done (08. 11. 2020. 00:24:53)
     ✔ Run front end using `npm start` command in a separate terminal. @done (08. 11. 2020. 00:24:54)
     ✔ Tell dotnet core backend app to proxy requests to the webpack dev server using `.UseProxyToSpaDevelopmentServer` @done (08. 11. 2020. 00:24:54)

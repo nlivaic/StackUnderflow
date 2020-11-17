@@ -1,22 +1,31 @@
 import axios from "axios";
 import { API_URL } from "../settings.js";
 
-export async function getComments(parentType, parentId) {
+export async function getComments(parentType, parentIds) {
   try {
-    const response = await axios.get(
-      `${API_URL}/${parentType}/${parentId}/comments`
-    );
-    return response.data;
+    let data;
+    if (parentType === "question") {
+      data = await getCommentsForQuestion(parentIds);
+    } else if (parentType === "answer") {
+      data = await getCommentsForAnswers(parentIds);
+    }
+    return data;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
-export async function getCommentsForQuestion(questionId) {
-  return await getComments("questions", questionId);
+async function getCommentsForQuestion({ questionId }) {
+  return (await axios.get(`${API_URL}/questions/${questionId}/comments`)).data;
 }
 
-export async function getCommentsForAnswersAsync(answerId) {
-  return await getComments("answers", answerId);
+async function getCommentsForAnswers({ questionId, answerIds }) {
+  return (
+    await axios.get(
+      `${API_URL}/questions/${questionId}/answers/${answerIds.join(
+        ","
+      )}/comments`
+    )
+  ).data;
 }

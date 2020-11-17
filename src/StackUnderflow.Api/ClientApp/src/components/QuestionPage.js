@@ -1,13 +1,19 @@
 import React from "react";
 import QuestionForm from "./QuestionForm";
+import AnswersList from "./AnswersList";
 
 const QuestionPage = (props) => {
+  const { questionId } = props.match.params;
   return (
     <>
-      <h3>Question Page for {props.match.params.questionId}</h3>
       <div>
         <div>
-          <QuestionForm id={props.match.params.questionId} />
+          <div>Voting</div>
+          <QuestionForm questionId={questionId} />
+          <span>
+            !!!!!!!!!!!!!!!!!!!!!!!!!!!!!Answers!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          </span>
+          <AnswersList questionId={questionId} />
         </div>
       </div>
     </>

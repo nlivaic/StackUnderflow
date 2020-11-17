@@ -10,7 +10,7 @@ const Question = ({
   tags,
 }) => {
   return (
-    <div>
+    <div style={{ borderStyle: "solid", borderColor: "red" }}>
       <h3>{title}</h3>
       <span>{body}</span>
       <UserDetails username={username} createdOn={createdOn} />
