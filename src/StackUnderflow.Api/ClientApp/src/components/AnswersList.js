@@ -10,10 +10,13 @@ const AnswersList = ({ questionId }) => {
   useEffect(() => {
     const getAnswers = async () => {
       const answersData = await answersApi.getAnswers(questionId);
-      const commentsData = await commentsApi.getComments("answer", {
-        questionId,
-        answerIds: answersData.map((answer) => answer.id),
-      });
+      let commentsData = [];
+      if (answersData.length > 0) {
+        commentsData = await commentsApi.getComments("answer", {
+          questionId,
+          answerIds: answersData.map((answer) => answer.id),
+        });
+      }
       setAnswersList(
         answersData.map((answer) => {
           return {
@@ -28,23 +31,24 @@ const AnswersList = ({ questionId }) => {
     };
     getAnswers();
   }, [questionId]);
+
+  const renderAnswers = (answersList) =>
+    answersList.length === 0
+      ? "No answers"
+      : answersList.map((answer) => {
+          return (
+            <div key={answer.id}>
+              <Answer key={answer.id} {...answer} />
+              {answer.comments.map((comment) => (
+                <Comment key={comment.id} {...comment} />
+              ))}
+            </div>
+          );
+        });
+
   return (
     <div>
-      <div>
-        {!isLoaded
-          ? "Loading answers..."
-          : answersList.map((answer) => {
-              return (
-                <div key={answer.id}>
-                  <Answer key={answer.id} {...answer} />
-                  {answer.comments.map((comment) => (
-                    <Comment key={comment.id} {...comment} />
-                  ))}
-                </div>
-              );
-            })}
-      </div>
-      1
+      <div>{!isLoaded ? "Loading answers..." : renderAnswers(answersList)}</div>
     </div>
   );
 };
