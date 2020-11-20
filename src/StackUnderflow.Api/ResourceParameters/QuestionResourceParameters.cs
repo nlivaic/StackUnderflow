@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackUnderflow.API.Helpers;
 using StackUnderflow.API.Services.Sorting;
-using StackUnderflow.Core.Entities;
 
 namespace StackUnderflow.Api.ResourceParameters
 {
