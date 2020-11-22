@@ -1,18 +1,32 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import queryString from "query-string";
 
 const Sorting = ({ resourceSortingCriterias }) => {
   const SORT_BY = "sortBy";
   const history = useHistory();
+  const location = useLocation();
   const [sortingCriteria, setSortingCriteria] = useState(
     resourceSortingCriterias.map((criteria) => {
-      return { name: criteria, selected: false };
+      debugger;
+      let resourceParametersQueryString = queryString.parse(location.search);
+      let resourceParametersInAddress = resourceParametersQueryString[SORT_BY]
+        ? resourceParametersQueryString[SORT_BY].split(",").map(
+            (criteria) => criteria.split(" ")[0]
+          )
+        : [];
+
+      return {
+        name: criteria,
+        selected: resourceParametersInAddress.includes(criteria),
+      };
     })
   );
   const onSortingCriteriaSelect = (e) => {
+    e.preventDefault();
     setSortingCriteria(
       sortingCriteria.map((criteria) => {
-        if (criteria.name === e.target.innerText)
+        if (criteria.name === e.target.value)
           criteria.selected = !criteria.selected;
         return criteria;
       })
@@ -21,7 +35,7 @@ const Sorting = ({ resourceSortingCriterias }) => {
   const stringifySelectedSortingCriteria = () => {
     let stringified = sortingCriteria
       .filter((criteria) => criteria.selected)
-      .map((criteria) => criteria.name + " asc")
+      .map((criteria) => criteria.name + " asc") // This is hardcoded as asc, to toggle asc/desc requires additional effort.
       .join(",");
     return stringified;
   };
@@ -41,18 +55,26 @@ const Sorting = ({ resourceSortingCriterias }) => {
       {sortingCriteria
         .filter((sortingCriteria) => sortingCriteria.selected === false)
         .map((sortingCriteria, index) => (
-          <span onClick={onSortingCriteriaSelect} key={"available_" + index}>
+          <button
+            onClick={onSortingCriteriaSelect}
+            value={sortingCriteria.name}
+            key={"available_" + index}
+          >
             {sortingCriteria.name}
-          </span>
+          </button>
         ))}
       <br />
       Selected sorting criteria:
       {sortingCriteria
         .filter((sortingCriteria) => sortingCriteria.selected === true)
         .map((sortingCriteria, index) => (
-          <span onClick={onSortingCriteriaSelect} key={"selected_" + index}>
+          <button
+            onClick={onSortingCriteriaSelect}
+            key={"selected_" + index}
+            value={sortingCriteria.name}
+          >
             {sortingCriteria.name}
-          </span>
+          </button>
         ))}
       <br />
       <button onClick={applySorting}>Apply Sorting</button>
