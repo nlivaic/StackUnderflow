@@ -4,7 +4,6 @@ import * as apiUrl from "../settings";
 
 export async function getQuestionSummaries(resourceParametersQueryString) {
   try {
-    debugger;
     var response = await axios.get(
       `${apiUrl.API_URL}/QuestionSummaries${resourceParametersQueryString}`
     );

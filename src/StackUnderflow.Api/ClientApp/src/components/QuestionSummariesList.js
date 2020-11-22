@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import * as questionSummariesApi from "../api/questionSummariesApi";
 import queryString from "query-string";
-import Paging from "./Paging";
+import Paging from "./Paging.js";
+import Sorting from "./Sorting.js";
 
-const QuestionSummariesList = () => {
+const QuestionSummariesList = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [questionSummariesList, setQuestionSummariesList] = useState([]);
   const [resourceParameters, setResourceParameters] = useState({
@@ -26,7 +27,6 @@ const QuestionSummariesList = () => {
       const questionSummariesResponse = await questionSummariesApi.getQuestionSummaries(
         location.search
       );
-      debugger;
       setQuestionSummariesList(questionSummariesResponse.data);
       setResourceParameters(queryString.parse(location.search));
       setResponsePagingData(questionSummariesResponse.pagination);
@@ -43,6 +43,13 @@ const QuestionSummariesList = () => {
   }
   return (
     <div>
+      <Sorting
+        resourceSortingCriterias={[
+          "Username",
+          "HasAcceptedAnswer",
+          "CreatedOn",
+        ]}
+      ></Sorting>
       {questionSummariesList.map((qs) => (
         <div key={qs.id}>
           <div>

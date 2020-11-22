@@ -4,6 +4,7 @@
   ☐ Add new question.
   ☐ Kad ukucam localhost:5001?pageNumber=3, promjeni se u localhost:5001/?pageNumber=3
   ☐ Kad se otvori React aplikacija, u tabu piše "Stack Underflow". Jel bi mogli napisati question title?
+  ☐ PageNotFound
   ☐ How to reference proper port on which API is running on?
     ☐ settings.js for now, but for production maybe use environment variables.
   ✔ How to run front end separately from back end? @done (08. 11. 2020. 00:24:53)

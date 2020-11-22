@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import queryString from "query-string";
 
 const Paging = ({ resourceParameters, pagingData, url }) => {
-  debugger;
   const { currentPage, totalPages } = pagingData;
   const PREV = "Prev";
   const NEXT = "Next";
