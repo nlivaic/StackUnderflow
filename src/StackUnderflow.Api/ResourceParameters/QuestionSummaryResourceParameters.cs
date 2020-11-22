@@ -7,7 +7,7 @@ using StackUnderflow.API.Services.Sorting;
 
 namespace StackUnderflow.Api.ResourceParameters
 {
-    public class QuestionResourceParameters : ISortable
+    public class QuestionSummaryResourceParameters : ISortable
     {
         public int PageSize { get; set; } = 3;
         [BindNever]

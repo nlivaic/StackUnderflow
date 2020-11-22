@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
+import { PAGE_NUMBER } from "../resourceParameters/questionSummaryResourceParameters";
 
 const Paging = ({ resourceParameters, pagingData }) => {
   const { currentPage, totalPages } = pagingData;
-  const PAGE_NUMBER = "pageNumber";
   const PREV = "Prev";
   const NEXT = "Next";
   const FIRST_PAGE = 1;

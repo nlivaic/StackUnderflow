@@ -1,11 +1,19 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
+import { SEARCH_QUERY } from "../resourceParameters/questionSummaryResourceParameters";
 
 const Search = ({ pageSize }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const SEARCH_QUERY = "searchQuery";
+  let location = useLocation();
   let history = useHistory();
+
+  useEffect(() => {
+    let parsedQueryString = queryString.parse(location.search);
+    if (parsedQueryString[SEARCH_QUERY])
+      setSearchTerm(parsedQueryString[SEARCH_QUERY]);
+    else setSearchTerm("");
+  }, [location]);
 
   const onSearchTermChange = (e) => {
     setSearchTerm(e.target.value);

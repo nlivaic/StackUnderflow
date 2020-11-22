@@ -58,9 +58,9 @@ const QuestionSummariesList = (props) => {
       {/* Persist page size in query string only if a specific page size was chosen previously. */}
       <Sorting
         resourceSortingCriterias={[
-          "Username",
-          "HasAcceptedAnswer",
-          "CreatedOn",
+          { name: "Username", value: "Username" },
+          { name: "Has Accepted Answer", value: "HasAcceptedAnswer" },
+          { name: "Created On", value: "CreatedOn" },
         ]}
         pageSize={
           resourceParameters.pageSize

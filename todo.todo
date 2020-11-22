@@ -37,7 +37,7 @@
 ☐ Endpoints
   ✔ /api/questionssummary @done (15. 07. 2020. 22:33:31)
     ✔ GET @done (04. 07. 2020. 23:30:32)
-    ✔ QuestionResourceParameters @done (15. 07. 2020. 22:00:04)
+    ✔ QuestionSummaryResourceParameters @done (15. 07. 2020. 22:00:04)
       ✔ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`. X-PAgination header. @done (15. 07. 2020. 21:59:55)
       ✔ Filter (strict!) on tags: property `string Tags`, `string Author`. @done (15. 07. 2020. 21:59:57)
       ✔ Search (relaxed) on title and body: property `string SearchQuery`. @done (15. 07. 2020. 21:59:57)

@@ -1,8 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { PAGE_SIZE } from "../resourceParameters/questionSummaryResourceParameters";
 
 const PageSize = () => {
-  const PAGE_SIZE = "pageSize";
   const history = useHistory();
   const onPageSizeChange = (e) => {
     e.preventDefault();

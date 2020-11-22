@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
+import { SORT_BY } from "../resourceParameters/questionSummaryResourceParameters";
 
 const Sorting = ({ resourceSortingCriterias, pageSize }) => {
-  const SORT_BY = "sortBy";
   const history = useHistory();
   const location = useLocation();
   const [sortingCriteria, setSortingCriteria] = useState([]);
@@ -12,6 +12,7 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
     let resourceParametersQueryString = queryString.parse(location.search);
     setSortingCriteria(
       resourceSortingCriterias.map((criteria) => {
+        // Pick up sorting criteria from address bar first.
         let resourceParametersInAddress = resourceParametersQueryString[SORT_BY]
           ? resourceParametersQueryString[SORT_BY].split(",").map(
               (criteria) => criteria.split(" ")[0]
@@ -19,8 +20,9 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
           : [];
 
         return {
-          name: criteria,
-          selected: resourceParametersInAddress.includes(criteria),
+          name: criteria.name,
+          value: criteria.value,
+          selected: resourceParametersInAddress.includes(criteria.value),
         };
       })
     );
@@ -29,7 +31,7 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
     e.preventDefault();
     setSortingCriteria(
       sortingCriteria.map((criteria) => {
-        if (criteria.name === e.target.value)
+        if (criteria.value === e.target.value)
           criteria.selected = !criteria.selected;
         return criteria;
       })
@@ -38,7 +40,7 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
   const stringifySelectedSortingCriteria = () => {
     let stringified = sortingCriteria
       .filter((criteria) => criteria.selected)
-      .map((criteria) => criteria.name + " asc") // This is hardcoded as asc, to toggle asc/desc requires additional effort.
+      .map((criteria) => criteria.value + " asc") // This is hardcoded as asc, to toggle asc/desc requires additional effort.
       .join(",");
     return stringified;
   };
@@ -60,7 +62,7 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
         .map((sortingCriteria, index) => (
           <button
             onClick={onSortingCriteriaSelect}
-            value={sortingCriteria.name}
+            value={sortingCriteria.value}
             key={"available_" + index}
           >
             {sortingCriteria.name}
@@ -74,7 +76,7 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
           <button
             onClick={onSortingCriteriaSelect}
             key={"selected_" + index}
-            value={sortingCriteria.name}
+            value={sortingCriteria.value}
           >
             {sortingCriteria.name}
           </button>

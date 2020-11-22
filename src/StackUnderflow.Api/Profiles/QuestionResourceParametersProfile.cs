@@ -6,12 +6,12 @@ using StackUnderflow.Core.QueryParameters;
 
 namespace StackUnderflow.Api.Profiles
 {
-    public class QuestionResourceParametersProfile : Profile
+    public class QuestionSummaryResourceParametersProfile : Profile
     {
-        public QuestionResourceParametersProfile()
+        public QuestionSummaryResourceParametersProfile()
         {
-            CreateMap<QuestionResourceParameters, QuestionQueryParameters>()
-                .ForSortableMembers<QuestionSummaryGetViewModel, QuestionSummaryGetModel, QuestionResourceParameters, QuestionQueryParameters>();
+            CreateMap<QuestionSummaryResourceParameters, QuestionQueryParameters>()
+                .ForSortableMembers<QuestionSummaryGetViewModel, QuestionSummaryGetModel, QuestionSummaryResourceParameters, QuestionQueryParameters>();
         }
     }
 }

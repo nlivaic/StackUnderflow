@@ -38,22 +38,22 @@ namespace StackUnderflow.Api.Controllers
         /// <summary>
         /// A list of question summaries (a brief overview of each question).
         /// </summary>
-        /// <param name="questionResourceParameters">Resource parameters allowing paging, ordering, searching and filtering.</param>
+        /// <param name="questionSummaryResourceParameters">Resource parameters allowing paging, ordering, searching and filtering.</param>
         /// <returns>A list of question summaries.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> GetAsync([FromQuery] QuestionResourceParameters questionResourceParameters)
+        public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> GetAsync([FromQuery] QuestionSummaryResourceParameters questionSummaryResourceParameters)
         {
-            var questionQueryParameters = _mapper.Map<QuestionQueryParameters>(questionResourceParameters);
+            var questionQueryParameters = _mapper.Map<QuestionQueryParameters>(questionSummaryResourceParameters);
             var pagedSummaries = await _questionRepository.GetQuestionSummariesAsync(questionQueryParameters);
             var pagingHeader = new PagingDto(
                 pagedSummaries.CurrentPage,
                 pagedSummaries.TotalPages,
                 pagedSummaries.TotalItems,
-                questionResourceParameters.PageSize > questionResourceParameters.MaximumPageSize
-                    ? questionResourceParameters.MaximumPageSize
-                    : questionResourceParameters.PageSize);
+                questionSummaryResourceParameters.PageSize > questionSummaryResourceParameters.MaximumPageSize
+                    ? questionSummaryResourceParameters.MaximumPageSize
+                    : questionSummaryResourceParameters.PageSize);
             HttpContext.Response.Headers.Add(Headers.Pagination, new StringValues(JsonSerializer.Serialize(pagingHeader)));
             return Ok(_mapper.Map<List<QuestionSummaryGetViewModel>>(pagedSummaries.Items));
         }
