@@ -5,12 +5,14 @@ namespace StackUnderflow.Api.Models
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
         public int TotaItems { get; }
+        public int CurrentPageSize { get; set; }
 
-        public PagingDto(int currentPage, int totalPages, int totaItems)
+        public PagingDto(int currentPage, int totalPages, int totaItems, int currentPageSize)
         {
             CurrentPage = currentPage;
             TotalPages = totalPages;
             TotaItems = totaItems;
+            CurrentPageSize = currentPageSize;
         }
     }
 }

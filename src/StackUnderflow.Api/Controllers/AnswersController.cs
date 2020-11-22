@@ -59,7 +59,13 @@ namespace StackUnderflow.Api.Controllers
                 return NotFound();
             }
             var pagedAnswers = await _answerRepository.GetAnswersWithUserAsync(questionId, answerQueryParameters);
-            var pagingHeader = new PagingDto(pagedAnswers.CurrentPage, pagedAnswers.TotalPages, pagedAnswers.TotalItems);
+            var pagingHeader = new PagingDto(
+                pagedAnswers.CurrentPage,
+                pagedAnswers.TotalPages,
+                pagedAnswers.TotalItems,
+                answerResourceParameters.PageSize > answerResourceParameters.MaximumPageSize
+                    ? answerResourceParameters.MaximumPageSize
+                    : answerResourceParameters.PageSize);
             HttpContext.Response.Headers.Add(
                 Headers.Pagination,
                 new StringValues(JsonSerializer.Serialize(pagingHeader)));

@@ -2,8 +2,11 @@
   ☐ Test with: https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
   ☐ Sorting
     ✔ Add/remove sorting criteria and execute sorting. @done (22. 11. 2020. 01:05:20)
-    ☐ Case: Sorting criteria is directly entered to Url bar, but it is not reflected in selected sorting criteria. E.g. "https://localhost:5001/?sortBy=Username%20asc"
+    ✔ Case: Sorting criteria is directly entered to Url bar, but it is not reflected in selected sorting criteria. E.g. "https://localhost:5001/?sortBy=Username%20asc" @done (22. 11. 2020. 13:51:30)
+    ✔ Kad je upaljen page size i unese se sorting criteria, page size bi trebao ostati. @done (22. 11. 2020. 23:37:21)
     ☐ Toggle asc/desc
+  ☐ Paging
+    ☐ Bug: empty list.
   ☐ Fix git client so as I don't have to re-enter user/pass on every push.
   ☐ Add new question.
   ☐ Kad ukucam localhost:5001?pageNumber=3, promjeni se u localhost:5001/?pageNumber=3
@@ -14,7 +17,8 @@
   ✔ How to run front end separately from back end? @done (08. 11. 2020. 00:24:53)
     ✔ Run front end using `npm start` command in a separate terminal. @done (08. 11. 2020. 00:24:54)
     ✔ Tell dotnet core backend app to proxy requests to the webpack dev server using `.UseProxyToSpaDevelopmentServer` @done (08. 11. 2020. 00:24:54)
-☐ Next time:
+☐ Backend:
+  ☐ MaximumPageSize nema efekta.
   ☐ TagIds should be renamed to Tags.
   ☐ Da li q/a/c.VotesSum uistinu potreban? Razmisli o tome kako će se q/a/c queryati i da li je VotesSum uistinu optimizacija? Ako ćemo micati VotesSum, razmisliti kako će se taj podatak vidjeti onda na queryjima (join, count), te što je sa orderingom u toj situaciji?
   ☐ Riješiti ovo gore prije nego odem predaleko. Onda treba QuestionSummary proglasiti gotovim i krenuti na idući endpoint na listi.

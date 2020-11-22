@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
 
-const Paging = ({ resourceParameters, pagingData, url }) => {
+const Paging = ({ resourceParameters, pagingData }) => {
   const { currentPage, totalPages } = pagingData;
+  const PAGE_NUMBER = "pageNumber";
   const PREV = "Prev";
   const NEXT = "Next";
   const FIRST_PAGE = 1;
@@ -46,7 +47,9 @@ const Paging = ({ resourceParameters, pagingData, url }) => {
     });
 
   const getLink = (pageNumber, text, index) => {
-    var qs = queryString.stringify({ ...resourceParameters, pageNumber });
+    let parsedQueryString = { ...resourceParameters };
+    parsedQueryString[PAGE_NUMBER] = pageNumber;
+    var qs = queryString.stringify(parsedQueryString);
     return (
       <Link to={`?${qs}`} key={index}>
         {text}

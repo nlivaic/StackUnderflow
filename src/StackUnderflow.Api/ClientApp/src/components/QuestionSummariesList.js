@@ -4,6 +4,8 @@ import * as questionSummariesApi from "../api/questionSummariesApi";
 import queryString from "query-string";
 import Paging from "./Paging.js";
 import Sorting from "./Sorting.js";
+import PageSize from "./PageSize.js";
+import Search from "./Search.js";
 
 const QuestionSummariesList = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -20,6 +22,7 @@ const QuestionSummariesList = (props) => {
     currentPage: "",
     totalPages: "",
     totaItems: "",
+    currentPageSize: "",
   });
   const location = useLocation();
   useEffect(() => {
@@ -43,12 +46,27 @@ const QuestionSummariesList = (props) => {
   }
   return (
     <div>
+      {/* Persist page size in query string only if a specific page size was chosen previously. */}
+      <Search
+        pageSize={
+          resourceParameters.pageSize
+            ? responsePagingData.currentPageSize
+            : undefined
+        }
+      />
+      <br />
+      {/* Persist page size in query string only if a specific page size was chosen previously. */}
       <Sorting
         resourceSortingCriterias={[
           "Username",
           "HasAcceptedAnswer",
           "CreatedOn",
         ]}
+        pageSize={
+          resourceParameters.pageSize
+            ? responsePagingData.currentPageSize
+            : undefined
+        }
       ></Sorting>
       {questionSummariesList.map((qs) => (
         <div key={qs.id}>
@@ -79,6 +97,7 @@ const QuestionSummariesList = (props) => {
         resourceParameters={resourceParameters}
         pagingData={responsePagingData}
       />
+      <PageSize />
     </div>
   );
 };

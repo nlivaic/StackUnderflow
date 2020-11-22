@@ -47,7 +47,13 @@ namespace StackUnderflow.Api.Controllers
         {
             var questionQueryParameters = _mapper.Map<QuestionQueryParameters>(questionResourceParameters);
             var pagedSummaries = await _questionRepository.GetQuestionSummariesAsync(questionQueryParameters);
-            var pagingHeader = new PagingDto(pagedSummaries.CurrentPage, pagedSummaries.TotalPages, pagedSummaries.TotalItems);
+            var pagingHeader = new PagingDto(
+                pagedSummaries.CurrentPage,
+                pagedSummaries.TotalPages,
+                pagedSummaries.TotalItems,
+                questionResourceParameters.PageSize > questionResourceParameters.MaximumPageSize
+                    ? questionResourceParameters.MaximumPageSize
+                    : questionResourceParameters.PageSize);
             HttpContext.Response.Headers.Add(Headers.Pagination, new StringValues(JsonSerializer.Serialize(pagingHeader)));
             return Ok(_mapper.Map<List<QuestionSummaryGetViewModel>>(pagedSummaries.Items));
         }

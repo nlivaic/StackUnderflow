@@ -1,27 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 
-const Sorting = ({ resourceSortingCriterias }) => {
+const Sorting = ({ resourceSortingCriterias, pageSize }) => {
   const SORT_BY = "sortBy";
   const history = useHistory();
   const location = useLocation();
-  const [sortingCriteria, setSortingCriteria] = useState(
-    resourceSortingCriterias.map((criteria) => {
-      debugger;
-      let resourceParametersQueryString = queryString.parse(location.search);
-      let resourceParametersInAddress = resourceParametersQueryString[SORT_BY]
-        ? resourceParametersQueryString[SORT_BY].split(",").map(
-            (criteria) => criteria.split(" ")[0]
-          )
-        : [];
+  const [sortingCriteria, setSortingCriteria] = useState([]);
 
-      return {
-        name: criteria,
-        selected: resourceParametersInAddress.includes(criteria),
-      };
-    })
-  );
+  useEffect(() => {
+    let resourceParametersQueryString = queryString.parse(location.search);
+    setSortingCriteria(
+      resourceSortingCriterias.map((criteria) => {
+        let resourceParametersInAddress = resourceParametersQueryString[SORT_BY]
+          ? resourceParametersQueryString[SORT_BY].split(",").map(
+              (criteria) => criteria.split(" ")[0]
+            )
+          : [];
+
+        return {
+          name: criteria,
+          selected: resourceParametersInAddress.includes(criteria),
+        };
+      })
+    );
+  }, [location, resourceSortingCriterias]);
   const onSortingCriteriaSelect = (e) => {
     e.preventDefault();
     setSortingCriteria(
@@ -40,14 +43,14 @@ const Sorting = ({ resourceSortingCriterias }) => {
     return stringified;
   };
   const applySorting = (e) => {
-    debugger;
     e.preventDefault();
     let stringified = stringifySelectedSortingCriteria();
-    if (stringified.length > 0) {
-      history.push(`?${SORT_BY}=${stringified}`);
-    } else {
-      history.push("");
+    let queryStringParsed =
+      stringified.length > 0 ? { [SORT_BY]: stringified } : {};
+    if (pageSize) {
+      queryStringParsed.pageSize = pageSize;
     }
+    history.push(`?${queryString.stringify(queryStringParsed)}`);
   };
   return (
     <div>
