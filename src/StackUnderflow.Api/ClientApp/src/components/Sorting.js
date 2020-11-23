@@ -3,6 +3,14 @@ import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { SORT_BY } from "../resourceParameters/questionSummaryResourceParameters";
 
+const [ASC, DESC] = ["asc", "desc"];
+
+const sortingCriteriaStates = [
+  { order: null, selected: false, orderSign: "" },
+  { order: ASC, selected: true, orderSign: " ^" },
+  { order: DESC, selected: true, orderSign: " ˇ" },
+];
+
 const Sorting = ({ resourceSortingCriterias, pageSize }) => {
   const history = useHistory();
   const location = useLocation();
@@ -10,20 +18,48 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
 
   useEffect(() => {
     let resourceParametersQueryString = queryString.parse(location.search);
+    // Pick up sorting criteria from address bar first.
+    let resourceParametersInAddress = resourceParametersQueryString[SORT_BY]
+      ? resourceParametersQueryString[SORT_BY].split(",").map((criteria) => {
+          return {
+            value: criteria.split(" ")[0],
+            order: criteria.split(" ")[1].toLowerCase(),
+          };
+        })
+      : [];
     setSortingCriteria(
       resourceSortingCriterias.map((criteria) => {
-        // Pick up sorting criteria from address bar first.
-        let resourceParametersInAddress = resourceParametersQueryString[SORT_BY]
-          ? resourceParametersQueryString[SORT_BY].split(",").map(
-              (criteria) => criteria.split(" ")[0]
-            )
-          : [];
+        let criteriaInAddress = resourceParametersInAddress.find(
+          (c) => c.value === criteria.value
+        );
 
-        return {
+        let resultSortingCriteria = {
           name: criteria.name,
+          displayName: criteria.name,
           value: criteria.value,
-          selected: resourceParametersInAddress.includes(criteria.value),
         };
+        if (!!criteriaInAddress) {
+          let sortingCriteriaStatesIndex = sortingCriteriaStates.findIndex(
+            (c) => c.order === criteriaInAddress.order
+          );
+          resultSortingCriteria = {
+            ...resultSortingCriteria,
+            ...sortingCriteriaStates[sortingCriteriaStatesIndex],
+            sortingCriteriaStatesIndex,
+            displayName:
+              resultSortingCriteria.name +
+              sortingCriteriaStates[sortingCriteriaStatesIndex].orderSign,
+          };
+        } else {
+          let sortingCriteriaStatesIndex = 0;
+          resultSortingCriteria = {
+            ...resultSortingCriteria,
+            ...sortingCriteriaStates[sortingCriteriaStatesIndex],
+            sortingCriteriaStatesIndex,
+          };
+        }
+
+        return resultSortingCriteria;
       })
     );
   }, [location, resourceSortingCriterias]);
@@ -31,8 +67,18 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
     e.preventDefault();
     setSortingCriteria(
       sortingCriteria.map((criteria) => {
-        if (criteria.value === e.target.value)
-          criteria.selected = !criteria.selected;
+        if (criteria.value === e.target.value) {
+          debugger;
+          let index =
+            (criteria.sortingCriteriaStatesIndex + 1) %
+            sortingCriteriaStates.length;
+          return {
+            ...criteria,
+            ...sortingCriteriaStates[index],
+            sortingCriteriaStatesIndex: index,
+            displayName: criteria.name + sortingCriteriaStates[index].orderSign,
+          };
+        }
         return criteria;
       })
     );
@@ -40,7 +86,7 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
   const stringifySelectedSortingCriteria = () => {
     let stringified = sortingCriteria
       .filter((criteria) => criteria.selected)
-      .map((criteria) => criteria.value + " asc") // This is hardcoded as asc, to toggle asc/desc requires additional effort.
+      .map((criteria) => `${criteria.value} ${criteria.order}`) // This is hardcoded as asc, to toggle asc/desc requires additional effort.
       .join(",");
     return stringified;
   };
@@ -65,7 +111,7 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
             value={sortingCriteria.value}
             key={"available_" + index}
           >
-            {sortingCriteria.name}
+            {sortingCriteria.displayName}
           </button>
         ))}
       <br />
@@ -78,7 +124,7 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
             key={"selected_" + index}
             value={sortingCriteria.value}
           >
-            {sortingCriteria.name}
+            {sortingCriteria.displayName}
           </button>
         ))}
       <br />
