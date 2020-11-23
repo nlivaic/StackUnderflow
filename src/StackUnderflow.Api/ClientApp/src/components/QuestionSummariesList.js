@@ -24,37 +24,8 @@ const QuestionSummariesList = (props) => {
     totaItems: "",
     currentPageSize: "",
   });
-  const location = useLocation();
-  useEffect(() => {
-    async function getQuestionSummaries() {
-      const questionSummariesResponse = await questionSummariesApi.getQuestionSummaries(
-        location.search
-      );
-      setQuestionSummariesList(questionSummariesResponse.data);
-      setResourceParameters(queryString.parse(location.search));
-      setResponsePagingData(questionSummariesResponse.pagination);
-      setIsLoaded(true);
-    }
-    getQuestionSummaries();
-  }, [location]);
-  if (!isLoaded) {
-    return (
-      <>
-        <span>Loading...</span>
-      </>
-    );
-  }
-  return (
+  const questionSummariesWithSearchAndPaging = () => (
     <div>
-      {/* Persist page size in query string only if a specific page size was chosen previously. */}
-      <Search
-        pageSize={
-          resourceParameters.pageSize
-            ? responsePagingData.currentPageSize
-            : undefined
-        }
-      />
-      <br />
       {/* Persist page size in query string only if a specific page size was chosen previously. */}
       <Sorting
         resourceSortingCriterias={[
@@ -98,6 +69,44 @@ const QuestionSummariesList = (props) => {
         pagingData={responsePagingData}
       />
       <PageSize />
+    </div>
+  );
+  const location = useLocation();
+  useEffect(() => {
+    async function getQuestionSummaries() {
+      const questionSummariesResponse = await questionSummariesApi.getQuestionSummaries(
+        location.search
+      );
+      setQuestionSummariesList(questionSummariesResponse.data);
+      setResourceParameters(queryString.parse(location.search));
+      setResponsePagingData(questionSummariesResponse.pagination);
+      setIsLoaded(true);
+    }
+    getQuestionSummaries();
+  }, [location]);
+  if (!isLoaded) {
+    return (
+      <>
+        <span>Loading...</span>
+      </>
+    );
+  }
+  return (
+    <div>
+      {/* Persist page size in query string only if a specific page size was chosen previously. */}
+      <Search
+        pageSize={
+          resourceParameters.pageSize
+            ? responsePagingData.currentPageSize
+            : undefined
+        }
+      />
+      <br />
+      {questionSummariesList.length === 0 ? (
+        <span>Nothing found.</span>
+      ) : (
+        questionSummariesWithSearchAndPaging()
+      )}
     </div>
   );
 };
