@@ -1,5 +1,5 @@
 import React from "react";
-import QuestionForm from "./QuestionForm";
+import QuestionData from "./QuestionData";
 import AnswersList from "./AnswersList";
 
 const QuestionPage = (props) => {
@@ -9,7 +9,7 @@ const QuestionPage = (props) => {
       <div>
         <div>
           <div>Voting</div>
-          <QuestionForm questionId={questionId} />
+          <QuestionData questionId={questionId} />
           <span>
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!Answers!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
           </span>

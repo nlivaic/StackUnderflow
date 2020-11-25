@@ -3,7 +3,7 @@ import Question from "./Question";
 import * as questionApi from "../api/questionApi.js";
 import CommentsList from "./CommentsList.js";
 
-const QuestionForm = ({ questionId }) => {
+const QuestionData = ({ questionId }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [question, setQuestion] = useState({});
   useEffect(() => {
@@ -37,4 +37,4 @@ const QuestionForm = ({ questionId }) => {
   );
 };
 
-export default QuestionForm;
+export default QuestionData;

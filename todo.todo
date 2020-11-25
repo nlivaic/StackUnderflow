@@ -1,9 +1,7 @@
 ☐ Front end
   ☐ Test with: https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
-  ☐ Next time:
-    ☐ Sorting: Toggle asc/desc
-    ✔ Paging Bug: empty list. @done (23. 11. 2020. 22:29:34)
   ☐ Fix git client so as I don't have to re-enter user/pass on every push.
+  ☐ Search should be visible at all times
   ☐ Question
     ☐ Add new
     ☐ Edit

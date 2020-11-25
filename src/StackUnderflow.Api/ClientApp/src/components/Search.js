@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import queryString from "query-string";
-import { SEARCH_QUERY } from "../resourceParameters/questionSummaryResourceParameters";
+import {
+  SEARCH_QUERY,
+  PAGE_SIZE,
+} from "../resourceParameters/questionSummaryResourceParameters";
 
-const Search = ({ pageSize }) => {
+const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [pageSize, setPageSize] = useState(undefined);
   let location = useLocation();
   let history = useHistory();
 
@@ -13,6 +17,9 @@ const Search = ({ pageSize }) => {
     if (parsedQueryString[SEARCH_QUERY])
       setSearchTerm(parsedQueryString[SEARCH_QUERY]);
     else setSearchTerm("");
+    setPageSize(
+      parsedQueryString[PAGE_SIZE] ? parsedQueryString[PAGE_SIZE] : undefined
+    );
   }, [location]);
 
   const onSearchTermChange = (e) => {
@@ -25,7 +32,7 @@ const Search = ({ pageSize }) => {
     if (pageSize) {
       queryStringParsed.pageSize = pageSize;
     }
-    history.push(`?${queryString.stringify(queryStringParsed)}`);
+    history.push(`/?${queryString.stringify(queryStringParsed)}`);
   };
 
   const onSearchTermClear = (e) => {

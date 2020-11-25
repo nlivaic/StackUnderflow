@@ -5,9 +5,8 @@ import queryString from "query-string";
 import Paging from "./Paging.js";
 import Sorting from "./Sorting.js";
 import PageSize from "./PageSize.js";
-import Search from "./Search.js";
 
-const QuestionSummariesList = (props) => {
+const QuestionSummariesList = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [questionSummariesList, setQuestionSummariesList] = useState([]);
   const [resourceParameters, setResourceParameters] = useState({
@@ -24,7 +23,7 @@ const QuestionSummariesList = (props) => {
     totaItems: "",
     currentPageSize: "",
   });
-  const questionSummariesWithSearchAndPaging = () => (
+  const questionSummariesWithSortingAndPaging = () => (
     <div>
       {/* Persist page size in query string only if a specific page size was chosen previously. */}
       <Sorting
@@ -93,19 +92,10 @@ const QuestionSummariesList = (props) => {
   }
   return (
     <div>
-      {/* Persist page size in query string only if a specific page size was chosen previously. */}
-      <Search
-        pageSize={
-          resourceParameters.pageSize
-            ? responsePagingData.currentPageSize
-            : undefined
-        }
-      />
-      <br />
       {questionSummariesList.length === 0 ? (
         <span>Nothing found.</span>
       ) : (
-        questionSummariesWithSearchAndPaging()
+        questionSummariesWithSortingAndPaging()
       )}
     </div>
   );
