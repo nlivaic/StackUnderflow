@@ -13,6 +13,7 @@ const store = configureStore();
 const App = () => {
   return (
     <div>
+      <Link to="/">Home</Link>
       {/* Persist page size in query string only if a specific page size was chosen previously. */}
       <Search />
       <Link to="/question/ask">Ask Question</Link>

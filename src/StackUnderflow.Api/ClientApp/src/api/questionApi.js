@@ -19,3 +19,12 @@ export async function askQuestion(question) {
     throw error;
   }
 }
+
+export async function editQuestion(id, question) {
+  try {
+    await axios.put(`${apiUrl.API_URL}/questions/${id}`, question);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

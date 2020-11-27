@@ -1,18 +1,33 @@
 ☐ Front end
+  ☐ 422 na question post: 
+    ☐ Napraviti da kad se desi 422 na question post, da API vrati camelCased propertyje koji su se sjebali.
+    ☐ Bug u System.Text.Jsonu?
+    ☐ Napraviti da kad se desi 422, da klijent pokupi te propertyje na lijep način.
+  ☐ Napraviti da se može editirati question. Ruta je napravljena, treba u MAnageQuestionPage poslati question.
+    ☐ Mislim da je bolji pravac:
+      ☐ Kad se učita question u QuestionData, da ga se spremi u Redux store.
+      ☐ Kad se ode editirati question, neka se u MAnageQuestionPage proslijed questionId.
+      ☐ MAnageQuestionPage prvo pogleda da li question sa takvim Id već postoji u storeu i ako ne postoji, ga loada.
+      ☐ Ako postoji, samo ga učita iz storea.
+      ☐ Ili možemo malo varati i editirati na istoj stranici in-situ (questions/:questionId), umjesto da sad otvaram novu stranicu i zajebavam se.
+        ☐ U toj bi varijanti kad klikneš Edit, se već učitani Question samo proslijedio u novo-mountani MAnageQuestionPage.
   ☐ Test with: https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
   ☐ Fix git client so as I don't have to re-enter user/pass on every push.
-  ☐ Search should be visible at all times
+  ✔ Search should be visible at all times @done (26. 11. 2020. 23:38:06)
   ☐ Question
     ☐ Add new
-    ☐ How do I handle 201 pointing to an API resource?
+    ✔ How do I handle 201 pointing to an API resource? @done (26. 11. 2020. 23:29:10)
     ☐ Tags: fetch id.
     ☐ Edit
+    ☐ Delete
   ☐ Answer
     ☐ Add new
     ☐ Edit
+    ☐ Delete
   ☐ Comment
     ☐ Add new
     ☐ Edit
+    ☐ Delete
   ☐ Kad ukucam localhost:5001?pageNumber=3, promjeni se u localhost:5001/?pageNumber=3
   ☐ Kad se otvori React aplikacija, u tabu piše "Stack Underflow". Jel bi mogli napisati question title?
   ☐ PageNotFound
@@ -23,6 +38,9 @@
     ✔ Run front end using `npm start` command in a separate terminal. @done (08. 11. 2020. 00:24:54)
     ✔ Tell dotnet core backend app to proxy requests to the webpack dev server using `.UseProxyToSpaDevelopmentServer` @done (08. 11. 2020. 00:24:54)
 ☐ Backend:
+  ☐ PUT question -> throw BusinessException -> not caught in controller.
+  ☐ POSTing invalid question to api/questions returns a 422. The errors collection is PascalCased, but should be camelCased.
+  ☐ KAko se Question.Create() BusinessException pretvori u 422?
   ☐ Migrate to net 5.0
   ☐ Some projects are built against netstandard2.0, others against netstandard2.1
   ☐ MaximumPageSize nema efekta.

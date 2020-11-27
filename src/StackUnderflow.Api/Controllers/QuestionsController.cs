@@ -82,6 +82,11 @@ namespace StackUnderflow.Api.Controllers
             {
                 return NotFound();
             }
+            catch (BusinessException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return UnprocessableEntity();
+            }
             return NoContent();
         }
 

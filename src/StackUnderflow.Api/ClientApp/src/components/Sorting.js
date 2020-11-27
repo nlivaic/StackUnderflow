@@ -68,7 +68,6 @@ const Sorting = ({ resourceSortingCriterias, pageSize }) => {
     setSortingCriteria(
       sortingCriteria.map((criteria) => {
         if (criteria.value === e.target.value) {
-          debugger;
           let index =
             (criteria.sortingCriteriaStatesIndex + 1) %
             sortingCriteriaStates.length;

@@ -1,6 +1,13 @@
 import React from "react";
 
-const QuestionForm = ({ onInputChange, onSubmit, isSaving, errors }) => {
+const QuestionForm = ({
+  question,
+  onInputChange,
+  onSubmit,
+  isSaving,
+  buttonText,
+  errors,
+}) => {
   return (
     <div>
       <input
@@ -8,6 +15,7 @@ const QuestionForm = ({ onInputChange, onSubmit, isSaving, errors }) => {
         onChange={onInputChange}
         id="title"
         placeholder="Title..."
+        value={question.title}
       />
       {errors.title ? (
         <span style={{ color: "red" }}>* {errors.title}</span>
@@ -20,6 +28,7 @@ const QuestionForm = ({ onInputChange, onSubmit, isSaving, errors }) => {
         onChange={onInputChange}
         id="body"
         placeholder="Body..."
+        value={question.body}
       />
       {errors.body ? <span style={{ color: "red" }}>* {errors.body}</span> : ""}
       <br />
@@ -28,6 +37,7 @@ const QuestionForm = ({ onInputChange, onSubmit, isSaving, errors }) => {
         onChange={onInputChange}
         id="tagIds"
         placeholder="Tags..."
+        value={question.tagIds.join(" ")}
       />
       {errors.tagIds ? (
         <span style={{ color: "red" }}>* {errors.tagIds}</span>
@@ -36,7 +46,7 @@ const QuestionForm = ({ onInputChange, onSubmit, isSaving, errors }) => {
       )}
       <br />
       <button type="submit" onClick={onSubmit} disabled={isSaving}>
-        {isSaving ? "Saving..." : "Ask Question"}
+        {isSaving ? "Saving..." : buttonText}
       </button>
     </div>
   );

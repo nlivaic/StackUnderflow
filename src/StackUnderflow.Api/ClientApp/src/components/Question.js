@@ -8,6 +8,7 @@ const Question = ({
   hasAcceptedAnswer,
   createdOn,
   tags,
+  onEdit,
 }) => {
   return (
     <div style={{ borderStyle: "solid", borderColor: "red" }}>
@@ -20,6 +21,7 @@ const Question = ({
           <span key={tag.name}>{tag.name}</span>
         ))}
       </div>
+      <button onClick={onEdit}>Edit</button>
     </div>
   );
 };
