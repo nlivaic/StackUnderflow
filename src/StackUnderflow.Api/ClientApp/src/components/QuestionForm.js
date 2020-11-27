@@ -3,11 +3,14 @@ import React from "react";
 const QuestionForm = ({
   question,
   onInputChange,
+  onCancelEdit,
   onSubmit,
   isSaving,
-  buttonText,
+  isEditing,
   errors,
 }) => {
+  const getSaveButtonText = () => (isEditing ? "Submit Edit" : "Ask Question");
+
   return (
     <div>
       {errors.onSave ? (
@@ -54,8 +57,9 @@ const QuestionForm = ({
       )}
       <br />
       <button type="submit" onClick={onSubmit} disabled={isSaving}>
-        {isSaving ? "Saving..." : buttonText}
+        {isSaving ? "Saving..." : getSaveButtonText()}
       </button>
+      {isEditing ? <button onClick={onCancelEdit}>Cancel</button> : <></>}
     </div>
   );
 };

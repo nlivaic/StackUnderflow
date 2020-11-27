@@ -38,6 +38,7 @@
     ✔ Run front end using `npm start` command in a separate terminal. @done (08. 11. 2020. 00:24:54)
     ✔ Tell dotnet core backend app to proxy requests to the webpack dev server using `.UseProxyToSpaDevelopmentServer` @done (08. 11. 2020. 00:24:54)
 ☐ Backend:
+  ☐ q/a/c GET methods must return IsOwner.
   ☐ PUT question -> throw BusinessException -> not caught in controller.
   ☐ POSTing invalid question to api/questions returns a 422. The errors collection is PascalCased, but should be camelCased.
   ☐ KAko se Question.Create() BusinessException pretvori u 422?

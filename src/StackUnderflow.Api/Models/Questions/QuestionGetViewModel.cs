@@ -12,6 +12,7 @@ namespace StackUnderflow.Api.Models
         public bool HasAcceptedAnswer { get; set; }
         public string CreatedOn { get; set; }
         public int VotesSum { get; set; }
+        public bool IsOwner { get; set; }
         public IEnumerable<TagGetViewModel> Tags { get; set; } = new List<TagGetViewModel>();
     }
 }

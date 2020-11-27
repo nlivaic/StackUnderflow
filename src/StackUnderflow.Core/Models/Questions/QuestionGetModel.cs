@@ -6,6 +6,7 @@ namespace StackUnderflow.Core.Models
     public class QuestionGetModel
     {
         public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public string Username { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }

@@ -8,6 +8,7 @@ const Question = ({
   hasAcceptedAnswer,
   createdOn,
   tags,
+  isOwner,
   onEdit,
 }) => {
   return (
@@ -21,7 +22,7 @@ const Question = ({
           <span key={tag.name}>{tag.name}</span>
         ))}
       </div>
-      <button onClick={onEdit}>Edit</button>
+      {isOwner ? <button onClick={onEdit}>Edit</button> : ""}
     </div>
   );
 };

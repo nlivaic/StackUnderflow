@@ -19,6 +19,7 @@ const ManageQuestionPage = ({ questionToEdit, onEdited }) => {
         }
   );
   const [isSaving, setIsSaving] = useState(false);
+  const [isEditing] = useState(!!questionToEdit);
   const [errors, setErrors] = useState({});
   const history = useHistory();
 
@@ -56,6 +57,11 @@ const ManageQuestionPage = ({ questionToEdit, onEdited }) => {
     setIsSaving(true);
   };
 
+  const onCancelEditHandle = (e) => {
+    e.preventDefault();
+    onEdited();
+  };
+
   const isFormValid = () => {
     const error = {};
     if (question.title.trim().length === 0) {
@@ -76,10 +82,11 @@ const ManageQuestionPage = ({ questionToEdit, onEdited }) => {
       <QuestionForm
         onInputChange={onInputChange}
         onSubmit={onSubmitHandle}
-        buttonText={questionToEdit ? "Submit Edit" : "Ask Question"}
         isSaving={isSaving}
+        isEditing={isEditing}
         errors={errors}
         question={question}
+        onCancelEdit={onCancelEditHandle}
       ></QuestionForm>
     </div>
   );

@@ -40,7 +40,9 @@ namespace StackUnderflow.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<QuestionGetViewModel>(question));
+            var response = _mapper.Map<QuestionGetViewModel>(question);
+            response.IsOwner = Foo.TemporaryUser.Get == question.UserId;
+            return Ok(response);
         }
 
         /// <summary>

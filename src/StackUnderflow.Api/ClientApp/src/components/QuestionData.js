@@ -23,7 +23,9 @@ const QuestionData = ({ questionId }) => {
   };
 
   const onEditedHandle = (editedQuestion) => {
-    setQuestion({ ...question, ...editedQuestion });
+    if (editedQuestion) {
+      setQuestion({ ...question, ...editedQuestion });
+    }
     setIsEditing(false);
   };
 
@@ -42,6 +44,7 @@ const QuestionData = ({ questionId }) => {
           body={question.body}
           username={question.username}
           hasAcceptedAnswer={question.hasAcceptedAnswer}
+          isOwner={question.isOwner}
           createdOn={question.createdOn}
           tags={question.tags}
           onEdit={onEditHandle}
