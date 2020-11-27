@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import * as questionApi from "../api/questionApi.js";
 import QuestionForm from "./QuestionForm.js";
+import { getErrorMessage } from "../utils/getErrorMessage.js";
 
 const ManageQuestionPage = ({ questionToEdit, onEdited }) => {
   const [question, setQuestion] = useState(
@@ -39,7 +40,7 @@ const ManageQuestionPage = ({ questionToEdit, onEdited }) => {
         .then((_) => onEdited(question))
         .catch((error) => {
           setIsSaving(false);
-          // setErrors({ onSave: error.message });
+          setErrors({ onSave: getErrorMessage(error) });
         });
     } else {
       questionApi
@@ -49,7 +50,7 @@ const ManageQuestionPage = ({ questionToEdit, onEdited }) => {
         })
         .catch((error) => {
           setIsSaving(false);
-          // setErrors({ onSave: error.message });
+          setErrors({ onSave: getErrorMessage(error) });
         });
     }
     setIsSaving(true);

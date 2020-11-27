@@ -10,6 +10,14 @@ const QuestionForm = ({
 }) => {
   return (
     <div>
+      {errors.onSave ? (
+        <>
+          <span style={{ color: "red" }}>* {errors.onSave}</span>
+          <br />
+        </>
+      ) : (
+        <br />
+      )}
       <input
         type="text"
         onChange={onInputChange}
