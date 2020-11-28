@@ -28,3 +28,12 @@ export async function editQuestion(id, question) {
     throw error;
   }
 }
+
+export async function deleteQuestion(id) {
+  try {
+    await axios.delete(`${apiUrl.API_URL}/questions/${id}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

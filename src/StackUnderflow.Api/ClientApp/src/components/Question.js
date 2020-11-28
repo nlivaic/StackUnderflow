@@ -10,9 +10,16 @@ const Question = ({
   tags,
   isOwner,
   onEdit,
+  onDelete,
+  errors,
 }) => {
   return (
     <div style={{ borderStyle: "solid", borderColor: "red" }}>
+      {errors.onDelete ? (
+        <span style={{ color: "red" }}>{errors.onDelete}</span>
+      ) : (
+        ""
+      )}
       <h3>{title}</h3>
       <span>{body}</span>
       <UserDetails username={username} createdOn={createdOn} />
@@ -22,7 +29,14 @@ const Question = ({
           <span key={tag.name}>{tag.name}</span>
         ))}
       </div>
-      {isOwner ? <button onClick={onEdit}>Edit</button> : ""}
+      {isOwner ? (
+        <>
+          <button onClick={onEdit}>Edit</button>
+          <button onClick={onDelete}>Delete</button>
+        </>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

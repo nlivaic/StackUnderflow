@@ -3,12 +3,14 @@ import Question from "./Question";
 import * as questionApi from "../api/questionApi.js";
 import CommentsList from "./CommentsList.js";
 import ManageQuestionPage from "./ManageQuestionPage";
+import { useHistory } from "react-router-dom";
 
 const QuestionData = ({ questionId }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [question, setQuestion] = useState({});
-  const [commentIdentifiers] = useState({ questionId });
+  const [errors, setErrors] = useState({});
   useEffect(() => {
     const getQuestion = async () => {
       var data = await questionApi.getQuestion(questionId);
@@ -17,6 +19,7 @@ const QuestionData = ({ questionId }) => {
     };
     getQuestion();
   }, [questionId]);
+  const history = useHistory();
 
   const onEditHandle = (e) => {
     e.preventDefault();
@@ -28,6 +31,22 @@ const QuestionData = ({ questionId }) => {
       setQuestion({ ...question, ...editedQuestion });
     }
     setIsEditing(false);
+  };
+
+  const onDeleteHandle = () => {
+    questionApi
+      .deleteQuestion(questionId)
+      .then((_) => history.push("/"))
+      .catch((error) => {
+        setIsDeleting(false);
+        if ([404, 409].includes(error.response.status)) {
+          setErrors({
+            onDelete:
+              "Question you wanted to delete is not found. Maybe it was deleted earlier?",
+          });
+        }
+      });
+    setIsDeleting(true);
   };
 
   const isEditingOrReading = () =>
@@ -43,6 +62,8 @@ const QuestionData = ({ questionId }) => {
         createdOn={question.createdOn}
         tags={question.tags}
         onEdit={onEditHandle}
+        onDelete={onDeleteHandle}
+        errors={errors}
       />
     );
 
@@ -54,10 +75,7 @@ const QuestionData = ({ questionId }) => {
         ) : (
           <>
             {isEditingOrReading()}
-            <CommentsList
-              parentType="question"
-              parentIds={commentIdentifiers}
-            />
+            <CommentsList parentType="question" parentIds={{ questionId }} />
           </>
         )}
       </div>
