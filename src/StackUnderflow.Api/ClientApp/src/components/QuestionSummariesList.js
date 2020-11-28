@@ -49,15 +49,17 @@ const QuestionSummariesList = () => {
               <Link to={`/questions/${qs.id}`}>{qs.title}</Link>
             </h3>
             <div>
-              {qs.tags.map((t) => (
-                <a href="" key={t}>
-                  {t}
-                </a>
-              ))}
+              Tags:{" "}
+              {qs.tags.map(
+                (t) => (
+                  // <a href="" key={t}>
+                  <span key={t}>{t} </span>
+                )
+                // </a>
+              )}
             </div>
             <div>
-              Asked on {qs.createdOn} by
-              <a href="">{qs.username}</a>
+              Asked on {qs.createdOn} by {qs.username}
             </div>
           </div>
           <hr />

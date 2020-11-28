@@ -8,6 +8,7 @@ const QuestionData = ({ questionId }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [question, setQuestion] = useState({});
+  const [commentIdentifiers] = useState({ questionId });
   useEffect(() => {
     const getQuestion = async () => {
       var data = await questionApi.getQuestion(questionId);
@@ -31,31 +32,35 @@ const QuestionData = ({ questionId }) => {
 
   const isEditingOrReading = () =>
     isEditing ? (
-      <>
-        <ManageQuestionPage
-          questionToEdit={question}
-          onEdited={onEditedHandle}
-        />
-      </>
+      <ManageQuestionPage questionToEdit={question} onEdited={onEditedHandle} />
     ) : (
-      <>
-        <Question
-          title={question.title}
-          body={question.body}
-          username={question.username}
-          hasAcceptedAnswer={question.hasAcceptedAnswer}
-          isOwner={question.isOwner}
-          createdOn={question.createdOn}
-          tags={question.tags}
-          onEdit={onEditHandle}
-        />
-        <CommentsList parentType="question" parentIds={{ questionId }} />
-      </>
+      <Question
+        title={question.title}
+        body={question.body}
+        username={question.username}
+        hasAcceptedAnswer={question.hasAcceptedAnswer}
+        isOwner={question.isOwner}
+        createdOn={question.createdOn}
+        tags={question.tags}
+        onEdit={onEditHandle}
+      />
     );
 
   return (
     <div>
-      <div>{!isLoaded ? "Loading..." : isEditingOrReading()}</div>
+      <div>
+        {!isLoaded ? (
+          "Loading..."
+        ) : (
+          <>
+            {isEditingOrReading()}
+            <CommentsList
+              parentType="question"
+              parentIds={commentIdentifiers}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 };

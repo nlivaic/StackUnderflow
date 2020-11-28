@@ -5,14 +5,19 @@ import Comment from "./Comment.js";
 const CommentsList = ({ parentType, parentIds }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [commentsList, setCommentsList] = useState([]);
-  useEffect(() => {
-    const getComments = async () => {
-      var data = await commentsApi.getComments(parentType, parentIds);
-      setCommentsList(data);
-      setIsLoaded(true);
-    };
-    getComments();
-  }, [parentType, parentIds]);
+  useEffect(
+    () => {
+      const getComments = async () => {
+        var data = await commentsApi.getComments(parentType, parentIds);
+        setCommentsList(data);
+        setIsLoaded(true);
+      };
+      getComments();
+    },
+    // Prevent question edit from reloading the comments.
+    // eslint-disable-next-line
+    []
+  );
 
   return (
     <div>

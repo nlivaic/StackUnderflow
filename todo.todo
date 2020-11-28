@@ -1,16 +1,5 @@
 ☐ Front end
-  ☐ 422 na question post: 
-    ☐ Napraviti da kad se desi 422 na question post, da API vrati camelCased propertyje koji su se sjebali.
-    ☐ Bug u System.Text.Jsonu?
-    ☐ Napraviti da kad se desi 422, da klijent pokupi te propertyje na lijep način.
-  ☐ Napraviti da se može editirati question. Ruta je napravljena, treba u MAnageQuestionPage poslati question.
-    ☐ Mislim da je bolji pravac:
-      ☐ Kad se učita question u QuestionData, da ga se spremi u Redux store.
-      ☐ Kad se ode editirati question, neka se u MAnageQuestionPage proslijed questionId.
-      ☐ MAnageQuestionPage prvo pogleda da li question sa takvim Id već postoji u storeu i ako ne postoji, ga loada.
-      ☐ Ako postoji, samo ga učita iz storea.
-      ☐ Ili možemo malo varati i editirati na istoj stranici in-situ (questions/:questionId), umjesto da sad otvaram novu stranicu i zajebavam se.
-        ☐ U toj bi varijanti kad klikneš Edit, se već učitani Question samo proslijedio u novo-mountani MAnageQuestionPage.
+  ☐ Kad se editira question, ostanu svi commenti. To je ok. Po završetku edita se opet učitaju sa API-ja. To je rastrošno. I ne razumijem zašto do toga dođe.
   ☐ Test with: https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
   ☐ Fix git client so as I don't have to re-enter user/pass on every push.
   ✔ Search should be visible at all times @done (26. 11. 2020. 23:38:06)
@@ -18,7 +7,7 @@
     ☐ Add new
     ✔ How do I handle 201 pointing to an API resource? @done (26. 11. 2020. 23:29:10)
     ☐ Tags: fetch id.
-    ☐ Edit
+    ✔ Edit @done (28. 11. 2020. 00:48:39)
     ☐ Delete
   ☐ Answer
     ☐ Add new
