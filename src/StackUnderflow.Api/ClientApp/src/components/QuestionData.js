@@ -11,15 +11,24 @@ const QuestionData = ({ questionId }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [question, setQuestion] = useState({});
   const [errors, setErrors] = useState({});
+  const history = useHistory();
+
   useEffect(() => {
     const getQuestion = async () => {
-      var data = await questionApi.getQuestion(questionId);
+      var data;
+      try {
+        data = await questionApi.getQuestion(questionId);
+      } catch (error) {
+        if (error.response.status === 404) {
+          history.push("/NotFound");
+          return;
+        }
+      }
       setQuestion(data);
       setIsLoaded(true);
     };
     getQuestion();
-  }, [questionId]);
-  const history = useHistory();
+  }, [questionId, history]);
 
   const onEditHandle = (e) => {
     e.preventDefault();
@@ -63,6 +72,7 @@ const QuestionData = ({ questionId }) => {
         tags={question.tags}
         onEdit={onEditHandle}
         onDelete={onDeleteHandle}
+        isDeleting={isDeleting}
         errors={errors}
       />
     );

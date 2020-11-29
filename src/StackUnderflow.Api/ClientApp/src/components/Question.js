@@ -11,6 +11,7 @@ const Question = ({
   isOwner,
   onEdit,
   onDelete,
+  isDeleting,
   errors,
 }) => {
   return (
@@ -32,7 +33,9 @@ const Question = ({
       {isOwner ? (
         <>
           <button onClick={onEdit}>Edit</button>
-          <button onClick={onDelete}>Delete</button>
+          <button disabled={isDeleting} onClick={onDelete}>
+            {isDeleting ? "Deleting..." : "Delete"}
+          </button>
         </>
       ) : (
         ""

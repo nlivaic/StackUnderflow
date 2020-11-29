@@ -2,12 +2,13 @@
   ☐ Test with: https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
   ☐ Fix git client so as I don't have to re-enter user/pass on every push.
   ✔ Search should be visible at all times @done (26. 11. 2020. 23:38:06)
-  ☐ Question
+  ☐ Tags
+    ☐ On question: fetch id.
+  ✔ Question @done (28. 11. 2020. 23:52:35)
     ✔ Add new @done (28. 11. 2020. 23:17:15)
     ✔ How do I handle 201 pointing to an API resource? @done (26. 11. 2020. 23:29:10)
-    ☐ Tags: fetch id.
     ✔ Edit @done (28. 11. 2020. 00:48:39)
-    ☐ Delete
+    ✔ Delete @done (28. 11. 2020. 23:52:15)
   ☐ Answer
     ☐ Add new
     ☐ Edit
