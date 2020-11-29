@@ -69,7 +69,9 @@ namespace StackUnderflow.Api.Controllers
             HttpContext.Response.Headers.Add(
                 Headers.Pagination,
                 new StringValues(JsonSerializer.Serialize(pagingHeader)));
-            return Ok(_mapper.Map<List<AnswerGetViewModel>>(pagedAnswers.Items));
+            var response = _mapper.Map<List<AnswerGetViewModel>>(pagedAnswers.Items);
+            response.ForEach(a => a.IsOwner = Foo.TemporaryUser.Get == a.UserId);
+            return Ok(response);
         }
 
         /// <summary>

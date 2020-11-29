@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as answersApi from "../api/answersApi.js";
 import * as commentsApi from "../api/commentsApi.js";
-import Answer from "./Answer.js";
+import ManageAnswer from "./ManageAnswer.js";
 import Comment from "./Comment.js";
 
 const AnswersList = ({ questionId }) => {
@@ -38,7 +38,11 @@ const AnswersList = ({ questionId }) => {
       : answersList.map((answer) => {
           return (
             <div key={answer.id}>
-              <Answer key={answer.id} {...answer} />
+              <ManageAnswer
+                key={answer.id}
+                answer={answer}
+                questionId={questionId}
+              />
               {answer.comments.map((comment) => (
                 <Comment key={comment.id} {...comment} />
               ))}

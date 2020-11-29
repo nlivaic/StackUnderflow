@@ -14,12 +14,24 @@ export async function getAnswers(questionId) {
 
 export async function postAnswer(answer, questionId) {
   try {
-    let response = await axios.post(
-      `${apiUrl.API_URL}/questions/${questionId}/answers`,
+    return (
+      await axios.post(
+        `${apiUrl.API_URL}/questions/${questionId}/answers`,
+        answer
+      )
+    ).data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function editAnswer(answer, questionId, answerId) {
+  try {
+    await axios.put(
+      `${apiUrl.API_URL}/questions/${questionId}/answers/${answerId}`,
       answer
     );
-    console.log(response);
-    return response;
   } catch (error) {
     console.error(error);
     throw error;

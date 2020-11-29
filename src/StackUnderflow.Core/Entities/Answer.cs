@@ -55,6 +55,7 @@ namespace StackUnderflow.Core.Entities
             {
                 throw new BusinessException($"Answer with id '{Id}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
             }
+            Validate(user, body, limits);
             Body = body;
         }
 

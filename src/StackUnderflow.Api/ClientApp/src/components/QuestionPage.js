@@ -1,6 +1,7 @@
 import React from "react";
 import QuestionData from "./QuestionData";
 import AnswersList from "./AnswersList";
+import ManageAnswer from "./ManageAnswer";
 
 const QuestionPage = (props) => {
   const { questionId } = props.match.params;
@@ -14,6 +15,7 @@ const QuestionPage = (props) => {
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!Answers!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
           </span>
           <AnswersList questionId={questionId} />
+          <ManageAnswer questionId={questionId} action="New" />
         </div>
       </div>
     </>

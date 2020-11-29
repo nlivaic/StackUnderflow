@@ -1,13 +1,17 @@
 import React from "react";
 import UserDetailsShort from "./UserDetailsShort.js";
 
-const Answer = ({ body, username, createdOn }) => {
+const Answer = ({ answer, onStartEditing }) => {
   return (
     <div style={{ borderStyle: "solid", borderColor: "green" }}>
       <hr />
       <div>Voting</div>
-      <span>{body}</span>
-      <UserDetailsShort username={username} createdOn={createdOn} />
+      <span>{answer.body}</span>
+      <UserDetailsShort
+        username={answer.username}
+        createdOn={answer.createdOn}
+      />
+      {answer.isOwner ? <button onClick={onStartEditing}>Edit</button> : ""}
     </div>
   );
 };
