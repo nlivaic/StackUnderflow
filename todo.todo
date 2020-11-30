@@ -2,6 +2,7 @@
   ☐ Test with: https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
   ☐ Fix git client so as I don't have to re-enter user/pass on every push.
   ✔ Search should be visible at all times @done (26. 11. 2020. 23:38:06)
+  ☐ Pogledati event handlere koji zovu API. Mislim da mogu biti svi async/await, ne trebam Promise. Ali bio je neki case specifičan, pa vidi malo detaljnije.
   ☐ Tags
     ☐ On question: fetch id.
   ✔ Question @done (28. 11. 2020. 23:52:35)
@@ -13,6 +14,8 @@
     ✔ Read @done (29. 11. 2020. 12:42:28)
     ☐ Add new
       ☐ Do not show new answer textbox if user has already answered.
+        ☐ Add UserId to AnswerResourceParameters.
+        ☐ Talk to /api/q/{questionId}/a?userId=some_guid.
       ☐ Redirect after adding new answer.
     ☐ Edit
     ☐ Delete
