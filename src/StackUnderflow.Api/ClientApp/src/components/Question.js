@@ -1,45 +1,22 @@
 import React from "react";
 import UserDetails from "./UserDetails.js";
 
-const Question = ({
-  title,
-  body,
-  username,
-  hasAcceptedAnswer,
-  createdOn,
-  tags,
-  isOwner,
-  onEdit,
-  onDelete,
-  isDeleting,
-  errors,
-}) => {
+const Question = ({ question, onStartEditing }) => {
   return (
     <div style={{ borderStyle: "solid", borderColor: "red" }}>
-      {errors.onDelete ? (
-        <span style={{ color: "red" }}>{errors.onDelete}</span>
-      ) : (
-        ""
-      )}
-      <h3>{title}</h3>
-      <span>{body}</span>
-      <UserDetails username={username} createdOn={createdOn} />
-      <div>{hasAcceptedAnswer ? "Accepted" : ""}</div>
+      <h3>{question.title}</h3>
+      <span>{question.body}</span>
+      <UserDetails
+        username={question.username}
+        createdOn={question.createdOn}
+      />
+      <div>{question.hasAcceptedAnswer ? "Accepted" : ""}</div>
       <div>
-        {tags.map((tag) => (
+        {question.tags.map((tag) => (
           <span key={tag.name}>{tag.name}</span>
         ))}
       </div>
-      {isOwner ? (
-        <>
-          <button onClick={onEdit}>Edit</button>
-          <button disabled={isDeleting} onClick={onDelete}>
-            {isDeleting ? "Deleting..." : "Delete"}
-          </button>
-        </>
-      ) : (
-        ""
-      )}
+      {question.isOwner ? <button onClick={onStartEditing}>Edit</button> : ""}
     </div>
   );
 };

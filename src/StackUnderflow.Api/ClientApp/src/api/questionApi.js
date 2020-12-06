@@ -12,7 +12,11 @@ export async function getQuestion(id) {
 
 export async function askQuestion(question) {
   try {
-    let response = await axios.post(`${apiUrl.API_URL}/questions`, question);
+    let response = await axios.post(`${apiUrl.API_URL}/questions`, {
+      title: question.title,
+      body: question.body,
+      tagIds: question.tags.map((t) => t.id),
+    });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -22,7 +26,11 @@ export async function askQuestion(question) {
 
 export async function editQuestion(id, question) {
   try {
-    await axios.put(`${apiUrl.API_URL}/questions/${id}`, question);
+    await axios.put(`${apiUrl.API_URL}/questions/${id}`, {
+      title: question.title,
+      body: question.body,
+      tagIds: question.tags.map((t) => t.id),
+    });
   } catch (error) {
     console.error(error);
     throw error;

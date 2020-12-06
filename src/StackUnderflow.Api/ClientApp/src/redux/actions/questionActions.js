@@ -1,0 +1,76 @@
+import {
+  CLEAR_QUESTION,
+  CLEAR_REDIRECT_TO_QUESTION,
+  ASK_QUESTION_SUCCESS,
+  LOAD_QUESTION_SUCCESS,
+  EDIT_QUESTION_SUCCESS,
+} from "./actionTypes";
+import * as apiStatusActions from "./apiStatusActions.js";
+import * as questionApi from "../../api/questionApi.js";
+
+export function clearQuestion() {
+  return { type: CLEAR_QUESTION };
+}
+
+export function clearRedirectToQuestion() {
+  return { type: CLEAR_REDIRECT_TO_QUESTION };
+}
+
+function saveQuestionSuccess(question) {
+  return {
+    type: ASK_QUESTION_SUCCESS,
+    question,
+  };
+}
+
+export function saveQuestion(question) {
+  return async (dispatch) => {
+    dispatch(apiStatusActions.beginApiCall());
+    try {
+      dispatch(saveQuestionSuccess(await questionApi.askQuestion(question)));
+    } catch (error) {
+      console.error(error);
+      dispatch(apiStatusActions.apiCallError());
+      throw error;
+    }
+  };
+}
+
+function loadQuestionSuccess(question) {
+  return {
+    type: LOAD_QUESTION_SUCCESS,
+    question,
+  };
+}
+
+export function getQuestion(id) {
+  return async (dispatch) => {
+    dispatch(apiStatusActions.beginApiCall());
+    try {
+      const question = await questionApi.getQuestion(id);
+      dispatch(loadQuestionSuccess(question));
+    } catch (error) {
+      console.log(error);
+      dispatch(apiStatusActions.apiCallError());
+      throw error;
+    }
+  };
+}
+
+function editQuestionSuccess(question) {
+  return { type: EDIT_QUESTION_SUCCESS, question };
+}
+
+export function editQuestion(question) {
+  return async (dispatch, getState) => {
+    dispatch(apiStatusActions.beginApiCall());
+    try {
+      await questionApi.editQuestion(question.id, question);
+      dispatch(editQuestionSuccess({ ...getState().question, ...question }));
+    } catch (error) {
+      console.log(error);
+      dispatch(apiStatusActions.apiCallError());
+      throw error;
+    }
+  };
+}

@@ -1,4 +1,25 @@
 ☐ Front end
+  ☐ Integriramo Redux.
+    ✔ Case: load neki question, Edit, Cancel Edit -> isprazni se question u Redux storeu. @done (05. 12. 2020. 00:23:46)
+      ✔ Treba nanovo  osmisliti Edit/New Question. Možda napraviti zasebne komponente. @done (05. 12. 2020. 00:23:47)
+    ✔ Dobar primjer problema je kad otvoriš question i onda odeš na New Question: polja budu popunjena. @done (02. 12. 2020. 23:56:03)
+    ✔ QuestionData: Get question @done (02. 12. 2020. 00:02:04)
+    ✔ QuestionData: Edit question @done (02. 12. 2020. 00:02:21)
+    ☐ Razmisli o tome što api funkcije vraćaju. Da li je to uniformno?
+    ☐ isNoCommentsOnQuestionReducer je višak.
+    ☐ AnswersListData
+      ☐ How to chain answersActions.getAnswers and then commentsActions.getComments?
+      ☐ Start here: https://blog.jscrambler.com/async-dispatch-chaining-with-redux-thunk/
+    ☐ QuestionData:
+      ☐ Delete
+      ✔ Read comments. @done (06. 12. 2020. 01:08:04)
+        ✔ commentsReducer, selectors (combined state, top-level) @done (06. 12. 2020. 01:08:04)
+        ✔ commentActions: GET_COMMENTS_SUCCESSFULLY, getComments() @done (06. 12. 2020. 01:08:05)
+        ✔ CommentsList - integrate @done (06. 12. 2020. 01:08:06)
+    ✔ QuestionData: New @done (05. 12. 2020. 00:23:57)
+    ✔ Želim na 404 redirectati na /NotFound. Redirect želim obaviti iz QuestionData. @done (02. 12. 2020. 00:01:33)
+    ✔ Nažalost, kad iz async actiona rethrowam error, ne vidim ga na QuestionData @done (02. 12. 2020. 00:01:38)
+      ✔ Pozvati thunk kao promise, sa .then i .catch @done (02. 12. 2020. 00:02:01)
   ☐ Test with: https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
   ☐ Fix git client so as I don't have to re-enter user/pass on every push.
   ✔ Search should be visible at all times @done (26. 11. 2020. 23:38:06)
@@ -17,7 +38,7 @@
         ☐ Add UserId to AnswerResourceParameters.
         ☐ Talk to /api/q/{questionId}/a?userId=some_guid.
       ☐ Redirect after adding new answer.
-    ☐ Edit
+    ✔ Edit @done (30. 11. 2020. 00:17:03)
     ☐ Delete
     ☐ Accept
   ☐ Comment
@@ -35,6 +56,7 @@
     ✔ Tell dotnet core backend app to proxy requests to the webpack dev server using `.UseProxyToSpaDevelopmentServer` @done (08. 11. 2020. 00:24:54)
 ☐ Backend:
   ☐ q/a/c GET methods must return IsOwner.
+  ☐ POST question {body: "", title: "", tags: []} - how does it behave?
   ☐ PUT question -> throw BusinessException -> not caught in controller.
   ☐ POSTing invalid question to api/questions returns a 422. The errors collection is PascalCased, but should be camelCased.
   ☐ KAko se Question.Create() BusinessException pretvori u 422?

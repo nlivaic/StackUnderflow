@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
-import * as commentsApi from "../api/commentsApi.js";
+import * as commentsActions from "../redux/actions/commentsActions.js";
 import Comment from "./Comment.js";
+import { getComments } from "../redux/reducers/index.js";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
-const CommentsList = ({ parentType, parentIds }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [commentsList, setCommentsList] = useState([]);
-  useEffect(
-    () => {
-      const getComments = async () => {
-        var data = await commentsApi.getComments(parentType, parentIds);
-        setCommentsList(data);
-        setIsLoaded(true);
-      };
-      getComments();
-    },
+const CommentsList = ({ commentsActions, comments, parentType, parentIds }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    commentsActions.getComments(parentType, parentIds).then((_) => {
+      setIsLoading(false);
+    });
+    setIsLoading(true);
     // Prevent question edit from reloading the comments.
     // eslint-disable-next-line
-    []
-  );
+    return () => {
+      commentsActions.clearAllComments();
+    };
+  }, []);
 
   return (
     <div>
       <div>
-        {!isLoaded
+        {isLoading
           ? "Loading comments..."
-          : commentsList.map((comment) => (
+          : comments.map((comment) => (
               <Comment key={comment.id} {...comment} />
             ))}
       </div>
@@ -32,4 +33,16 @@ const CommentsList = ({ parentType, parentIds }) => {
   );
 };
 
-export default CommentsList;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    comments: getComments(ownProps.parentType, state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    commentsActions: bindActionCreators(commentsActions, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentsList);

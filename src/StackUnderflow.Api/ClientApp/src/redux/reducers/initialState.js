@@ -1,7 +1,7 @@
 export default {
-  newQuestion: {
-    title: "",
+  question: {
     body: "",
+    title: "",
     tags: [],
   },
   apiCallsInProgress: 0,

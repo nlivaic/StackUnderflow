@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
 import QuestionSummariesList from "./QuestionSummariesList";
 import QuestionPage from "./QuestionPage";
-import ManageQuestionPage from "./ManageQuestionPage";
+import ManageQuestion from "./ManageQuestion";
 import { Provider as ReduxProvider } from "react-redux";
 import configureStore from "../redux/configureStore.js";
 import Search from "./Search.js";
@@ -22,7 +22,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={QuestionSummariesList} />
           <Route exact path="/questions/:questionId" component={QuestionPage} />
-          <Route exact path="/question/ask" component={ManageQuestionPage} />
+          <Route exact path="/question/ask" component={ManageQuestion} />
           <Route exact path="/NotFound" component={PageNotFound} />
           <Route component={PageNotFound} />
         </Switch>

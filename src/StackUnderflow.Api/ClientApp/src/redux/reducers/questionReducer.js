@@ -1,0 +1,42 @@
+import initialState from "./initialState.js";
+import {
+  CLEAR_QUESTION,
+  LOAD_QUESTION_SUCCESS,
+  EDIT_QUESTION_SUCCESS,
+  ASK_QUESTION_SUCCESS,
+  CLEAR_REDIRECT_TO_QUESTION,
+} from "../actions/actionTypes";
+import { combineReducers } from "redux";
+
+function questionReducer(state = initialState.question, action) {
+  switch (action.type) {
+    case CLEAR_QUESTION:
+      return initialState.question;
+    case LOAD_QUESTION_SUCCESS:
+    case ASK_QUESTION_SUCCESS:
+    case EDIT_QUESTION_SUCCESS:
+      return action.question;
+    default:
+      return state;
+  }
+}
+
+function redirectToQuestionReducer(state = null, action) {
+  switch (action.type) {
+    case CLEAR_REDIRECT_TO_QUESTION:
+      return null;
+    case ASK_QUESTION_SUCCESS:
+      return action.question.id;
+    default:
+      return state;
+  }
+}
+
+export default combineReducers({
+  question: questionReducer,
+  redirectToQuestion: redirectToQuestionReducer,
+});
+
+// Combined state selector.
+export const getQuestion = (state) => state.question;
+export const getRedirectToQuestion = (state) => state.redirectToQuestion;
