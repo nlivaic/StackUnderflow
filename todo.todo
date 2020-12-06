@@ -6,16 +6,26 @@
     ✔ QuestionData: Get question @done (02. 12. 2020. 00:02:04)
     ✔ QuestionData: Edit question @done (02. 12. 2020. 00:02:21)
     ☐ Razmisli o tome što api funkcije vraćaju. Da li je to uniformno?
-    ☐ isNoCommentsOnQuestionReducer je višak.
+    ✔ isNoCommentsOnQuestionReducer je višak. @done (06. 12. 2020. 23:58:35)
     ☐ AnswersListData
-      ☐ How to chain answersActions.getAnswers and then commentsActions.getComments?
-      ☐ Start here: https://blog.jscrambler.com/async-dispatch-chaining-with-redux-thunk/
+      ✔ How to chain answersActions.getAnswers and then commentsActions.getComments? @done (06. 12. 2020. 23:57:34)
+      ☐ Add answer
+        ☐ Pazi da se novi answer prikaže.
+      ☐ Edit answer
+      ☐ Accept answer.
     ☐ QuestionData:
       ☐ Delete
+        ☐ Načelno radi.
+        ☐ Napravida 
+        ☐ Test 409 with https://localhost:5001/questions/07aa51ac-0dfe-47a0-b535-82a750ec8e22
       ✔ Read comments. @done (06. 12. 2020. 01:08:04)
         ✔ commentsReducer, selectors (combined state, top-level) @done (06. 12. 2020. 01:08:04)
         ✔ commentActions: GET_COMMENTS_SUCCESSFULLY, getComments() @done (06. 12. 2020. 01:08:05)
         ✔ CommentsList - integrate @done (06. 12. 2020. 01:08:06)
+    ☐ Comment:
+      ✔ Read on question and answer @done (06. 12. 2020. 23:59:21)
+      ☐ Edit
+      ☐ Delete
     ✔ QuestionData: New @done (05. 12. 2020. 00:23:57)
     ✔ Želim na 404 redirectati na /NotFound. Redirect želim obaviti iz QuestionData. @done (02. 12. 2020. 00:01:33)
     ✔ Nažalost, kad iz async actiona rethrowam error, ne vidim ga na QuestionData @done (02. 12. 2020. 00:01:38)

@@ -22,7 +22,6 @@ function loadCommentsForAnswersSuccess(comments) {
 
 export const getComments = (parentType, parentIds) => {
   return async (dispatch) => {
-    debugger;
     dispatch(apiStatusActions.beginApiCall());
     try {
       let data = await commentsApi.getComments(parentType, parentIds);

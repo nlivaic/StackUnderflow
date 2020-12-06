@@ -4,6 +4,7 @@ import {
   ASK_QUESTION_SUCCESS,
   LOAD_QUESTION_SUCCESS,
   EDIT_QUESTION_SUCCESS,
+  DELETE_QUESTION_SUCCESS,
 } from "./actionTypes";
 import * as apiStatusActions from "./apiStatusActions.js";
 import * as questionApi from "../../api/questionApi.js";
@@ -74,3 +75,21 @@ export function editQuestion(question) {
     }
   };
 }
+
+function deleteQuestionSuccess(questionId) {
+  return { type: DELETE_QUESTION_SUCCESS, questionId };
+}
+
+export const deleteQuestion = (questionId) => {
+  return async (dispatch) => {
+    dispatch(apiStatusActions.beginApiCall());
+    try {
+      await questionApi.deleteQuestion(questionId);
+      dispatch(deleteQuestionSuccess(questionId));
+    } catch (error) {
+      console.log(error);
+      dispatch(apiStatusActions.apiCallError());
+      throw error;
+    }
+  };
+};

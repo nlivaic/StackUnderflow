@@ -18,6 +18,8 @@ export const getQuestion = (state) => fromQuestion.getQuestion(state.question);
 export const getRedirectToQuestion = (state) =>
   fromQuestion.getRedirectToQuestion(state.question);
 export const getApiCallsInProgress = (state) => state.apiCallsInProgress;
+export const getRedirectToHome = (state) =>
+  fromQuestion.getRedirectToHome(state.question);
 
 // Top level selectors - Comments
 export const getComments = (parentType, state) => {
@@ -34,10 +36,4 @@ export const getIsNoCommentsOnQuestion = (state) =>
   fromComments.getIsNoCommentsOnQuestion(state.comments);
 
 // Top level selectors: Answers
-/*
-
-{answer.comments.map((comment) => (
-                <Comment key={comment.id} {...comment} />
-              ))}
-*/
 export const getAnswers = (state) => fromAnswers.getAnswers(state.answers);

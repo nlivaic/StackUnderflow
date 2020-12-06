@@ -27,19 +27,9 @@ const commentsOnAnswersReducer = (state = [], action) => {
   }
 };
 
-const isNoCommentsOnQuestionReducer = (state = false, action) => {
-  switch (action.type) {
-    case LOAD_COMMENT_ON_QUESTION_SUCCESS:
-      return action.comments.length === 0;
-    default:
-      return state;
-  }
-};
-
 export default combineReducers({
   commentsOnQuestion: commentsOnQuestionReducer,
   commentsOnAnswers: commentsOnAnswersReducer,
-  isNoCommentsOnQuestion: isNoCommentsOnQuestionReducer,
 });
 
 // Combined state selector.

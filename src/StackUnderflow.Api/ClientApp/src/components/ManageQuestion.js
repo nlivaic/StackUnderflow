@@ -3,7 +3,11 @@ import { useHistory } from "react-router-dom";
 import Question from "./Question.js";
 import QuestionEdit from "./QuestionEdit.js";
 import { getErrorMessage } from "../utils/getErrorMessage.js";
-import { getQuestion, getRedirectToQuestion } from "../redux/reducers/index.js";
+import {
+  getQuestion,
+  getRedirectToQuestion,
+  getRedirectToHome,
+} from "../redux/reducers/index.js";
 import * as questionActions from "../redux/actions/questionActions.js";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -12,9 +16,11 @@ const ManageQuestion = ({
   questionActions,
   question,
   redirectToQuestion,
+  redirectToHome,
   action = "New",
 }) => {
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [errors, setErrors] = useState({});
   const [isEditingOrNew, setIsEditingOrNew] = useState(
     action === "New" ? true : false
@@ -35,13 +41,17 @@ const ManageQuestion = ({
       history.push(`/questions/${redirectToQuestion}`);
       return;
     }
+    if (redirectToHome) {
+      history.push("/");
+      return;
+    }
     // Clear the id of question you want to redirect.
     // Otherwise you would get redirected if you wanted to post two
     // questions one after another (i.e. without going to another page).
     return () => {
       questionActions.clearRedirectToQuestion();
     };
-  }, [redirectToQuestion]);
+  }, [redirectToQuestion, redirectToHome]);
 
   const onEditToggleHandle = (e) => {
     e.preventDefault();
@@ -75,6 +85,20 @@ const ManageQuestion = ({
     setIsSaving(true);
   };
 
+  const onDeleteHandle = async (e) => {
+    e.preventDefault();
+    if (question.isOwner) {
+      questionActions
+        .deleteQuestion(question.id)
+        .then((_) => setIsDeleting(false))
+        .catch((error) => {
+          setIsDeleting(false);
+          setErrors({ onDelete: getErrorMessage(error) });
+        });
+      setIsDeleting(true);
+    }
+  };
+
   const onInputChange = ({ target }) => {
     let value =
       target.id === "tags"
@@ -84,6 +108,7 @@ const ManageQuestion = ({
         : target.value;
     setEditedQuestion({ ...editedQuestion, [target.id]: value });
   };
+
   return (
     <div>
       {isEditingOrNew ? (
@@ -98,10 +123,15 @@ const ManageQuestion = ({
           errors={errors}
         />
       ) : (
-        <Question
-          question={editedQuestion}
-          onStartEditing={onEditToggleHandle}
-        />
+        <>
+          <Question
+            question={editedQuestion}
+            onStartEditing={onEditToggleHandle}
+            onDelete={onDeleteHandle}
+            isDeleting={isDeleting}
+            errors={errors}
+          />
+        </>
       )}
     </div>
   );
@@ -111,6 +141,7 @@ const mapStateToProps = (state) => {
   return {
     question: getQuestion(state),
     redirectToQuestion: getRedirectToQuestion(state),
+    redirectToHome: getRedirectToHome(state),
   };
 };
 

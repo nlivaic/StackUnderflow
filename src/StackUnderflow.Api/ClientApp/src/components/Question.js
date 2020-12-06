@@ -1,9 +1,20 @@
 import React from "react";
 import UserDetails from "./UserDetails.js";
 
-const Question = ({ question, onStartEditing }) => {
+const Question = ({
+  question,
+  onStartEditing,
+  onDelete,
+  isDeleting,
+  errors,
+}) => {
   return (
     <div style={{ borderStyle: "solid", borderColor: "red" }}>
+      {errors.onDelete ? (
+        <span style={{ color: "red" }}>{errors.onDelete}</span>
+      ) : (
+        ""
+      )}
       <h3>{question.title}</h3>
       <span>{question.body}</span>
       <UserDetails
@@ -17,6 +28,13 @@ const Question = ({ question, onStartEditing }) => {
         ))}
       </div>
       {question.isOwner ? <button onClick={onStartEditing}>Edit</button> : ""}
+      {question.isOwner ? (
+        <button onClick={onDelete} disabled={isDeleting}>
+          {isDeleting ? "Deleting..." : "Delete"}
+        </button>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

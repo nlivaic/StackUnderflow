@@ -10,14 +10,13 @@ function getAnswersSuccess(answers) {
 }
 
 export const getAnswers = (questionId) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
-      debugger;
       dispatch(apiStatus.beginApiCall());
       let data = await answersApi.getAnswers(questionId);
       dispatch(getAnswersSuccess(data));
+      return getState();
     } catch (error) {
-      debugger;
       dispatch(apiStatus.apiCallError());
       console.log(error);
       throw error;
