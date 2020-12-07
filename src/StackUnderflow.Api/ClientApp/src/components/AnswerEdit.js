@@ -37,12 +37,12 @@ const AnswerEdit = ({
   };
   return (
     <div style={{ borderStyle: "solid", borderColor: "green" }}>
-      <hr />
       {errors.onSave ? (
         <span style={{ color: "red" }}>{errors.onSave}</span>
       ) : (
         ""
       )}
+      <hr />
       <input
         type="text"
         id="body"
@@ -50,6 +50,10 @@ const AnswerEdit = ({
         value={answer.body}
         onChange={onInputChange}
       />
+      <br />
+
+      {errors.body ? <span style={{ color: "red" }}>* {errors.body}</span> : ""}
+      <br />
       <br />
       {getSaveButton()}
       {getCancelButton()}

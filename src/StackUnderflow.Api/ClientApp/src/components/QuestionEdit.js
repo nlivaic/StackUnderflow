@@ -43,6 +43,7 @@ const QuestionEdit = ({
       ) : (
         ""
       )}
+      <br />
       <input
         type="text"
         onChange={onInputChange}

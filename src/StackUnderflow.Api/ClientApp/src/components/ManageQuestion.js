@@ -56,7 +56,9 @@ const ManageQuestion = ({
   const onEditToggleHandle = (e) => {
     e.preventDefault();
     if (question.isOwner) {
+      setErrors({});
       setIsEditingOrNew(!isEditingOrNew);
+      setEditedQuestion(question);
     }
   };
 
@@ -71,7 +73,9 @@ const ManageQuestion = ({
 
   const onSaveEditHandle = async (e) => {
     e.preventDefault();
-
+    if (!isFormValid()) {
+      return;
+    }
     questionActions
       .editQuestion(editedQuestion)
       .then((_) => {
@@ -107,6 +111,21 @@ const ManageQuestion = ({
           })
         : target.value;
     setEditedQuestion({ ...editedQuestion, [target.id]: value });
+  };
+
+  const isFormValid = () => {
+    const error = {};
+    if (editedQuestion.title.trim().length === 0) {
+      error.title = "Question title not provided.";
+    }
+    if (editedQuestion.body.trim().length < 100) {
+      error.body = "Question body must be at least 100 characters.";
+    }
+    if (editedQuestion.tags.length === 0) {
+      error.tags = "At least one tag must be selected.";
+    }
+    setErrors(error);
+    return Object.keys(error).length === 0;
   };
 
   return (

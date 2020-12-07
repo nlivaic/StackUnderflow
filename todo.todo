@@ -13,11 +13,9 @@
         ☐ Pazi da se novi answer prikaže.
       ☐ Edit answer
       ☐ Accept answer.
-    ☐ QuestionData:
-      ☐ Delete
-        ☐ Načelno radi.
-        ☐ Napravida 
-        ☐ Test 409 with https://localhost:5001/questions/07aa51ac-0dfe-47a0-b535-82a750ec8e22
+    ✔ QuestionData: @done (07. 12. 2020. 00:49:03)
+      ✔ Delete @done (07. 12. 2020. 00:48:59)
+        ✔ Test 409 with https://localhost:5001/questions/07aa51ac-0dfe-47a0-b535-82a750ec8e22 @done (07. 12. 2020. 00:48:57)
       ✔ Read comments. @done (06. 12. 2020. 01:08:04)
         ✔ commentsReducer, selectors (combined state, top-level) @done (06. 12. 2020. 01:08:04)
         ✔ commentActions: GET_COMMENTS_SUCCESSFULLY, getComments() @done (06. 12. 2020. 01:08:05)
