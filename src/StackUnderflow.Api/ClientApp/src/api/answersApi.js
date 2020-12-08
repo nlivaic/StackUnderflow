@@ -14,12 +14,17 @@ export async function getAnswers(questionId) {
 
 export async function postAnswer(answer, questionId) {
   try {
-    return (
-      await axios.post(
-        `${apiUrl.API_URL}/questions/${questionId}/answers`,
-        answer
-      )
-    ).data;
+    let response = await axios.post(
+      `${apiUrl.API_URL}/questions/${questionId}/answers`,
+      answer
+    );
+    return response.data;
+    // return (
+    //   await axios.post(
+    //     `${apiUrl.API_URL}/questions/${questionId}/answers`,
+    //     answer
+    //   )
+    // ).data;
   } catch (error) {
     console.error(error);
     throw error;

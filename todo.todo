@@ -6,12 +6,13 @@
     ✔ QuestionData: Get question @done (02. 12. 2020. 00:02:04)
     ✔ QuestionData: Edit question @done (02. 12. 2020. 00:02:21)
     ☐ Razmisli o tome što api funkcije vraćaju. Da li je to uniformno?
+    ☐ Actions are called from components using Promises. This can be rewritten as async/await, based on edit answer case.
     ✔ isNoCommentsOnQuestionReducer je višak. @done (06. 12. 2020. 23:58:35)
     ☐ AnswersListData
       ✔ How to chain answersActions.getAnswers and then commentsActions.getComments? @done (06. 12. 2020. 23:57:34)
       ☐ Add answer
         ☐ Pazi da se novi answer prikaže.
-      ☐ Edit answer
+      ✔ Edit answer @done (07. 12. 2020. 23:52:22)
       ☐ Accept answer.
     ✔ QuestionData: @done (07. 12. 2020. 00:49:03)
       ✔ Delete @done (07. 12. 2020. 00:48:59)

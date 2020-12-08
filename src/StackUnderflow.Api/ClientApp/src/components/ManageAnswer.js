@@ -37,9 +37,12 @@ const ManageAnswer = ({
 
   const onSaveNewHandle = async (e) => {
     e.preventDefault();
+    if (!isFormValid()) {
+      return;
+    }
     setIsSaving(true);
     try {
-      await answersApi.postAnswer(editedAnswer, questionId);
+      await answersActions.postAnswer(editedAnswer, questionId);
     } catch (error) {
       setErrors({ onSave: getErrorMessage(error) });
     }
