@@ -1,7 +1,7 @@
 import * as answersApi from "../../api/answersApi.js";
 import {
   LOAD_ANSWERS_SUCCESS,
-  EDIT_ANSWERS_SUCCESS,
+  EDIT_ANSWER_SUCCESS,
   SAVE_ANSWER_SUCCESS,
 } from "../actions/actionTypes.js";
 import * as apiStatusActions from "../actions/apiStatusActions.js";
@@ -31,7 +31,7 @@ export const getAnswers = (questionId) => {
 
 function editAnswersSuccess(answer) {
   return {
-    type: EDIT_ANSWERS_SUCCESS,
+    type: EDIT_ANSWER_SUCCESS,
     answer,
   };
 }

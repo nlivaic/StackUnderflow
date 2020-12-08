@@ -1,4 +1,5 @@
 ☐ Front end
+  ☐ Počistiti sve warninge.
   ☐ Integriramo Redux.
     ✔ Case: load neki question, Edit, Cancel Edit -> isprazni se question u Redux storeu. @done (05. 12. 2020. 00:23:46)
       ✔ Treba nanovo  osmisliti Edit/New Question. Možda napraviti zasebne komponente. @done (05. 12. 2020. 00:23:47)
@@ -10,10 +11,11 @@
     ✔ isNoCommentsOnQuestionReducer je višak. @done (06. 12. 2020. 23:58:35)
     ☐ AnswersListData
       ✔ How to chain answersActions.getAnswers and then commentsActions.getComments? @done (06. 12. 2020. 23:57:34)
-      ☐ Add answer
-        ☐ Pazi da se novi answer prikaže.
+      ✔ Add answer @done (08. 12. 2020. 22:01:32)
+        ☐ Bug: kad se doda answer, ne vidi se Edit button. Tek kad se refresha se vidi Edit button.
       ✔ Edit answer @done (07. 12. 2020. 23:52:22)
       ☐ Accept answer.
+      ☐ Delete answer.
     ✔ QuestionData: @done (07. 12. 2020. 00:49:03)
       ✔ Delete @done (07. 12. 2020. 00:48:59)
         ✔ Test 409 with https://localhost:5001/questions/07aa51ac-0dfe-47a0-b535-82a750ec8e22 @done (07. 12. 2020. 00:48:57)
@@ -23,6 +25,7 @@
         ✔ CommentsList - integrate @done (06. 12. 2020. 01:08:06)
     ☐ Comment:
       ✔ Read on question and answer @done (06. 12. 2020. 23:59:21)
+      ☐ Add
       ☐ Edit
       ☐ Delete
     ✔ QuestionData: New @done (05. 12. 2020. 00:23:57)

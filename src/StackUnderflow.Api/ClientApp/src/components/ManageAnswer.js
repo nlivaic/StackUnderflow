@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Answer from "./Answer.js";
 import AnswerEdit from "./AnswerEdit.js";
-import * as answersApi from "../api/answersApi.js";
 import { getErrorMessage } from "../utils/getErrorMessage.js";
 import { bindActionCreators } from "redux";
 import * as answersActions from "../redux/actions/answersActions.js";

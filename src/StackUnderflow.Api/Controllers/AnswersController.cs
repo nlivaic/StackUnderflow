@@ -130,6 +130,7 @@ namespace StackUnderflow.Api.Controllers
                 return UnprocessableEntity();
             }
             var answerGetViewModel = _mapper.Map<AnswerGetViewModel>(answerGetModel);
+            answerGetViewModel.IsOwner = Foo.TemporaryUser.Get == answerGetModel.UserId;
             return CreatedAtRoute("Get", new { answerId = answerGetModel.Id, questionId }, answerGetViewModel);
         }
 
