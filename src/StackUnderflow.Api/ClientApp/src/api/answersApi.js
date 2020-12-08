@@ -14,17 +14,12 @@ export async function getAnswers(questionId) {
 
 export async function postAnswer(answer, questionId) {
   try {
-    let response = await axios.post(
-      `${apiUrl.API_URL}/questions/${questionId}/answers`,
-      answer
-    );
-    return response.data;
-    // return (
-    //   await axios.post(
-    //     `${apiUrl.API_URL}/questions/${questionId}/answers`,
-    //     answer
-    //   )
-    // ).data;
+    return (
+      await axios.post(
+        `${apiUrl.API_URL}/questions/${questionId}/answers`,
+        answer
+      )
+    ).data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -36,6 +31,17 @@ export async function editAnswer(answer, questionId, answerId) {
     await axios.put(
       `${apiUrl.API_URL}/questions/${questionId}/answers/${answerId}`,
       answer
+    );
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function deleteAnswer(questionId, answerId) {
+  try {
+    await axios.delete(
+      `${apiUrl.API_URL}/questions/${questionId}/answers/${answerId}`
     );
   } catch (error) {
     console.error(error);

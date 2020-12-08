@@ -13,6 +13,7 @@ const ManageAnswer = ({
   action = "ReadAndEdit",
 }) => {
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [errors, setErrors] = useState({});
   const [isEditingOrNew, setIsEditingOrNew] = useState(
     action === "New" ? true : false
@@ -42,6 +43,7 @@ const ManageAnswer = ({
     setIsSaving(true);
     try {
       await answersActions.postAnswer(editedAnswer, questionId);
+      setEditedAnswer({ body: "" });
     } catch (error) {
       setErrors({ onSave: getErrorMessage(error) });
     }
@@ -65,6 +67,19 @@ const ManageAnswer = ({
       setErrors({ onSave: getErrorMessage(error) });
     }
     setIsSaving(false);
+  };
+
+  const onDeleteHandle = async (e) => {
+    e.preventDefault();
+    if (answer.isOwner) {
+      setIsDeleting(true);
+      try {
+        await answersActions.deleteAnswer(questionId, editedAnswer.id);
+      } catch (error) {
+        setIsDeleting(true);
+        setErrors({ onDelete: getErrorMessage(error) });
+      }
+    }
   };
 
   const onInputChange = ({ target }) => {
@@ -94,7 +109,12 @@ const ManageAnswer = ({
           errors={errors}
         />
       ) : (
-        <Answer answer={editedAnswer} onStartEditing={onEditToggleHandle} />
+        <Answer
+          answer={editedAnswer}
+          onStartEditing={onEditToggleHandle}
+          onDelete={onDeleteHandle}
+          isDeleting={isDeleting}
+        />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import UserDetailsShort from "./UserDetailsShort.js";
 
-const Answer = ({ answer, onStartEditing }) => {
+const Answer = ({ answer, onStartEditing, onDelete, isDeleting }) => {
   return (
     <div style={{ borderStyle: "solid", borderColor: "green" }}>
       <hr />
@@ -12,6 +12,13 @@ const Answer = ({ answer, onStartEditing }) => {
         createdOn={answer.createdOn}
       />
       {answer.isOwner ? <button onClick={onStartEditing}>Edit</button> : ""}
+      {answer.isOwner ? (
+        <button onClick={onDelete} disabled={isDeleting}>
+          {isDeleting ? "Deleting..." : "Delete"}
+        </button>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

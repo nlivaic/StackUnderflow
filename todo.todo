@@ -1,5 +1,6 @@
 ☐ Front end
   ☐ Počistiti sve warninge.
+  ☐ Paging error: search "Nenad made this title10"
   ☐ Integriramo Redux.
     ✔ Case: load neki question, Edit, Cancel Edit -> isprazni se question u Redux storeu. @done (05. 12. 2020. 00:23:46)
       ✔ Treba nanovo  osmisliti Edit/New Question. Možda napraviti zasebne komponente. @done (05. 12. 2020. 00:23:47)
@@ -16,6 +17,7 @@
       ✔ Edit answer @done (07. 12. 2020. 23:52:22)
       ☐ Accept answer.
       ☐ Delete answer.
+      ☐ Clear answers.
     ✔ QuestionData: @done (07. 12. 2020. 00:49:03)
       ✔ Delete @done (07. 12. 2020. 00:48:59)
         ✔ Test 409 with https://localhost:5001/questions/07aa51ac-0dfe-47a0-b535-82a750ec8e22 @done (07. 12. 2020. 00:48:57)

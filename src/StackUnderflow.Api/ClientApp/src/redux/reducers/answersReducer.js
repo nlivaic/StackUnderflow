@@ -4,6 +4,7 @@ import {
   EDIT_ANSWER_SUCCESS,
   SAVE_ANSWER_SUCCESS,
   CLEAR_ANSWERS_SUCCESS,
+  DELETE_ANSWER_SUCCESS,
 } from "../actions/actionTypes.js";
 
 const answersReducer = (state = [], action) => {
@@ -16,6 +17,8 @@ const answersReducer = (state = [], action) => {
       return state.map((answer) =>
         answer.id === action.answer.id ? action.answer : answer
       );
+    case DELETE_ANSWER_SUCCESS:
+      return state.filter((answer) => answer.id !== action.answerId);
     case CLEAR_ANSWERS_SUCCESS:
       return [];
 

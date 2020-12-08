@@ -3,6 +3,7 @@ import {
   LOAD_ANSWERS_SUCCESS,
   EDIT_ANSWER_SUCCESS,
   SAVE_ANSWER_SUCCESS,
+  DELETE_ANSWER_SUCCESS,
 } from "../actions/actionTypes.js";
 import * as apiStatusActions from "../actions/apiStatusActions.js";
 import * as fromAnswers from "../reducers/index.js";
@@ -68,6 +69,28 @@ export const postAnswer = (answer, questionId) => {
     try {
       let data = await answersApi.postAnswer(answer, questionId);
       dispatch(postAnswerSuccess(data));
+    } catch (error) {
+      console.error(error);
+      dispatch(apiStatusActions.apiCallError());
+      throw error;
+    }
+  };
+};
+
+function deleteAnswerSuccess(questionId, answerId) {
+  return {
+    type: DELETE_ANSWER_SUCCESS,
+    questionId,
+    answerId,
+  };
+}
+
+export const deleteAnswer = (questionId, answerId) => {
+  return async (dispatch) => {
+    dispatch(apiStatusActions.beginApiCall());
+    try {
+      await answersApi.deleteAnswer(questionId, answerId);
+      dispatch(deleteAnswerSuccess(questionId, answerId));
     } catch (error) {
       console.error(error);
       dispatch(apiStatusActions.apiCallError());
