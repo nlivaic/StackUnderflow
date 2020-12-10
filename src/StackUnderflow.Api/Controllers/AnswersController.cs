@@ -235,6 +235,7 @@ namespace StackUnderflow.Api.Controllers
                 return UnprocessableEntity();
             }
             var answerViewModel = _mapper.Map<AnswerGetViewModel>(answerModel);
+            answerViewModel.IsOwner = Foo.TemporaryUser.Get == answerViewModel.UserId;
             return CreatedAtRoute("Get", new { questionId, answerId }, answerViewModel);
         }
     }

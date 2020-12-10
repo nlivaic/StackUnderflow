@@ -48,3 +48,16 @@ export async function deleteAnswer(questionId, answerId) {
     throw error;
   }
 }
+
+export async function acceptAnswer(questionId, answerId) {
+  try {
+    return (
+      await axios.post(
+        `${apiUrl.API_URL}/questions/${questionId}/answers/${answerId}/acceptAnswer`
+      )
+    ).data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

@@ -1,6 +1,7 @@
 ☐ Front end
   ☐ Počistiti sve warninge.
   ☐ Paging error: search "Nenad made this title10"
+  ☐ Action creatori logiraju errore sa api-ja, ali oni su već logirani u api fileovima. Maknuti to odasvud.
   ☐ Integriramo Redux.
     ✔ Case: load neki question, Edit, Cancel Edit -> isprazni se question u Redux storeu. @done (05. 12. 2020. 00:23:46)
       ✔ Treba nanovo  osmisliti Edit/New Question. Možda napraviti zasebne komponente. @done (05. 12. 2020. 00:23:47)
@@ -11,12 +12,18 @@
     ☐ Actions are called from components using Promises. This can be rewritten as async/await, based on edit answer case.
     ✔ isNoCommentsOnQuestionReducer je višak. @done (06. 12. 2020. 23:58:35)
     ☐ AnswersListData
+      ✔ Case: new q, new a, accept a, delete a: 409 by API, but nothing is printed. @done (10. 12. 2020. 23:08:59)
+      ✔ Case: new q, new a, accept a: Edit and Delete buttons dissapear. @done (10. 12. 2020. 23:03:25)
       ✔ How to chain answersActions.getAnswers and then commentsActions.getComments? @done (06. 12. 2020. 23:57:34)
       ✔ Add answer @done (08. 12. 2020. 22:01:32)
-        ☐ Bug: kad se doda answer, ne vidi se Edit button. Tek kad se refresha se vidi Edit button.
       ✔ Edit answer @done (07. 12. 2020. 23:52:22)
       ☐ Accept answer.
-      ☐ Delete answer.
+        ☐ https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
+        ☐ Mogu prihvatiti odgovor makar nisam vlasnik pitanja.
+        ☐ Potestiraj ovako kako je i popravi.
+        ☐ Onda promijeni vlasnika tog pitanja u 'fa11acfe-8234-4fa3-9733-19abe08f74e8'.
+      ✘ Unaccept answer. @cancelled (10. 12. 2020. 23:09:03)
+      ✔ Delete answer. @done (08. 12. 2020. 22:51:35)
       ☐ Clear answers.
     ✔ QuestionData: @done (07. 12. 2020. 00:49:03)
       ✔ Delete @done (07. 12. 2020. 00:48:59)
@@ -27,6 +34,7 @@
         ✔ CommentsList - integrate @done (06. 12. 2020. 01:08:06)
     ☐ Comment:
       ✔ Read on question and answer @done (06. 12. 2020. 23:59:21)
+      ☐ Read via Redux
       ☐ Add
       ☐ Edit
       ☐ Delete

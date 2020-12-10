@@ -5,15 +5,19 @@ import { getErrorMessage } from "../utils/getErrorMessage.js";
 import { bindActionCreators } from "redux";
 import * as answersActions from "../redux/actions/answersActions.js";
 import { connect } from "react-redux";
+import { getQuestionHasAcceptedAnswer } from "../redux/reducers/index.js";
+import answersReducer from "../redux/reducers/answersReducer.js";
 
 const ManageAnswer = ({
   answersActions,
   answer,
   questionId,
+  questionHasAcceptedAnswer,
   action = "ReadAndEdit",
 }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isAccepting, setIsAccepting] = useState(false);
   const [errors, setErrors] = useState({});
   const [isEditingOrNew, setIsEditingOrNew] = useState(
     action === "New" ? true : false
@@ -76,10 +80,23 @@ const ManageAnswer = ({
       try {
         await answersActions.deleteAnswer(questionId, editedAnswer.id);
       } catch (error) {
-        setIsDeleting(true);
+        setIsDeleting(false);
         setErrors({ onDelete: getErrorMessage(error) });
       }
     }
+  };
+
+  const onAcceptHandle = async (e) => {
+    debugger;
+    e.preventDefault();
+    setIsAccepting(true);
+    try {
+      await answersActions.acceptAnswer(questionId, answer.id);
+    } catch (error) {
+      debugger;
+      setErrors({ onAccept: getErrorMessage(error) });
+    }
+    setIsAccepting(false);
   };
 
   const onInputChange = ({ target }) => {
@@ -110,14 +127,24 @@ const ManageAnswer = ({
         />
       ) : (
         <Answer
-          answer={editedAnswer}
+          answer={answer}
           onStartEditing={onEditToggleHandle}
           onDelete={onDeleteHandle}
           isDeleting={isDeleting}
+          isAcceptable={!questionHasAcceptedAnswer}
+          isAccepting={isAccepting}
+          onAccept={onAcceptHandle}
+          errors={errors}
         />
       )}
     </div>
   );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    questionHasAcceptedAnswer: getQuestionHasAcceptedAnswer(state),
+  };
 };
 
 const mapStateToDispatch = (dispatch) => {
@@ -126,4 +153,4 @@ const mapStateToDispatch = (dispatch) => {
   };
 };
 
-export default connect(null, mapStateToDispatch)(ManageAnswer);
+export default connect(mapStateToProps, mapStateToDispatch)(ManageAnswer);

@@ -27,6 +27,9 @@ const AnswersListData = ({
       setIsLoading(false);
     });
     setIsLoading(true);
+    return () => {
+      answersActions.clearAnswers();
+    };
   }, [questionId]);
 
   const renderAnswers = (answers) =>

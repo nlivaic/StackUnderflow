@@ -3,8 +3,9 @@ import {
   LOAD_ANSWERS_SUCCESS,
   EDIT_ANSWER_SUCCESS,
   SAVE_ANSWER_SUCCESS,
-  CLEAR_ANSWERS_SUCCESS,
+  CLEAR_ALL_ANSWERS,
   DELETE_ANSWER_SUCCESS,
+  ACCEPT_ANSWER_SUCCESS,
 } from "../actions/actionTypes.js";
 
 const answersReducer = (state = [], action) => {
@@ -19,7 +20,11 @@ const answersReducer = (state = [], action) => {
       );
     case DELETE_ANSWER_SUCCESS:
       return state.filter((answer) => answer.id !== action.answerId);
-    case CLEAR_ANSWERS_SUCCESS:
+    case ACCEPT_ANSWER_SUCCESS:
+      return state.map((answer) => {
+        return answer.id === action.answer.id ? action.answer : answer;
+      });
+    case CLEAR_ALL_ANSWERS:
       return [];
 
     default:

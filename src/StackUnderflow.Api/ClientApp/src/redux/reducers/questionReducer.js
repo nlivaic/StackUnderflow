@@ -6,6 +6,7 @@ import {
   ASK_QUESTION_SUCCESS,
   DELETE_QUESTION_SUCCESS,
   CLEAR_REDIRECT_TO_QUESTION,
+  ACCEPT_ANSWER_SUCCESS,
 } from "../actions/actionTypes";
 import { combineReducers } from "redux";
 
@@ -19,6 +20,8 @@ function questionReducer(state = initialState.question, action) {
       return action.question;
     case DELETE_QUESTION_SUCCESS:
       return initialState.question;
+    case ACCEPT_ANSWER_SUCCESS:
+      return { ...state, hasAcceptedAnswer: true };
     default:
       return state;
   }
@@ -56,3 +59,5 @@ export default combineReducers({
 export const getQuestion = (state) => state.question;
 export const getRedirectToQuestion = (state) => state.redirectToQuestion;
 export const getRedirectToHome = (state) => state.redirectToHome;
+export const getQuestionHasAcceptedAnswer = (state) =>
+  state.question.hasAcceptedAnswer;

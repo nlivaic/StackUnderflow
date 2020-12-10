@@ -144,7 +144,7 @@ const ManageQuestion = ({
       ) : (
         <>
           <Question
-            question={editedQuestion}
+            question={question}
             onStartEditing={onEditToggleHandle}
             onDelete={onDeleteHandle}
             isDeleting={isDeleting}

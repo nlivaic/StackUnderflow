@@ -8,6 +8,7 @@ namespace StackUnderflow.Core.Models
         public Guid UserId { get; set; }
         public string Username { get; set; }
         public string Body { get; set; }
+        public bool IsAcceptedAnswer { get; private set; }
         public DateTime CreatedOn { get; set; }
         public int VotesSum { get; set; }
     }

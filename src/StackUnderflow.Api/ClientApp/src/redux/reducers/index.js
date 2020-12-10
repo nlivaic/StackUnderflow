@@ -20,7 +20,8 @@ export const getRedirectToQuestion = (state) =>
 export const getApiCallsInProgress = (state) => state.apiCallsInProgress;
 export const getRedirectToHome = (state) =>
   fromQuestion.getRedirectToHome(state.question);
-
+export const getQuestionHasAcceptedAnswer = (state) =>
+  fromQuestion.getQuestionHasAcceptedAnswer(state.question);
 // Top level selectors - Comments
 export const getComments = (parentType, state) => {
   switch (parentType) {

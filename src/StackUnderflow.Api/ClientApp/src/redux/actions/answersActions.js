@@ -4,6 +4,8 @@ import {
   EDIT_ANSWER_SUCCESS,
   SAVE_ANSWER_SUCCESS,
   DELETE_ANSWER_SUCCESS,
+  ACCEPT_ANSWER_SUCCESS,
+  CLEAR_ALL_ANSWERS,
 } from "../actions/actionTypes.js";
 import * as apiStatusActions from "../actions/apiStatusActions.js";
 import * as fromAnswers from "../reducers/index.js";
@@ -24,7 +26,6 @@ export const getAnswers = (questionId) => {
       return getState();
     } catch (error) {
       dispatch(apiStatusActions.apiCallError());
-      console.log(error);
       throw error;
     }
   };
@@ -44,7 +45,6 @@ export const editAnswer = (answer, questionId, answerId) => {
       await answersApi.editAnswer(answer, questionId, answerId);
     } catch (error) {
       dispatch(apiStatusActions.apiCallError());
-      console.error(error);
       throw error;
     }
     dispatch(
@@ -70,7 +70,6 @@ export const postAnswer = (answer, questionId) => {
       let data = await answersApi.postAnswer(answer, questionId);
       dispatch(postAnswerSuccess(data));
     } catch (error) {
-      console.error(error);
       dispatch(apiStatusActions.apiCallError());
       throw error;
     }
@@ -92,9 +91,35 @@ export const deleteAnswer = (questionId, answerId) => {
       await answersApi.deleteAnswer(questionId, answerId);
       dispatch(deleteAnswerSuccess(questionId, answerId));
     } catch (error) {
-      console.error(error);
       dispatch(apiStatusActions.apiCallError());
       throw error;
     }
+  };
+};
+
+function acceptAnswerSuccess(questionId, answer) {
+  return {
+    type: ACCEPT_ANSWER_SUCCESS,
+    questionId,
+    answer,
+  };
+}
+
+export const acceptAnswer = (questionId, answerId) => {
+  return async (dispatch) => {
+    dispatch(apiStatusActions.beginApiCall());
+    try {
+      let response = await answersApi.acceptAnswer(questionId, answerId);
+      dispatch(acceptAnswerSuccess(questionId, response));
+    } catch (error) {
+      dispatch(apiStatusActions.apiCallError());
+      throw error;
+    }
+  };
+};
+
+export const clearAnswers = () => {
+  return {
+    type: CLEAR_ALL_ANSWERS,
   };
 };
