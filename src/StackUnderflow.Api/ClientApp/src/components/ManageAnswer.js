@@ -5,12 +5,16 @@ import { getErrorMessage } from "../utils/getErrorMessage.js";
 import { bindActionCreators } from "redux";
 import * as answersActions from "../redux/actions/answersActions.js";
 import { connect } from "react-redux";
-import { getQuestionHasAcceptedAnswer } from "../redux/reducers/index.js";
+import {
+  getQuestionHasAcceptedAnswer,
+  getQuestion,
+} from "../redux/reducers/index.js";
 import answersReducer from "../redux/reducers/answersReducer.js";
 
 const ManageAnswer = ({
   answersActions,
   answer,
+  question,
   questionId,
   questionHasAcceptedAnswer,
   action = "ReadAndEdit",
@@ -131,7 +135,7 @@ const ManageAnswer = ({
           onStartEditing={onEditToggleHandle}
           onDelete={onDeleteHandle}
           isDeleting={isDeleting}
-          isAcceptable={!questionHasAcceptedAnswer}
+          isAcceptable={!questionHasAcceptedAnswer && question.isOwner}
           isAccepting={isAccepting}
           onAccept={onAcceptHandle}
           errors={errors}
@@ -144,6 +148,7 @@ const ManageAnswer = ({
 const mapStateToProps = (state) => {
   return {
     questionHasAcceptedAnswer: getQuestionHasAcceptedAnswer(state),
+    question: getQuestion(state),
   };
 };
 
