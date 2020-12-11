@@ -1,7 +1,7 @@
 import React from "react";
 import UserDetailsShort from "./UserDetailsShort.js";
 
-const Comment = ({ body, username, createdOn }) => {
+const Comment = ({ onStartEditing, comment }) => {
   return (
     <div
       style={{
@@ -17,8 +17,12 @@ const Comment = ({ body, username, createdOn }) => {
       >
         <hr />
         <div>Voting</div>
-        <span>{body}</span>
-        <UserDetailsShort username={username} createdOn={createdOn} />
+        <span>{comment.body}</span>
+        <UserDetailsShort
+          username={comment.username}
+          createdOn={comment.createdOn}
+        />
+        {comment.isOwner ? <button onClick={onStartEditing}>Edit</button> : ""}
       </div>
     </div>
   );

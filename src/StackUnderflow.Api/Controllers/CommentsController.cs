@@ -51,7 +51,8 @@ namespace StackUnderflow.Api.Controllers
                 return NotFound();
             }
             var comment = await _commentRepository.GetCommentsForQuestionAsync(questionId);
-            IEnumerable<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comment);
+            List<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comment);
+            result.ForEach(comment => comment.IsOwner = Foo.TemporaryUser.Get == comment.UserId);
             return Ok(result);
         }
 
@@ -72,6 +73,7 @@ namespace StackUnderflow.Api.Controllers
                 return NotFound();
             }
             CommentForQuestionGetViewModel result = _mapper.Map<CommentForQuestionGetViewModel>(comment);
+            result.IsOwner = Foo.TemporaryUser.Get == comment.UserId;
             return Ok(result);
         }
 
@@ -94,6 +96,7 @@ namespace StackUnderflow.Api.Controllers
             }
             var comments = await _commentRepository.GetCommentsForAnswersAsync(answerIds);
             var result = _mapper.Map<List<CommentForAnswerGetViewModel>>(comments);
+            result.ForEach(comment => comment.IsOwner = Foo.TemporaryUser.Get == comment.UserId);
             return Ok(result);
         }
 
@@ -116,6 +119,7 @@ namespace StackUnderflow.Api.Controllers
             if (comment == null || comment.QuestionId != questionId)
                 return NotFound();
             var result = _mapper.Map<CommentForAnswerGetViewModel>(comment);
+            result.IsOwner = Foo.TemporaryUser.Get == comment.UserId;
             return Ok(result);
         }
 
@@ -203,6 +207,11 @@ namespace StackUnderflow.Api.Controllers
             try
             {
                 await _commentService.EditAsync(comment);
+            }
+            catch (BusinessException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return UnprocessableEntity();
             }
             catch (EntityNotFoundException)
             {

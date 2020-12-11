@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as commentsActions from "../redux/actions/commentsActions.js";
-import Comment from "./Comment.js";
+import ManageComment from "./ManageComment.js";
 import { getComments } from "../redux/reducers/index.js";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -26,7 +26,13 @@ const CommentsList = ({ commentsActions, comments, parentType, parentIds }) => {
         {isLoading
           ? "Loading comments..."
           : comments.map((comment) => (
-              <Comment key={comment.id} {...comment} />
+              <ManageComment
+                key={comment.id}
+                parentType={parentType}
+                parentIds={parentIds}
+                action="ReadAndEdit"
+                comment={comment}
+              />
             ))}
       </div>
     </div>

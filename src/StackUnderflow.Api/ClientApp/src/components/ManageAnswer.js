@@ -91,13 +91,11 @@ const ManageAnswer = ({
   };
 
   const onAcceptHandle = async (e) => {
-    debugger;
     e.preventDefault();
     setIsAccepting(true);
     try {
       await answersActions.acceptAnswer(questionId, answer.id);
     } catch (error) {
-      debugger;
       setErrors({ onAccept: getErrorMessage(error) });
     }
     setIsAccepting(false);
@@ -109,7 +107,7 @@ const ManageAnswer = ({
 
   const isFormValid = () => {
     const error = {};
-    if (editedAnswer.body.length === 0) {
+    if (editedAnswer.body.length < 100) {
       error.body = "Answer's body must be at least 100 characters.";
     }
     setErrors(error);

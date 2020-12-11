@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ManageAnswer from "./ManageAnswer.js";
-import Comment from "./Comment.js";
+import ManageComment from "./ManageComment.js";
 import { getAnswers, getComments } from "../redux/reducers/index.js";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -46,7 +46,13 @@ const AnswersListData = ({
               {comments
                 .filter((comment) => comment.answerId === answer.id)
                 .map((comment) => (
-                  <Comment key={comment.id} {...comment} />
+                  <ManageComment
+                    key={comment.id}
+                    comment={comment}
+                    parentType="answer"
+                    parentIds={{ questionId, answerId: answer.id }}
+                    action="ReadAndEdit"
+                  />
                 ))}
             </div>
           );

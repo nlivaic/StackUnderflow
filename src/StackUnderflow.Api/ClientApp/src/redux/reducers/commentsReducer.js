@@ -1,5 +1,7 @@
 import { combineReducers } from "redux";
 import {
+  EDIT_COMMENT_ON_QUESTION_SUCCESS,
+  EDIT_COMMENT_ON_ANSWER_SUCCESS,
   LOAD_COMMENT_ON_QUESTION_SUCCESS,
   LOAD_COMMENT_ON_ANSWERS_SUCCESS,
   CLEAR_ALL_COMMENTS,
@@ -9,6 +11,10 @@ const commentsOnQuestionReducer = (state = [], action) => {
   switch (action.type) {
     case LOAD_COMMENT_ON_QUESTION_SUCCESS:
       return action.comments;
+    case EDIT_COMMENT_ON_QUESTION_SUCCESS:
+      return state.map((comment) =>
+        comment.id === action.comment.id ? action.comment : comment
+      );
     case CLEAR_ALL_COMMENTS:
       return [];
     default:

@@ -1,10 +1,10 @@
 import React from "react";
 
-const AnswerEdit = ({
-  answer,
+const CommentEdit = ({
+  comment,
   action,
-  onSaveNewAnswer,
-  onSaveEditAnswer,
+  onSaveNewComment,
+  onSaveEditComment,
   onInputChange,
   isSaving,
   onCancel,
@@ -14,13 +14,13 @@ const AnswerEdit = ({
     switch (action) {
       case "New":
         return (
-          <button onClick={onSaveNewAnswer} disabled={isSaving}>
-            {isSaving ? "Posting..." : "Post Your Answer"}
+          <button onClick={onSaveNewComment} disabled={isSaving}>
+            {isSaving ? "Posting..." : "Post Your Comment"}
           </button>
         );
       case "ReadAndEdit":
         return (
-          <button onClick={onSaveEditAnswer} disabled={isSaving}>
+          <button onClick={onSaveEditComment} disabled={isSaving}>
             {isSaving ? "Saving..." : "Save Edits"}
           </button>
         );
@@ -46,8 +46,8 @@ const AnswerEdit = ({
       <input
         type="text"
         id="body"
-        placeholder="Enter answer here..."
-        value={answer.body}
+        placeholder="Enter omment here..."
+        value={comment.body}
         onChange={onInputChange}
       />
       <br />
@@ -61,4 +61,4 @@ const AnswerEdit = ({
   );
 };
 
-export default AnswerEdit;
+export default CommentEdit;
