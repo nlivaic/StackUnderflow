@@ -1,7 +1,7 @@
 import React from "react";
 import UserDetailsShort from "./UserDetailsShort.js";
 
-const Comment = ({ onStartEditing, comment }) => {
+const Comment = ({ onStartEditing, isDeleting, onDelete, comment, errors }) => {
   return (
     <div
       style={{
@@ -15,6 +15,11 @@ const Comment = ({ onStartEditing, comment }) => {
           borderColor: "gray",
         }}
       >
+        {errors.onDelete ? (
+          <span style={{ color: "red" }}>{errors.onDelete}</span>
+        ) : (
+          ""
+        )}
         <hr />
         <div>Voting</div>
         <span>{comment.body}</span>
@@ -23,6 +28,13 @@ const Comment = ({ onStartEditing, comment }) => {
           createdOn={comment.createdOn}
         />
         {comment.isOwner ? <button onClick={onStartEditing}>Edit</button> : ""}
+        {comment.isOwner ? (
+          <button onClick={onDelete}>
+            {isDeleting ? "Deleting..." : "Delete"}
+          </button>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

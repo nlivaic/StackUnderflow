@@ -71,11 +71,7 @@ const ManageComment = ({
     if (comment.isOwner) {
       setIsDeleting(true);
       try {
-        await commentsActions.deleteComment(
-          parentType,
-          { parentIds },
-          editedComment.id
-        );
+        await commentsActions.deleteComment(parentType, parentIds, comment.id);
       } catch (error) {
         setIsDeleting(false);
         setErrors({ onDelete: getErrorMessage(error) });
@@ -112,6 +108,8 @@ const ManageComment = ({
         <Comment
           onStartEditing={onEditToggleHandle}
           comment={comment}
+          onDelete={onDeleteHandle}
+          isDeleting={isDeleting}
           errors={errors}
         />
       )}

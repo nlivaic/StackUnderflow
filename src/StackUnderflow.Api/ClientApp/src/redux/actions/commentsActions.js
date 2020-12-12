@@ -3,8 +3,8 @@ import {
   LOAD_COMMENT_ON_ANSWERS_SUCCESS,
   SAVE_COMMENT_ON_QUESTION_SUCCESS,
   SAVE_COMMENT_ON_ANSWER_SUCCESS,
-  EDIT_COMMENT_ON_QUESTION_SUCCESS,
-  EDIT_COMMENT_ON_ANSWER_SUCCESS,
+  EDIT_COMMENT_SUCCESS,
+  DELETE_COMMENT_SUCCESS,
   CLEAR_ALL_COMMENTS,
 } from "../actions/actionTypes.js";
 import * as apiStatusActions from "./apiStatusActions.js";
@@ -84,16 +84,9 @@ export const postComments = (comment, parentType, parentIds) => {
   };
 };
 
-function editCommentForQuestionSuccess(comment, parentIds) {
+function editCommentSuccess(comment) {
   return {
-    type: EDIT_COMMENT_ON_QUESTION_SUCCESS,
-    comment,
-  };
-}
-
-function editCommentForAnswerSuccess(comment, parentIds) {
-  return {
-    type: EDIT_COMMENT_ON_ANSWER_SUCCESS,
+    type: EDIT_COMMENT_SUCCESS,
     comment,
   };
 }
@@ -103,18 +96,30 @@ export const editComment = (comment, parentType, parentIds) => {
     dispatch(apiStatusActions.beginApiCall());
     try {
       await commentsApi.editComment(comment, parentType, parentIds);
-      switch (parentType) {
-        case "question":
-          dispatch(editCommentForQuestionSuccess(comment, parentIds));
-          break;
-        case "answer":
-          dispatch(editCommentForAnswerSuccess(comment, parentIds));
-          break;
-        default:
-          throw new Error("Unknown case: " + parentType);
-      }
+      dispatch(editCommentSuccess(comment));
     } catch (error) {
       console.log(error);
+      dispatch(apiStatusActions.apiCallError());
+      throw error;
+    }
+  };
+};
+
+function deleteCommentSuccess(commentId) {
+  return {
+    type: DELETE_COMMENT_SUCCESS,
+    commentId,
+  };
+}
+
+export const deleteComment = (parentType, parentIds, commentId) => {
+  return async (dispatch) => {
+    dispatch(apiStatusActions.beginApiCall());
+    try {
+      await commentsApi.deleteComment(commentId, parentType, parentIds);
+      dispatch(deleteCommentSuccess(commentId));
+    } catch (error) {
+      console.error(error);
       dispatch(apiStatusActions.apiCallError());
       throw error;
     }

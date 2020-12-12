@@ -86,3 +86,28 @@ async function editCommentForAnswer(comment, { questionId, answerId }) {
     comment
   );
 }
+
+export async function deleteComment(commentId, parentType, parentIds) {
+  try {
+    if (parentType === "question") {
+      await deleteCommentForQuestion(commentId, parentIds);
+    } else if (parentType === "answer") {
+      await deleteCommentForAnswer(commentId, parentIds);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function deleteCommentForQuestion(commentId, { questionId }) {
+  return await axios.delete(
+    `${API_URL}/questions/${questionId}/comments/${commentId}`
+  );
+}
+
+async function deleteCommentForAnswer(commentId, { questionId, answerId }) {
+  return await axios.delete(
+    `${API_URL}/questions/${questionId}/answers/${answerId}/comments/${commentId}`
+  );
+}
