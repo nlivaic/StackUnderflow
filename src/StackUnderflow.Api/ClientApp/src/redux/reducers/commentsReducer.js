@@ -4,6 +4,8 @@ import {
   LOAD_COMMENT_ON_QUESTION_SUCCESS,
   LOAD_COMMENT_ON_ANSWERS_SUCCESS,
   DELETE_COMMENT_SUCCESS,
+  SAVE_COMMENT_ON_QUESTION_SUCCESS,
+  SAVE_COMMENT_ON_ANSWER_SUCCESS,
   CLEAR_ALL_COMMENTS,
 } from "../actions/actionTypes.js";
 
@@ -17,6 +19,8 @@ const commentsOnQuestionReducer = (state = [], action) => {
       );
     case DELETE_COMMENT_SUCCESS:
       return state.filter((comment) => comment.id !== action.commentId);
+    case SAVE_COMMENT_ON_QUESTION_SUCCESS:
+      return [...state, action.comment];
     case CLEAR_ALL_COMMENTS:
       return [];
     default:
@@ -34,6 +38,8 @@ const commentsOnAnswersReducer = (state = [], action) => {
       );
     case DELETE_COMMENT_SUCCESS:
       return state.filter((comment) => comment.id !== action.commentId);
+    case SAVE_COMMENT_ON_ANSWER_SUCCESS:
+      return [...state, action.comment];
     case CLEAR_ALL_COMMENTS:
       return [];
     default:

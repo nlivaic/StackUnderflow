@@ -139,17 +139,18 @@ namespace StackUnderflow.Api.Controllers
             var comment = _mapper.Map<CommentOnQuestionCreateModel>(request);
             comment.QuestionId = questionId;
             comment.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
-            CommentForQuestionGetModel commentModel = null;
+            CommentForQuestionGetModel newCommentModel = null;
             try
             {
-                commentModel = await _commentService.CommentOnQuestionAsync(comment);
+                newCommentModel = await _commentService.CommentOnQuestionAsync(comment);
             }
             catch (EntityNotFoundException)
             {
                 return NotFound();
             }
-            var result = _mapper.Map<CommentForQuestionGetViewModel>(commentModel);
-            return CreatedAtRoute("GetCommentForQuestion", new { questionId = questionId, commentId = commentModel.Id }, result);
+            var result = _mapper.Map<CommentForQuestionGetViewModel>(newCommentModel);
+            result.IsOwner = Foo.TemporaryUser.Get == comment.UserId;
+            return CreatedAtRoute("GetCommentForQuestion", new { questionId = questionId, commentId = newCommentModel.Id }, result);
         }
 
         /// <summary>
@@ -173,16 +174,18 @@ namespace StackUnderflow.Api.Controllers
             comment.QuestionId = questionId;
             comment.AnswerId = answerId;
             comment.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
-            CommentForAnswerGetModel result = null;
+            CommentForAnswerGetModel newCommentModel = null;
             try
             {
-                result = await _commentService.CommentOnAnswerAsync(comment);
+                newCommentModel = await _commentService.CommentOnAnswerAsync(comment);
             }
             catch (EntityNotFoundException)
             {
                 return NotFound();
             }
-            return CreatedAtRoute("GetCommentForAnswer", new { questionId, answerId, commentId = result.Id }, _mapper.Map<CommentForAnswerGetViewModel>(result));
+            var result = _mapper.Map<CommentForAnswerGetViewModel>(newCommentModel);
+            result.IsOwner = Foo.TemporaryUser.Get == comment.UserId;
+            return CreatedAtRoute("GetCommentForAnswer", new { questionId, answerId, commentId = result.Id }, result);
         }
 
         /// <summary>

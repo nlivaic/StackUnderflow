@@ -54,6 +54,11 @@ const AnswersListData = ({
                     action="ReadAndEdit"
                   />
                 ))}
+              <ManageComment
+                parentType="answer"
+                parentIds={{ questionId, answerId: answer.id }}
+                action="New"
+              />
             </div>
           );
         });

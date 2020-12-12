@@ -1,4 +1,7 @@
 ☐ Front end
+  ☐ Bugs:
+    ☐ Delete answer with comments does not tell you what the error is.
+    ☐ Edit question: edited values do not show immediately.
   ☐ Store state in session or wherever.
   ☐ Počistiti sve warninge.
   ☐ On Question Summaries, it doesn't say how many answers there are. Maybe the question should be green if has accepted answer.

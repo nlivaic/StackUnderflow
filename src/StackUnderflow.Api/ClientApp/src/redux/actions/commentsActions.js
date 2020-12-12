@@ -61,7 +61,7 @@ function saveCommentForAnswerSuccess(comment) {
   };
 }
 
-export const postComments = (comment, parentType, parentIds) => {
+export const postComment = (comment, parentType, parentIds) => {
   return async (dispatch) => {
     dispatch(apiStatusActions.beginApiCall());
     try {

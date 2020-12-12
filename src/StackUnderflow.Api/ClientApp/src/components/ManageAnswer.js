@@ -9,7 +9,6 @@ import {
   getQuestionHasAcceptedAnswer,
   getQuestion,
 } from "../redux/reducers/index.js";
-import answersReducer from "../redux/reducers/answersReducer.js";
 
 const ManageAnswer = ({
   answersActions,
