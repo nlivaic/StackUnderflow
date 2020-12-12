@@ -40,9 +40,9 @@
       ✔ Read on question and answer @done (11. 12. 2020. 23:25:43)
       ✔ Read via Redux @done (11. 12. 2020. 23:25:40)
       ☐ Add
-      ☐ Edit
+      ✔ Edit @done (12. 12. 2020. 23:40:49)
         ✔ Nije potrebno imati dve akcije: EDIT_COMMENT_ON_QUESTION_SUCCESS, EDIT_COMMENT_ON_ANSWER_SUCCESS. @done (12. 12. 2020. 23:23:07)
-      ☐ Delete
+      ✔ Delete @done (12. 12. 2020. 23:40:51)
     ✔ QuestionData: New @done (05. 12. 2020. 00:23:57)
     ✔ Želim na 404 redirectati na /NotFound. Redirect želim obaviti iz QuestionData. @done (02. 12. 2020. 00:01:33)
     ✔ Nažalost, kad iz async actiona rethrowam error, ne vidim ga na QuestionData @done (02. 12. 2020. 00:01:38)
