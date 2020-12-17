@@ -64,5 +64,10 @@ namespace StackUnderflow.Data.Repositories
         {
             _context.Set<T>().Remove(entity);
         }
+
+        public void Delete(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
+        }
     }
 }

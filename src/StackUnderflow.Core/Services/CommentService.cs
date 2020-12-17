@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -114,6 +115,29 @@ namespace StackUnderflow.Core.Services
                     throw new EntityNotFoundException(nameof(Comment), commentId);
             }
             return comment;
+        }
+
+        public async Task DeleteRangeAsync(CommentsDeleteModel commentModel)
+        {
+            IEnumerable<Comment> comments = null;
+            if (commentModel.ParentAnswerId.HasValue)
+            {
+                comments = await
+                    _commentRepository.GetCommentsForAnswerAsync(commentModel.ParentAnswerId.Value);
+            }
+            else if (commentModel.ParentQuestionId.HasValue)
+            {
+                comments = await
+                    _commentRepository.GetCommentsForQuestionAsync<Comment>(commentModel.ParentQuestionId.Value);
+            }
+            if (comments.Any(c => c.VotesSum > 0))
+            {
+                throw new BusinessException($"Cannot delete because associated votes exist on at least one comment.");
+            }
+            if (comments.Any())
+            {
+                _commentRepository.Delete(comments);
+            }
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using AutoMapper;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Models;
@@ -19,6 +18,7 @@ namespace StackUnderflow.Core.Profiles
                     opts => opts.MapFrom(src => src.ParentAnswer.QuestionId))
                 .ForMember(dest => dest.Username,
                     opts => opts.MapFrom(src => src.User.Username));
+            CreateMap<Comment, Comment>();
         }
     }
 }

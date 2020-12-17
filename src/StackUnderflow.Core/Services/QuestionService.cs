@@ -15,6 +15,7 @@ namespace StackUnderflow.Core.Services
         private readonly IQuestionRepository _questionRepository;
         private readonly IRepository<User> _userRepository;
         private readonly IUnitOfWork _uow;
+        private readonly ICommentService _commentService;
         private readonly ITagService _tagService;
         private readonly ILimits _limits;
         private readonly IMapper _mapper;
@@ -23,6 +24,7 @@ namespace StackUnderflow.Core.Services
             IQuestionRepository questionRepository,
             IRepository<User> userRepository,
             IUnitOfWork uow,
+            ICommentService commentService,
             ITagService tagService,
             ILimits limits,
             IMapper mapper)
@@ -30,6 +32,7 @@ namespace StackUnderflow.Core.Services
             _questionRepository = questionRepository;
             _userRepository = userRepository;
             _uow = uow;
+            _commentService = commentService;
             _tagService = tagService;
             _limits = limits;
             _mapper = mapper;
@@ -75,6 +78,10 @@ namespace StackUnderflow.Core.Services
             {
                 throw new BusinessException($"Cannot delete question '{questionId}' because associated votes exist.");
             }
+            await _commentService.DeleteRangeAsync(new CommentsDeleteModel
+            {
+                ParentQuestionId = questionId
+            });
             _questionRepository.Delete(question);
             await _uow.SaveAsync();
             // @nl: What if the question has any votes/points on it?

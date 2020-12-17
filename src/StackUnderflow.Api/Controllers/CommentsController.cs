@@ -50,7 +50,7 @@ namespace StackUnderflow.Api.Controllers
             {
                 return NotFound();
             }
-            var comment = await _commentRepository.GetCommentsForQuestionAsync(questionId);
+            var comment = await _commentRepository.GetCommentsForQuestionAsync<CommentForQuestionGetModel>(questionId);
             List<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comment);
             result.ForEach(comment => comment.IsOwner = Foo.TemporaryUser.Get == comment.UserId);
             return Ok(result);

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using StackUnderflow.Core.Models;
 
@@ -10,5 +9,6 @@ namespace StackUnderflow.Core.Interfaces
         Task<CommentForAnswerGetModel> CommentOnAnswerAsync(CommentOnAnswerCreateModel commentModel);
         Task EditAsync(CommentEditModel commentModel);
         Task DeleteAsync(CommentDeleteModel commentModel);
+        Task DeleteRangeAsync(CommentsDeleteModel commentModel);
     }
 }

@@ -16,6 +16,7 @@ namespace StackUnderflow.Core.Services
         private readonly IQuestionRepository _questionRepository;
         private readonly IRepository<Answer> _answerRepository;
         private readonly IRepository<User> _userRepository;
+        private readonly ICommentService _commentService;
         private readonly IMapper _mapper;
         private readonly ILimits _limits;
         private readonly IVoteable _voteable;
@@ -25,6 +26,7 @@ namespace StackUnderflow.Core.Services
             IQuestionRepository questionRepository,
             IRepository<Answer> answerRepository,
             IRepository<User> userRepository,
+            ICommentService commentService,
             IMapper mapper,
             ILimits limits)
         {
@@ -32,6 +34,7 @@ namespace StackUnderflow.Core.Services
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
             _userRepository = userRepository;
+            _commentService = commentService;
             _mapper = mapper;
             _limits = limits;
             _voteable = new Voteable();
@@ -105,6 +108,10 @@ namespace StackUnderflow.Core.Services
             {
                 throw new BusinessException($"Answer with id '{answerId}' has been accepted on '{answer.AcceptedOn}'.");
             }
+            await _commentService.DeleteRangeAsync(new CommentsDeleteModel
+            {
+                ParentAnswerId = answerId
+            });
             _answerRepository.Delete(answer);
             await _uow.SaveAsync();
         }
