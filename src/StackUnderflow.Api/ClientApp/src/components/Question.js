@@ -15,6 +15,7 @@ const Question = ({
       ) : (
         ""
       )}
+      <h3>{question.title}</h3>
       <span>{question.body}</span>
       <UserDetails
         username={question.username}

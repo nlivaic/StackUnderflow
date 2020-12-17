@@ -4,7 +4,7 @@
     ✔ Učini robusnijim: sad samo gleda ako <T> nasljeđuje direktno od BaseEntity. Poigraj se s tim da gleda i dalje od prve superklase. @done (17. 12. 2020. 22:20:29)
     ✔ Postoji metoda CommentRepository.Foo: to sam testirao kako bih mogao fleksibilnije pozvati CommentRepository.GetCommentsForQuestionAsync(). @done (17. 12. 2020. 22:08:02)
   ☐ Bugs:
-    ☐ Delete answer with comments does not tell you what the error is.
+    ✔ Delete answer with comments does not tell you what the error is. @done (17. 12. 2020. 22:44:31)
     ☐ Edit question: edited values do not show immediately.
   ☐ Store state in session or wherever.
   ☐ Počistiti sve warninge.
