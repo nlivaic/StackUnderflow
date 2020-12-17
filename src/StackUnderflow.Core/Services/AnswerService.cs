@@ -108,6 +108,10 @@ namespace StackUnderflow.Core.Services
             {
                 throw new BusinessException($"Answer with id '{answerId}' has been accepted on '{answer.AcceptedOn}'.");
             }
+            if (answer.VotesSum > 0)
+            {
+                throw new BusinessException($"Cannot delete answer '{answerId}' because associated votes exist.");
+            }
             await _commentService.DeleteRangeAsync(new CommentsDeleteModel
             {
                 ParentAnswerId = answerId
