@@ -17,17 +17,19 @@ const AnswersList = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    answersActions.getAnswers(questionId).then((data) => {
+    const loadAnswers = async () => {
+      setIsLoading(true);
+      const data = await answersActions.getAnswers(questionId);
       const answersFromState = getAnswers(data);
       if (answersFromState.length > 0) {
-        commentsActions.getComments("answer", {
+        await commentsActions.getComments("answer", {
           questionId,
           answerIds: answersFromState.map((answer) => answer.id),
         });
       }
       setIsLoading(false);
-    });
-    setIsLoading(true);
+    };
+    loadAnswers();
     return () => {
       answersActions.clearAnswers();
     };

@@ -64,11 +64,13 @@ const ManageQuestion = ({
 
   const onSaveNewHandle = async (e) => {
     e.preventDefault();
-    questionActions.saveQuestion(editedQuestion).catch((error) => {
+    setIsSaving(true);
+    try {
+      await questionActions.saveQuestion(editedQuestion);
+    } catch (error) {
       setIsSaving(false);
       setErrors({ apiError: getErrorMessage(error) });
-    });
-    setIsSaving(true);
+    }
   };
 
   const onSaveEditHandle = async (e) => {

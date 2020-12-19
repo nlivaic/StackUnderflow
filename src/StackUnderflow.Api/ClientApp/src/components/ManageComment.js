@@ -42,12 +42,10 @@ const ManageComment = ({
     }
     setIsSaving(true);
     try {
-      debugger;
       await commentsActions.postComment(editedComment, parentType, parentIds);
 
       setEditedComment({ body: "" });
     } catch (error) {
-      debugger;
       setErrors({ apiError: getErrorMessage(error) });
     }
     setIsSaving(false);

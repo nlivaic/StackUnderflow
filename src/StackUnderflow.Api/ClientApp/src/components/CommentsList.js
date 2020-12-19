@@ -10,10 +10,12 @@ const CommentsList = ({ commentsActions, comments, parentType, parentIds }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    commentsActions.getComments(parentType, parentIds).then((_) => {
+    const getComments = async () => {
+      setIsLoading(true);
+      await commentsActions.getComments(parentType, parentIds);
       setIsLoading(false);
-    });
-    setIsLoading(true);
+    };
+    getComments();
     // Prevent question edit from reloading the comments.
     // eslint-disable-next-line
     return () => {
