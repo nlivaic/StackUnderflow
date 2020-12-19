@@ -3,90 +3,26 @@
     ☐ Found 3 elements with non-unique id #body
       ☐ Reproduce: Open a question. Above error is written in console.
     ☐ Paging error: search "Nenad made this title10"
-  ☐ Unaccept answer.
-  ☐ Store state in session or wherever.
-  ✔ Next time: U CommentRepository (na dnu) ima extension klasa. @done (17. 12. 2020. 22:07:58)
-    ✔ To prebaci na pravo mjesto. @done (17. 12. 2020. 22:07:59)
-    ✔ Učini robusnijim: sad samo gleda ako <T> nasljeđuje direktno od BaseEntity. Poigraj se s tim da gleda i dalje od prve superklase. @done (17. 12. 2020. 22:20:29)
-    ✔ Postoji metoda CommentRepository.Foo: to sam testirao kako bih mogao fleksibilnije pozvati CommentRepository.GetCommentsForQuestionAsync(). @done (17. 12. 2020. 22:08:02)
-  ✔ Bugs: @done (17. 12. 2020. 22:51:18)
-    ✔ Delete answer with comments does not tell you what the error is. @done (17. 12. 2020. 22:44:31)
-    ✔ Edit question: edited values do not show immediately. @done (17. 12. 2020. 22:51:18)
-  ✔ Počistiti sve warninge. @done (17. 12. 2020. 22:56:40)
-  ✘ Maybe the question should be green if has accepted answer. @cancelled (19. 12. 2020. 15:23:01)
-  ✔ Na nekim akcijama provjeravamo da li je isOwner, na nekima ne. @done (19. 12. 2020. 21:59:48)
-  ✔ Errors on save/edit/delete each have their own property. Make it one property. @done (19. 12. 2020. 22:26:53)
-  ✔ Action "New", "ReadAndEdit" - place in enum. @done (19. 12. 2020. 15:22:47)
-  ✔ Action creatori logiraju errore sa api-ja, ali oni su već logirani u api fileovima. Maknuti to odasvud. @done (19. 12. 2020. 22:40:22)
-  ☐ Integriramo Redux.
-    ✔ Case: load neki question, Edit, Cancel Edit -> isprazni se question u Redux storeu. @done (05. 12. 2020. 00:23:46)
-      ✔ Treba nanovo  osmisliti Edit/New Question. Možda napraviti zasebne komponente. @done (05. 12. 2020. 00:23:47)
-    ✔ Dobar primjer problema je kad otvoriš question i onda odeš na New Question: polja budu popunjena. @done (02. 12. 2020. 23:56:03)
-    ✔ QuestionData: Get question @done (02. 12. 2020. 00:02:04)
-    ✔ QuestionData: Edit question @done (02. 12. 2020. 00:02:21)
-    ☐ Razmisli o tome što api funkcije vraćaju. Da li je to uniformno?
-    ☐ Actions are called from components using Promises. This can be rewritten as async/await, based on edit answer case.
-    ✔ isNoCommentsOnQuestionReducer je višak. @done (06. 12. 2020. 23:58:35)
-    ✔ AnswersListData @done (19. 12. 2020. 22:41:30)
-      ✔ Case: new q, new a, accept a, delete a: 409 by API, but nothing is printed. @done (10. 12. 2020. 23:08:59)
-      ✔ Case: new q, new a, accept a: Edit and Delete buttons dissapear. @done (10. 12. 2020. 23:03:25)
-      ✔ How to chain answersActions.getAnswers and then commentsActions.getComments? @done (06. 12. 2020. 23:57:34)
-      ✔ Add answer @done (08. 12. 2020. 22:01:32)
-      ✔ Edit answer @done (07. 12. 2020. 23:52:22)
-      ✔ Accept answer. @done (10. 12. 2020. 23:40:39)
-        ✔ https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174 @done (10. 12. 2020. 23:40:40)
-        ✔ Mogu prihvatiti odgovor makar nisam vlasnik pitanja. @done (10. 12. 2020. 23:40:40)
-        ✔ Potestiraj ovako kako je i popravi. @done (10. 12. 2020. 23:40:41)
-        ✔ Onda promijeni vlasnika tog pitanja u 'fa11acfe-8234-4fa3-9733-19abe08f74e8'. @done (10. 12. 2020. 23:40:41)
-      ✔ Delete answer. @done (08. 12. 2020. 22:51:35)
-      ✔ Clear answers. @done (10. 12. 2020. 23:40:55)
-    ✔ QuestionData: @done (07. 12. 2020. 00:49:03)
-      ✔ Delete @done (07. 12. 2020. 00:48:59)
-        ✔ Test 409 with https://localhost:5001/questions/07aa51ac-0dfe-47a0-b535-82a750ec8e22 @done (07. 12. 2020. 00:48:57)
-      ✔ Read comments. @done (06. 12. 2020. 01:08:04)
-        ✔ commentsReducer, selectors (combined state, top-level) @done (06. 12. 2020. 01:08:04)
-        ✔ commentActions: GET_COMMENTS_SUCCESSFULLY, getComments() @done (06. 12. 2020. 01:08:05)
-        ✔ CommentsList - integrate @done (06. 12. 2020. 01:08:06)
-    ☐ Comment:
-      ✔ Read on question and answer @done (11. 12. 2020. 23:25:43)
-      ✔ Read via Redux @done (11. 12. 2020. 23:25:40)
-      ✔ Add @done (17. 12. 2020. 22:52:02)
-      ✔ Edit @done (12. 12. 2020. 23:40:49)
-        ✔ Nije potrebno imati dve akcije: EDIT_COMMENT_ON_QUESTION_SUCCESS, EDIT_COMMENT_ON_ANSWER_SUCCESS. @done (12. 12. 2020. 23:23:07)
-      ✔ Delete @done (12. 12. 2020. 23:40:51)
-    ✔ QuestionData: New @done (05. 12. 2020. 00:23:57)
-    ✔ Želim na 404 redirectati na /NotFound. Redirect želim obaviti iz QuestionData. @done (02. 12. 2020. 00:01:33)
-    ✔ Nažalost, kad iz async actiona rethrowam error, ne vidim ga na QuestionData @done (02. 12. 2020. 00:01:38)
-      ✔ Pozvati thunk kao promise, sa .then i .catch @done (02. 12. 2020. 00:02:01)
-  ☐ Test with: https://localhost:5001/questions/d0baefb9-397a-4d3c-a8db-2cf67ede3174
   ☐ Fix git client so as I don't have to re-enter user/pass on every push.
-  ✔ Search should be visible at all times @done (26. 11. 2020. 23:38:06)
-  ☐ Pogledati event handlere koji zovu API. Mislim da mogu biti svi async/await, ne trebam Promise. Ali bio je neki case specifičan, pa vidi malo detaljnije.
-  ☐ Tags
-    ☐ On question: fetch id.
-  ✔ Question @done (28. 11. 2020. 23:52:35)
-    ✔ Add new @done (28. 11. 2020. 23:17:15)
-    ✔ How do I handle 201 pointing to an API resource? @done (26. 11. 2020. 23:29:10)
-    ✔ Edit @done (28. 11. 2020. 00:48:39)
-    ✔ Delete @done (28. 11. 2020. 23:52:15)
-  ☐ Kad se otvori React aplikacija, u tabu piše "Stack Underflow". Jel bi mogli napisati question title?
-  ✔ PageNotFound @done (29. 11. 2020. 01:43:30)
+  ☐ Store state in session or wherever.
   ☐ Logging
+  ☐ Razmisli o tome što api funkcije vraćaju. Da li je to uniformno?
+  ☐ Kad se otvori React aplikacija, u tabu piše "Stack Underflow". Jel bi mogli napisati question title?
+  ☐ Unaccept answer.
+  ☐ Tags are specified in UI using ids. This should be fetched from API and name should be represented. Should be clickable.
   ☐ How to reference proper port on which API is running on?
     ☐ settings.js for now, but for production maybe use environment variables.
-  ✔ How to run front end separately from back end? @done (08. 11. 2020. 00:24:53)
-    ✔ Run front end using `npm start` command in a separate terminal. @done (08. 11. 2020. 00:24:54)
-    ✔ Tell dotnet core backend app to proxy requests to the webpack dev server using `.UseProxyToSpaDevelopmentServer` @done (08. 11. 2020. 00:24:54)
+  ☐ Hosting front end as part of API vs standalone.
+  ☐ Prepare for production.
 ☐ Backend:
-  ☐ Admin:
-    ☐ Dodati rolu.
-    ☐ Može izbrisati i editirati svaki resurs.
+  ☐ Https cert
+  ☐ Identity Server 4
+  ☐ Prepare for production
+  ☐ Logging
+  ☐ Prepare for production.
   ☐ VotesSum je loš podatak. Upvote i downvote će rezultirati nulom, a to nije ok.
-  ☐ Moguće je izbrisati answer koji ima voteove.
-  ☐ q/a/c GET methods must return IsOwner.
   ☐ POST question {body: "", title: "", tags: []} - how does it behave?
-  ☐ PUT question -> throw BusinessException -> not caught in controller.
-  ☐ POSTing invalid question to api/questions returns a 422. The errors collection is PascalCased, but should be camelCased.
+  ✘ POSTing invalid question to api/questions returns a 422. The errors collection is PascalCased, but should be camelCased. @cancelled (19. 12. 2020. 23:11:58)
   ☐ KAko se Question.Create() BusinessException pretvori u 422?
   ☐ Migrate to net 5.0
   ☐ Some projects are built against netstandard2.0, others against netstandard2.1
@@ -99,60 +35,16 @@
   ☐ Čudno puno ima situacija gdje se ne tracka upravo dodan related entity. Npr. Kad postam novi answer, onda moram ručno napraviti .AddAsync(answer). To ne bi trebalo tako funkcionirati.
   ☐ Pregledati svaki query i vidjeti da li je Tracking ili NoTracking i da li je odabir ispravan.
   ☐ Answer View Model (GET) trebaju imati i podatak kad je answer prihvaćen.
-  ☐ Https cert
   ☐ Azure
+  ☐ Admin:
+    ☐ Dodati rolu.
+    ☐ Može izbrisati i editirati svaki resurs.
   ☐ Bugs:
     ☐ Baca neki warning u testovima.
     ☐ Debug, breakpoint na QuestionRepository.cs:GetQuestionSummariesAsync()
       ☐ Open Locals
       ☐ 'searchQueryLowercase' threw an exception of type 'System.NullReferenceException'
-  ✔ [ProducesResponseType], [Produces], [Consumes] @done (16. 08. 2020. 23:47:01)
-    ✔ AnswersCsontroller @done (16. 08. 2020. 23:37:30)
-    ✔ CommentsController @done (16. 08. 2020. 23:37:31)
-    ✔ QuestionsController @done (16. 08. 2020. 23:47:00)
-    ✔ QuestionSummaries @done (17. 08. 2020. 23:36:04)
-  ✔ 409: Conflict - HttpDelete ne bi trebao pretvarati BusinessExceptione u 422 zato jer Delete ni nema neku ulaznu reprezentaciju. Ovdje predlaže 409: Conflict (https://stackoverflow.com/questions/13012842/which-http-status-code-to-return-when-the-delete-operation-is-not-allowed-for-pa) @done (17. 08. 2020. 22:18:38)
-    ✔ I started implementing this in QuestionsController.Delete. Research a bit more. @done (17. 08. 2020. 22:18:39)
 ☐ Endpoints
-  ✔ /api/questionssummary @done (15. 07. 2020. 22:33:31)
-    ✔ GET @done (04. 07. 2020. 23:30:32)
-    ✔ QuestionSummaryResourceParameters @done (15. 07. 2020. 22:00:04)
-      ✔ Paging - page size and page number: thre properties, `int pageSize = 5;`, `int maximumPageSize = 10;` and `int pageNumber = 1;`. X-PAgination header. @done (15. 07. 2020. 21:59:55)
-      ✔ Filter (strict!) on tags: property `string Tags`, `string Author`. @done (15. 07. 2020. 21:59:57)
-      ✔ Search (relaxed) on title and body: property `string SearchQuery`. @done (15. 07. 2020. 21:59:57)
-      ✔ Ordering @done (15. 07. 2020. 21:59:58)
-  ✔ /api/questions/{id} @done (21. 07. 2020. 08:17:07)
-    ✔ GET @done (16. 07. 2020. 22:27:28)
-      ✔ Must not return comments. Return comments in a separate request. @done (15. 07. 2020. 23:38:41)
-    ✔ PUT @done (21. 07. 2020. 06:44:03)
-    ✔ DELETE @done (21. 07. 2020. 08:17:06)
-  ✔ /api/questions/ @done (22. 07. 2020. 21:45:56)
-    ✔ POST @done (22. 07. 2020. 21:45:55)
-      ✔ Validate model @done (22. 07. 2020. 21:45:54)
-  ✔ /api/questions/{questionId}/comments @done (26. 07. 2020. 18:06:22)
-    ✔ GET @done (23. 07. 2020. 00:13:41)
-    ✔ POST @done (26. 07. 2020. 14:43:27)
-  ✔ /api/questions/{questionId}/comments/{id} @done (26. 07. 2020. 18:06:22)
-    ✔ GET @done (26. 07. 2020. 18:06:03)
-    ✔ PUT @done (26. 07. 2020. 18:06:02)
-    ✔ DELETE @done (26. 07. 2020. 23:42:00)
-  ✔ /api/questions/{questionId}/answers/{answerId}/comments @done (27. 07. 2020. 08:45:51)
-    ✔ POST @done (27. 07. 2020. 08:45:50)
-  ✔ /api/questions/{questionId}/answers/{answerId1,answerId2,answerId3}/comments @done (27. 07. 2020. 08:47:26)
-    ✔ GET @done (27. 07. 2020. 08:47:27)
-  ✔ /api/questions/{questionId}/answers/{answerId}/comments/{commentId} @done (27. 07. 2020. 08:47:38)
-    ✔ GET @done (27. 07. 2020. 08:47:39)
-    ✔ PUT @done (28. 07. 2020. 01:08:47)
-    ✔ DELETE @done (28. 07. 2020. 01:08:48)
-  ✔ /api/questions/{questionId}/answers @done (15. 08. 2020. 10:58:27)
-    ✔ GET @done (04. 08. 2020. 15:53:38)
-    ✔ Paging @done (11. 08. 2020. 23:56:46)
-    ✔ POST @done (15. 08. 2020. 10:58:14)
-  ✔ /api/questions/{questionId}/answers/{id} @done (15. 08. 2020. 21:42:08)
-    ✔ GET @done (04. 08. 2020. 15:53:42)
-    ✔ PUT @done (15. 08. 2020. 11:46:39)
-    ✔ DELETE @done (15. 08. 2020. 21:42:04)
-    ✔ Accept Answer @done (16. 08. 2020. 13:05:25)
   ☐ /api/tags
     ☐ GET
     ☐ POST
@@ -191,63 +83,6 @@
   ☐ Logging
   ☐ Review RESTful project for clues
   ☐ Security
-✔ Core Domain @done (15. 08. 2020. 23:43:31)
-  ✔ Are BusinessExceptions ok for invalid inputs? @done (15. 08. 2020. 23:43:28)
 ☐ Razraditi jobove
 ☐ Razraditi evente i event handling
 ☐ Security: connection stringove razraditi: dev, prod
-✔ Razraditi bazu @done (04. 07. 2020. 23:36:09)
-✔ dotnet remove package Microsoft.EntityFrameworkCore.InMemory @done (04. 07. 2020. 23:36:15)
-✔ Create in-memory database with a basic seeder @done (26. 06. 2020. 10:01:20)
-  ✔ Tokom seedanja kaže da već postoji Tag sa tim i tim Id. Da nije možda da se na neku foru stvaraju nove instance Tagova, sa istim ID-jem? @done (26. 06. 2020. 10:01:19)
-✔ Data and Database and EF Core issues @done (01. 07. 2020. 23:18:46)
-    ✔ -- insert into "Users" values ('00000000-0000-0000-0000-000000000001', 'foo', 'foo@foo.foo', null, null, current_timestamp, current_timestamp); @done (01. 07. 2020. 00:20:30)
-    ✔ --insert into "Questions" values ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001', 'Title', 'Body', false, current_timestamp); @done (01. 07. 2020. 00:20:31)
-    ✔ --insert into "Comments" values ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001', 'Body', current_timestamp, '00000000-0000-0000-0000-000000000001', null, 1); @done (01. 07. 2020. 00:20:32)
-  ✔ Sad imamo bazu i imamo seedere. Kreirana je i prva migracija. Prvo bih provjerio migraciju (PK, FK). Onda bih ju primijenio. @done (28. 06. 2020. 23:30:49)
-  ✔ Napravio sam ručni insert: 1xUsers, 1xQuestions, 1xComments. Doradio sam nullable kolone na Comments tablici, sad je baza u puno boljem stanju. @done (01. 07. 2020. 00:20:53)
-  ✔ Izbrisati bazu dotnet ef --startup-project ../StackUnderflow.Api database drop --context StackUnderflowDbContext --force @done (01. 07. 2020. 00:20:54)
-  ✔ Nanovo napraviti i izvršiti migraciju. @done (01. 07. 2020. 00:20:54)
-    ✔ dotnet ef --startup-project ../StackUnderflow.Api migrations add Initial --context StackUnderflowDbContext @done (01. 07. 2020. 00:20:54)
-    ✔ dotnet ef --startup-project ../StackUnderflow.Api database update --context StackUnderflowDbContext @done (01. 07. 2020. 00:20:55)
-  ✔ Nakon što smo gotovi s ovim dijelom, treba pregledati kod za privremene izmjene napravljene tokom istraživanja ovog problema: @done (01. 07. 2020. 23:18:43)
-    ✔ Questions.cs @done (01. 07. 2020. 23:18:43)
-    ✔ Seeder.cs @done (01. 07. 2020. 00:23:29)
-    ✔ Dobivam stalno neki error oko Json object cycle. @done (04. 07. 2020. 22:05:25)
-✔ ViewModels vs Dtos @done (04. 07. 2020. 23:37:45)
-  ✔ Dtos žive u Coreu. Oni služe za a) vraćanje podataka u queryjima i b) davanje podataka coreu. @done (04. 07. 2020. 23:30:01)
-    ✔ Naming convention: @done (04. 07. 2020. 23:30:02)
-    ✔ Dto se mapira u domain model i obrnuto - u Core projektu. Profile treba u Core napraviti. @done (04. 07. 2020. 23:30:04)
-  ✔ View modeli žive u Web projektu @done (04. 07. 2020. 23:30:05)
-    ✔ Naming convention: QuestionSummaryGetViewModel, QuestionGetViewModel, QuestionCreateViewModel, QuestionEditViewModel. @done (04. 07. 2020. 23:30:10)
-    ✔ Dto se mapira u ViewModel i obrnuto - u Web projektu. Profile treba u Webu napraviti. @done (04. 07. 2020. 23:30:11)
-✘ Question.Create use case: service accepts a model Dto, but first has to create proper Tag objects based on input Tag Ids. This requires me to design repositories so we know how to fetch data. @cancelled (07. 06. 2020. 01:20:26)
-  Check eShopOnWeb (Specification pattern).
-  ✘ It's all bullshit. Discard repositories and work with DbContext directly. @cancelled (07. 06. 2020. 01:20:25)
-✘ Move Specification's queries into standalone query object. Research this further. @cancelled (07. 06. 2020. 01:20:23)
-✘ Which layer does StackUnderflowDbContext and Queries go to? @cancelled (07. 06. 2020. 01:20:21)
-✔ Voting: @done (07. 06. 2020. 01:20:34)
-  ✔ Domain @done (05. 06. 2020. 23:14:17)
-  ✔ Service @done (05. 06. 2020. 23:14:22)
-  ✔ Druge klase (q/a/c), da li zbrajaju bodove koristeći IVotable? @done (05. 06. 2020. 23:19:56)
-✔ User @done (26. 06. 2020. 10:00:33)
-  ✔ Rename OwnerId to UserId @done (25. 06. 2020. 17:15:24)
-  ✔ Add User property to q/a/c @done (25. 06. 2020. 17:18:16)
-  ✔ Find all "@nl" regarding "owner" @done (25. 06. 2020. 17:23:57)
-  ✔ Do existing unit tests work out ok? @done (25. 06. 2020. 17:23:58)
-  ✔ Unit tests @done (26. 06. 2020. 09:04:51)
-  ✔ Add to DbContext @done (26. 06. 2020. 10:00:29)
-  ✔ Add to Seeder @done (26. 06. 2020. 10:00:29)
-✔ Razraditi unit testove. @done (26. 06. 2020. 10:00:41)
-  ✔ Question @done (08. 06. 2020. 23:54:16)
-  ✔ Answer @done (17. 06. 2020. 18:55:09)
-  ✔ Comment @done (17. 06. 2020. 18:55:06)
-    ✔ Search for all "NotImplementedException". @done (17. 06. 2020. 18:54:15)
-    ✔ Edit WithinDeadline. @done (17. 06. 2020. 18:54:17)
-    ✔ Edit with invalid data. @done (17. 06. 2020. 18:55:02)
-  ✔ QuestionTests - CannotAcceptMoreThanOneAnswer @done (17. 06. 2020. 21:59:17)
-  ✔ CommentTests - Comment_CreatingWithoutVoteable_Fails @done (17. 06. 2020. 19:06:24)
-  ✔ IVoteable - dodati za q/a/c posebno. @done (17. 06. 2020. 23:22:44)
-✔ Maknuti sve vezano za komentare u ICommentable. @done (17. 06. 2020. 23:22:48)
-✔ Bacam puno ArgumentExceptiona. Neki od njih (npr. VoteRepository) su ustvari tehničke prirode, a neki (npr. po domeni) su biznis errori. @done (08. 06. 2020. 23:54:23)
-✔ Obrnuo sam odnose odnose. Povukao sam (Vote + Q), iz čega proizlazi da ako ne postoji ta kombinacija da nikad nije taj owner dao vote tom questionu, a rezultat toga je da sam dobio null i nemam s čime više raditi. Mislim da je esencija problema loše složen repozitorij. Trebam to bolje napraviti: esencijalno trebam dobiti (q/a/c + 0..1 vote), to je dovoljno da mogu provesti business rule. Drugi pristup je da vote gledam potpuno zasebno, ali to trebam dodatno promisliti (eventi, računanje VotingSum, računanje bodova). @done (07. 06. 2020. 01:20:03)
