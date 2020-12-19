@@ -6,12 +6,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionTypes from "../utils/actionTypes.js";
 
-const CommentsListData = ({
-  commentsActions,
-  comments,
-  parentType,
-  parentIds,
-}) => {
+const CommentsList = ({ commentsActions, comments, parentType, parentIds }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -58,4 +53,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentsListData);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentsList);

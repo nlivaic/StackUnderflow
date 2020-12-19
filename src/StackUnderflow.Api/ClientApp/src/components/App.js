@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
-import QuestionSummariesListData from "./QuestionSummariesListData";
+import QuestionSummariesList from "./QuestionSummariesList";
 import QuestionPage from "./QuestionPage";
 import ManageQuestion from "./ManageQuestion";
 import { Provider as ReduxProvider } from "react-redux";
@@ -20,7 +20,7 @@ const App = () => {
       <Link to="/question/ask">Ask Question</Link>
       <ReduxProvider store={store}>
         <Switch>
-          <Route exact path="/" component={QuestionSummariesListData} />
+          <Route exact path="/" component={QuestionSummariesList} />
           <Route exact path="/questions/:questionId" component={QuestionPage} />
           <Route exact path="/question/ask" component={ManageQuestion} />
           <Route exact path="/NotFound" component={PageNotFound} />

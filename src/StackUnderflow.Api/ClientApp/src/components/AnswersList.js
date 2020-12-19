@@ -8,7 +8,7 @@ import * as answersActions from "../redux/actions/answersActions.js";
 import * as commentsActions from "../redux/actions/commentsActions.js";
 import * as actionTypes from "../utils/actionTypes.js";
 
-const AnswersListData = ({
+const AnswersList = ({
   answers,
   comments,
   answersActions,
@@ -86,4 +86,4 @@ const mapStateToDispatch = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapStateToDispatch)(AnswersListData);
+export default connect(mapStateToProps, mapStateToDispatch)(AnswersList);
