@@ -40,7 +40,6 @@ export const getComments = (parentType, parentIds) => {
           throw new Error("Unknown case: " + parentType);
       }
     } catch (error) {
-      console.log(error);
       dispatch(apiStatusActions.apiCallError());
       throw error;
     }
@@ -77,7 +76,6 @@ export const postComment = (comment, parentType, parentIds) => {
           throw new Error("Unknown case: " + parentType);
       }
     } catch (error) {
-      console.log(error);
       dispatch(apiStatusActions.apiCallError());
       throw error;
     }
@@ -98,7 +96,6 @@ export const editComment = (comment, parentType, parentIds) => {
       await commentsApi.editComment(comment, parentType, parentIds);
       dispatch(editCommentSuccess(comment));
     } catch (error) {
-      console.log(error);
       dispatch(apiStatusActions.apiCallError());
       throw error;
     }

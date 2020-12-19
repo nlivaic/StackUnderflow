@@ -51,7 +51,6 @@ export function getQuestion(id) {
       const question = await questionApi.getQuestion(id);
       dispatch(loadQuestionSuccess(question));
     } catch (error) {
-      console.log(error);
       dispatch(apiStatusActions.apiCallError());
       throw error;
     }
@@ -69,7 +68,6 @@ export function editQuestion(question) {
       await questionApi.editQuestion(question.id, question);
       dispatch(editQuestionSuccess({ ...getState().question, ...question }));
     } catch (error) {
-      console.log(error);
       dispatch(apiStatusActions.apiCallError());
       throw error;
     }
@@ -87,7 +85,6 @@ export const deleteQuestion = (questionId) => {
       await questionApi.deleteQuestion(questionId);
       dispatch(deleteQuestionSuccess(questionId));
     } catch (error) {
-      console.log(error);
       dispatch(apiStatusActions.apiCallError());
       throw error;
     }
