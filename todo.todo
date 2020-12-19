@@ -11,10 +11,10 @@
     ✔ Edit question: edited values do not show immediately. @done (17. 12. 2020. 22:51:18)
   ☐ Store state in session or wherever.
   ✔ Počistiti sve warninge. @done (17. 12. 2020. 22:56:40)
-  ☐ Maybe the question should be green if has accepted answer.
+  ✘ Maybe the question should be green if has accepted answer. @cancelled (19. 12. 2020. 15:23:01)
   ☐ Na nekim akcijama provjeravamo da li je isOwner, na nekima ne.
   ☐ Paging error: search "Nenad made this title10"
-  ☐ Action "New", "ReadAndEdit" - place in enum.
+  ✔ Action "New", "ReadAndEdit" - place in enum. @done (19. 12. 2020. 15:22:47)
   ☐ Action creatori logiraju errore sa api-ja, ali oni su već logirani u api fileovima. Maknuti to odasvud.
   ☐ Integriramo Redux.
     ✔ Case: load neki question, Edit, Cancel Edit -> isprazni se question u Redux storeu. @done (05. 12. 2020. 00:23:46)

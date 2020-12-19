@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as answersActions from "../redux/actions/answersActions.js";
 import * as commentsActions from "../redux/actions/commentsActions.js";
+import * as actionTypes from "../utils/actionTypes.js";
 
 const AnswersListData = ({
   answers,
@@ -52,13 +53,13 @@ const AnswersListData = ({
                     comment={comment}
                     parentType="answer"
                     parentIds={{ questionId, answerId: answer.id }}
-                    action="ReadAndEdit"
+                    action={actionTypes.ReadAndEdit}
                   />
                 ))}
               <ManageComment
                 parentType="answer"
                 parentIds={{ questionId, answerId: answer.id }}
-                action="New"
+                action={actionTypes.New}
               />
             </div>
           );

@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import * as questionActions from "../redux/actions/questionActions.js";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import * as actionTypes from "../utils/actionTypes.js";
 
 const QuestionData = ({ questionActions, questionId }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +35,7 @@ const QuestionData = ({ questionActions, questionId }) => {
           "Loading question..."
         ) : (
           <>
-            <ManageQuestion action="ReadAndEdit" />
+            <ManageQuestion action={actionTypes.ReadAndEdit} />
           </>
         )}
       </div>

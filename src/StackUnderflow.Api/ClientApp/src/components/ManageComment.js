@@ -5,19 +5,20 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as commentsActions from "../redux/actions/commentsActions.js";
 import CommentEdit from "./CommentEdit.js";
+import * as actionTypes from "../utils/actionTypes.js";
 
 const ManageComment = ({
   comment,
   commentsActions,
   parentType,
   parentIds,
-  action = "New",
+  action = actionTypes.New,
 }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errors, setErrors] = useState({});
   const [isEditingOrNew, setIsEditingOrNew] = useState(
-    action === "New" ? true : false
+    action === actionTypes.New ? true : false
   );
   const [editedComment, setEditedComment] = useState(
     comment

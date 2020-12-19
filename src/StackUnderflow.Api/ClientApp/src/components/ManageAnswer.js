@@ -9,6 +9,7 @@ import {
   getQuestionHasAcceptedAnswer,
   getQuestion,
 } from "../redux/reducers/index.js";
+import * as actionTypes from "../utils/actionTypes.js";
 
 const ManageAnswer = ({
   answersActions,
@@ -23,7 +24,7 @@ const ManageAnswer = ({
   const [isAccepting, setIsAccepting] = useState(false);
   const [errors, setErrors] = useState({});
   const [isEditingOrNew, setIsEditingOrNew] = useState(
-    action === "New" ? true : false
+    action === actionTypes.New ? true : false
   );
   const [editedAnswer, setEditedAnswer] = useState(
     answer

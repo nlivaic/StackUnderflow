@@ -11,22 +11,23 @@ import {
 import * as questionActions from "../redux/actions/questionActions.js";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import * as actionTypes from "../utils/actionTypes.js";
 
 const ManageQuestion = ({
   questionActions,
   question,
   redirectToQuestion,
   redirectToHome,
-  action = "New",
+  action = actionTypes.New,
 }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errors, setErrors] = useState({});
   const [isEditingOrNew, setIsEditingOrNew] = useState(
-    action === "New" ? true : false
+    action === actionTypes.New ? true : false
   );
   const [editedQuestion, setEditedQuestion] = useState(
-    action === "New"
+    action === actionTypes.New
       ? {
           title: "",
           body: "",

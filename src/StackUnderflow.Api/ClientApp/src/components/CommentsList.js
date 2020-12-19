@@ -4,6 +4,7 @@ import ManageComment from "./ManageComment.js";
 import { getComments } from "../redux/reducers/index.js";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import * as actionTypes from "../utils/actionTypes.js";
 
 const CommentsList = ({ commentsActions, comments, parentType, parentIds }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +32,7 @@ const CommentsList = ({ commentsActions, comments, parentType, parentIds }) => {
                 key={comment.id}
                 parentType={parentType}
                 parentIds={parentIds}
-                action="ReadAndEdit"
+                action={actionTypes.ReadAndEdit}
                 comment={comment}
               />
             ))}

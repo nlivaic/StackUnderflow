@@ -1,4 +1,5 @@
 import React from "react";
+import * as actionTypes from "../utils/actionTypes.js";
 
 const QuestionEdit = ({
   question,
@@ -12,13 +13,13 @@ const QuestionEdit = ({
 }) => {
   const getSaveButton = () => {
     switch (action) {
-      case "New":
+      case actionTypes.New:
         return (
           <button onClick={onSaveNewQuestion}>
             {isSaving ? "Posting..." : "Ask Question"}
           </button>
         );
-      case "ReadAndEdit":
+      case actionTypes.ReadAndEdit:
         return (
           <button onClick={onSaveEditQuestion}>
             {isSaving ? "Saving..." : "Save Edits"}
@@ -29,7 +30,7 @@ const QuestionEdit = ({
     }
   };
   const getCancelButton = () => {
-    return action === "ReadAndEdit" ? (
+    return action === actionTypes.ReadAndEdit ? (
       <button onClick={onCancel}>Cancel</button>
     ) : (
       ""
