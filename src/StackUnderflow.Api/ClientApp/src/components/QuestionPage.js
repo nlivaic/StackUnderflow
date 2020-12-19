@@ -2,7 +2,7 @@ import React from "react";
 import QuestionData from "./QuestionData";
 import AnswersListData from "./AnswersListData";
 import ManageAnswer from "./ManageAnswer";
-import CommentsList from "./CommentsList.js";
+import CommentsListData from "./CommentsListData.js";
 import ManageComment from "./ManageComment.js";
 import * as actionTypes from "../utils/actionTypes.js";
 
@@ -17,7 +17,7 @@ const QuestionPage = (props) => {
             questionId={questionId}
             action={actionTypes.ReadAndEdit}
           />
-          <CommentsList parentType="question" parentIds={{ questionId }} />
+          <CommentsListData parentType="question" parentIds={{ questionId }} />
           <ManageComment
             parentType="question"
             parentIds={{ questionId }}

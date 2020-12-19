@@ -6,7 +6,7 @@ import Paging from "./Paging.js";
 import Sorting from "./Sorting.js";
 import PageSize from "./PageSize.js";
 
-const QuestionSummariesList = () => {
+const QuestionSummariesListData = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [questionSummariesList, setQuestionSummariesList] = useState([]);
   const [resourceParameters, setResourceParameters] = useState({
@@ -103,4 +103,4 @@ const QuestionSummariesList = () => {
   );
 };
 
-export default QuestionSummariesList;
+export default QuestionSummariesListData;

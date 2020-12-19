@@ -2,6 +2,9 @@
   ☐ Bugs:
     ☐ Found 3 elements with non-unique id #body
       ☐ Reproduce: Open a question. Above error is written in console.
+    ☐ Paging error: search "Nenad made this title10"
+  ☐ Unaccept answer.
+  ☐ Store state in session or wherever.
   ✔ Next time: U CommentRepository (na dnu) ima extension klasa. @done (17. 12. 2020. 22:07:58)
     ✔ To prebaci na pravo mjesto. @done (17. 12. 2020. 22:07:59)
     ✔ Učini robusnijim: sad samo gleda ako <T> nasljeđuje direktno od BaseEntity. Poigraj se s tim da gleda i dalje od prve superklase. @done (17. 12. 2020. 22:20:29)
@@ -9,14 +12,12 @@
   ✔ Bugs: @done (17. 12. 2020. 22:51:18)
     ✔ Delete answer with comments does not tell you what the error is. @done (17. 12. 2020. 22:44:31)
     ✔ Edit question: edited values do not show immediately. @done (17. 12. 2020. 22:51:18)
-  ☐ Store state in session or wherever.
   ✔ Počistiti sve warninge. @done (17. 12. 2020. 22:56:40)
   ✘ Maybe the question should be green if has accepted answer. @cancelled (19. 12. 2020. 15:23:01)
   ✔ Na nekim akcijama provjeravamo da li je isOwner, na nekima ne. @done (19. 12. 2020. 21:59:48)
   ✔ Errors on save/edit/delete each have their own property. Make it one property. @done (19. 12. 2020. 22:26:53)
-  ☐ Paging error: search "Nenad made this title10"
   ✔ Action "New", "ReadAndEdit" - place in enum. @done (19. 12. 2020. 15:22:47)
-  ☐ Action creatori logiraju errore sa api-ja, ali oni su već logirani u api fileovima. Maknuti to odasvud.
+  ✔ Action creatori logiraju errore sa api-ja, ali oni su već logirani u api fileovima. Maknuti to odasvud. @done (19. 12. 2020. 22:40:22)
   ☐ Integriramo Redux.
     ✔ Case: load neki question, Edit, Cancel Edit -> isprazni se question u Redux storeu. @done (05. 12. 2020. 00:23:46)
       ✔ Treba nanovo  osmisliti Edit/New Question. Možda napraviti zasebne komponente. @done (05. 12. 2020. 00:23:47)
@@ -26,7 +27,7 @@
     ☐ Razmisli o tome što api funkcije vraćaju. Da li je to uniformno?
     ☐ Actions are called from components using Promises. This can be rewritten as async/await, based on edit answer case.
     ✔ isNoCommentsOnQuestionReducer je višak. @done (06. 12. 2020. 23:58:35)
-    ☐ AnswersListData
+    ✔ AnswersListData @done (19. 12. 2020. 22:41:30)
       ✔ Case: new q, new a, accept a, delete a: 409 by API, but nothing is printed. @done (10. 12. 2020. 23:08:59)
       ✔ Case: new q, new a, accept a: Edit and Delete buttons dissapear. @done (10. 12. 2020. 23:03:25)
       ✔ How to chain answersActions.getAnswers and then commentsActions.getComments? @done (06. 12. 2020. 23:57:34)
@@ -37,7 +38,6 @@
         ✔ Mogu prihvatiti odgovor makar nisam vlasnik pitanja. @done (10. 12. 2020. 23:40:40)
         ✔ Potestiraj ovako kako je i popravi. @done (10. 12. 2020. 23:40:41)
         ✔ Onda promijeni vlasnika tog pitanja u 'fa11acfe-8234-4fa3-9733-19abe08f74e8'. @done (10. 12. 2020. 23:40:41)
-      ☐ Unaccept answer.
       ✔ Delete answer. @done (08. 12. 2020. 22:51:35)
       ✔ Clear answers. @done (10. 12. 2020. 23:40:55)
     ✔ QuestionData: @done (07. 12. 2020. 00:49:03)
