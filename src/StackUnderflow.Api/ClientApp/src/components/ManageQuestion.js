@@ -57,11 +57,9 @@ const ManageQuestion = ({
 
   const onEditToggleHandle = (e) => {
     e.preventDefault();
-    if (question.isOwner) {
-      setErrors({});
-      setIsEditingOrNew(!isEditingOrNew);
-      setEditedQuestion(question);
-    }
+    setErrors({});
+    setIsEditingOrNew(!isEditingOrNew);
+    setEditedQuestion(question);
   };
 
   const onSaveNewHandle = async (e) => {
@@ -93,16 +91,14 @@ const ManageQuestion = ({
 
   const onDeleteHandle = async (e) => {
     e.preventDefault();
-    if (question.isOwner) {
-      questionActions
-        .deleteQuestion(question.id)
-        .then((_) => setIsDeleting(false))
-        .catch((error) => {
-          setIsDeleting(false);
-          setErrors({ onDelete: getErrorMessage(error) });
-        });
-      setIsDeleting(true);
-    }
+    questionActions
+      .deleteQuestion(question.id)
+      .then((_) => setIsDeleting(false))
+      .catch((error) => {
+        setIsDeleting(false);
+        setErrors({ onDelete: getErrorMessage(error) });
+      });
+    setIsDeleting(true);
   };
 
   const onInputChange = ({ target }) => {

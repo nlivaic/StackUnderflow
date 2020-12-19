@@ -30,11 +30,9 @@ const ManageComment = ({
 
   const onEditToggleHandle = (e) => {
     e.preventDefault();
-    if (comment.isOwner) {
-      setErrors({});
-      setIsEditingOrNew(!isEditingOrNew);
-      setEditedComment(comment);
-    }
+    setErrors({});
+    setIsEditingOrNew(!isEditingOrNew);
+    setEditedComment(comment);
   };
 
   const onSaveNewHandle = async (e) => {
@@ -72,14 +70,12 @@ const ManageComment = ({
 
   const onDeleteHandle = async (e) => {
     e.preventDefault();
-    if (comment.isOwner) {
-      setIsDeleting(true);
-      try {
-        await commentsActions.deleteComment(parentType, parentIds, comment.id);
-      } catch (error) {
-        setIsDeleting(false);
-        setErrors({ onDelete: getErrorMessage(error) });
-      }
+    setIsDeleting(true);
+    try {
+      await commentsActions.deleteComment(parentType, parentIds, comment.id);
+    } catch (error) {
+      setIsDeleting(false);
+      setErrors({ onDelete: getErrorMessage(error) });
     }
   };
   const onInputChange = ({ target }) => {

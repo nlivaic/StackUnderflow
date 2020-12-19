@@ -36,11 +36,9 @@ const ManageAnswer = ({
 
   const onEditToggleHandle = (e) => {
     e.preventDefault();
-    if (answer.isOwner) {
-      setErrors({});
-      setIsEditingOrNew(!isEditingOrNew);
-      setEditedAnswer(answer);
-    }
+    setErrors({});
+    setIsEditingOrNew(!isEditingOrNew);
+    setEditedAnswer(answer);
   };
 
   const onSaveNewHandle = async (e) => {
@@ -79,14 +77,12 @@ const ManageAnswer = ({
 
   const onDeleteHandle = async (e) => {
     e.preventDefault();
-    if (answer.isOwner) {
-      setIsDeleting(true);
-      try {
-        await answersActions.deleteAnswer(questionId, editedAnswer.id);
-      } catch (error) {
-        setIsDeleting(false);
-        setErrors({ onDelete: getErrorMessage(error) });
-      }
+    setIsDeleting(true);
+    try {
+      await answersActions.deleteAnswer(questionId, editedAnswer.id);
+    } catch (error) {
+      setIsDeleting(false);
+      setErrors({ onDelete: getErrorMessage(error) });
     }
   };
 
