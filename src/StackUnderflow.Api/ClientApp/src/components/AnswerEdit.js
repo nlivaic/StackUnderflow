@@ -38,8 +38,8 @@ const AnswerEdit = ({
   };
   return (
     <div style={{ borderStyle: "solid", borderColor: "green" }}>
-      {errors.onSave ? (
-        <span style={{ color: "red" }}>{errors.onSave}</span>
+      {errors.apiError ? (
+        <span style={{ color: "red" }}>{errors.apiError}</span>
       ) : (
         ""
       )}

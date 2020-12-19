@@ -10,8 +10,8 @@ const Question = ({
 }) => {
   return (
     <div style={{ borderStyle: "solid", borderColor: "red" }}>
-      {errors.onDelete ? (
-        <span style={{ color: "red" }}>{errors.onDelete}</span>
+      {errors.apiError ? (
+        <span style={{ color: "red" }}>{errors.apiError}</span>
       ) : (
         ""
       )}

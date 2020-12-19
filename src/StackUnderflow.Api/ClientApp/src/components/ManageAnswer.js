@@ -51,7 +51,7 @@ const ManageAnswer = ({
       await answersActions.postAnswer(editedAnswer, questionId);
       setEditedAnswer({ body: "" });
     } catch (error) {
-      setErrors({ onSave: getErrorMessage(error) });
+      setErrors({ apiError: getErrorMessage(error) });
     }
     setIsSaving(false);
   };
@@ -70,7 +70,7 @@ const ManageAnswer = ({
       );
       setIsEditingOrNew(false);
     } catch (error) {
-      setErrors({ onSave: getErrorMessage(error) });
+      setErrors({ apiError: getErrorMessage(error) });
     }
     setIsSaving(false);
   };
@@ -82,7 +82,7 @@ const ManageAnswer = ({
       await answersActions.deleteAnswer(questionId, editedAnswer.id);
     } catch (error) {
       setIsDeleting(false);
-      setErrors({ onDelete: getErrorMessage(error) });
+      setErrors({ apiError: getErrorMessage(error) });
     }
   };
 
@@ -92,7 +92,7 @@ const ManageAnswer = ({
     try {
       await answersActions.acceptAnswer(questionId, answer.id);
     } catch (error) {
-      setErrors({ onAccept: getErrorMessage(error) });
+      setErrors({ apiError: getErrorMessage(error) });
     }
     setIsAccepting(false);
   };

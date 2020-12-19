@@ -66,7 +66,7 @@ const ManageQuestion = ({
     e.preventDefault();
     questionActions.saveQuestion(editedQuestion).catch((error) => {
       setIsSaving(false);
-      setErrors({ onSave: getErrorMessage(error) });
+      setErrors({ apiError: getErrorMessage(error) });
     });
     setIsSaving(true);
   };
@@ -84,7 +84,7 @@ const ManageQuestion = ({
       })
       .catch((error) => {
         setIsSaving(false);
-        setErrors({ onSave: getErrorMessage(error) });
+        setErrors({ apiError: getErrorMessage(error) });
       });
     setIsSaving(true);
   };
@@ -96,7 +96,7 @@ const ManageQuestion = ({
       .then((_) => setIsDeleting(false))
       .catch((error) => {
         setIsDeleting(false);
-        setErrors({ onDelete: getErrorMessage(error) });
+        setErrors({ apiError: getErrorMessage(error) });
       });
     setIsDeleting(true);
   };

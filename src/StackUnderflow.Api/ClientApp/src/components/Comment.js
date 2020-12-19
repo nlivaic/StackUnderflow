@@ -15,8 +15,8 @@ const Comment = ({ onStartEditing, isDeleting, onDelete, comment, errors }) => {
           borderColor: "gray",
         }}
       >
-        {errors.onDelete ? (
-          <span style={{ color: "red" }}>{errors.onDelete}</span>
+        {errors.apiError ? (
+          <span style={{ color: "red" }}>{errors.apiError}</span>
         ) : (
           ""
         )}

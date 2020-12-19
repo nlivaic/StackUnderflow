@@ -48,7 +48,7 @@ const ManageComment = ({
       setEditedComment({ body: "" });
     } catch (error) {
       debugger;
-      setErrors({ onSave: getErrorMessage(error) });
+      setErrors({ apiError: getErrorMessage(error) });
     }
     setIsSaving(false);
   };
@@ -63,7 +63,7 @@ const ManageComment = ({
       await commentsActions.editComment(editedComment, parentType, parentIds);
       setIsEditingOrNew(false);
     } catch (error) {
-      setErrors({ onSave: getErrorMessage(error) });
+      setErrors({ apiError: getErrorMessage(error) });
     }
     setIsSaving(false);
   };
@@ -75,7 +75,7 @@ const ManageComment = ({
       await commentsActions.deleteComment(parentType, parentIds, comment.id);
     } catch (error) {
       setIsDeleting(false);
-      setErrors({ onDelete: getErrorMessage(error) });
+      setErrors({ apiError: getErrorMessage(error) });
     }
   };
   const onInputChange = ({ target }) => {

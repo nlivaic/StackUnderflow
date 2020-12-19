@@ -13,13 +13,8 @@ const Answer = ({
 }) => {
   return (
     <div style={{ borderStyle: "solid", borderColor: "green" }}>
-      {errors.onDelete ? (
-        <span style={{ color: "red" }}>{errors.onDelete}</span>
-      ) : (
-        ""
-      )}
-      {errors.onAccept ? (
-        <span style={{ color: "red" }}>{errors.onAccept}</span>
+      {errors.apiError ? (
+        <span style={{ color: "red" }}>{errors.apiError}</span>
       ) : (
         ""
       )}
