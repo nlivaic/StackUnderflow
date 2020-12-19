@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using AutoMapper;
 using StackUnderflow.Core.Entities;
@@ -21,7 +20,7 @@ namespace StackUnderflow.Core.Profiles
                     opts => opts.MapFrom(src => src.Body.Substring(0, 50) + "..."))
                 .ForMember(dest => dest.Username,
                     opts => opts.MapFrom(src => src.User.Username))
-                .ForMember(dest => dest.AnswersCount,
+                .ForMember(dest => dest.Answers,
                     opts => opts.MapFrom(src => src.Answers.Count()))
                 .ForMember(dest => dest.Tags,
                     opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)));

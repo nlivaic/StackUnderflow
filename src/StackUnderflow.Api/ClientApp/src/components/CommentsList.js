@@ -18,6 +18,7 @@ const CommentsList = ({ commentsActions, comments, parentType, parentIds }) => {
     return () => {
       commentsActions.clearAllComments();
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

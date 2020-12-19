@@ -1,14 +1,17 @@
 ☐ Front end
+  ☐ Bugs:
+    ☐ Found 3 elements with non-unique id #body
+      ☐ Reproduce: Open a question. Above error is written in console.
   ✔ Next time: U CommentRepository (na dnu) ima extension klasa. @done (17. 12. 2020. 22:07:58)
     ✔ To prebaci na pravo mjesto. @done (17. 12. 2020. 22:07:59)
     ✔ Učini robusnijim: sad samo gleda ako <T> nasljeđuje direktno od BaseEntity. Poigraj se s tim da gleda i dalje od prve superklase. @done (17. 12. 2020. 22:20:29)
     ✔ Postoji metoda CommentRepository.Foo: to sam testirao kako bih mogao fleksibilnije pozvati CommentRepository.GetCommentsForQuestionAsync(). @done (17. 12. 2020. 22:08:02)
-  ☐ Bugs:
+  ✔ Bugs: @done (17. 12. 2020. 22:51:18)
     ✔ Delete answer with comments does not tell you what the error is. @done (17. 12. 2020. 22:44:31)
-    ☐ Edit question: edited values do not show immediately.
+    ✔ Edit question: edited values do not show immediately. @done (17. 12. 2020. 22:51:18)
   ☐ Store state in session or wherever.
-  ☐ Počistiti sve warninge.
-  ☐ On Question Summaries, it doesn't say how many answers there are. Maybe the question should be green if has accepted answer.
+  ✔ Počistiti sve warninge. @done (17. 12. 2020. 22:56:40)
+  ☐ Maybe the question should be green if has accepted answer.
   ☐ Na nekim akcijama provjeravamo da li je isOwner, na nekima ne.
   ☐ Paging error: search "Nenad made this title10"
   ☐ Action "New", "ReadAndEdit" - place in enum.
@@ -46,7 +49,7 @@
     ☐ Comment:
       ✔ Read on question and answer @done (11. 12. 2020. 23:25:43)
       ✔ Read via Redux @done (11. 12. 2020. 23:25:40)
-      ☐ Add
+      ✔ Add @done (17. 12. 2020. 22:52:02)
       ✔ Edit @done (12. 12. 2020. 23:40:49)
         ✔ Nije potrebno imati dve akcije: EDIT_COMMENT_ON_QUESTION_SUCCESS, EDIT_COMMENT_ON_ANSWER_SUCCESS. @done (12. 12. 2020. 23:23:07)
       ✔ Delete @done (12. 12. 2020. 23:40:51)
@@ -65,21 +68,6 @@
     ✔ How do I handle 201 pointing to an API resource? @done (26. 11. 2020. 23:29:10)
     ✔ Edit @done (28. 11. 2020. 00:48:39)
     ✔ Delete @done (28. 11. 2020. 23:52:15)
-  ☐ Answer
-    ✔ Read @done (29. 11. 2020. 12:42:28)
-    ☐ Add new
-      ☐ Do not show new answer textbox if user has already answered.
-        ☐ Add UserId to AnswerResourceParameters.
-        ☐ Talk to /api/q/{questionId}/a?userId=some_guid.
-      ☐ Redirect after adding new answer.
-    ✔ Edit @done (30. 11. 2020. 00:17:03)
-    ☐ Delete
-    ☐ Accept
-  ☐ Comment
-    ☐ Add new
-    ☐ Edit
-    ☐ Delete
-  ☐ Kad ukucam localhost:5001?pageNumber=3, promjeni se u localhost:5001/?pageNumber=3
   ☐ Kad se otvori React aplikacija, u tabu piše "Stack Underflow". Jel bi mogli napisati question title?
   ✔ PageNotFound @done (29. 11. 2020. 01:43:30)
   ☐ Logging
@@ -89,7 +77,9 @@
     ✔ Run front end using `npm start` command in a separate terminal. @done (08. 11. 2020. 00:24:54)
     ✔ Tell dotnet core backend app to proxy requests to the webpack dev server using `.UseProxyToSpaDevelopmentServer` @done (08. 11. 2020. 00:24:54)
 ☐ Backend:
-  ☐ Baca neki warning u testovima.
+  ☐ Admin:
+    ☐ Dodati rolu.
+    ☐ Može izbrisati i editirati svaki resurs.
   ☐ VotesSum je loš podatak. Upvote i downvote će rezultirati nulom, a to nije ok.
   ☐ Moguće je izbrisati answer koji ima voteove.
   ☐ q/a/c GET methods must return IsOwner.
@@ -110,6 +100,11 @@
   ☐ Answer View Model (GET) trebaju imati i podatak kad je answer prihvaćen.
   ☐ Https cert
   ☐ Azure
+  ☐ Bugs:
+    ☐ Baca neki warning u testovima.
+    ☐ Debug, breakpoint na QuestionRepository.cs:GetQuestionSummariesAsync()
+      ☐ Open Locals
+      ☐ 'searchQueryLowercase' threw an exception of type 'System.NullReferenceException'
   ✔ [ProducesResponseType], [Produces], [Consumes] @done (16. 08. 2020. 23:47:01)
     ✔ AnswersCsontroller @done (16. 08. 2020. 23:37:30)
     ✔ CommentsController @done (16. 08. 2020. 23:37:31)

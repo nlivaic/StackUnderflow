@@ -30,6 +30,7 @@ const AnswersListData = ({
     return () => {
       answersActions.clearAnswers();
     };
+    // eslint-disable-next-line
   }, [questionId]);
 
   const renderAnswers = (answers) =>

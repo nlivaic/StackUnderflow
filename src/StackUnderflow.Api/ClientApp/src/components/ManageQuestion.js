@@ -51,6 +51,7 @@ const ManageQuestion = ({
     return () => {
       questionActions.clearRedirectToQuestion();
     };
+    // eslint-disable-next-line
   }, [redirectToQuestion, redirectToHome]);
 
   const onEditToggleHandle = (e) => {

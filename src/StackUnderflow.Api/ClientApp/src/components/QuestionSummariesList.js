@@ -42,7 +42,7 @@ const QuestionSummariesList = () => {
         <div key={qs.id}>
           <div>
             <div>{qs.votesSum} votes</div>
-            <div>{qs.Answers} answers</div>
+            <div>{qs.answers} answers</div>
           </div>
           <div>
             <h3>

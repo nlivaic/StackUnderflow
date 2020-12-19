@@ -25,6 +25,7 @@ const QuestionData = ({ questionActions, questionId }) => {
     return () => {
       questionActions.clearQuestion();
     };
+    // eslint-disable-next-line
   }, []);
   return (
     <div>
