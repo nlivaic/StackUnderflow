@@ -13,22 +13,23 @@ const Paging = ({ resourceParameters, pagingData }) => {
   const THREE_DOTS = "...";
   const CONTIGUOUS = 2;
   const pagingItems = [];
+  const contiguousItems = [];
   const createPagingItems = () => {
-    if (currentPage > 1) pagingItems.push(PREV);
-    if (currentPage !== 1) pagingItems.push(FIRST_PAGE);
-    if (currentPage - CONTIGUOUS > 2) pagingItems.push(THREE_DOTS);
-    if (currentPage - CONTIGUOUS > 1)
-      pagingItems.push(currentPage - CONTIGUOUS);
-    if (currentPage - CONTIGUOUS > 0)
-      pagingItems.push(currentPage - CONTIGUOUS + 1);
-    pagingItems.push(currentPage);
-    if (currentPage + CONTIGUOUS < totalPages)
-      pagingItems.push(currentPage + CONTIGUOUS - 1);
-    if (currentPage + CONTIGUOUS < totalPages)
-      pagingItems.push(currentPage + CONTIGUOUS);
-    if (currentPage + CONTIGUOUS + 1 < totalPages) pagingItems.push(THREE_DOTS);
-    if (currentPage !== totalPages) pagingItems.push(LAST_PAGE);
-    if (currentPage < totalPages) pagingItems.push(NEXT);
+    if (currentPage > 1) {
+      pagingItems.push(PREV);
+    }
+    pagingItems.push(FIRST_PAGE);
+    for (let i = currentPage - CONTIGUOUS; i <= currentPage + CONTIGUOUS; i++) {
+      if (i > 1 && i < totalPages) contiguousItems.push(i);
+    }
+    if (contiguousItems[0] - FIRST_PAGE > 1) pagingItems.push(THREE_DOTS);
+    pagingItems.push(...contiguousItems);
+    if (LAST_PAGE - contiguousItems[contiguousItems.length - 1] > 1)
+      pagingItems.push(THREE_DOTS);
+    pagingItems.push(LAST_PAGE);
+    if (currentPage < totalPages) {
+      pagingItems.push(NEXT);
+    }
   };
   const createPagingLinks = () =>
     pagingItems.map((item, index) => {
