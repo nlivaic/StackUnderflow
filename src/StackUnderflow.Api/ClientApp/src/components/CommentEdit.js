@@ -46,7 +46,7 @@ const CommentEdit = ({
       <hr />
       <input
         type="text"
-        id="body"
+        name="body"
         placeholder="Enter omment here..."
         value={comment.body}
         onChange={onInputChange}

@@ -77,7 +77,7 @@ const ManageComment = ({
     }
   };
   const onInputChange = ({ target }) => {
-    setEditedComment({ ...editedComment, [target.id]: target.value });
+    setEditedComment({ ...editedComment, [target.name]: target.value });
   };
 
   const isFormValid = () => {
