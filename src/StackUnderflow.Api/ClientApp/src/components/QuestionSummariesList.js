@@ -73,7 +73,9 @@ const QuestionSummariesList = () => {
     </div>
   );
   const location = useLocation();
+
   useEffect(() => {
+    document.title = "Stack Underflow";
     async function getQuestionSummaries() {
       const questionSummariesResponse = await questionSummariesApi.getQuestionSummaries(
         location.search

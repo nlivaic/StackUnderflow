@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ManageQuestion from "./ManageQuestion.js";
-import { getQuestion } from "../redux/reducers/index.js";
 import { bindActionCreators } from "redux";
 import * as questionActions from "../redux/actions/questionActions.js";
 import { connect } from "react-redux";
@@ -43,16 +42,10 @@ const QuestionData = ({ questionActions, questionId }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    question: getQuestion(state),
-  };
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
     questionActions: bindActionCreators(questionActions, dispatch),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionData);
+export default connect(null, mapDispatchToProps)(QuestionData);
