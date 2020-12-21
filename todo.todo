@@ -1,20 +1,23 @@
-☐ Front end
+Front end
   ☐ Bugs:
-    ☐ Found 3 elements with non-unique id #body
-      ☐ Reproduce: Open a question. Above error is written in console.
-    ☐ Paging error: search "Nenad made this title10"
-  ☐ Fix git client so as I don't have to re-enter user/pass on every push.
+    ✔ Found 3 elements with non-unique id #body @done (20. 12. 2020. 23:18:42)
+      ✔ Reproduce: Open a question. Above error is written in console. @done (20. 12. 2020. 23:18:43)
+    ✔ Paging error: search "Nenad made this title10" @done (20. 12. 2020. 22:07:28)
+  ✔ Hosting front end as part of API vs standalone. @done (21. 12. 2020. 15:00:58)
   ☐ Store state in session or wherever.
   ☐ Logging
-  ☐ Razmisli o tome što api funkcije vraćaju. Da li je to uniformno?
-  ☐ Kad se otvori React aplikacija, u tabu piše "Stack Underflow". Jel bi mogli napisati question title?
-  ☐ Unaccept answer.
-  ☐ Tags are specified in UI using ids. This should be fetched from API and name should be represented. Should be clickable.
   ☐ How to reference proper port on which API is running on?
     ☐ settings.js for now, but for production maybe use environment variables.
-  ☐ Hosting front end as part of API vs standalone.
   ☐ Prepare for production.
-☐ Backend:
+  ☐ Fix git client so as I don't have to re-enter user/pass on every push.
+  ✔ Razmisli o tome što api funkcije vraćaju. Da li je to uniformno? @done (20. 12. 2020. 22:22:24)
+  ✔ Favicon @done (20. 12. 2020. 22:54:13)
+  ✔ Kad se otvori React aplikacija, u tabu piše "Stack Underflow". Jel bi mogli napisati question title? @done (20. 12. 2020. 23:14:02)
+  ☐ Additional features:
+    ☐ Unaccept answer.
+    ☐ Tags are specified in UI using ids. This should be fetched from API and name should be represented. Should be clickable.
+Backend:
+  ☐ Swagger ok?
   ☐ Https cert
   ☐ Identity Server 4
   ☐ Prepare for production
