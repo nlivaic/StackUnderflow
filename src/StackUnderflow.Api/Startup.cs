@@ -22,6 +22,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using StackUnderflow.Api.Constants;
 
 namespace StackUnderflow.Api
 {
@@ -111,10 +112,19 @@ namespace StackUnderflow.Api
                 // setupAction.ResolveConflictingActions(r => r.First());
                 setupAction.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "StackUnderflow.Api.xml"));
             });
-            services.AddSpaStaticFiles(configuration =>
+            // Commented out as we are running front end as a standalone app.
+            // services.AddSpaStaticFiles(configuration =>
+            // {
+            //     configuration.RootPath = "ClientApp/build";
+            // });
+
+            services.AddCors(o => o.AddPolicy("All", builder =>
             {
-                configuration.RootPath = "ClientApp/build";
-            });
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders(Headers.Pagination);
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -137,8 +147,11 @@ namespace StackUnderflow.Api
                 });
             }
 
+            app.UseCors("All");
             app.UseHttpsRedirection();
-            app.UseSpaStaticFiles();
+
+            // Commented out as we are running front end as a standalone app.
+            // app.UseSpaStaticFiles();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -155,20 +168,21 @@ namespace StackUnderflow.Api
                 endpoints.MapControllers();
             });
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
+            // Commented out as we are running front end as a standalone app.
+            // app.UseSpa(spa =>
+            // {
+            //     spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
-                {
-                    // This is used if starting both front end and back end with the same command.
-                    // spa.UseReactDevelopmentServer(npmScript: "start");
-                    // This is used if starting front end separately from the back end, most likely to get better
-                    // separation. Faster hot reload when changing only front end and not having to go through front end
-                    // rebuild every time you change something on the back end.
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
-                }
-            });
+            //     if (env.IsDevelopment())
+            //     {
+            //         // This is used if starting both front end and back end with the same command.
+            //         // spa.UseReactDevelopmentServer(npmScript: "start");
+            //         // This is used if starting front end separately from the back end, most likely to get better
+            //         // separation. Faster hot reload when changing only front end and not having to go through front end
+            //         // rebuild every time you change something on the back end.
+            //         spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+            //     }
+            // });
         }
     }
 }
