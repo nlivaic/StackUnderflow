@@ -5,6 +5,8 @@ import {
   LOAD_QUESTION_SUCCESS,
   EDIT_QUESTION_SUCCESS,
   DELETE_QUESTION_SUCCESS,
+  DRAFT_QUESTION,
+  CLEAR_DRAFT_QUESTION,
 } from "./actionTypes";
 import * as apiStatusActions from "./apiStatusActions.js";
 import * as questionApi from "../../api/questionApi.js";
@@ -15,6 +17,19 @@ export function clearQuestion() {
 
 export function clearRedirectToQuestion() {
   return { type: CLEAR_REDIRECT_TO_QUESTION };
+}
+
+export function setDraftQuestion(question) {
+  return {
+    type: DRAFT_QUESTION,
+    question,
+  };
+}
+
+export function clearDraftQuestion() {
+  return {
+    type: CLEAR_DRAFT_QUESTION,
+  };
 }
 
 function saveQuestionSuccess(question) {

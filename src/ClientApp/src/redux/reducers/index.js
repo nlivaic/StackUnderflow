@@ -22,6 +22,8 @@ export const getRedirectToHome = (state) =>
   fromQuestion.getRedirectToHome(state.question);
 export const getQuestionHasAcceptedAnswer = (state) =>
   fromQuestion.getQuestionHasAcceptedAnswer(state.question);
+export const getQuestionDraft = (state) =>
+  fromQuestion.getQuestionDraft(state.question);
 // Top level selectors - Comments
 export const getComments = (parentType, state) => {
   switch (parentType) {

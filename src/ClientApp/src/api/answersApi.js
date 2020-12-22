@@ -1,10 +1,10 @@
 import axios from "axios";
-import * as apiUrl from "../settings";
+import { settings } from "../settings.js";
 
 export async function getAnswers(questionId) {
   try {
     return (
-      await axios.get(`${apiUrl.API_URL}/questions/${questionId}/answers`)
+      await axios.get(`${settings.API_URL}/questions/${questionId}/answers`)
     ).data;
   } catch (error) {
     console.error(error);
@@ -16,7 +16,7 @@ export async function postAnswer(answer, questionId) {
   try {
     return (
       await axios.post(
-        `${apiUrl.API_URL}/questions/${questionId}/answers`,
+        `${settings.API_URL}/questions/${questionId}/answers`,
         answer
       )
     ).data;
@@ -29,7 +29,7 @@ export async function postAnswer(answer, questionId) {
 export async function editAnswer(answer, questionId, answerId) {
   try {
     await axios.put(
-      `${apiUrl.API_URL}/questions/${questionId}/answers/${answerId}`,
+      `${settings.API_URL}/questions/${questionId}/answers/${answerId}`,
       answer
     );
   } catch (error) {
@@ -41,7 +41,7 @@ export async function editAnswer(answer, questionId, answerId) {
 export async function deleteAnswer(questionId, answerId) {
   try {
     await axios.delete(
-      `${apiUrl.API_URL}/questions/${questionId}/answers/${answerId}`
+      `${settings.API_URL}/questions/${questionId}/answers/${answerId}`
     );
   } catch (error) {
     console.error(error);
@@ -53,7 +53,7 @@ export async function acceptAnswer(questionId, answerId) {
   try {
     return (
       await axios.post(
-        `${apiUrl.API_URL}/questions/${questionId}/answers/${answerId}/acceptAnswer`
+        `${settings.API_URL}/questions/${questionId}/answers/${answerId}/acceptAnswer`
       )
     ).data;
   } catch (error) {

@@ -7,6 +7,8 @@ import {
   DELETE_QUESTION_SUCCESS,
   CLEAR_REDIRECT_TO_QUESTION,
   ACCEPT_ANSWER_SUCCESS,
+  DRAFT_QUESTION,
+  CLEAR_DRAFT_QUESTION,
 } from "../actions/actionTypes";
 import { combineReducers } from "redux";
 
@@ -22,6 +24,17 @@ function questionReducer(state = initialState.question, action) {
       return initialState.question;
     case ACCEPT_ANSWER_SUCCESS:
       return { ...state, hasAcceptedAnswer: true };
+    default:
+      return state;
+  }
+}
+
+function questionDraftReducer(state = initialState.question, action) {
+  switch (action.type) {
+    case DRAFT_QUESTION:
+      return action.question;
+    case CLEAR_DRAFT_QUESTION:
+      return initialState.question;
     default:
       return state;
   }
@@ -53,10 +66,12 @@ export default combineReducers({
   question: questionReducer,
   redirectToQuestion: redirectToQuestionReducer,
   redirectToHome: redirectToHomeReducer,
+  questionDraft: questionDraftReducer,
 });
 
 // Combined state selector.
 export const getQuestion = (state) => state.question;
+export const getQuestionDraft = (state) => state.questionDraft;
 export const getRedirectToQuestion = (state) => state.redirectToQuestion;
 export const getRedirectToHome = (state) => state.redirectToHome;
 export const getQuestionHasAcceptedAnswer = (state) =>

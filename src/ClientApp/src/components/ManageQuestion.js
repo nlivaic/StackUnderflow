@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Question from "./Question.js";
 import QuestionEdit from "./QuestionEdit.js";
 import { getErrorMessage } from "../utils/getErrorMessage.js";
 import {
   getQuestion,
+  getQuestionDraft,
   getRedirectToQuestion,
   getRedirectToHome,
 } from "../redux/reducers/index.js";
@@ -12,10 +13,13 @@ import * as questionActions from "../redux/actions/questionActions.js";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actionTypes from "../utils/actionTypes.js";
+import throttle from "lodash.throttle";
+import initialState from "../redux/reducers/initialState.js";
 
 const ManageQuestion = ({
   questionActions,
   question,
+  questionDraft,
   redirectToQuestion,
   redirectToHome,
   action = actionTypes.New,
@@ -27,15 +31,16 @@ const ManageQuestion = ({
     action === actionTypes.New ? true : false
   );
   const [editedQuestion, setEditedQuestion] = useState(
-    action === actionTypes.New
-      ? {
-          title: "",
-          body: "",
-          tags: [],
-        }
-      : question
+    action === actionTypes.New ? questionDraft : question
   );
   const history = useHistory();
+  // Makes sure we don't overwhelm Redux store.
+  const setQuestionDraft = useCallback(
+    throttle((data) => {
+      questionActions.setDraftQuestion(data);
+    }, 1000),
+    []
+  );
 
   useEffect(() => {
     if (redirectToQuestion) {
@@ -71,6 +76,7 @@ const ManageQuestion = ({
       setIsSaving(false);
       setErrors({ apiError: getErrorMessage(error) });
     }
+    questionActions.clearDraftQuestion();
   };
 
   const onSaveEditHandle = async (e) => {
@@ -103,6 +109,12 @@ const ManageQuestion = ({
     setIsDeleting(true);
   };
 
+  const onClearHandle = async (e) => {
+    e.preventDefault();
+    questionActions.clearDraftQuestion();
+    setEditedQuestion(initialState.question);
+  };
+
   const onInputChange = ({ target }) => {
     let value =
       target.id === "tags"
@@ -110,7 +122,11 @@ const ManageQuestion = ({
             return { id: t };
           })
         : target.value;
-    setEditedQuestion({ ...editedQuestion, [target.id]: value });
+    let newEditedQuestion = { ...editedQuestion, [target.id]: value };
+    setEditedQuestion(newEditedQuestion);
+    if (action === actionTypes.New) {
+      setQuestionDraft(newEditedQuestion);
+    }
   };
 
   const isFormValid = () => {
@@ -135,10 +151,13 @@ const ManageQuestion = ({
           question={editedQuestion}
           onSaveNewQuestion={onSaveNewHandle}
           onSaveEditQuestion={onSaveEditHandle}
-          onCancel={onEditToggleHandle}
+          onCancel={
+            action === actionTypes.New ? onClearHandle : onEditToggleHandle
+          }
           action={action}
           isSaving={isSaving}
           onInputChange={onInputChange}
+          onClear={onClearHandle}
           errors={errors}
         />
       ) : (
@@ -159,6 +178,7 @@ const ManageQuestion = ({
 const mapStateToProps = (state) => {
   return {
     question: getQuestion(state),
+    questionDraft: getQuestionDraft(state),
     redirectToQuestion: getRedirectToQuestion(state),
     redirectToHome: getRedirectToHome(state),
   };

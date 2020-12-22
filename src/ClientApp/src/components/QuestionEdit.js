@@ -30,11 +30,7 @@ const QuestionEdit = ({
     }
   };
   const getCancelButton = () => {
-    return action === actionTypes.ReadAndEdit ? (
-      <button onClick={onCancel}>Cancel</button>
-    ) : (
-      ""
-    );
+    return <button onClick={onCancel}>Cancel</button>;
   };
   return (
     <div style={{ borderStyle: "solid", borderColor: "green" }}>
