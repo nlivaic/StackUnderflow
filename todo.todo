@@ -1,18 +1,15 @@
-Front end
-  ☐ Bugs:
-    ✔ Found 3 elements with non-unique id #body @done (20. 12. 2020. 23:18:42)
-      ✔ Reproduce: Open a question. Above error is written in console. @done (20. 12. 2020. 23:18:43)
-    ✔ Paging error: search "Nenad made this title10" @done (20. 12. 2020. 22:07:28)
-  ✔ Hosting front end as part of API vs standalone. @done (21. 12. 2020. 15:00:58)
-  ☐ Store state in session or wherever.
+Front end:
+  ☐ Bug:
+    ☐ Tags textbox: every whitespace is a new tag in Redux store.
+    ☐ Mislim da sam krivo dizajnirao komponente. Primjer:
+      ☐ Novi question -> upiši vrijednosti -> stisni Clear.
+      ☐ U callbacku za clear (onClearHandle) ja moram ručno (!) očistiti i lokalni `editedQuestion` i Redux store `draftQuestion`.
+      ☐ U biti sam poništio one-way binding.
+      ☐ Treba dobro razmisliti o dizajnu tih edit existing i add new komponenti.
+  ✔ Store state in session or wherever: https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage @done (22. 12. 2020. 23:36:56)
+  ☐ Fix git client so as I don't have to re-enter user/pass on every push. Use SSL.
   ☐ Logging
-  ☐ How to reference proper port on which API is running on?
-    ☐ settings.js for now, but for production maybe use environment variables.
-  ☐ Prepare for production.
-  ☐ Fix git client so as I don't have to re-enter user/pass on every push.
-  ✔ Razmisli o tome što api funkcije vraćaju. Da li je to uniformno? @done (20. 12. 2020. 22:22:24)
-  ✔ Favicon @done (20. 12. 2020. 22:54:13)
-  ✔ Kad se otvori React aplikacija, u tabu piše "Stack Underflow". Jel bi mogli napisati question title? @done (20. 12. 2020. 23:14:02)
+  ☐ Error component. 
   ☐ Additional features:
     ☐ Unaccept answer.
     ☐ Tags are specified in UI using ids. This should be fetched from API and name should be represented. Should be clickable.
