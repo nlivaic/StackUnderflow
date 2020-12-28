@@ -21,8 +21,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using StackUnderflow.Api.Constants;
+using StackUnderflow.API.Middlewares;
 
 namespace StackUnderflow.Api
 {
@@ -130,22 +130,7 @@ namespace StackUnderflow.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler(appBuilder =>
-                {
-                    appBuilder.Run(async context =>
-                    {
-                        context.Response.StatusCode = 500;
-                        await context.Response.WriteAsync("An unexpected fault happened. Please try again later.");
-                        // @nl: log.
-                    });
-                });
-            }
+            app.UseApiExceptionHandler(options => options.ApiErrorHandler = UpdateApiErrorResponse);
 
             app.UseCors("All");
             app.UseHttpsRedirection();
@@ -183,6 +168,17 @@ namespace StackUnderflow.Api
             //         spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
             //     }
             // });
+        }
+
+        /// <summary>
+        /// A demonstration of how returned message can be modified.
+        /// </summary>
+        private void UpdateApiErrorResponse(HttpContext context, Exception ex, ApiError apiError)
+        {
+            if (ex is Exception)
+            {
+                apiError.Detail = "A general error occurred.";
+            }
         }
     }
 }

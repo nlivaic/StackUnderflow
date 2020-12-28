@@ -14,11 +14,22 @@ Front end:
     ☐ Unaccept answer.
     ☐ Tags are specified in UI using ids. This should be fetched from API and name should be represented. Should be clickable.
 Backend:
+  ☐ Na puno mjesta je namespace "StackUnderflow.API". Treba biti "StackUnderflow.Api".
   ☐ Swagger ok?
   ☐ Https cert
   ☐ Identity Server 4
   ☐ Prepare for production
   ☐ Logging
+    ✔ Pokrenuti kroz VS Code. Debug Main. @done (26. 12. 2020. 14:47:26)
+    ✔ Podesiti appsettings.json @done (27. 12. 2020. 00:04:09)
+    ✔ Da li se učitava appsettings.Development.json? @done (27. 12. 2020. 00:04:12)
+    ☐ Kako definirati logging folder na fleksibilan način?
+    ☐ Good logging levels:
+      ☐ For dev
+      ☐ For prod
+    ☐ Logirati payload kad se desi exceptionna HttpPost i HttpPut.
+  ☐ Add HSTS to API.
+  ☐ Unit tests: rerun, review, fix.
   ☐ Prepare for production.
   ☐ VotesSum je loš podatak. Upvote i downvote će rezultirati nulom, a to nije ok.
   ☐ POST question {body: "", title: "", tags: []} - how does it behave?
