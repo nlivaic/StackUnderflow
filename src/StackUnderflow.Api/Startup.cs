@@ -23,6 +23,7 @@ using System;
 using System.IO;
 using StackUnderflow.Api.Constants;
 using StackUnderflow.API.Middlewares;
+using StackUnderflow.Api.Filters;
 
 namespace StackUnderflow.Api
 {
@@ -48,6 +49,7 @@ namespace StackUnderflow.Api
                     configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status404NotFound));
                     configure.Filters.Add(new ProducesResponseTypeAttribute(typeof(object), StatusCodes.Status406NotAcceptable));
                     configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+                    configure.Filters.Add(typeof(LoggingFilter));
                 })
                 .ConfigureApiBehaviorOptions(options =>
                 {
@@ -84,6 +86,8 @@ namespace StackUnderflow.Api
             services.AddTransient<ITagService, TagService>();
             services.AddSingleton<ILimits, Limits>();
             services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
+
+            services.AddSingleton<IScopeInformation, ScopeInformation>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionProfile).Assembly);
 
