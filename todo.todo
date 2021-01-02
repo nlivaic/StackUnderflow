@@ -14,20 +14,20 @@ Front end:
     ☐ Unaccept answer.
     ☐ Tags are specified in UI using ids. This should be fetched from API and name should be represented. Should be clickable.
 Backend:
+  ☐ Logging
+    ☐ Problem: LoggingFilter je ok zasad, ali scopeovi se ne logiraju za exception. Valjda zato jer ApiExceptionHandlerMiddleware nije unutar Action filtera.
+      ☐ To ću moći pokušati riješiti tek kad upogonim Identity Server. Onda bih mogao probati prebaciti kreiranje Scopeova u ApiExceptionHandlerMiddleware i otamo povući User Id i Claimove.
+    ☐ Kako definirati logging folder na fleksibilan način?
+    ☐ Good logging levels:
+      ☐ For dev
+      ☐ For prod
+    ☐ Research što sve uopće logirati?
+    ☐ Logirati payload kad se desi exceptionna HttpPost i HttpPut.
   ☐ Na puno mjesta je namespace "StackUnderflow.API". Treba biti "StackUnderflow.Api".
   ☐ Swagger ok?
   ☐ Https cert
   ☐ Identity Server 4
   ☐ Prepare for production
-  ☐ Logging
-    ✔ Pokrenuti kroz VS Code. Debug Main. @done (26. 12. 2020. 14:47:26)
-    ✔ Podesiti appsettings.json @done (27. 12. 2020. 00:04:09)
-    ✔ Da li se učitava appsettings.Development.json? @done (27. 12. 2020. 00:04:12)
-    ☐ Kako definirati logging folder na fleksibilan način?
-    ☐ Good logging levels:
-      ☐ For dev
-      ☐ For prod
-    ☐ Logirati payload kad se desi exceptionna HttpPost i HttpPut.
   ☐ Add HSTS to API.
   ☐ Unit tests: rerun, review, fix.
   ☐ Prepare for production.
