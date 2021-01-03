@@ -45,7 +45,9 @@ namespace StackUnderflow.API.Middlewares
             };
             _options.ApiErrorHandler?.Invoke(context, ex, apiError);
             var innermostException = GetInnermostException(ex);
-            _logger.LogError(innermostException, innermostException.Message + " -- {ErrorId}", apiError.Id);
+            var logLevel = _options.LogLevelHandler?.Invoke(context, ex) ?? LogLevel.Error;
+            _logger.Log(logLevel, innermostException, innermostException.Message + " -- {ErrorId}", apiError.Id);
+
             var result = JsonConvert.SerializeObject(apiError);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

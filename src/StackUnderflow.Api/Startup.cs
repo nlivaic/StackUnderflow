@@ -24,6 +24,7 @@ using System.IO;
 using StackUnderflow.Api.Constants;
 using StackUnderflow.API.Middlewares;
 using StackUnderflow.Api.Filters;
+using Microsoft.Extensions.Logging;
 
 namespace StackUnderflow.Api
 {
@@ -134,7 +135,11 @@ namespace StackUnderflow.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseApiExceptionHandler(options => options.ApiErrorHandler = UpdateApiErrorResponse);
+            app.UseApiExceptionHandler(options =>
+            {
+                options.ApiErrorHandler = UpdateApiErrorResponse;
+                options.LogLevelHandler = LogLevelHandler;
+            });
 
             app.UseCors("All");
             app.UseHttpsRedirection();
@@ -183,6 +188,18 @@ namespace StackUnderflow.Api
             {
                 apiError.Detail = "A general error occurred.";
             }
+        }
+
+        /// <summary>
+        /// Define cases where a different log level is needed for logging exceptions.
+        /// </summary>
+        private LogLevel LogLevelHandler(HttpContext context, Exception ex)
+        {
+            if (ex is Exception)
+            {
+                return LogLevel.Critical;
+            }
+            return LogLevel.Error;
         }
     }
 }
