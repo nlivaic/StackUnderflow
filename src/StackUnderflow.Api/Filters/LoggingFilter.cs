@@ -27,7 +27,7 @@ namespace StackUnderflow.Api.Filters
                 new Dictionary<string, string>
                 {
                     { "UserId", "Anonymous" },
-                    { "Claims", ""/*context.HttpContext.User.Claims*/}
+                    { "Claims", ""/*context.HttpContext.User.Claims*/}  // @nl: After OAuth2 is integrated, log claims.
                 });
             _hostScope = _logger.BeginScope(_scopeInformation.Host);
         }

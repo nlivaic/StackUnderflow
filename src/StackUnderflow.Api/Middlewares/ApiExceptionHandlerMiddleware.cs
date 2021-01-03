@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,7 @@ namespace StackUnderflow.API.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
+            context.Request.EnableBuffering();
             try
             {
                 await _next(context);
@@ -46,8 +48,21 @@ namespace StackUnderflow.API.Middlewares
             _options.ApiErrorHandler?.Invoke(context, ex, apiError);
             var innermostException = GetInnermostException(ex);
             var logLevel = _options.LogLevelHandler?.Invoke(context, ex) ?? LogLevel.Error;
-            _logger.Log(logLevel, innermostException, innermostException.Message + " -- {ErrorId}", apiError.Id);
+            if (context.Request.Method == "POST")
+            {
+                string body = String.Empty;
+                using (var reader = new StreamReader(context.Request.Body))
+                {
+                    context.Request.Body.Seek(0, SeekOrigin.Begin);
+                    body = await reader.ReadToEndAsync();
+                }
+                _logger.Log(logLevel, innermostException, innermostException.Message + " -- {ErrorId} -- {Body}", apiError.Id, body);
 
+            }
+            else
+            {
+                _logger.Log(logLevel, innermostException, innermostException.Message + " -- {ErrorId}", apiError.Id);
+            }
             var result = JsonConvert.SerializeObject(apiError);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
