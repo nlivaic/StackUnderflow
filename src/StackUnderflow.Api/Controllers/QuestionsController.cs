@@ -51,6 +51,7 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="request">Question create body.</param>
         /// <returns>Newly created question.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
@@ -96,7 +97,7 @@ namespace StackUnderflow.Api.Controllers
         /// Delete question. Question can be deleted only a certain amount of time after it was created [requires authentication].
         /// </summary>
         /// <param name="id">Question identifier.</param>
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [Produces("application/json")]
         [HttpDelete("{id}")]

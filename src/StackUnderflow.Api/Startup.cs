@@ -46,8 +46,8 @@ namespace StackUnderflow.Api
                 .AddControllers(configure =>
                 {
                     configure.ReturnHttpNotAcceptable = true;
-                    configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
-                    configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status404NotFound));
+                    configure.Filters.Add(new ProducesResponseTypeAttribute(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest));
+                    configure.Filters.Add(new ProducesResponseTypeAttribute(typeof(ProblemDetails), StatusCodes.Status404NotFound));
                     configure.Filters.Add(new ProducesResponseTypeAttribute(typeof(object), StatusCodes.Status406NotAcceptable));
                     configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
                     configure.Filters.Add(typeof(LoggingFilter));

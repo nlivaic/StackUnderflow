@@ -45,7 +45,7 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="answerResourceParameters">Resource parameters allowing paging, ordering, searching and filtering.</param>
         /// <returns>List of answers.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpGet]
@@ -102,7 +102,7 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="request">Answer create body.</param>
         /// <returns>Newly created answer.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost]
@@ -141,7 +141,7 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="answerId">Answer identifier.</param>
         /// <param name="request">Answer edit data.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("{answerId}")]
@@ -176,7 +176,7 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="questionId">Question identifier.</param>
         /// <param name="answerId">Answer identifier.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [HttpDelete("{answerId}")]
         public async Task<ActionResult> DeleteAsync(
@@ -207,8 +207,9 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="answerId">Answer identifier.</param>
         /// <returns>Accepted answer.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
+        [Consumes("application/json")]
         [HttpPost("{answerId}/acceptAnswer")]
         public async Task<ActionResult<AnswerGetViewModel>> AcceptAnswer(
             [FromRoute] Guid questionId,

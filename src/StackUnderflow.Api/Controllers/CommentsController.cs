@@ -130,7 +130,7 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="request">Comment create body.</param>
         /// <returns>Newly created comment.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost("/api/questions/{questionId}/[controller]")]
@@ -161,7 +161,7 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="request">Comment create body.</param>
         /// <returns>Newly created comment.</returns>
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPost("/api/questions/{questionId}/answers/{answerId}/[controller]")]
@@ -195,7 +195,8 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="commentId">Comment identifier.</param>
         /// <param name="request">Comment edit data.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("/api/questions/{questionId}/[controller]/{commentId}")]
         public async Task<ActionResult> PutOnQuestionAsync(
@@ -231,7 +232,8 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="commentId">Comment identifier.</param>
         /// <param name="request">Comment edit data.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
         [Consumes("application/json")]
         [HttpPut("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
         public async Task<ActionResult> PutOnAnswerAsync(
@@ -267,7 +269,8 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="questionId">Question identifier.</param>
         /// <param name="commentId">Comment identifier.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
         [HttpDelete("/api/questions/{questionId}/[controller]/{commentId}")]
         public async Task<ActionResult> DeleteOnQuestionAsync(
             [FromRoute] Guid questionId,
@@ -296,7 +299,8 @@ namespace StackUnderflow.Api.Controllers
         /// <param name="answerId">Answer identifier.</param>
         /// <param name="commentId">Comment identifier.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+        [Produces("application/json")]
         [HttpDelete("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
         public async Task<ActionResult> DeleteOnAnswerAsync(
             [FromRoute] Guid questionId,
