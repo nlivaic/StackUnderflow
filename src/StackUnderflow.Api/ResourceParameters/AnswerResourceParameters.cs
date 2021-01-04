@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using StackUnderflow.API.Helpers;
-using StackUnderflow.API.Services.Sorting;
+using StackUnderflow.Api.Helpers;
+using StackUnderflow.Api.Services.Sorting;
 
 namespace StackUnderflow.Api.ResourceParameters
 {

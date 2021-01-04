@@ -1,4 +1,4 @@
-namespace StackUnderflow.API.Middlewares
+namespace StackUnderflow.Api.Middlewares
 {
     public class ApiError
     {

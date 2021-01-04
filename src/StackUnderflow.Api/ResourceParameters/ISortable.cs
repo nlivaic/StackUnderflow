@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using StackUnderflow.API.Services.Sorting;
+using StackUnderflow.Api.Services.Sorting;
 
 namespace StackUnderflow.Api.ResourceParameters
 {

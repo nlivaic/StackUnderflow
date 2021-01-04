@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace StackUnderflow.API.Middlewares
+namespace StackUnderflow.Api.Middlewares
 {
     public class ApiExceptionHandlerOptions
     {

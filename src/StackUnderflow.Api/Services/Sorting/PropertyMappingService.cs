@@ -5,7 +5,7 @@ using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Models;
 
-namespace StackUnderflow.API.Services.Sorting
+namespace StackUnderflow.Api.Services.Sorting
 {
     public interface IPropertyMappingService
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace StackUnderflow.API.Helpers
+namespace StackUnderflow.Api.Helpers
 {
     public class ArrayModelBinder : IModelBinder
     {

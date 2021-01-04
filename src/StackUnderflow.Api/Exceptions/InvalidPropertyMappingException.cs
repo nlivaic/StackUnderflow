@@ -1,6 +1,6 @@
 using System;
 
-namespace StackUnderflow.API.Exceptions
+namespace StackUnderflow.Api.Exceptions
 {
     public class InvalidPropertyMappingException : Exception
     {

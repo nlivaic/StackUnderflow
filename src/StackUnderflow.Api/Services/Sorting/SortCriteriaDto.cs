@@ -1,7 +1,7 @@
 using System.ComponentModel;
-using StackUnderflow.API.Helpers;
+using StackUnderflow.Api.Helpers;
 
-namespace StackUnderflow.API.Services.Sorting
+namespace StackUnderflow.Api.Services.Sorting
 {
     [TypeConverter(typeof(SortingDirectionDtoConverter))]
     public class SortCriteriaDto

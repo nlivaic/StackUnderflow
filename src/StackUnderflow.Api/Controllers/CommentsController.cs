@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Models;
-using StackUnderflow.API.Helpers;
+using StackUnderflow.Api.Helpers;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace StackUnderflow.API.Middlewares
+namespace StackUnderflow.Api.Middlewares
 {
     public class ApiExceptionHandlerMiddleware
     {
@@ -48,7 +48,7 @@ namespace StackUnderflow.API.Middlewares
             _options.ApiErrorHandler?.Invoke(context, ex, apiError);
             var innermostException = GetInnermostException(ex);
             var logLevel = _options.LogLevelHandler?.Invoke(context, ex) ?? LogLevel.Error;
-            if (context.Request.Method == "POST")
+            if (context.Request.Method == "POST" || context.Request.Method == "PUT")
             {
                 string body = String.Empty;
                 using (var reader = new StreamReader(context.Request.Body))

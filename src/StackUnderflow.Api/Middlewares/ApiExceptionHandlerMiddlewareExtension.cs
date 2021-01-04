@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 
-namespace StackUnderflow.API.Middlewares
+namespace StackUnderflow.Api.Middlewares
 {
     public static class ApiExceptionHandlerMiddlewareExtension
     {

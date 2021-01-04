@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using StackUnderflow.API.Exceptions;
+using StackUnderflow.Api.Exceptions;
 
-namespace StackUnderflow.API.Services.Sorting
+namespace StackUnderflow.Api.Services.Sorting
 {
     // Marker interface, to facilitate generic collections.
     public interface IPropertyMapping

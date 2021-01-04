@@ -1,4 +1,4 @@
-namespace StackUnderflow.API.Services.Sorting
+namespace StackUnderflow.Api.Services.Sorting
 {
     public enum SortDirectionDto
     {

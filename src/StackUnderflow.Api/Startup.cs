@@ -16,13 +16,13 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using StackUnderflow.Api.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StackUnderflow.API.Services.Sorting;
+using StackUnderflow.Api.Services.Sorting;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using StackUnderflow.Api.Constants;
-using StackUnderflow.API.Middlewares;
+using StackUnderflow.Api.Middlewares;
 using StackUnderflow.Api.Filters;
 using Microsoft.Extensions.Logging;
 

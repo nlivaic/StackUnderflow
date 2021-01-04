@@ -8,7 +8,7 @@ using Microsoft.Extensions.Primitives;
 using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
-using StackUnderflow.API.Services.Sorting;
+using StackUnderflow.Api.Services.Sorting;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.QueryParameters;
 

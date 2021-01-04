@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel;
-using StackUnderflow.API.Exceptions;
-using StackUnderflow.API.Services.Sorting;
+using StackUnderflow.Api.Exceptions;
+using StackUnderflow.Api.Services.Sorting;
 using StackUnderflow.Common.Extensions;
 
-namespace StackUnderflow.API.Helpers
+namespace StackUnderflow.Api.Helpers
 {
     public class SortingDirectionDtoConverter : TypeConverter
     {

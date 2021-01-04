@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using StackUnderflow.API.Exceptions;
-using StackUnderflow.API.Services.Sorting;
+using StackUnderflow.Api.Exceptions;
+using StackUnderflow.Api.Services.Sorting;
 using StackUnderflow.Core.QueryParameters.Sorting;
 
 namespace StackUnderflow.Api.Profiles
