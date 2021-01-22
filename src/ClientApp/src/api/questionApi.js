@@ -1,5 +1,6 @@
 import axios from "axios";
 import { settings } from "../settings.js";
+import { getAccessToken } from "../utils/authService.js";
 
 export async function getQuestion(id) {
   try {
@@ -11,12 +12,17 @@ export async function getQuestion(id) {
 }
 
 export async function askQuestion(question) {
+  var accessToken = await getAccessToken();
   try {
-    let response = await axios.post(`${settings.API_URL}/questions`, {
-      title: question.title,
-      body: question.body,
-      tagIds: question.tags.map((t) => t.id),
-    });
+    let response = await axios.post(
+      `${settings.API_URL}/questions`,
+      {
+        title: question.title,
+        body: question.body,
+        tagIds: question.tags.map((t) => t.id),
+      },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
     return response.data;
   } catch (error) {
     console.error(error);

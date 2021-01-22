@@ -10,10 +10,43 @@ Front end:
   ☐ Fix git client so as I don't have to re-enter user/pass on every push. Use SSL.
   ☐ Logging
   ☐ Error component. 
+  ☐ Use https instead of http on React server.
   ☐ Additional features:
     ☐ Unaccept answer.
     ☐ Tags are specified in UI using ids. This should be fetched from API and name should be represented. Should be clickable.
 Backend:
+  Identity Server i Authentication:
+    ✔ Iskoristiti getUser() da vidim da li sam ulogiran. @done (10. 01. 2021. 00:02:59)
+    ✔ Gdje oidc-client sprema tokene? Jel može u memoriju? @done (10. 01. 2021. 00:03:00)
+    ✔ Ratni plan: @done (11. 01. 2021. 23:59:57)
+      ✔ Add authentication to API @done (10. 01. 2021. 15:15:04)
+      ✔ Require authentication on POST Question endpoint (dev-only, remove and redefine later) @done (10. 01. 2021. 15:15:05)
+      ✔ Identity Server: Koristim ApiScope umjesto ApiResource. Privremeno ili trajno rješenje? @done (10. 01. 2021. 23:53:59) -> Jedan i drugi nam trebaju.
+      ✔ JWT koji vidim na klijentu ima za "aud" Identity Server. Fali mu stack_underflow_api @done (10. 01. 2021. 23:53:55)
+      ✔ Client app call POST Question endpoint w/ access token. @done (11. 01. 2021. 23:59:42)
+      ✔ Do a silent token renew. @done (11. 01. 2021. 23:59:43)
+      ✔ Continue with the to do list for Identity Server. @done (11. 01. 2021. 23:59:54)
+      ✔ Take care not to commit 120s access token lifetime on IS4 Config.cs @done (11. 01. 2021. 23:59:56)
+    ☐ Registration @today 
+    ☐ Password reset
+    ☐ API - add policies
+    ☐ Komponenta signinOidc redirecta na '/'. Neka redirecta tamo gdje si zadnje bio. Pretraži IdS4 za "returnUrl" parametar.
+    ✔ Kad loadam aplikaciju, dobijem hrpu errora u console logu. @done (12. 01. 2021. 00:00:14)
+    ✔ Sign out @done (12. 01. 2021. 00:00:16)
+    ✔ Silent refresh: @done (16. 01. 2021. 13:21:18)
+      ✔ https://www.scottbrady91.com/OpenID-Connect/Silent-Refresh-Refreshing-Access-Tokens-when-using-the-Implicit-Flow @done (16. 01. 2021. 13:21:19)
+      ✔ https://github.com/IdentityModel/oidc-client-js/issues/830#issuecomment-506299033 @done (16. 01. 2021. 13:21:20)
+    ☐ Integrirati UserManager u React Context: https://dev.to/tappyy/oidc-authentication-with-react-identity-server-4-3h0d
+    ☐ AuthService.js - hardkodiran localhost sa portovima.
+    ☐ U VS Codeu napraviti da sa F5 pokrenem i Api i Identity Server projekt.
+    ✔ dotnet new is4ui - look for this command in my OAuth2 Github repo. @done (09. 01. 2021. 00:18:10)
+    ☐ Što će mi UI na IdS4?
+    ✔ Složio sam config za oidc-client i napravio React komponentu za autentifikaciju. Iz te komp. pozivam oidc-client, ali me ne redirecta na Identity Server. @done (09. 01. 2021. 00:18:06)
+    ☐ Napraviti persistence umjesto in-memory storagea.
+    ☐ IdP: CORS za dev i prod env.
+    ✔ Client app: PKCE protection @done (09. 01. 2021. 00:17:58)
+    ✔ IdP: PKCE protection @done (09. 01. 2021. 00:17:59)
+    ☐ Sign up
   ☐ Logging
     ☐ Problem: LoggingFilter je ok zasad, ali scopeovi se ne logiraju za exception. Valjda zato jer ApiExceptionHandlerMiddleware nije unutar Action filtera.
       ☐ To ću moći pokušati riješiti tek kad upogonim Identity Server. Onda bih mogao probati prebaciti kreiranje Scopeova u ApiExceptionHandlerMiddleware i otamo povući User Id i Claimove.
@@ -22,12 +55,20 @@ Backend:
       ☐ For dev
       ☐ For prod
     ☐ Research što sve uopće logirati?
-    ☐ Logirati payload kad se desi exceptionna HttpPost i HttpPut.
-  ☐ Na puno mjesta je namespace "StackUnderflow.API". Treba biti "StackUnderflow.Api".
-  ☐ Swagger ok?
+    ✔ Logirati payload kad se desi exceptionna HttpPost i HttpPut. @done (04. 01. 2021. 11:18:04)
+  ✔ Na puno mjesta je namespace "StackUnderflow.Api". Treba biti "StackUnderflow.Api". @done (04. 01. 2021. 11:20:25)
+  ✔ Swagger ok? @done (05. 01. 2021. 23:42:23)
+    ✔ HttpPut - Produces and Consumes attributes @done (04. 01. 2021. 13:49:14)
+    ✔ HttpDelete - Produces attribute @done (04. 01. 2021. 13:49:15)
+    ✔ HttpPost - ValidationProblemDetails + Status422UnprocessableEntity. @done (04. 01. 2021. 14:13:27)
+  ☐ Roles
+    ☐ User
+    ☐ Admin
+    ☐ Moderator
+  ☐ CORS
+    ☐ Bolje definirati, trenutno dopuštamo sve.
   ☐ Https cert
   ☐ Identity Server 4
-  ☐ Prepare for production
   ☐ Add HSTS to API.
   ☐ Unit tests: rerun, review, fix.
   ☐ Prepare for production.

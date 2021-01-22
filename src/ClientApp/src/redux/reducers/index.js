@@ -3,12 +3,14 @@ import apiCallsInProgress from "./apiStatusReducer.js";
 import questionReducer, * as fromQuestion from "./questionReducer.js";
 import commentsReducer, * as fromComments from "./commentsReducer.js";
 import answersReducer, * as fromAnswers from "./answersReducer.js";
+import profileReducer from "./profileReducer.js";
 
 const rootReducer = combineReducers({
   apiCallsInProgress,
   question: questionReducer,
   comments: commentsReducer,
   answers: answersReducer,
+  profile: profileReducer,
 });
 
 export default rootReducer;
@@ -40,3 +42,6 @@ export const getIsNoCommentsOnQuestion = (state) =>
 
 // Top level selectors: Answers
 export const getAnswers = (state) => fromAnswers.getAnswers(state.answers);
+
+// Top level state selector: Profile
+export const getProfile = (state) => state.profile;

@@ -25,6 +25,7 @@ using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Middlewares;
 using StackUnderflow.Api.Filters;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace StackUnderflow.Api
 {
@@ -130,6 +131,14 @@ namespace StackUnderflow.Api
                     .AllowAnyHeader()
                     .WithExposedHeaders(Headers.Pagination);
             }));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication("Bearer", options =>
+                {
+                    options.Authority = "https://localhost:6001";       // Our IDP. Middleware uses this to know where to find public keys and endpoints.
+                    options.ApiName = "stack_underflow_api";            // Allows the access token validator to check if the access token `audience` is for this API.
+                });
+            services.AddAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -155,6 +164,7 @@ namespace StackUnderflow.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

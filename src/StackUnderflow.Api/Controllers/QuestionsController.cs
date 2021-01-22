@@ -54,6 +54,7 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         [HttpPost]
         public async Task<ActionResult<QuestionGetViewModel>> PostAsync([FromBody] QuestionCreateRequest request)
         {
