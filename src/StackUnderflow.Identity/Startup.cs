@@ -6,19 +6,25 @@ using IdentityServer4.Services;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using StackUnderflow.Identity.DbContexts;
 
 namespace StackUnderflow.Identity
 {
     public class Startup
     {
-        public IWebHostEnvironment Environment { get; }
+        private readonly IWebHostEnvironment _environment;
+        private readonly IConfiguration _configuration;
 
-        public Startup(IWebHostEnvironment environment)
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
-            Environment = environment;
+            _environment = environment;
+            _configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -48,11 +54,18 @@ namespace StackUnderflow.Identity
                     AllowAll = true
                 };
             });
+
+            services.AddDbContext<AppIdentityDbContext>(options =>
+            {
+                options.UseNpgsql(_configuration.GetConnectionString("StackUnderflowIdentityDb"));
+            });
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>();
         }
 
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment())
+            if (_environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

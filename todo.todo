@@ -28,6 +28,11 @@ Backend:
       ✔ Continue with the to do list for Identity Server. @done (11. 01. 2021. 23:59:54)
       ✔ Take care not to commit 120s access token lifetime on IS4 Config.cs @done (11. 01. 2021. 23:59:56)
     ☐ Registration @today 
+      ☐ Add ASP.NET Core Identity - context, register with DI, migration
+      ☐ Read up on ASP.NET Core Identity
+      ☐ Integrate with Identity Server
+      ☐ Look at Kevin Dockx Pluralsight course on User Management.
+      ☐ Implement.
     ☐ Password reset
     ☐ API - add policies
     ☐ Komponenta signinOidc redirecta na '/'. Neka redirecta tamo gdje si zadnje bio. Pretraži IdS4 za "returnUrl" parametar.
@@ -138,3 +143,4 @@ Backend:
 ☐ Razraditi jobove
 ☐ Razraditi evente i event handling
 ☐ Security: connection stringove razraditi: dev, prod
+☐ .editorconfig
