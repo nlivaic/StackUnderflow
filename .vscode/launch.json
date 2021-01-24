@@ -5,12 +5,33 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": ".NET Core Launch (console)",
+      "name": "IdentityServer",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "buildIdentity",
+      "program": "${workspaceFolder}/src/StackUnderflow.Identity/bin/Debug/netcoreapp3.1/StackUnderflow.Identity.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/src/StackUnderflow.Identity",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:6001"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/src/StackUnderflow.Identity/Views"
+      }
+    },
+    {
+      "name": "Api",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/src/StackUnderflow.Api/bin/Debug/netcoreapp3.1/StackUnderflow.Api.dll",
+      "program": "${workspaceFolder}/src/StackUnderflow.Api/bin/Debug/netcoreapp3.1/StackUnderflow.Api.exe",
       "args": [],
       "cwd": "${workspaceFolder}/src/StackUnderflow.Api",
       // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -22,6 +43,12 @@
       "type": "coreclr",
       "request": "attach",
       "processId": "${command:pickProcess}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "IdentityServer/Api",
+      "configurations": ["IdentityServer", "Api"]
     }
   ]
 }
