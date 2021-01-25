@@ -32,29 +32,6 @@ namespace StackUnderflow.Identity
             // uncomment, if you want to add an MVC-based UI
             services.AddControllersWithViews();
 
-            var builder = services.AddIdentityServer(options =>
-            {
-                // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
-                options.EmitStaticAudienceClaim = true;
-            })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryApiResources(Config.ApiResources)
-                .AddInMemoryClients(Config.Clients)
-                .AddTestUsers(TestUsers.Users);
-
-            // not recommended for production - you need to store your key material somewhere secure
-            builder.AddDeveloperSigningCredential();
-
-            services.AddSingleton<ICorsPolicyService>((container) =>
-            {
-                var logger = container.GetRequiredService<ILogger<IdentityServer4.Services.DefaultCorsPolicyService>>();
-                return new DefaultCorsPolicyService(logger)
-                {
-                    AllowAll = true
-                };
-            });
-
             services.AddDbContext<AppIdentityDbContext>(options =>
             {
                 options.UseNpgsql(_configuration.GetConnectionString("StackUnderflowIdentityDb"));
@@ -70,6 +47,32 @@ namespace StackUnderflow.Identity
                 opts.Password.RequireDigit = false;
                 opts.User.RequireUniqueEmail = false;
                 opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-.";
+            });
+
+            var builder = services
+                .AddIdentityServer(options =>
+                {
+                    // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
+                    options.EmitStaticAudienceClaim = true;
+                })
+                .AddAspNetIdentity<IdentityUser>()
+                .AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryApiResources(Config.ApiResources)
+                .AddInMemoryClients(Config.Clients)
+                // .AddTestUsers(TestUsers.Users)
+                ;
+
+            // not recommended for production - you need to store your key material somewhere secure
+            builder.AddDeveloperSigningCredential();
+
+            services.AddSingleton<ICorsPolicyService>((container) =>
+            {
+                var logger = container.GetRequiredService<ILogger<IdentityServer4.Services.DefaultCorsPolicyService>>();
+                return new DefaultCorsPolicyService(logger)
+                {
+                    AllowAll = true
+                };
             });
         }
 
