@@ -82,10 +82,12 @@ namespace StackUnderflow.Api
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IAnswerRepository, AnswerRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<IAnswerService, AnswerService>();
             services.AddTransient<ITagService, TagService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddSingleton<ILimits, Limits>();
             services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
 
