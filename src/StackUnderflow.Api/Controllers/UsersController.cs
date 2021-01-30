@@ -25,6 +25,7 @@ namespace StackUnderflow.Api.Controllers
 
         [HttpGet("api/users/current")]
         [Produces("application/json")]
+        [Authorize]
         public async Task<ActionResult<UserGetViewModel>> Get()
         {
             var userId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.

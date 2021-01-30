@@ -25,6 +25,7 @@ namespace StackUnderflow.Data.Repositories
         public async Task<UserGetModel> GetUser(Guid userId) =>
             await _context
                 .Users
+                .Include(u => u.Roles)
                 .ProjectTo<UserGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync(u => u.Id == userId);
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AutoMapper;
 using StackUnderflow.Core.Models;
 
@@ -12,6 +13,7 @@ namespace StackUnderflow.Api.Models
         public string AboutMe { get; private set; }
         public string CreatedOn { get; private set; }
         public string LastSeenBeforeDays { get; private set; }
+        public IEnumerable<string> Roles { get; private set; }
 
         public class UserGetViewModelProfile : Profile
         {

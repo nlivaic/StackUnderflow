@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using StackUnderflow.Core.Entities;
 
@@ -12,6 +14,7 @@ namespace StackUnderflow.Core.Models
         public string AboutMe { get; private set; }
         public DateTime CreatedOn { get; private set; }
         public TimeSpan LastSeenBefore { get; private set; }
+        public IEnumerable<string> Roles { get; set; }
 
         public class UserGetModelProfile : Profile
         {
@@ -21,6 +24,10 @@ namespace StackUnderflow.Core.Models
                     .ForMember(dest => dest.LastSeenBefore,
                         opts => opts.MapFrom(
                             src => DateTime.UtcNow - src.LastSeen
+                        ))
+                    .ForMember(dest => dest.Roles,
+                        opts => opts.MapFrom(
+                            src => src.Roles.Select(r => r.Role.ToString())
                         ));
             }
         }
