@@ -15,9 +15,12 @@ namespace StackUnderflow.Core.Entities
         public string AboutMe { get; private set; }
         public DateTime CreatedOn { get; private set; }
         public DateTime LastSeen { get; private set; }
+        public IEnumerable<UserRole> Roles => _roles;
         public IEnumerable<Question> Questions { get; private set; } = new List<Question>();
         public IEnumerable<Answer> Answers { get; private set; } = new List<Answer>();
         public IEnumerable<Comment> Comments { get; private set; } = new List<Comment>();
+
+        private List<UserRole> _roles;
 
         private User()
         {
@@ -49,6 +52,7 @@ namespace StackUnderflow.Core.Entities
             user.AboutMe = aboutMe;
             user.CreatedOn = DateTime.UtcNow;
             user.LastSeen = DateTime.UtcNow;
+            user._roles = new List<UserRole> { new UserRole(user.Id, Role.User) };
             return user;
         }
 
