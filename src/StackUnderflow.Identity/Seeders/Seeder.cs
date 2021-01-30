@@ -33,14 +33,11 @@ namespace StackUnderflow.Identity.Seeders
                         userManager.AddClaimAsync(user1, new Claim(JwtClaimTypes.Name, "Frank Underwood")).Wait();
                         userManager.AddClaimAsync(user1, new Claim(JwtClaimTypes.GivenName, "Frank")).Wait();
                         userManager.AddClaimAsync(user1, new Claim(JwtClaimTypes.FamilyName, "Underwood")).Wait();
-                        userManager.AddClaimAsync(user1, new Claim(JwtClaimTypes.Role, "user")).Wait();
                         userManager.CreateAsync(user2, "password").Wait();
                         userManager.AddClaimAsync(user2, new Claim(JwtClaimTypes.Name, "Claire Underwood")).Wait();
                         userManager.AddClaimAsync(user2, new Claim(JwtClaimTypes.GivenName, "Claire")).Wait();
                         userManager.AddClaimAsync(user2, new Claim(JwtClaimTypes.FamilyName, "Underwood")).Wait();
-                        userManager.AddClaimAsync(user2, new Claim(JwtClaimTypes.Role, "admin")).Wait();
                     }
-
                 }
             }
             return host;
