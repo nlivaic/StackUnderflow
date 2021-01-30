@@ -14,11 +14,7 @@ namespace StackUnderflow.Identity
             new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
-                new IdentityResource(
-                    "role",
-                    "Roles",
-                    new string[] { "role" })
+                new IdentityResources.Profile()
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -26,9 +22,8 @@ namespace StackUnderflow.Identity
             {
                 new ApiScope(
                     "stack_underflow_api",
-                    "Stack Underflow Api",
-                    new List<string> { "role" })
-                };
+                    "Stack Underflow Api")
+            };
 
         public static IEnumerable<ApiResource> ApiResources =>
             new ApiResource[]
@@ -38,10 +33,9 @@ namespace StackUnderflow.Identity
                     Name = "stack_underflow_api",
                     DisplayName = "Stack Underflow Api",
                     Scopes = new List<string> {"stack_underflow_api"},
-                    UserClaims = new List<string> { "role" },
                     ApiSecrets = new List<Secret> { new Secret("stack_underflow_api_secret".Sha256()) }
                 }
-             };
+            };
 
         public static IEnumerable<Client> Clients =>
             new Client[]
