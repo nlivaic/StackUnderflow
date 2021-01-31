@@ -35,7 +35,7 @@ const Profile = ({ profile, profileActions }) => {
     <>
       {user ? (
         <>
-          {`Hi, ${user.profile.name} `}
+          {`Hi, ${user.profile.name} (${profile.roles.join(", ")}) `}
           <button
             onClick={async (e) => {
               e.preventDefault();
@@ -67,7 +67,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    profile: state.profile, //getProfile(state),
+    profile: state.profile, // Reading straight from state because of a weird loop happening.
   };
 };
 
