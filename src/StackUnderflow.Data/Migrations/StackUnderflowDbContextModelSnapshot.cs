@@ -186,9 +186,10 @@ namespace StackUnderflow.Data.Migrations
 
             modelBuilder.Entity("StackUnderflow.Core.Entities.UserRole", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("Role")
                         .HasColumnType("integer");

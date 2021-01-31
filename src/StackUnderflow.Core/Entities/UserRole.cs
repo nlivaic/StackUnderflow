@@ -3,7 +3,7 @@ using StackUnderflow.Common.Base;
 
 namespace StackUnderflow.Core.Entities
 {
-    public class UserRole : BaseEntity<Guid>
+    public class UserRole : BaseEntity<int>
     {
         public Guid UserId { get; private set; }
         public Role Role { get; private set; }
