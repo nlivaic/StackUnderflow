@@ -15,7 +15,7 @@ const Profile = ({ profile, profileActions }) => {
     async function signinSilentAsync() {
       try {
         await signinSilent();
-        profileActions.loginSuccess();
+        profileActions.getCurrentUser();
       } catch {} // In case we are not logged into token service.
     }
 

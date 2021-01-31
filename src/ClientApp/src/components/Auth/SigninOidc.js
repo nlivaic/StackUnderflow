@@ -10,7 +10,7 @@ const SigninOidc = ({ profileActions }) => {
   useEffect(() => {
     async function signinAsync() {
       await signinRedirectCallback();
-      profileActions.loginSuccess();
+      await profileActions.getCurrentUser();
       history.push("/");
     }
     signinAsync();
