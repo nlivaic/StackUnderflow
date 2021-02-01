@@ -33,7 +33,8 @@ namespace StackUnderflow.Identity
                     Name = "stack_underflow_api",
                     DisplayName = "Stack Underflow Api",
                     Scopes = new List<string> {"stack_underflow_api"},
-                    ApiSecrets = new List<Secret> { new Secret("stack_underflow_api_secret".Sha256()) }
+                    ApiSecrets = new List<Secret> { new Secret("stack_underflow_api_secret".Sha256()) },
+                    UserClaims = new List<string> { "nickname" }
                 }
             };
 

@@ -29,13 +29,13 @@ const Profile = ({ profile, profileActions }) => {
       signinSilentAsync();
     }
     getUserAsync();
-  }, [profile, user]);
+  }, [profile, user, profileActions]);
 
   return (
     <>
       {user ? (
         <>
-          {`Hi, ${user.profile.name} (${profile.roles.join(", ")}) `}
+          {`Hi, ${user.profile.nickname} (${profile.roles.join(", ")}) `}
           <button
             onClick={async (e) => {
               e.preventDefault();
