@@ -1,10 +1,13 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackUnderflow.Api.BaseControllers;
+using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
@@ -41,7 +44,7 @@ namespace StackUnderflow.Api.Controllers
                 return NotFound();
             }
             var response = _mapper.Map<QuestionGetViewModel>(question);
-            response.IsOwner = Foo.TemporaryUser.Get == question.UserId;
+            response.IsOwner = User.IsOwner(response);
             return Ok(response);
         }
 
@@ -54,12 +57,12 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
-        [Microsoft.AspNetCore.Authorization.Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<QuestionGetViewModel>> PostAsync([FromBody] QuestionCreateRequest request)
         {
             var question = _mapper.Map<QuestionCreateModel>(request);
-            question.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            question.UserId = User.Claims.UserId();
             var questionModel = await _questionService.AskQuestionAsync(question);
             return CreatedAtRoute("GetQuestion", new { id = questionModel.Id }, _mapper.Map<QuestionGetViewModel>(questionModel));
         }
@@ -72,11 +75,12 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> PutAsync([FromRoute] Guid id, [FromBody] QuestionUpdateRequest request)
         {
             var question = _mapper.Map<QuestionEditModel>(request);
-            question.QuestionUserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            question.QuestionUserId = User.Claims.UserId();
             question.QuestionId = id;
             try
             {
@@ -101,10 +105,11 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [Produces("application/json")]
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
-            var userId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            var userId = User.Claims.UserId();
             try
             {
                 await _questionService.DeleteQuestionAsync(id, userId);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using StackUnderflow.Api.Helpers;
@@ -26,8 +27,14 @@ namespace StackUnderflow.Api.Filters
             _userScope = _logger.BeginScope(
                 new Dictionary<string, string>
                 {
-                    { "UserId", "Anonymous" },
-                    { "Claims", ""/*context.HttpContext.User.Claims*/}  // @nl: After OAuth2 is integrated, log claims.
+                    {
+                        "UserId",
+                        context.HttpContext.User.Identity.IsAuthenticated ? context.HttpContext.User.Claims.UserId().ToString() : "Anonymous"
+                    },
+                    {
+                        "Claims",
+                        string.Join(';', context.HttpContext.User.Claims.Select(claim => claim.ToString()))
+                    }
                 });
             _hostScope = _logger.BeginScope(_scopeInformation.Host);
         }

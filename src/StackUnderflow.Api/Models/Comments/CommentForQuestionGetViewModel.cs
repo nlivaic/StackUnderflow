@@ -2,7 +2,7 @@ using System;
 
 namespace StackUnderflow.Api.Models
 {
-    public class CommentForQuestionGetViewModel
+    public class CommentForQuestionGetViewModel : IOwneable
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }

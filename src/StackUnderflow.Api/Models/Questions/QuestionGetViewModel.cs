@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 namespace StackUnderflow.Api.Models
 {
-    public class QuestionGetViewModel
+    public class QuestionGetViewModel : IOwneable
     {
         public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public string Username { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }

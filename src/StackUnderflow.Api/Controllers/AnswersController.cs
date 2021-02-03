@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Constants;
+using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
 using StackUnderflow.Common.Exceptions;
@@ -70,7 +72,7 @@ namespace StackUnderflow.Api.Controllers
                 Headers.Pagination,
                 new StringValues(JsonSerializer.Serialize(pagingHeader)));
             var response = _mapper.Map<List<AnswerGetViewModel>>(pagedAnswers.Items);
-            response.ForEach(a => a.IsOwner = Foo.TemporaryUser.Get == a.UserId);
+            response.ForEach(a => a.IsOwner = User.IsOwner(a));
             return Ok(response);
         }
 
@@ -105,6 +107,7 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<AnswerGetViewModel>> PostAsync(
             [FromRoute] Guid questionId,
@@ -116,9 +119,7 @@ namespace StackUnderflow.Api.Controllers
             }
             var answer = _mapper.Map<AnswerCreateModel>(request);
             answer.QuestionId = questionId;
-            // Map answer to user fa11acfe-8234-4fa3-9733-19abe08f74e8 to force duplicate answer exception.
-            // Map answer to user 59405a18-8f1d-4ece-a4cd-ef91d5bd65ae to create a new answer. Will work only on first attempt!
-            answer.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            answer.UserId = User.Claims.UserId();
             AnswerGetModel answerGetModel = null;
             try
             {
@@ -130,7 +131,7 @@ namespace StackUnderflow.Api.Controllers
                 return UnprocessableEntity();
             }
             var answerGetViewModel = _mapper.Map<AnswerGetViewModel>(answerGetModel);
-            answerGetViewModel.IsOwner = Foo.TemporaryUser.Get == answerGetModel.UserId;
+            answerGetViewModel.IsOwner = User.IsOwner(answerGetViewModel);
             return CreatedAtRoute("Get", new { answerId = answerGetModel.Id, questionId }, answerGetViewModel);
         }
 
@@ -144,6 +145,7 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Authorize]
         [HttpPut("{answerId}")]
         public async Task<ActionResult> PutAsync(
             [FromRoute] Guid questionId,
@@ -153,7 +155,7 @@ namespace StackUnderflow.Api.Controllers
             var answer = _mapper.Map<AnswerEditModel>(request);
             answer.AnswerId = answerId;
             answer.QuestionId = questionId;
-            answer.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");
+            answer.UserId = User.Claims.UserId();
             try
             {
                 await _answerService.EditAnswerAsync(answer);
@@ -178,12 +180,13 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
+        [Authorize]
         [HttpDelete("{answerId}")]
         public async Task<ActionResult> DeleteAsync(
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId)
         {
-            var userId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");
+            var userId = User.Claims.UserId();
             try
             {
                 await _answerService.DeleteAnswerAsync(userId, questionId, answerId);
@@ -210,6 +213,7 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Authorize]
         [HttpPost("{answerId}/acceptAnswer")]
         public async Task<ActionResult<AnswerGetViewModel>> AcceptAnswer(
             [FromRoute] Guid questionId,
@@ -217,7 +221,7 @@ namespace StackUnderflow.Api.Controllers
         {
             var acceptAnswer = new AnswerAcceptModel
             {
-                QuestionUserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8"),
+                QuestionUserId = User.Claims.UserId(),
                 QuestionId = questionId,
                 AnswerId = answerId
             };
@@ -236,7 +240,7 @@ namespace StackUnderflow.Api.Controllers
                 return UnprocessableEntity();
             }
             var answerViewModel = _mapper.Map<AnswerGetViewModel>(answerModel);
-            answerViewModel.IsOwner = Foo.TemporaryUser.Get == answerViewModel.UserId;
+            answerViewModel.IsOwner = User.IsOwner(answerViewModel);
             return CreatedAtRoute("Get", new { questionId, answerId }, answerViewModel);
         }
     }

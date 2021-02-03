@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
@@ -23,12 +24,12 @@ namespace StackUnderflow.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("api/users/current")]
-        [Produces("application/json")]
         [Authorize]
+        [Produces("application/json")]
+        [HttpGet("api/users/current")]
         public async Task<ActionResult<UserGetViewModel>> Get()
         {
-            var userId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            var userId = User.Claims.UserId();
             var user = await _userService.GetUserAsync(userId);
             return _mapper.Map<UserGetViewModel>(user);
         }

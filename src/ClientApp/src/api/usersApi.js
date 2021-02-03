@@ -1,15 +1,8 @@
-import axios from "axios";
-import { settings } from "../settings.js";
-import { getAccessToken } from "../utils/authService.js";
+import axios from "../utils/axios";
 
 export async function getUser() {
-  var accessToken = await getAccessToken();
   try {
-    return (
-      await axios.get(`${settings.API_URL}/users/current`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      })
-    ).data;
+    return (await axios.get(`users/current`)).data;
   } catch (error) {
     console.error(error);
     throw error;

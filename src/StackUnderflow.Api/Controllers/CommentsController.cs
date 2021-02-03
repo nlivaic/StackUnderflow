@@ -10,6 +10,7 @@ using StackUnderflow.Api.Helpers;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StackUnderflow.Api.Controllers
 {
@@ -50,9 +51,9 @@ namespace StackUnderflow.Api.Controllers
             {
                 return NotFound();
             }
-            var comment = await _commentRepository.GetCommentsForQuestionAsync<CommentForQuestionGetModel>(questionId);
-            List<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comment);
-            result.ForEach(comment => comment.IsOwner = Foo.TemporaryUser.Get == comment.UserId);
+            var comments = await _commentRepository.GetCommentsForQuestionAsync<CommentForQuestionGetModel>(questionId);
+            List<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comments);
+            result.ForEach(comment => comment.IsOwner = User.IsOwner(comment));
             return Ok(result);
         }
 
@@ -73,7 +74,7 @@ namespace StackUnderflow.Api.Controllers
                 return NotFound();
             }
             CommentForQuestionGetViewModel result = _mapper.Map<CommentForQuestionGetViewModel>(comment);
-            result.IsOwner = Foo.TemporaryUser.Get == comment.UserId;
+            result.IsOwner = User.IsOwner(result);
             return Ok(result);
         }
 
@@ -96,7 +97,7 @@ namespace StackUnderflow.Api.Controllers
             }
             var comments = await _commentRepository.GetCommentsForAnswersAsync(answerIds);
             var result = _mapper.Map<List<CommentForAnswerGetViewModel>>(comments);
-            result.ForEach(comment => comment.IsOwner = Foo.TemporaryUser.Get == comment.UserId);
+            result.ForEach(comment => comment.IsOwner = User.IsOwner(comment));
             return Ok(result);
         }
 
@@ -119,7 +120,7 @@ namespace StackUnderflow.Api.Controllers
             if (comment == null || comment.QuestionId != questionId)
                 return NotFound();
             var result = _mapper.Map<CommentForAnswerGetViewModel>(comment);
-            result.IsOwner = Foo.TemporaryUser.Get == comment.UserId;
+            result.IsOwner = User.IsOwner(result);
             return Ok(result);
         }
 
@@ -133,12 +134,13 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Authorize]
         [HttpPost("/api/questions/{questionId}/[controller]")]
         public async Task<ActionResult<CommentForQuestionGetViewModel>> PostOnQuestionAsync([FromRoute] Guid questionId, [FromBody] CommentCreateRequest request)
         {
             var comment = _mapper.Map<CommentOnQuestionCreateModel>(request);
             comment.QuestionId = questionId;
-            comment.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            comment.UserId = User.Claims.UserId();
             CommentForQuestionGetModel newCommentModel = null;
             try
             {
@@ -149,7 +151,7 @@ namespace StackUnderflow.Api.Controllers
                 return NotFound();
             }
             var result = _mapper.Map<CommentForQuestionGetViewModel>(newCommentModel);
-            result.IsOwner = Foo.TemporaryUser.Get == comment.UserId;
+            result.IsOwner = User.IsOwner(result);
             return CreatedAtRoute("GetCommentForQuestion", new { questionId = questionId, commentId = newCommentModel.Id }, result);
         }
 
@@ -164,6 +166,7 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Authorize]
         [HttpPost("/api/questions/{questionId}/answers/{answerId}/[controller]")]
         public async Task<ActionResult<CommentForAnswerGetViewModel>> PostOnAnswerAsync(
             [FromRoute] Guid questionId,
@@ -173,7 +176,7 @@ namespace StackUnderflow.Api.Controllers
             var comment = _mapper.Map<CommentOnAnswerCreateModel>(request);
             comment.QuestionId = questionId;
             comment.AnswerId = answerId;
-            comment.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            comment.UserId = User.Claims.UserId();
             CommentForAnswerGetModel newCommentModel = null;
             try
             {
@@ -184,7 +187,7 @@ namespace StackUnderflow.Api.Controllers
                 return NotFound();
             }
             var result = _mapper.Map<CommentForAnswerGetViewModel>(newCommentModel);
-            result.IsOwner = Foo.TemporaryUser.Get == comment.UserId;
+            result.IsOwner = User.IsOwner(result);
             return CreatedAtRoute("GetCommentForAnswer", new { questionId, answerId, commentId = result.Id }, result);
         }
 
@@ -198,6 +201,7 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Authorize]
         [HttpPut("/api/questions/{questionId}/[controller]/{commentId}")]
         public async Task<ActionResult> PutOnQuestionAsync(
             [FromRoute] Guid questionId,
@@ -206,7 +210,7 @@ namespace StackUnderflow.Api.Controllers
         {
             var comment = _mapper.Map<CommentEditModel>(request);
             comment.ParentQuestionId = questionId;
-            comment.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            comment.UserId = User.Claims.UserId();
             comment.CommentId = commentId;
             try
             {
@@ -235,6 +239,7 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Authorize]
         [HttpPut("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
         public async Task<ActionResult> PutOnAnswerAsync(
             [FromRoute] Guid questionId,
@@ -246,7 +251,7 @@ namespace StackUnderflow.Api.Controllers
             comment.ParentQuestionId = questionId;
             comment.ParentAnswerId = answerId;
             comment.CommentId = commentId;
-            comment.UserId = new Guid("fa11acfe-8234-4fa3-9733-19abe08f74e8");       // @nl: from logged in user.
+            comment.UserId = User.Claims.UserId();
             try
             {
                 await _commentService.EditAsync(comment);
@@ -271,6 +276,7 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
+        [Authorize]
         [HttpDelete("/api/questions/{questionId}/[controller]/{commentId}")]
         public async Task<ActionResult> DeleteOnQuestionAsync(
             [FromRoute] Guid questionId,
@@ -301,6 +307,7 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [Produces("application/json")]
+        [Authorize]
         [HttpDelete("/api/questions/{questionId}/answers/{answerId}/[controller]/{commentId}")]
         public async Task<ActionResult> DeleteOnAnswerAsync(
             [FromRoute] Guid questionId,

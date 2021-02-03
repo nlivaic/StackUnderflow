@@ -1,5 +1,4 @@
-import axios from "axios";
-import { settings } from "../settings.js";
+import axios from "../utils/axios";
 
 export async function getComments(parentType, parentIds) {
   try {
@@ -17,17 +16,13 @@ export async function getComments(parentType, parentIds) {
 }
 
 async function getCommentsForQuestion({ questionId }) {
-  return (
-    await axios.get(`${settings.API_URL}/questions/${questionId}/comments`)
-  ).data;
+  return (await axios.get(`questions/${questionId}/comments`)).data;
 }
 
 async function getCommentsForAnswers({ questionId, answerIds }) {
   return (
     await axios.get(
-      `${settings.API_URL}/questions/${questionId}/answers/${answerIds.join(
-        ","
-      )}/comments`
+      `questions/${questionId}/answers/${answerIds.join(",")}/comments`
     )
   ).data;
 }
@@ -48,18 +43,13 @@ export async function postComment(comment, parentType, parentIds) {
 }
 
 async function postCommentForQuestion(comment, { questionId }) {
-  return (
-    await axios.post(
-      `${settings.API_URL}/questions/${questionId}/comments`,
-      comment
-    )
-  ).data;
+  return (await axios.post(`questions/${questionId}/comments`, comment)).data;
 }
 
 async function postCommentForAnswer(comment, { questionId, answerId }) {
   return (
     await axios.post(
-      `${settings.API_URL}/questions/${questionId}/answers/${answerId}/comments`,
+      `questions/${questionId}/answers/${answerId}/comments`,
       comment
     )
   ).data;
@@ -80,14 +70,14 @@ export async function editComment(comment, parentType, parentIds) {
 
 async function editCommentForQuestion(comment, { questionId }) {
   return await axios.put(
-    `${settings.API_URL}/questions/${questionId}/comments/${comment.id}`,
+    `questions/${questionId}/comments/${comment.id}`,
     comment
   );
 }
 
 async function editCommentForAnswer(comment, { questionId, answerId }) {
   return await axios.put(
-    `${settings.API_URL}/questions/${questionId}/answers/${answerId}/comments/${comment.id}`,
+    `questions/${questionId}/answers/${answerId}/comments/${comment.id}`,
     comment
   );
 }
@@ -106,13 +96,11 @@ export async function deleteComment(commentId, parentType, parentIds) {
 }
 
 async function deleteCommentForQuestion(commentId, { questionId }) {
-  return await axios.delete(
-    `${settings.API_URL}/questions/${questionId}/comments/${commentId}`
-  );
+  return await axios.delete(`questions/${questionId}/comments/${commentId}`);
 }
 
 async function deleteCommentForAnswer(commentId, { questionId, answerId }) {
   return await axios.delete(
-    `${settings.API_URL}/questions/${questionId}/answers/${answerId}/comments/${commentId}`
+    `questions/${questionId}/answers/${answerId}/comments/${commentId}`
   );
 }
