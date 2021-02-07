@@ -131,11 +131,12 @@ namespace StackUnderflow.Api.Seeders
 
         private static User GenerateUser() =>
             User.Create(
+                _limits,
+                Guid.NewGuid(),
                 Faker.Name.Last().PadRight(10, 'a').Substring(0, new Random().Next(7, 10)),
                 Faker.Internet.Email(),
                 Faker.Internet.Url(),
-                Faker.Lorem.Paragraph(4).PadRight(200, 'a').Substring(0, new Random().Next(0, 200)),
-                _limits);
+                Faker.Lorem.Paragraph(4).PadRight(200, 'a').Substring(0, new Random().Next(0, 200)));
 
         private static Tag ById(this DbSet<Tag> tags, int id) =>
             tags.First(t => t.Id == new Guid($"00000000-0000-0000-0000-00000000000{id}"));

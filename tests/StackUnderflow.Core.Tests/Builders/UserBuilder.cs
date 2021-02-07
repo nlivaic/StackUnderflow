@@ -10,11 +10,12 @@ namespace StackUnderflow.Core.Tests.Builders
         public UserBuilder BuildValidUser()
         {
             _target = User.Create(
+                new LimitsBuilder().Build(),
+                Guid.NewGuid(),
                 "normal_username",
                 "normal.user.name@some_email.com",
                 "http://normal_web_site.com/",
-                "about_me",
-                new LimitsBuilder().Build()
+                "about_me"
             );
             return this;
         }
@@ -22,11 +23,12 @@ namespace StackUnderflow.Core.Tests.Builders
         public UserBuilder BuildUser(Guid id)
         {
             _target = User.Create(
+                new LimitsBuilder().Build(),
+                Guid.NewGuid(),
                 "normal_username",
                 "normal.user.name@some_email.com",
                 "http://normal_web_site.com/",
-                "about_me",
-                new LimitsBuilder().Build()
+                "about_me"
             );
             _target.SetProperty(nameof(_target.Id), id);
             return this;

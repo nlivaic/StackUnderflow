@@ -62,7 +62,7 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult<QuestionGetViewModel>> PostAsync([FromBody] QuestionCreateRequest request)
         {
             var question = _mapper.Map<QuestionCreateModel>(request);
-            question.UserId = User.Claims.UserId();
+            question.UserId = User.UserId();
             var questionModel = await _questionService.AskQuestionAsync(question);
             return CreatedAtRoute("GetQuestion", new { id = questionModel.Id }, _mapper.Map<QuestionGetViewModel>(questionModel));
         }
@@ -80,7 +80,7 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult> PutAsync([FromRoute] Guid id, [FromBody] QuestionUpdateRequest request)
         {
             var question = _mapper.Map<QuestionEditModel>(request);
-            question.QuestionUserId = User.Claims.UserId();
+            question.QuestionUserId = User.UserId();
             question.QuestionId = id;
             try
             {
@@ -109,7 +109,7 @@ namespace StackUnderflow.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
-            var userId = User.Claims.UserId();
+            var userId = User.UserId();
             try
             {
                 await _questionService.DeleteQuestionAsync(id, userId);

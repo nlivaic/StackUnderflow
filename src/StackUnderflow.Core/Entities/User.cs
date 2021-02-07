@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
 using StackUnderflow.Common.Base;
 using StackUnderflow.Common.Exceptions;
@@ -20,17 +21,15 @@ namespace StackUnderflow.Core.Entities
         public IEnumerable<Answer> Answers { get; private set; } = new List<Answer>();
         public IEnumerable<Comment> Comments { get; private set; } = new List<Comment>();
 
-        private List<UserRole> _roles;
+        private List<UserRole> _roles = new List<UserRole>();
 
         private User()
         {
         }
 
-        public void Edit(string username, string email, string websiteUrl, string aboutMe, ILimits limits)
+        public void Edit(string websiteUrl, string aboutMe, ILimits limits)
         {
-            Validate(username, email, websiteUrl, aboutMe, limits);
-            Username = username;
-            Email = email;
+            Validate(websiteUrl, aboutMe, limits);
             WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
                 ? null
                 : new Uri(websiteUrl);
@@ -39,11 +38,14 @@ namespace StackUnderflow.Core.Entities
             LastSeen = DateTime.UtcNow;
         }
 
-        public static User Create(string username, string email, string websiteUrl, string aboutMe, ILimits limits)
+        /// <summary>
+        /// Provide Id based on token service's user identifier.
+        /// </summary>
+        public static User Create(ILimits limits, Guid id, string username, string email = null, string websiteUrl = null, string aboutMe = null)
         {
-            Validate(username, email, websiteUrl, aboutMe, limits);
+            Validate(websiteUrl, aboutMe, limits);
             User user = new User();
-            user.Id = Guid.NewGuid();
+            user.Id = id;
             user.Username = username;
             user.Email = email;
             user.WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
@@ -51,34 +53,30 @@ namespace StackUnderflow.Core.Entities
                 : new Uri(websiteUrl);
             user.AboutMe = aboutMe;
             user.CreatedOn = DateTime.UtcNow;
-            user.LastSeen = DateTime.UtcNow;
-            user._roles = new List<UserRole> { new UserRole(user.Id, Role.User) };
+            user.SeenNow();
+            user.AssignRole(Role.User);
             return user;
+        }
+
+        public void AssignRole(Role role)
+        {
+            if (_roles.Any(r => r.Role == role))
+            {
+                throw new BusinessException($"Role {role.ToString()} already assigned to user.");
+            }
+            _roles.Add(new UserRole(Id, role));
         }
 
         public void SeenNow() =>
             LastSeen = DateTime.UtcNow;
 
-        private static void Validate(string username, string email, string websiteUrl, string aboutMe, ILimits limits)
+        private static void Validate(string websiteUrl, string aboutMe, ILimits limits)
         {
-            if (username.Length < limits.UsernameMinimumLength || username.Length > limits.UsernameMaximumLength)
-            {
-                throw new BusinessException(
-                    $"Username length must be between {limits.UsernameMinimumLength} and {limits.UsernameMaximumLength}.");
-            }
-            try
-            {
-                new MailAddress(email);
-            }
-            catch
-            {
-                throw new BusinessException("Email is not valid.");
-            }
             if (!string.IsNullOrWhiteSpace(websiteUrl) && !Uri.TryCreate(websiteUrl, UriKind.Absolute, out var _))
             {
                 throw new BusinessException("Website Url is not valid.");
             }
-            if (aboutMe.Length > limits.AboutMeMaximumLength)
+            if (!string.IsNullOrWhiteSpace(aboutMe) && aboutMe.Length > limits.AboutMeMaximumLength)
             {
                 throw new BusinessException($"About Me is too long, must be at most {limits.AboutMeMaximumLength} characters.");
             }

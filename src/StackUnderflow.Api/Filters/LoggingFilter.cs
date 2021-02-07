@@ -29,7 +29,7 @@ namespace StackUnderflow.Api.Filters
                 {
                     {
                         "UserId",
-                        context.HttpContext.User.Identity.IsAuthenticated ? context.HttpContext.User.Claims.UserId().ToString() : "Anonymous"
+                        context.HttpContext.User.Identity.IsAuthenticated ? context.HttpContext.User.UserId().ToString() : "Anonymous"
                     },
                     {
                         "Claims",

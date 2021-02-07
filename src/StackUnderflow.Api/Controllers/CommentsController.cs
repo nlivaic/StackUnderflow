@@ -140,7 +140,7 @@ namespace StackUnderflow.Api.Controllers
         {
             var comment = _mapper.Map<CommentOnQuestionCreateModel>(request);
             comment.QuestionId = questionId;
-            comment.UserId = User.Claims.UserId();
+            comment.UserId = User.UserId();
             CommentForQuestionGetModel newCommentModel = null;
             try
             {
@@ -176,7 +176,7 @@ namespace StackUnderflow.Api.Controllers
             var comment = _mapper.Map<CommentOnAnswerCreateModel>(request);
             comment.QuestionId = questionId;
             comment.AnswerId = answerId;
-            comment.UserId = User.Claims.UserId();
+            comment.UserId = User.UserId();
             CommentForAnswerGetModel newCommentModel = null;
             try
             {
@@ -210,7 +210,7 @@ namespace StackUnderflow.Api.Controllers
         {
             var comment = _mapper.Map<CommentEditModel>(request);
             comment.ParentQuestionId = questionId;
-            comment.UserId = User.Claims.UserId();
+            comment.UserId = User.UserId();
             comment.CommentId = commentId;
             try
             {
@@ -251,7 +251,7 @@ namespace StackUnderflow.Api.Controllers
             comment.ParentQuestionId = questionId;
             comment.ParentAnswerId = answerId;
             comment.CommentId = commentId;
-            comment.UserId = User.Claims.UserId();
+            comment.UserId = User.UserId();
             try
             {
                 await _commentService.EditAsync(comment);

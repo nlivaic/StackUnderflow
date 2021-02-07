@@ -5,7 +5,6 @@ using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
-using System;
 using System.Threading.Tasks;
 
 namespace StackUnderflow.Api.Controllers
@@ -27,10 +26,26 @@ namespace StackUnderflow.Api.Controllers
         [Authorize]
         [Produces("application/json")]
         [HttpGet("api/users/current")]
-        public async Task<ActionResult<UserGetViewModel>> Get()
+        public async Task<ActionResult<UserGetViewModel>> GetCurrent()
         {
-            var userId = User.Claims.UserId();
+            var userId = User.UserId();
             var user = await _userService.GetUserAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return _mapper.Map<UserGetViewModel>(user);
+        }
+
+        [Authorize]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [HttpPost("api/users/current")]
+        public async Task<ActionResult<UserGetViewModel>> PostCurrent([FromBody] UserCreateRequest request)
+        {
+            var model = _mapper.Map<UserCreateModel>(request);
+            model.Id = User.UserId();
+            var user = await _userService.CreateUserAsync(model);
             return _mapper.Map<UserGetViewModel>(user);
         }
     }

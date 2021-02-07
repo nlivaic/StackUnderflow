@@ -119,7 +119,7 @@ namespace StackUnderflow.Api.Controllers
             }
             var answer = _mapper.Map<AnswerCreateModel>(request);
             answer.QuestionId = questionId;
-            answer.UserId = User.Claims.UserId();
+            answer.UserId = User.UserId();
             AnswerGetModel answerGetModel = null;
             try
             {
@@ -155,7 +155,7 @@ namespace StackUnderflow.Api.Controllers
             var answer = _mapper.Map<AnswerEditModel>(request);
             answer.AnswerId = answerId;
             answer.QuestionId = questionId;
-            answer.UserId = User.Claims.UserId();
+            answer.UserId = User.UserId();
             try
             {
                 await _answerService.EditAnswerAsync(answer);
@@ -186,7 +186,7 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId)
         {
-            var userId = User.Claims.UserId();
+            var userId = User.UserId();
             try
             {
                 await _answerService.DeleteAnswerAsync(userId, questionId, answerId);
@@ -221,7 +221,7 @@ namespace StackUnderflow.Api.Controllers
         {
             var acceptAnswer = new AnswerAcceptModel
             {
-                QuestionUserId = User.Claims.UserId(),
+                QuestionUserId = User.UserId(),
                 QuestionId = questionId,
                 AnswerId = answerId
             };

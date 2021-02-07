@@ -9,7 +9,7 @@ const config = {
   client_id: "stack_underflow_client",
   redirect_uri: "http://localhost:3000/signin-oidc",
   response_type: "code",
-  scope: "openid profile stack_underflow_api",
+  scope: "openid profile stack_underflow_api email",
   post_logout_redirect_uri: "http://localhost:3000/signout-callback-oidc",
   userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() }),
   automaticSilentRenew: true,

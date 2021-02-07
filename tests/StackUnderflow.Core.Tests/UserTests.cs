@@ -21,7 +21,7 @@ namespace StackUnderflow.Core.Tests
             var limits = new LimitsBuilder().Build();
 
             // Act
-            var result = User.Create(username, email, websiteUrl, aboutMe, limits);
+            var result = User.Create(limits, Guid.NewGuid(), username, email, websiteUrl, aboutMe);
 
             // Assert
             var resultWebsiteUrl = result.WebsiteUrl?.ToString();
@@ -51,7 +51,7 @@ namespace StackUnderflow.Core.Tests
             var limits = new LimitsBuilder().Build();
 
             // Act, Assert
-            Assert.Throws<BusinessException>(() => User.Create(username, email, websiteUrl, aboutMe, limits));
+            Assert.Throws<BusinessException>(() => User.Create(limits, Guid.NewGuid(), username, email, websiteUrl, aboutMe));
         }
 
         [Theory]

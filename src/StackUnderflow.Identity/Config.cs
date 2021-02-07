@@ -14,7 +14,8 @@ namespace StackUnderflow.Identity
             new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResource("email", "Email", new List<string> {"email"})
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -33,8 +34,7 @@ namespace StackUnderflow.Identity
                     Name = "stack_underflow_api",
                     DisplayName = "Stack Underflow Api",
                     Scopes = new List<string> {"stack_underflow_api"},
-                    ApiSecrets = new List<Secret> { new Secret("stack_underflow_api_secret".Sha256()) },
-                    UserClaims = new List<string> { "nickname" }
+                    ApiSecrets = new List<Secret> { new Secret("stack_underflow_api_secret".Sha256()) }
                 }
             };
 
@@ -57,10 +57,11 @@ namespace StackUnderflow.Identity
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "stack_underflow_api"
+                        "stack_underflow_api",
+                        "email"
                     },
                     ClientSecrets = { new Secret("secret".Sha256()) },
-                    AccessTokenLifetime = 120       // Dev only   
+                    AccessTokenLifetime = 120       // @nl: Dev only   
                 }
             };
     }
