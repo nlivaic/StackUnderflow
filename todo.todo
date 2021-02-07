@@ -1,16 +1,27 @@
 Front end:
   ☐ Bug:
+    ☐ PRoblem sa slanjem tokena kad se otvori neki non-root Url.
+      ☐ Ulogiran na IdP.
+      ☐ Otvori http://localhost:3000/questions/0002f834-bf18-41eb-a6db-19745660e764.
+      ☐ Još nije obavljen sign in u aplikaciju.
+      ☐ Već krenu requesti prema StackUnderflow Apiju.
+      ☐ Rezultati se vrate, pokazujući kao da nisi vlasnik nijednog q/a/c.
+      ☐ Asinhrono se ulogiraš.
+      ☐ Stanje više nije konzistentno.
     ☐ Tags textbox: every whitespace is a new tag in Redux store.
     ☐ Mislim da sam krivo dizajnirao komponente. Primjer:
       ☐ Novi question -> upiši vrijednosti -> stisni Clear.
       ☐ U callbacku za clear (onClearHandle) ja moram ručno (!) očistiti i lokalni `editedQuestion` i Redux store `draftQuestion`.
       ☐ U biti sam poništio one-way binding.
       ☐ Treba dobro razmisliti o dizajnu tih edit existing i add new komponenti.
+    ☐ Error handling sa API-ja mi se ne čini da radi dobro. Simuliraj exception na Apiju pa vidi što se dogodi na front endu.
   ✔ Store state in session or wherever: https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage @done (22. 12. 2020. 23:36:56)
   ☐ Fix git client so as I don't have to re-enter user/pass on every push. Use SSL.
   ☐ Logging
   ☐ Error component. 
   ☐ Use https instead of http on React server.
+  ☐ Integrirati UserManager u React Context: https://dev.to/tappyy/oidc-authentication-with-react-identity-server-4-3h0d
+  ☐ AuthService.js - hardkodiran localhost sa portovima.
   ☐ Additional features:
     ☐ Unaccept answer.
     ☐ Tags are specified in UI using ids. This should be fetched from API and name should be represented. Should be clickable.
@@ -27,22 +38,80 @@ Backend:
       ✔ Do a silent token renew. @done (11. 01. 2021. 23:59:43)
       ✔ Continue with the to do list for Identity Server. @done (11. 01. 2021. 23:59:54)
       ✔ Take care not to commit 120s access token lifetime on IS4 Config.cs @done (11. 01. 2021. 23:59:56)
-    ☐ Registration @today 
-      ☐ Add ASP.NET Core Identity - context, register with DI, migration
-      ☐ Read up on ASP.NET Core Identity
-      ☐ Integrate with Identity Server
+    ☐ User Management @today 
+      ✔ Add ASP.NET Core Identity - context, register with DI @done (24. 01. 2021. 23:28:42)
+        ✔ IdentityUser properties: Id, UserName, Email @done (24. 01. 2021. 23:28:43)
+        ✔ UserManager<T>: .Users, .FindByIdAsync(), .CreateAsync(), .UpdateAsync(), .DeleteAsync() @done (24. 01. 2021. 23:28:44)
+        ✔ IdentityResult (returned from .CreateAsync()): .Succeeded, .Errors @done (24. 01. 2021. 23:28:45)
+      ✔ Read up on ASP.NET Core Identity @done (24. 01. 2021. 23:28:46)
+      ✔ Seed users and claims. @done (24. 01. 2021. 23:54:41)
+      ✔ Integrate with Identity Server @today @done (27. 01. 2021. 22:27:22)
       ☐ Look at Kevin Dockx Pluralsight course on User Management.
-      ☐ Implement.
-    ☐ Password reset
+      ☐ Application identity
+        ✔ IdP must not serve 'role' claim. @done (28. 01. 2021. 23:20:09)
+        ✔ Client app must call api/users endpoint and get additional user details. @done (31. 01. 2021. 23:31:07)
+          ✔ usersApi.js: attach bearer token @done (30. 01. 2021. 23:35:43)
+          ✔ profileReducer: store role in state. @done (31. 01. 2021. 00:15:38)
+          ✔ profileActions: @done (31. 01. 2021. 00:15:40)
+            ✔ use thunk to call /api/users @done (31. 01. 2021. 00:15:40)
+            ✔ Store state in profileReducer @done (31. 01. 2021. 00:15:42)
+          ✔ Provjeriti još jednom kako front end radi. @critical @done (31. 01. 2021. 12:56:46)
+          ✔ Silent Sign In više ne radi. @critical @done (31. 01. 2021. 12:56:45)
+          ✔ profile.js component should display user's role, just for fun :) @done (31. 01. 2021. 23:31:04)
+        ✔ StackUnderflow.Core: @done (01. 02. 2021. 23:01:04)
+          ✔ User.cs must support multiple roles. E.g. user + moderator. @done (31. 01. 2021. 00:15:57)
+          ✔ Role.cs @done (31. 01. 2021. 00:15:58)
+          ✔ UserGetModel + AutoMapper profile @done (28. 01. 2021. 23:20:17)
+          ✔ UserCreateModel + AutoMapper profile @done (31. 01. 2021. 00:16:01)
+        ✔ Migrations @done (31. 01. 2021. 00:16:05)
+          ✔ Created @done (29. 01. 2021. 22:31:38)
+          ✔ Applied @done (31. 01. 2021. 00:16:04)
+        ✔ StackUnderflow.Api: @done (04. 02. 2021. 22:48:35)
+          ✔ UsersController @done (31. 01. 2021. 00:17:21)
+          ✔ Sort out user.ids: @done (31. 01. 2021. 23:01:17)
+            ✔ Id we are using most often should be the same as Frank. @done (31. 01. 2021. 23:01:06)
+            ✔ Some other User should get the same id as Claire. @done (31. 01. 2021. 23:01:07)
+          ✔ Assign roles to users. @done (31. 01. 2021. 23:30:59)
+          ✔ User Id se vadi iz Claims Principal @critical @done (03. 02. 2021. 22:48:04)
+          ✔ Expose roles only as strings? @done (01. 02. 2021. 22:54:39)
+      ☐ Register user
+        ☐ IdP:
+          ✔ New controller: RegisterController. Two actions, [HttpGet]Register and [HttpPost]Register. @done (04. 02. 2021. 22:48:14)
+          ✔ RegisterViewModel. @done (04. 02. 2021. 22:48:15)
+          ✔ View: Provide an entry field for every claim. Submit back to HttpPost action. @done (04. 02. 2021. 22:48:18)
+          ✔ In controller, once new user is stored, do the sign in. @done (07. 02. 2021. 21:07:34)
+          ✔ On Sign in page provide a link to registration page. @done (07. 02. 2021. 21:07:38)
+          ✔ ReturnUrl must be maintained across all actions. @done (07. 02. 2021. 21:07:39)
+          ☐ Validate Antiforgery + generate token
+          ☐ Display error on page.
+          ☐ 404 on jquery
+        ✔ Api: @done (04. 02. 2021. 10:04:03)
+          ✔ Get User endpoint must also create a new User. Copy IdP claim 'nickname' to Username. @done (04. 02. 2021. 10:04:01)
+        ☐ Core:
+          ✔ Treat some properties as optional when creating the user. @done (04. 02. 2021. 10:57:19)
+          ✔ Update seeder @done (04. 02. 2021. 10:57:20)
+        ☐ Test project:
+          ✔ LimitsBuilder: remove limits on username. @done (04. 02. 2021. 10:57:31)
+          ☐ All references and tests regarding shuffled parameters on User.Create()
+        ☐ Front end:
+          ☐ On sign up, calls /api/users twice.
+        ☐ Data:
+          ☐ Create Migrations
+          ☐ Update database
+      ☐ Activate an account
+      ☐ Reset password
+      ☐ Edit account on SU Api and front end.
+      ☐ On logout, while still on IdP, before it redirects back, a page is shown briefly. Remove the text on it.
+      ☐ Password for all new users: 6thMpeIOFk92D4!V
     ☐ API - add policies
+    ☐ onDelete: ReferentialAction.Cascade
+      ☐ Ako pogledaš 20210130221500_UserRole.cs vidjet ćeš taj redak. Što to točno znači?
     ☐ Komponenta signinOidc redirecta na '/'. Neka redirecta tamo gdje si zadnje bio. Pretraži IdS4 za "returnUrl" parametar.
     ✔ Kad loadam aplikaciju, dobijem hrpu errora u console logu. @done (12. 01. 2021. 00:00:14)
     ✔ Sign out @done (12. 01. 2021. 00:00:16)
     ✔ Silent refresh: @done (16. 01. 2021. 13:21:18)
       ✔ https://www.scottbrady91.com/OpenID-Connect/Silent-Refresh-Refreshing-Access-Tokens-when-using-the-Implicit-Flow @done (16. 01. 2021. 13:21:19)
       ✔ https://github.com/IdentityModel/oidc-client-js/issues/830#issuecomment-506299033 @done (16. 01. 2021. 13:21:20)
-    ☐ Integrirati UserManager u React Context: https://dev.to/tappyy/oidc-authentication-with-react-identity-server-4-3h0d
-    ☐ AuthService.js - hardkodiran localhost sa portovima.
     ☐ U VS Codeu napraviti da sa F5 pokrenem i Api i Identity Server projekt.
     ✔ dotnet new is4ui - look for this command in my OAuth2 Github repo. @done (09. 01. 2021. 00:18:10)
     ☐ Što će mi UI na IdS4?
@@ -51,7 +120,9 @@ Backend:
     ☐ IdP: CORS za dev i prod env.
     ✔ Client app: PKCE protection @done (09. 01. 2021. 00:17:58)
     ✔ IdP: PKCE protection @done (09. 01. 2021. 00:17:59)
-    ☐ Sign up
+  ☐ User endpoint
+    ☐ Retrieve user by id. Allow anonymous.
+    ☐ User 
   ☐ Logging
     ☐ Problem: LoggingFilter je ok zasad, ali scopeovi se ne logiraju za exception. Valjda zato jer ApiExceptionHandlerMiddleware nije unutar Action filtera.
       ☐ To ću moći pokušati riješiti tek kad upogonim Identity Server. Onda bih mogao probati prebaciti kreiranje Scopeova u ApiExceptionHandlerMiddleware i otamo povući User Id i Claimove.
@@ -66,6 +137,10 @@ Backend:
     ✔ HttpPut - Produces and Consumes attributes @done (04. 01. 2021. 13:49:14)
     ✔ HttpDelete - Produces attribute @done (04. 01. 2021. 13:49:15)
     ✔ HttpPost - ValidationProblemDetails + Status422UnprocessableEntity. @done (04. 01. 2021. 14:13:27)
+  ☐ Move all AutoMapper profiles to appropriate model classes.
+  ☐ Repository: switch from .ProjectTo<T>() to .Projector<T>()
+  ☐ Po repoima ima glupih queryja, rade .Where() pa .ProjectTo, pa .Single. To se može skratiti, pogledaj USerRepository.GetUser()
+  ☐ QuestionSummariesController bi trebao nasljeđivati od ApiControllerBase.
   ☐ Roles
     ☐ User
     ☐ Admin
@@ -77,10 +152,9 @@ Backend:
   ☐ Add HSTS to API.
   ☐ Unit tests: rerun, review, fix.
   ☐ Prepare for production.
-  ☐ VotesSum je loš podatak. Upvote i downvote će rezultirati nulom, a to nije ok.
+  ☐ VotesSum je loš podatak. Upvote i downvote će rezultirati nulom, a to nije ok. * Sad ovo opet čitam, nije točno to što sam napisao. +1 pa -1 trebaju na front endu rezultirati nulom. Ali interno trebamo voditi računa o broju jednih i drugih da znamo procesuirati zato jer ne nosi +1 nužno (?) isti broj bodova kao i -1.
   ☐ POST question {body: "", title: "", tags: []} - how does it behave?
   ✘ POSTing invalid question to api/questions returns a 422. The errors collection is PascalCased, but should be camelCased. @cancelled (19. 12. 2020. 23:11:58)
-  ☐ KAko se Question.Create() BusinessException pretvori u 422?
   ☐ Migrate to net 5.0
   ☐ Some projects are built against netstandard2.0, others against netstandard2.1
   ☐ MaximumPageSize nema efekta.
@@ -93,6 +167,7 @@ Backend:
   ☐ Pregledati svaki query i vidjeti da li je Tracking ili NoTracking i da li je odabir ispravan.
   ☐ Answer View Model (GET) trebaju imati i podatak kad je answer prihvaćen.
   ☐ Azure
+  ☐ Napraviti readme: kako izgleda projekt, kako ga zbildati, pokrenuti.
   ☐ Admin:
     ☐ Dodati rolu.
     ☐ Može izbrisati i editirati svaki resurs.
