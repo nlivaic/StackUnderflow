@@ -6,6 +6,7 @@ namespace IdentityServerHost.Quickstart.UI
     {
         [Required(ErrorMessage = "Username is required.")]
         [MinLength(5, ErrorMessage = "Username must be at least 5 characters.")]
+        [RegularExpression("[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_.1234567890]{5,}", ErrorMessage = "Username must be at least 5 characters long.")]
         public string Username { get; set; }
         [Required]
         [DataType(DataType.Password)]
@@ -13,6 +14,7 @@ namespace IdentityServerHost.Quickstart.UI
         [Required]
         [DataType(DataType.Password)]
         [Compare("Password")]
+        [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
         [EmailAddress(ErrorMessage = "Email not valid.")]
         [Required(ErrorMessage = "Email is required.")]
