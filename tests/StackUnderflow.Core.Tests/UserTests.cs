@@ -55,9 +55,9 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Theory]
-        [InlineData("newUsername", "new.normal.user.name@some_email.com", "http://new_normal_web_site.com/", "newAboutMe")]
-        [InlineData("newUsername", "new.normal.user.name@some_email.com", "", "")]
-        public void User_CanEditWithValidData_Successfully(string username, string email, string websiteUrl, string aboutMe)
+        [InlineData("http://new_normal_web_site.com/", "newAboutMe")]
+        [InlineData("", "")]
+        public void User_CanEditWithValidData_Successfully(string websiteUrl, string aboutMe)
         {
             // Arrange
             var limits = new LimitsBuilder().Build();
@@ -65,13 +65,11 @@ namespace StackUnderflow.Core.Tests
             var originalId = target.Id;
 
             // Act
-            target.Edit(username, email, websiteUrl, aboutMe, limits);
+            target.Edit(websiteUrl, aboutMe, limits);
 
             // Assert
             var resultWebsiteUrl = target.WebsiteUrl?.ToString();
             Assert.Equal(target.Id, originalId);
-            Assert.Equal(target.Username, username);
-            Assert.Equal(target.Email, email);
             Assert.Equal(resultWebsiteUrl, string.IsNullOrWhiteSpace(websiteUrl) ? null : websiteUrl);
             Assert.Equal(target.AboutMe, aboutMe);
             Assert.True(DateTime.UtcNow - target.CreatedOn < TimeSpan.FromSeconds(1));
@@ -81,20 +79,20 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Theory]
-        [InlineData("", "", "", "")]
-        [InlineData("a", "normal.user.name@some_email.com", "http://normal_web_site.com/", "")]
-        [InlineData("normal", "invalid.user.name@", "http://normal_web_site.com/", "")]
-        [InlineData("very_long_username", "normal.user.name@some_email.com", "http://normal_web_site.com/", "")]
-        [InlineData("normal", "normal.user.name@some_email.com", "invalid_web_site/", "")]
-        [InlineData("normal", "normal.user.name@some_email.com", "http://normal_web_site/", "very_very_very_very_long_about_me")]
-        public void User_EditingWithInvalidData_Throws(string username, string email, string websiteUrl, string aboutMe)
+        [InlineData("", "")]
+        [InlineData("http://normal_web_site.com/", "")]
+        [InlineData("http://normal_web_site.com/", "")]
+        [InlineData("http://normal_web_site.com/", "")]
+        [InlineData("invalid_web_site/", "")]
+        [InlineData("http://normal_web_site/", "very_very_very_very_long_about_me")]
+        public void User_EditingWithInvalidData_Throws(string websiteUrl, string aboutMe)
         {
             // Arrange
             var limits = new LimitsBuilder().Build();
             var target = new UserBuilder().BuildValidUser().Build();
 
             // Act, Assert
-            Assert.Throws<BusinessException>(() => target.Edit(username, email, websiteUrl, aboutMe, limits));
+            Assert.Throws<BusinessException>(() => target.Edit(websiteUrl, aboutMe, limits));
         }
 
         [Fact]
