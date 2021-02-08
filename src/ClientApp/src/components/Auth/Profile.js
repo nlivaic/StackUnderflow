@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   signinRedirect,
   signoutRedirect,
-  signinSilent,
   getUser,
 } from "../../utils/authService.js";
 import * as profileActions from "../../redux/actions/profileActions.js";
@@ -12,24 +11,16 @@ import { connect } from "react-redux";
 const Profile = ({ profile, profileActions }) => {
   const [user, setUser] = useState(null);
   useEffect(() => {
-    async function signinSilentAsync() {
-      try {
-        await signinSilent();
-        profileActions.getCurrentUser();
-      } catch {} // In case we are not logged into token service.
-    }
-
-    async function getUserAsync() {
-      if (profile.isLoggedIn && !user) {
-        const loggedInUser = await getUser();
+    async function signinAsync() {
+      const loggedInUser = await getUser();
+      if (loggedInUser && !user) {
         setUser(loggedInUser);
+        profileActions.getCurrentUser();
       }
     }
-    if (!profile.isLoggedIn) {
-      signinSilentAsync();
-    }
-    getUserAsync();
-  }, [profile, user, profileActions]);
+    signinAsync();
+    // eslint-disable-next-line
+  }, [profile]);
 
   return (
     <>

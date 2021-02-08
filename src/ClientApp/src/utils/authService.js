@@ -1,8 +1,4 @@
-import {
-  InMemoryWebStorage,
-  UserManager,
-  WebStorageStateStore,
-} from "oidc-client";
+import { localStorage, UserManager, WebStorageStateStore } from "oidc-client";
 
 const config = {
   authority: "https://localhost:6001",
@@ -11,7 +7,7 @@ const config = {
   response_type: "code",
   scope: "openid profile stack_underflow_api email",
   post_logout_redirect_uri: "http://localhost:3000/signout-callback-oidc",
-  userStore: new WebStorageStateStore({ store: new InMemoryWebStorage() }),
+  userStore: new WebStorageStateStore({ store: localStorage }),
   automaticSilentRenew: true,
   silent_redirect_uri: "http://localhost:3000/signin-silent-oidc",
 };

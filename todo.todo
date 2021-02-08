@@ -19,6 +19,7 @@ Front end:
   ☐ Fix git client so as I don't have to re-enter user/pass on every push. Use SSL.
   ☐ Logging
   ☐ Error component. 
+  ☐ Protected route: new question
   ☐ Use https instead of http on React server.
   ☐ Integrirati UserManager u React Context: https://dev.to/tappyy/oidc-authentication-with-react-identity-server-4-3h0d
   ☐ AuthService.js - hardkodiran localhost sa portovima.
@@ -82,9 +83,9 @@ Backend:
           ✔ In controller, once new user is stored, do the sign in. @done (07. 02. 2021. 21:07:34)
           ✔ On Sign in page provide a link to registration page. @done (07. 02. 2021. 21:07:38)
           ✔ ReturnUrl must be maintained across all actions. @done (07. 02. 2021. 21:07:39)
-          ☐ Validate Antiforgery + generate token
-          ☐ Display error on page.
-          ☐ 404 on jquery
+          ☐ Validate Antiforgery + generate token @critical 
+          ✔ Display error on page. @done (07. 02. 2021. 21:46:57)
+          ✔ 404 on jquery @done (07. 02. 2021. 21:46:57)
         ✔ Api: @done (04. 02. 2021. 10:04:03)
           ✔ Get User endpoint must also create a new User. Copy IdP claim 'nickname' to Username. @done (04. 02. 2021. 10:04:01)
         ☐ Core:
@@ -93,8 +94,8 @@ Backend:
         ☐ Test project:
           ✔ LimitsBuilder: remove limits on username. @done (04. 02. 2021. 10:57:31)
           ☐ All references and tests regarding shuffled parameters on User.Create()
-        ☐ Front end:
-          ☐ On sign up, calls /api/users twice.
+        ✔ Front end: @done (08. 02. 2021. 20:51:35)
+          ✔ On sign up, calls /api/users twice. RETHINK SILENT SIGNIN. @critical @done (08. 02. 2021. 20:51:33)
         ☐ Data:
           ☐ Create Migrations
           ☐ Update database

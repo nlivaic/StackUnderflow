@@ -17,7 +17,6 @@ export const getCurrentUser = () => {
   return async (dispatch) => {
     dispatch(apiStatusActions.beginApiCall());
     try {
-      debugger;
       let data = await usersApi.getUser();
       if (!data) {
         const user = (await getUser()).profile;
