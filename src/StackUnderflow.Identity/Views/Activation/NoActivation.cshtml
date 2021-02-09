@@ -1,0 +1,13 @@
+@model StackUnderflow.Identity.Quickstart.Activation.ActivateAccountViewModel
+
+@{
+    ViewData["Title"] = "Account Not Activated";
+}
+
+<h1>Account could not be activated.</h1>
+@{
+    if (Model.EmailAlreadyConfirmed)
+    {
+        <h2>Email not confirmed.</h2>
+    }
+}

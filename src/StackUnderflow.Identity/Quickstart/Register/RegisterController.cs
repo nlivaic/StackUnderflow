@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -45,6 +47,7 @@ namespace IdentityServerHost.Quickstart.UI
             var user = new IdentityUser(model.Username)
             {
                 Email = model.Email,
+                EmailConfirmed = false
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -63,22 +66,23 @@ namespace IdentityServerHost.Quickstart.UI
                 new Claim("nickname", model.Username),
                 new Claim(ClaimTypes.Email, model.Email),
             });
-            await _signInManager.SignInAsync(user, false);
+            await SendConfirmationEmail(user);
+            return View("EmailSent", user.Id);
+        }
 
-            if (_interaction.IsValidReturnUrl(model.ReturnUrl)
-                || Url.IsLocalUrl(model.ReturnUrl))
-            {
-                return Redirect(model.ReturnUrl);
-            }
-            else if (string.IsNullOrEmpty(model.ReturnUrl))
-            {
-                return Redirect("~/");
-            }
-            else
-            {
-                // user might have clicked on a malicious link - should be logged
-                throw new Exception("Invalid return URL.");
-            }
+        [HttpGet]
+        public async Task<IActionResult> ResendEmail(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            await SendConfirmationEmail(user);
+            return View("EmailSent");
+        }
+
+        private async Task SendConfirmationEmail(IdentityUser user)
+        {
+            var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            emailConfirmationToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(emailConfirmationToken));
+            System.Diagnostics.Debug.WriteLine(Url.ActionLink("Activate", "Activation", new { userId = user.Id, token = emailConfirmationToken }));
         }
     }
 }

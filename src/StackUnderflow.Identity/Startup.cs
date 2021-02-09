@@ -37,7 +37,8 @@ namespace StackUnderflow.Identity
                 options.UseNpgsql(_configuration.GetConnectionString("StackUnderflowIdentityDb"));
             });
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>();
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddDefaultTokenProviders();
             services.Configure<IdentityOptions>(opts =>
             {
                 opts.Password.RequiredLength = 8;
@@ -45,6 +46,7 @@ namespace StackUnderflow.Identity
                 opts.Password.RequireLowercase = false;
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
+                opts.SignIn.RequireConfirmedEmail = true;
                 opts.User.RequireUniqueEmail = false;
                 opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-.1234567890";
             });
