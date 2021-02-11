@@ -2,6 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System.Linq;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Services;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
@@ -61,9 +64,32 @@ namespace StackUnderflow.Identity
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryApiResources(Config.ApiResources)
-                .AddInMemoryClients(Config.Clients)
-                // .AddTestUsers(TestUsers.Users)
-                ;
+                .AddInMemoryClients(Config.Clients);
+            // .AddTestUsers(TestUsers.Users)
+
+            var migrationsAssembly = typeof(Startup).Assembly.GetName().Name;
+            builder.AddConfigurationStore(options =>
+            {
+                options.ConfigureDbContext = builder =>
+                {
+                    builder.UseNpgsql(
+                        _configuration.GetConnectionString("StackUnderflowIdentityDb"),
+                        options => options.MigrationsAssembly(migrationsAssembly)
+                    );
+                };
+                options.DefaultSchema = "Configuration";
+            });
+            builder.AddOperationalStore(options =>
+            {
+                options.ConfigureDbContext = builder =>
+                {
+                    builder.UseNpgsql(
+                        _configuration.GetConnectionString("StackUnderflowIdentityDb"),
+                        options => options.MigrationsAssembly(migrationsAssembly)
+                    );
+                };
+                options.DefaultSchema = "Operational";
+            });
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
@@ -76,6 +102,7 @@ namespace StackUnderflow.Identity
                     AllowAll = true
                 };
             });
+
         }
 
         public void Configure(IApplicationBuilder app)
@@ -97,6 +124,37 @@ namespace StackUnderflow.Identity
             {
                 endpoints.MapDefaultControllerRoute();
             });
+            SeedTestData(app, _environment);
+        }
+
+        private static void SeedTestData(IApplicationBuilder app, IWebHostEnvironment environment)
+        {
+            if (!environment.IsDevelopment())
+            {
+                return;
+            }
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var configurationDbContext = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                var persistedGrantDbContext = scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>();
+                if (!configurationDbContext.Clients.Any())
+                {
+                    configurationDbContext.Clients.AddRange(Config.Clients.Select(c => c.ToEntity()));
+                }
+                if (!configurationDbContext.ApiResources.Any())
+                {
+                    configurationDbContext.ApiResources.AddRange(Config.ApiResources.Select(c => c.ToEntity()));
+                }
+                if (!configurationDbContext.ApiScopes.Any())
+                {
+                    configurationDbContext.ApiScopes.AddRange(Config.ApiScopes.Select(c => c.ToEntity()));
+                }
+                if (!configurationDbContext.IdentityResources.Any())
+                {
+                    configurationDbContext.IdentityResources.AddRange(Config.IdentityResources.Select(c => c.ToEntity()));
+                }
+                configurationDbContext.SaveChanges();
+            }
         }
     }
 }
