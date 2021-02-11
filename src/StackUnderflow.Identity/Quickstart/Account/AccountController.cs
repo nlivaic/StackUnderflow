@@ -9,14 +9,16 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
-using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using StackUnderflow.Identity.Quickstart;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace IdentityServerHost.Quickstart.UI
@@ -234,6 +236,88 @@ namespace IdentityServerHost.Quickstart.UI
             return View();
         }
 
+        [HttpGet]
+        public IActionResult ResetPasswordRequest()
+        {
+            var model = new ResetPasswordRequestViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPasswordRequest(ResetPasswordRequestViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return RedirectToAction(nameof(ResetPasswordEmailSent));
+            }
+            var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            passwordResetToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(passwordResetToken));
+            System.Diagnostics.Debug.WriteLine(Url.ActionLink("ResetPasswordConfirmation", "Account", new { email = model.Email, token = passwordResetToken }));
+            return RedirectToAction(nameof(ResetPasswordEmailSent));
+        }
+
+        [HttpGet]
+        public IActionResult ResetPasswordEmailSent()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ResetPasswordConfirmation(string email, string token)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrEmpty(token))
+            {
+                return RedirectToAction(nameof(ResetPasswordDenied));
+            }
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return RedirectToAction(nameof(ResetPasswordDenied));
+            }
+            var model = new ResetPasswordConfirmationViewModel
+            {
+                Email = email,
+                Token = token
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPasswordConfirmation(ResetPasswordConfirmationViewModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return RedirectToAction(nameof(ResetPasswordDenied));
+            }
+            var decodedRaw = WebEncoders.Base64UrlDecode(model.Token);
+            var decodedToken = Encoding.UTF8.GetString(decodedRaw);
+            if (!(await _userManager.ResetPasswordAsync(user, decodedToken, model.Password)).Succeeded)
+            {
+                return RedirectToAction(nameof(ResetPasswordDenied));
+            }
+            return RedirectToAction(nameof(PasswordReset));
+        }
+
+        [HttpGet]
+        public IActionResult ResetPasswordDenied()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult PasswordReset()
+        {
+            return View();
+        }
 
         /*****************************************/
         /* helper APIs for the AccountController */
