@@ -1,5 +1,6 @@
 Front end:
   ☐ Bug:
+    ☐ Warning: [Deprecation] Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.
     ☐ PRoblem sa slanjem tokena kad se otvori neki non-root Url.
       ☐ Ulogiran na IdP.
       ☐ Otvori http://localhost:3000/questions/0002f834-bf18-41eb-a6db-19745660e764.
@@ -75,35 +76,32 @@ Backend:
           ✔ Assign roles to users. @done (31. 01. 2021. 23:30:59)
           ✔ User Id se vadi iz Claims Principal @critical @done (03. 02. 2021. 22:48:04)
           ✔ Expose roles only as strings? @done (01. 02. 2021. 22:54:39)
-      ☐ Register user
-        ☐ IdP:
+      ✔ Register user @done (08. 02. 2021. 21:33:34)
+        ✔ IdP: @done (08. 02. 2021. 21:33:29)
           ✔ New controller: RegisterController. Two actions, [HttpGet]Register and [HttpPost]Register. @done (04. 02. 2021. 22:48:14)
           ✔ RegisterViewModel. @done (04. 02. 2021. 22:48:15)
           ✔ View: Provide an entry field for every claim. Submit back to HttpPost action. @done (04. 02. 2021. 22:48:18)
           ✔ In controller, once new user is stored, do the sign in. @done (07. 02. 2021. 21:07:34)
           ✔ On Sign in page provide a link to registration page. @done (07. 02. 2021. 21:07:38)
           ✔ ReturnUrl must be maintained across all actions. @done (07. 02. 2021. 21:07:39)
-          ☐ Validate Antiforgery + generate token @critical 
+          ✔ Validate Antiforgery + generate token @done (08. 02. 2021. 21:33:16)
           ✔ Display error on page. @done (07. 02. 2021. 21:46:57)
           ✔ 404 on jquery @done (07. 02. 2021. 21:46:57)
         ✔ Api: @done (04. 02. 2021. 10:04:03)
           ✔ Get User endpoint must also create a new User. Copy IdP claim 'nickname' to Username. @done (04. 02. 2021. 10:04:01)
-        ☐ Core:
+        ✔ Core: @done (08. 02. 2021. 21:33:18)
           ✔ Treat some properties as optional when creating the user. @done (04. 02. 2021. 10:57:19)
           ✔ Update seeder @done (04. 02. 2021. 10:57:20)
-        ☐ Test project:
+        ✔ Test project: @done (08. 02. 2021. 21:33:24)
           ✔ LimitsBuilder: remove limits on username. @done (04. 02. 2021. 10:57:31)
-          ☐ All references and tests regarding shuffled parameters on User.Create()
+          ✔ All references and tests regarding shuffled parameters on User.Create() @done (08. 02. 2021. 21:33:23)
         ✔ Front end: @done (08. 02. 2021. 20:51:35)
           ✔ On sign up, calls /api/users twice. RETHINK SILENT SIGNIN. @critical @done (08. 02. 2021. 20:51:33)
-        ☐ Data:
-          ☐ Create Migrations
-          ☐ Update database
-      ☐ Activate an account
-      ☐ Reset password
+      ☐ Should be unique email on IdP.
+      ✔ Activate an account @done (09. 02. 2021. 23:21:29)
+      ✔ Reset password @done (11. 02. 2021. 11:07:40)
       ☐ Edit account on SU Api and front end.
-      ☐ On logout, while still on IdP, before it redirects back, a page is shown briefly. Remove the text on it.
-      ☐ Password for all new users: 6thMpeIOFk92D4!V
+      ☐ On logout, while still on IdP, before it redirects back, a page is shown briefly. Change text on it so it says "If it does not redirect yadda yadda yadda".
     ☐ API - add policies
     ☐ onDelete: ReferentialAction.Cascade
       ☐ Ako pogledaš 20210130221500_UserRole.cs vidjet ćeš taj redak. Što to točno znači?
