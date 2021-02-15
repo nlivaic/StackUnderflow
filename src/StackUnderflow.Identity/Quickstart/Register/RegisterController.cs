@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using IdentityModel;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -60,11 +61,11 @@ namespace IdentityServerHost.Quickstart.UI
             }
             await _userManager.AddClaimsAsync(user, new List<Claim>
             {
-                new Claim(ClaimTypes.Name, model.FirstName + " " + model.LastName),
-                new Claim(ClaimTypes.GivenName, model.FirstName),
-                new Claim("family_name", model.LastName),
-                new Claim("nickname", model.Username),
-                new Claim(ClaimTypes.Email, model.Email),
+                new Claim(JwtClaimTypes.Name, model.FirstName + " " + model.LastName),
+                new Claim(JwtClaimTypes.GivenName, model.FirstName),
+                new Claim(JwtClaimTypes.FamilyName, model.LastName),
+                new Claim(JwtClaimTypes.NickName, model.Username),
+                new Claim(JwtClaimTypes.Email, model.Email),
             });
             await SendConfirmationEmail(user);
             return View("EmailSent", user.Id);

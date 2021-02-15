@@ -102,7 +102,14 @@ namespace StackUnderflow.Identity
                     AllowAll = true
                 };
             });
-
+            services.AddAuthentication().AddFacebook(
+                "Facebook",
+                options =>
+                {
+                    options.ClientId = "443418523372670";
+                    options.ClientSecret = "8bc8483a225aea8895fd9221be7d5794";
+                    options.SignInScheme = IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                });
         }
 
         public void Configure(IApplicationBuilder app)
