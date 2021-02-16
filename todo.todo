@@ -1,5 +1,6 @@
 Front end:
   ☐ Bug:
+    ☐ Kad se kreira novi user via FB, dođe do 404 /api/currentuser. Možda je to i normalno, više se ne sjećam. Nije normalno, neki bug.
     ☐ Stari tokeni se ne miču iz localStoragea.
     ☐ Warning: [Deprecation] Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.
     ☐ PRoblem sa slanjem tokena kad se otvori neki non-root Url.
@@ -18,6 +19,7 @@ Front end:
       ☐ Treba dobro razmisliti o dizajnu tih edit existing i add new komponenti.
     ☐ Error handling sa API-ja mi se ne čini da radi dobro. Simuliraj exception na Apiju pa vidi što se dogodi na front endu.
   ✔ Store state in session or wherever: https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage @done (22. 12. 2020. 23:36:56)
+  ☐ Redirect nakon IdSrv registracije natrag na Stack Underflow.
   ☐ Fix git client so as I don't have to re-enter user/pass on every push. Use SSL.
   ☐ Logging
   ☐ Error component. 
