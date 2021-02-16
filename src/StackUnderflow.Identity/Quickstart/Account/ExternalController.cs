@@ -100,13 +100,16 @@ namespace IdentityServerHost.Quickstart.UI
                 _logger.LogDebug("External claims: {@claims}", externalClaims);
             }
 
+            var returnUrl = result.Properties.Items["returnUrl"] ?? "~/";
             // lookup our user and external provider info
             var (user, provider, providerUserId, claims) = await FindUserFromExternalProviderAsync(result);
             if (user == null)
             {
-                // this might be where you might initiate a custom workflow for user registration
-                // in this sample we don't show how that would be done, as our sample implementation
-                // simply auto-provisions new external user
+                if (provider == "Facebook")
+                {
+                    var registerFromFacebook = await CreateRegisterFromFacebookViewModelAsync(provider, providerUserId, claims, returnUrl);
+                    return RedirectToAction("RegisterFromFacebook", "Register", registerFromFacebook);
+                }
                 user = await AutoProvisionUserAsync(provider, providerUserId, claims);
             }
 
@@ -124,7 +127,6 @@ namespace IdentityServerHost.Quickstart.UI
             await HttpContext.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
 
             // retrieve return URL
-            var returnUrl = result.Properties.Items["returnUrl"] ?? "~/";
 
             // check if external login is in the context of an OIDC request
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
@@ -139,8 +141,32 @@ namespace IdentityServerHost.Quickstart.UI
                     return this.LoadingPage("Redirect", returnUrl);
                 }
             }
-
             return Redirect(returnUrl);
+        }
+
+        private async Task<RegisterFromFacebookInputViewModel> CreateRegisterFromFacebookViewModelAsync(
+            string provider,
+            string providerUserId,
+            IEnumerable<Claim> claims,
+            string returnUrl)
+        {
+            // We are using this as a username only temporarily.
+            // User will confirm or change their preferred username later in the sign up process.
+            var username = claims.SingleOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value.Replace(' ', '_');
+            if ((await _userManager.FindByNameAsync(username) != null))
+            {
+                username += "_" + _random.Next(1000).ToString();
+            }
+            return new RegisterFromFacebookInputViewModel
+            {
+                Username = username,
+                FirstName = claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname").Value,
+                LastName = claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname").Value,
+                Email = claims.First(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value,
+                ReturnUrl = returnUrl,
+                Provider = provider,
+                ProviderUserId = providerUserId
+            };
         }
 
         private async Task<(IdentityUser user, string provider, string providerUserId, IEnumerable<Claim> claims)> FindUserFromExternalProviderAsync(AuthenticateResult result)

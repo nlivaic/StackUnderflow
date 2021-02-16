@@ -79,6 +79,50 @@ namespace IdentityServerHost.Quickstart.UI
             return View("EmailSent");
         }
 
+        [HttpGet]
+        public IActionResult RegisterFromFacebook(RegisterFromFacebookInputViewModel model)
+        {
+            var registerInput = new RegisterFromFacebookViewModel
+            {
+                Username = model.Username,
+                FirstName = model.FirstName,
+                Email = model.Email,
+                LastName = model.LastName,
+                ReturnUrl = model.ReturnUrl,
+                Provider = model.Provider,
+                ProviderUserId = model.ProviderUserId
+            };
+            return View(registerInput);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterFromFacebook(RegisterFromFacebookViewModel model)
+        {
+            var user = new IdentityUser(model.Username);
+            var userLoginInfo = new UserLoginInfo(model.Provider, model.ProviderUserId, model.Provider);
+            var createUserResult = await _userManager.CreateAsync(user);
+            if (!createUserResult.Succeeded)
+            {
+                throw new Exception(
+                    $"Could not provision user with external provider id {model.ProviderUserId} based on external provider {model.Provider}.");
+            }
+            var addLoginResult = await _userManager.AddLoginAsync(user, userLoginInfo);
+            if (!addLoginResult.Succeeded)
+            {
+                throw new Exception(
+                    $"Could not provision user with external provider id {model.ProviderUserId} based on external provider {model.Provider}.");
+            }
+            await _userManager.AddClaimsAsync(user, new List<Claim>
+            {
+                new Claim(JwtClaimTypes.Name, model.FirstName + " " + model.LastName),
+                new Claim(JwtClaimTypes.GivenName, model.FirstName),
+                new Claim(JwtClaimTypes.FamilyName, model.LastName),
+                new Claim(JwtClaimTypes.NickName, model.Username),
+                new Claim(JwtClaimTypes.Email, model.Email),
+            });
+            return RedirectToAction("Callback", "External");
+        }
         private async Task SendConfirmationEmail(IdentityUser user)
         {
             var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
