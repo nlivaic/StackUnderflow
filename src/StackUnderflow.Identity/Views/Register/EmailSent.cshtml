@@ -1,4 +1,4 @@
-@model string
+@model ResendEmailConfirmationViewModel
 
 @{
     ViewData["Title"] = "Activation Email Sent";
@@ -7,6 +7,6 @@
 <h1>Activation email sent. Please check your email and click the link.</h1>
 
 <div class="form-group">
-    <a asp-action="ResendEmail" asp-controller="Register" asp-route-userId=@($"{Model}")
-        class="btn btn-primary">Resend</a>
+    <a asp-action="ResendEmail" asp-controller="Register" class="btn btn-primary" asp-route-userId=@($"{Model.UserId}")
+        asp-route-returnUrl=@($"{Model.ReturnUrl}")>Resend</a>
 </div>

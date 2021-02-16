@@ -67,16 +67,20 @@ namespace IdentityServerHost.Quickstart.UI
                 new Claim(JwtClaimTypes.NickName, model.Username),
                 new Claim(JwtClaimTypes.Email, model.Email),
             });
-            await SendConfirmationEmail(user);
-            return View("EmailSent", user.Id);
+            await SendConfirmationEmail(user, model.ReturnUrl);
+            return View("EmailSent", new ResendEmailConfirmationViewModel
+            {
+                UserId = user.Id,
+                ReturnUrl = model.ReturnUrl
+            });
         }
 
         [HttpGet]
-        public async Task<IActionResult> ResendEmail(string userId)
+        public async Task<IActionResult> ResendEmail(ResendEmailConfirmationViewModel model)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            await SendConfirmationEmail(user);
-            return View("EmailSent");
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            await SendConfirmationEmail(user, model.ReturnUrl);
+            return View("EmailSent", model);
         }
 
         [HttpGet]
@@ -123,11 +127,11 @@ namespace IdentityServerHost.Quickstart.UI
             });
             return RedirectToAction("Callback", "External");
         }
-        private async Task SendConfirmationEmail(IdentityUser user)
+        private async Task SendConfirmationEmail(IdentityUser user, string returnUrl)
         {
             var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             emailConfirmationToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(emailConfirmationToken));
-            System.Diagnostics.Debug.WriteLine(Url.ActionLink("Activate", "Activation", new { userId = user.Id, token = emailConfirmationToken }));
+            System.Diagnostics.Debug.WriteLine(Url.ActionLink("Activate", "Activation", new { userId = user.Id, token = emailConfirmationToken, returnUrl }));
         }
     }
 }

@@ -18,7 +18,7 @@ namespace StackUnderflow.Identity.Quickstart.Activation
         }
 
         [HttpGet]
-        public async Task<IActionResult> Activate(string userId, string token)
+        public async Task<IActionResult> Activate(string userId, string token, string returnUrl)
         {
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
             {
@@ -38,7 +38,7 @@ namespace StackUnderflow.Identity.Quickstart.Activation
                 // @nl: log
                 return View("NoActivation", new ActivateAccountViewModel());
             }
-            return View();
+            return Redirect(returnUrl);
         }
     }
 }
