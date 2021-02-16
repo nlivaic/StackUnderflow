@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
 using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
@@ -16,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StackUnderflow.Identity.DbContexts;
+using StackUnderflow.Identity.Services;
 
 namespace StackUnderflow.Identity
 {
@@ -110,6 +112,9 @@ namespace StackUnderflow.Identity
                     options.ClientSecret = "8bc8483a225aea8895fd9221be7d5794";
                     options.SignInScheme = IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme;
                 });
+            // To be used for simple, non-cryptographically secure random number generation.
+            services.AddSingleton<Random>(new Random());
+            services.AddSingleton<IClaimsMappingFactory, ClaimsMappingFactory>();
         }
 
         public void Configure(IApplicationBuilder app)

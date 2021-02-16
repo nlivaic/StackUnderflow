@@ -132,12 +132,6 @@ namespace IdentityServerHost.Quickstart.UI
                         };
                     };
 
-                    // issue authentication cookie with subject ID and username
-                    var isuser = new IdentityServerUser(user.Id)
-                    {
-                        DisplayName = user.UserName
-                    };
-
                     if (context != null)
                     {
                         if (context.IsNativeClient())

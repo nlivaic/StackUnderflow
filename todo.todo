@@ -1,5 +1,6 @@
 Front end:
   ☐ Bug:
+    ☐ Stari tokeni se ne miču iz localStoragea.
     ☐ Warning: [Deprecation] Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience. For more help, check https://xhr.spec.whatwg.org/.
     ☐ PRoblem sa slanjem tokena kad se otvori neki non-root Url.
       ☐ Ulogiran na IdP.
