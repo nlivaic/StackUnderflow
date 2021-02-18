@@ -6,6 +6,7 @@ import SigninOidc from "./Auth/SigninOidc.js";
 import SignoutOidc from "./Auth/SignoutOidc.js";
 import SigninSilentCallback from "./Auth/SigninSilentCallback.js";
 import QuestionSummariesList from "./QuestionSummariesList";
+import Error from "./Error";
 import QuestionPage from "./QuestionPage";
 import ManageQuestion from "./ManageQuestion";
 import { Provider as ReduxProvider } from "react-redux";
@@ -32,28 +33,30 @@ store.subscribe(
 const App = () => {
   return (
     <div>
-      <ReduxProvider store={store}>
-        <Profile />
-        <br />
-        <Link to="/">Home</Link>
-        {/* Persist page size in query string only if a specific page size was chosen previously. */}
-        <Search />
-        <Link to="/question/ask">Ask Question</Link>
-        <Switch>
-          <Route exact path="/" component={QuestionSummariesList} />
-          <Route exact path="/questions/:questionId" component={QuestionPage} />
-          <Route exact path="/question/ask" component={ManageQuestion} />
-          <Route exact path="/signin-oidc" component={SigninOidc} />
-          <Route
-            exact
-            path="/signin-silent-oidc"
-            component={SigninSilentCallback}
-          />
-          <Route exact path="/signout-callback-oidc" component={SignoutOidc} />
-          <Route exact path="/NotFound" component={PageNotFound} />
-          <Route component={PageNotFound} />
-        </Switch>
-      </ReduxProvider>
+      <Error>
+        <ReduxProvider store={store}>
+          <Profile />
+          <br />
+          <Link to="/">Home</Link>
+          {/* Persist page size in query string only if a specific page size was chosen previously. */}
+          <Search />
+          <Link to="/question/ask">Ask Question</Link>
+          <Switch>
+            <Route exact path="/" component={QuestionSummariesList} />
+            <Route exact path="/questions/:questionId" component={QuestionPage} />
+            <Route exact path="/question/ask" component={ManageQuestion} />
+            <Route exact path="/signin-oidc" component={SigninOidc} />
+            <Route
+              exact
+              path="/signin-silent-oidc"
+              component={SigninSilentCallback}
+            />
+            <Route exact path="/signout-callback-oidc" component={SignoutOidc} />
+            <Route exact path="/NotFound" component={PageNotFound} />
+            <Route component={PageNotFound} />
+          </Switch>
+        </ReduxProvider>
+      </Error>
     </div>
   );
 };
