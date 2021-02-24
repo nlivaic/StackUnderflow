@@ -152,6 +152,11 @@ namespace StackUnderflow.Api
                 options.LogLevelHandler = LogLevelHandler;
             });
 
+            if (env.IsProduction())
+            {
+                app.UseHsts();
+            }
+
             app.UseCors("All");
             app.UseHttpsRedirection();
 
