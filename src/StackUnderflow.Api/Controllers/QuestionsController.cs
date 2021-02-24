@@ -1,11 +1,9 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
@@ -20,11 +18,16 @@ namespace StackUnderflow.Api.Controllers
     public class QuestionsController : ApiControllerBase
     {
         private readonly IQuestionService _questionService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public QuestionsController(IQuestionService questionService, IMapper mapper)
+        public QuestionsController(
+            IQuestionService questionService,
+            IUserService userService,
+            IMapper mapper)
         {
             _questionService = questionService;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -45,6 +48,7 @@ namespace StackUnderflow.Api.Controllers
             }
             var response = _mapper.Map<QuestionGetViewModel>(question);
             response.IsOwner = User.IsOwner(response);
+            response.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
             return Ok(response);
         }
 
@@ -62,9 +66,12 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult<QuestionGetViewModel>> PostAsync([FromBody] QuestionCreateRequest request)
         {
             var question = _mapper.Map<QuestionCreateModel>(request);
-            question.UserId = User.UserId();
+            question.UserId = User.UserId().Value;
             var questionModel = await _questionService.AskQuestionAsync(question);
-            return CreatedAtRoute("GetQuestion", new { id = questionModel.Id }, _mapper.Map<QuestionGetViewModel>(questionModel));
+            var response = _mapper.Map<QuestionGetViewModel>(questionModel);
+            response.IsOwner = true;
+            response.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
+            return CreatedAtRoute("GetQuestion", new { id = questionModel.Id }, response);
         }
 
         /// <summary>
@@ -80,7 +87,7 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult> PutAsync([FromRoute] Guid id, [FromBody] QuestionUpdateRequest request)
         {
             var question = _mapper.Map<QuestionEditModel>(request);
-            question.QuestionUserId = User.UserId();
+            question.QuestionUserId = User.UserId().Value;
             question.QuestionId = id;
             try
             {
@@ -109,7 +116,7 @@ namespace StackUnderflow.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
-            var userId = User.UserId();
+            var userId = User.UserId().Value;
             try
             {
                 await _questionService.DeleteQuestionAsync(id, userId);

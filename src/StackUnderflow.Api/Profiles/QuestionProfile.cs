@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using AutoMapper;
 using StackUnderflow.Api.Models;

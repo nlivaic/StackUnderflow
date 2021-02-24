@@ -16,5 +16,6 @@ namespace StackUnderflow.Core.Interfaces
         Task<CommentForQuestionGetModel> GetCommentModelAsync(Guid questionId, Guid commentId);
         Task<Comment> GetCommentWithUserAsync(Guid commentId);
         Task<Comment> GetCommentWithAnswerAsync(Guid commentId);
+        Task<Comment> GetCommentWithQuestionAsync(Guid commentId);
     }
 }

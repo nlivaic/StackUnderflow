@@ -26,17 +26,20 @@ namespace StackUnderflow.Api.Controllers
         private readonly IAnswerService _answerService;
         private readonly IQuestionRepository _questionRepository;
         private readonly IAnswerRepository _answerRepository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public AnswersController(
             IAnswerService answerService,
             IAnswerRepository answerRepository,
             IQuestionRepository questionRepository,
+            IUserService userService,
             IMapper mapper)
         {
             _answerService = answerService;
             _answerRepository = answerRepository;
             _questionRepository = questionRepository;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -72,7 +75,11 @@ namespace StackUnderflow.Api.Controllers
                 Headers.Pagination,
                 new StringValues(JsonSerializer.Serialize(pagingHeader)));
             var response = _mapper.Map<List<AnswerGetViewModel>>(pagedAnswers.Items);
-            response.ForEach(a => a.IsOwner = User.IsOwner(a));
+            response.ForEach(async (a) =>
+            {
+                a.IsOwner = User.IsOwner(a);
+                a.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
+            });
             return Ok(response);
         }
 
@@ -94,7 +101,10 @@ namespace StackUnderflow.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<AnswerGetViewModel>(result));
+            var response = _mapper.Map<AnswerGetViewModel>(result);
+            response.IsOwner = User.IsOwner(response);
+            response.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
+            return Ok(response);
         }
 
         /// <summary>
@@ -119,7 +129,7 @@ namespace StackUnderflow.Api.Controllers
             }
             var answer = _mapper.Map<AnswerCreateModel>(request);
             answer.QuestionId = questionId;
-            answer.UserId = User.UserId();
+            answer.UserId = User.UserId().Value;
             AnswerGetModel answerGetModel = null;
             try
             {
@@ -132,6 +142,7 @@ namespace StackUnderflow.Api.Controllers
             }
             var answerGetViewModel = _mapper.Map<AnswerGetViewModel>(answerGetModel);
             answerGetViewModel.IsOwner = User.IsOwner(answerGetViewModel);
+            answerGetViewModel.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
             return CreatedAtRoute("Get", new { answerId = answerGetModel.Id, questionId }, answerGetViewModel);
         }
 
@@ -155,7 +166,7 @@ namespace StackUnderflow.Api.Controllers
             var answer = _mapper.Map<AnswerEditModel>(request);
             answer.AnswerId = answerId;
             answer.QuestionId = questionId;
-            answer.UserId = User.UserId();
+            answer.UserId = User.UserId().Value;
             try
             {
                 await _answerService.EditAnswerAsync(answer);
@@ -186,7 +197,7 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId)
         {
-            var userId = User.UserId();
+            var userId = User.UserId().Value;
             try
             {
                 await _answerService.DeleteAnswerAsync(userId, questionId, answerId);
@@ -221,7 +232,7 @@ namespace StackUnderflow.Api.Controllers
         {
             var acceptAnswer = new AnswerAcceptModel
             {
-                QuestionUserId = User.UserId(),
+                QuestionUserId = User.UserId().Value,
                 QuestionId = questionId,
                 AnswerId = answerId
             };

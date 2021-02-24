@@ -29,6 +29,7 @@ namespace StackUnderflow.Data.Repositories
                 .Questions
                 .Where(q => q.Id == questionId)
                 .Include(q => q.User)
+                .ThenInclude(u => u.Roles)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
                 .AsNoTracking()

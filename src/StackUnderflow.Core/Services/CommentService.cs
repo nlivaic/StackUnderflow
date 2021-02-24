@@ -16,7 +16,7 @@ namespace StackUnderflow.Core.Services
         private readonly IQuestionRepository _questionRepository;
         private readonly ICommentRepository _commentRepository;
         private readonly IAnswerRepository _answerRepository;
-        private readonly IRepository<User> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _uow;
         private readonly ILimits _limits;
         private readonly IVoteable _voteable;
@@ -25,7 +25,7 @@ namespace StackUnderflow.Core.Services
         public CommentService(IQuestionRepository questionRepository,
             ICommentRepository commentRepository,
             IAnswerRepository answerRepository,
-            IRepository<User> userRepository,
+            IUserRepository userRepository,
             IUnitOfWork unitOfWork,
             ILimits limits,
             IMapper mapper)
@@ -80,7 +80,7 @@ namespace StackUnderflow.Core.Services
         public async Task EditAsync(CommentEditModel commentModel)
         {
             var comment = await GetCommentOnEditOrDeleteAsync(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
-            var user = await _userRepository.GetByIdAsync(commentModel.UserId);
+            var user = await _userRepository.GetUser<User>(commentModel.UserId);
             comment.Edit(user, commentModel.Body, _limits);
             await _uow.SaveAsync();
             // @nl: raise an event?
@@ -110,7 +110,7 @@ namespace StackUnderflow.Core.Services
             }
             else if (parentQuestionId.HasValue)
             {
-                comment = await _commentRepository.GetByIdAsync(commentId);
+                comment = await _commentRepository.GetCommentWithQuestionAsync(commentId);
                 if (comment == null || comment.ParentQuestionId != parentQuestionId)
                     throw new EntityNotFoundException(nameof(Comment), commentId);
             }

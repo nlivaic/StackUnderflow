@@ -28,7 +28,7 @@ namespace StackUnderflow.Core.Services
         }
 
         public async Task<UserGetModel> GetUserAsync(Guid userId) =>
-            await _userRepository.GetUser(userId);
+            await _userRepository.GetUser<UserGetModel>(userId);
 
         public async Task<UserGetModel> CreateUserAsync(UserCreateModel model)
         {
@@ -38,5 +38,10 @@ namespace StackUnderflow.Core.Services
             var userGetModel = _mapper.Map<UserGetModel>(user);
             return userGetModel;
         }
+
+        public async Task<bool> IsModeratorAsync(Guid userId) =>
+            userId == default(Guid)
+                ? false
+                : await _userRepository.IsModeratorAsync(userId);
     }
 }

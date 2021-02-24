@@ -7,10 +7,24 @@ using System.Linq;
 
 namespace StackUnderflow.Core.Entities
 {
-    public class Question : BaseEntity<Guid>, IVoteable, ICommentable
+    public class Question : BaseEntity<Guid>, IVoteable, ICommentable, IOwneable
     {
-        public Guid UserId { get; private set; }
-        public User User { get; private set; }
+        public Guid UserId
+        {
+            get => _owneable.UserId;
+            private set
+            {
+                _owneable.UserId = value;
+            }
+        }
+        public User User
+        {
+            get => _owneable.User;
+            private set
+            {
+                _owneable.User = value;
+            }
+        }
         public string Title { get; private set; }
         public string Body { get; private set; }
         public bool HasAcceptedAnswer { get; private set; }
@@ -29,16 +43,18 @@ namespace StackUnderflow.Core.Entities
         private List<QuestionTag> _questionTags = new List<QuestionTag>();
         private Voteable _voteable;
         private Commentable _commentable;
+        private Owneable _owneable;
 
         private Question()
         {
             _commentable = new Commentable();
             _voteable = new Voteable();
+            _owneable = new Owneable();
         }
 
         public void Edit(User user, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {
-            if (UserId != user.Id)
+            if (!CanBeEditedBy(user))
             {
                 throw new BusinessException("Question can be edited only by user.");
             }
@@ -132,5 +148,8 @@ namespace StackUnderflow.Core.Entities
             var tagCount = tags.Count();
             if (tags == null || tagCount < limits.TagMinimumCount || tagCount > limits.TagMaximumCount) throw new BusinessException("Question must be tagged with at least one and no more than five tags.");
         }
+
+        public bool CanBeEditedBy(User editingUser) =>
+            _owneable.CanBeEditedBy(editingUser);
     }
 }

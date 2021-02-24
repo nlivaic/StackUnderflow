@@ -13,7 +13,7 @@ namespace StackUnderflow.Core.Services
     public class QuestionService : IQuestionService
     {
         private readonly IQuestionRepository _questionRepository;
-        private readonly IRepository<User> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _uow;
         private readonly ICommentService _commentService;
         private readonly ITagService _tagService;
@@ -22,7 +22,7 @@ namespace StackUnderflow.Core.Services
 
         public QuestionService(
             IQuestionRepository questionRepository,
-            IRepository<User> userRepository,
+            IUserRepository userRepository,
             IUnitOfWork uow,
             ICommentService commentService,
             ITagService tagService,
@@ -57,7 +57,7 @@ namespace StackUnderflow.Core.Services
                 .GetQuestionWithTagsAsync(questionModel.QuestionId))
                 ?? throw new EntityNotFoundException(nameof(Question), questionModel.QuestionId);
             var tags = await _tagService.GetTagsAsync(questionModel.TagIds);
-            var user = await _userRepository.GetByIdAsync(questionModel.QuestionUserId, false);
+            var user = await _userRepository.GetUser<User>(questionModel.QuestionUserId);
             question.Edit(user, questionModel.Title, questionModel.Body, tags, _limits);
             await _uow.SaveAsync();
         }

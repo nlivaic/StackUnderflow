@@ -13,8 +13,8 @@ const Question = ({
       {errors.apiError ? (
         <span style={{ color: "red" }}>{errors.apiError}</span>
       ) : (
-        ""
-      )}
+          ""
+        )}
       <h3>{question.title}</h3>
       <span>{question.body}</span>
       <UserDetails
@@ -27,14 +27,14 @@ const Question = ({
           <span key={tag.name}>{tag.name}</span>
         ))}
       </div>
-      {question.isOwner ? <button onClick={onStartEditing}>Edit</button> : ""}
+      {(question.isOwner || question.isModerator) ? <button onClick={onStartEditing}>Edit</button> : ""}
       {question.isOwner ? (
         <button onClick={onDelete} disabled={isDeleting}>
           {isDeleting ? "Deleting..." : "Delete"}
         </button>
       ) : (
-        ""
-      )}
+          ""
+        )}
     </div>
   );
 };

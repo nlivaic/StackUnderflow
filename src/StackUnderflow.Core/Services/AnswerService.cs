@@ -15,7 +15,7 @@ namespace StackUnderflow.Core.Services
         private readonly IUnitOfWork _uow;
         private readonly IQuestionRepository _questionRepository;
         private readonly IRepository<Answer> _answerRepository;
-        private readonly IRepository<User> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ICommentService _commentService;
         private readonly IMapper _mapper;
         private readonly ILimits _limits;
@@ -25,7 +25,7 @@ namespace StackUnderflow.Core.Services
         public AnswerService(IUnitOfWork uow,
             IQuestionRepository questionRepository,
             IRepository<Answer> answerRepository,
-            IRepository<User> userRepository,
+            IUserRepository userRepository,
             ICommentService commentService,
             IMapper mapper,
             ILimits limits)
@@ -65,10 +65,9 @@ namespace StackUnderflow.Core.Services
                 _answerRepository
                     .GetSingleAsync(a =>
                         a.Id == answerModel.AnswerId
-                        && a.UserId == answerModel.UserId
                         && a.QuestionId == answerModel.QuestionId))
                 ?? throw new EntityNotFoundException(nameof(Answer), answerModel.AnswerId);
-            var user = await _userRepository.GetByIdAsync(answerModel.UserId);
+            var user = await _userRepository.GetUser<User>(answerModel.UserId);
             answer.Edit(user, answerModel.Body, _limits);
             await _uow.SaveAsync();
         }

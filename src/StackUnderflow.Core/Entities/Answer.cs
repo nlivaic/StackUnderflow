@@ -6,10 +6,24 @@ using System.Collections.Generic;
 
 namespace StackUnderflow.Core.Entities
 {
-    public class Answer : BaseEntity<Guid>, IVoteable, ICommentable
+    public class Answer : BaseEntity<Guid>, IVoteable, ICommentable, IOwneable
     {
-        public Guid UserId { get; private set; }
-        public User User { get; private set; }
+        public Guid UserId
+        {
+            get => _owneable.UserId;
+            private set
+            {
+                _owneable.UserId = value;
+            }
+        }
+        public User User
+        {
+            get => _owneable.User;
+            private set
+            {
+                _owneable.User = value;
+            }
+        }
         public string Body { get; private set; }
         public bool IsAcceptedAnswer { get; private set; }
         public DateTime? AcceptedOn { get; private set; }
@@ -26,11 +40,13 @@ namespace StackUnderflow.Core.Entities
 
         private Voteable _voteable;
         private Commentable _commentable;
+        private Owneable _owneable;
 
         private Answer()
         {
             _commentable = new Commentable();
             _voteable = new Voteable();
+            _owneable = new Owneable();
         }
 
         public void AcceptedAnswer()
@@ -47,9 +63,9 @@ namespace StackUnderflow.Core.Entities
 
         public void Edit(User user, string body, ILimits limits)
         {
-            if (User.Id != user.Id)
+            if (!CanBeEditedBy(user))
             {
-                throw new BusinessException("Question can be edited only by user.");
+                throw new BusinessException("Answer can be edited only by user.");
             }
             if (CreatedOn.Add(limits.AnswerEditDeadline) < DateTime.UtcNow)
             {
@@ -94,5 +110,8 @@ namespace StackUnderflow.Core.Entities
             }
             if (string.IsNullOrWhiteSpace(body)) throw new BusinessException("Question must have a body.");
         }
+
+        public bool CanBeEditedBy(User editingUser) =>
+            _owneable.CanBeEditedBy(editingUser);
     }
 }

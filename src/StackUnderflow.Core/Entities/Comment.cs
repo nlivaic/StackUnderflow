@@ -6,10 +6,24 @@ using System.Collections.Generic;
 
 namespace StackUnderflow.Core.Entities
 {
-    public class Comment : BaseEntity<Guid>, IVoteable
+    public class Comment : BaseEntity<Guid>, IVoteable, IOwneable
     {
-        public Guid UserId { get; private set; }
-        public User User { get; private set; }
+        public Guid UserId
+        {
+            get => _owneable.UserId;
+            private set
+            {
+                _owneable.UserId = value;
+            }
+        }
+        public User User
+        {
+            get => _owneable.User;
+            private set
+            {
+                _owneable.User = value;
+            }
+        }
         public string Body { get; private set; }
         public DateTime CreatedOn { get; private set; }
         public Question ParentQuestion { get; private set; }
@@ -25,15 +39,17 @@ namespace StackUnderflow.Core.Entities
         public IEnumerable<Vote> Votes => _voteable.Votes;
 
         private Voteable _voteable;
+        private Owneable _owneable;
 
         private Comment()
         {
             _voteable = new Voteable();
+            _owneable = new Owneable();
         }
 
         public void Edit(User user, string body, ILimits limits)
         {
-            if (User.Id != user.Id)
+            if (!CanBeEditedBy(user))
             {
                 throw new BusinessException("Comment can be edited only by user.");
             }
@@ -79,5 +95,8 @@ namespace StackUnderflow.Core.Entities
                 throw new BusinessException($"Answer body must be at least '{limits.CommentBodyMinimumLength}' characters.");
             }
         }
+
+        public bool CanBeEditedBy(User editingUser) =>
+            _owneable.CanBeEditedBy(editingUser);
     }
 }

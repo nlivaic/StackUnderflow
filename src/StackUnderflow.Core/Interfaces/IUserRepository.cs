@@ -8,6 +8,7 @@ namespace StackUnderflow.Core.Interfaces
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<UserGetModel> GetUser(Guid userId);
+        Task<T> GetUser<T>(Guid userId);
+        Task<bool> IsModeratorAsync(Guid userId);
     }
 }

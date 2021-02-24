@@ -1,10 +1,12 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StackUnderflow.Api.Controllers
@@ -28,13 +30,13 @@ namespace StackUnderflow.Api.Controllers
         [HttpGet("api/users/current")]
         public async Task<ActionResult<UserGetViewModel>> GetCurrent()
         {
-            var userId = User.UserId();
+            var userId = User.UserId().Value;
             var user = await _userService.GetUserAsync(userId);
             if (user == null)
             {
                 return NotFound();
             }
-            return _mapper.Map<UserGetViewModel>(user);
+            return Ok(_mapper.Map<UserGetViewModel>(user));
         }
 
         [Authorize]
@@ -44,9 +46,9 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult<UserGetViewModel>> PostCurrent([FromBody] UserCreateRequest request)
         {
             var model = _mapper.Map<UserCreateModel>(request);
-            model.Id = User.UserId();
+            model.Id = User.UserId().Value;
             var user = await _userService.CreateUserAsync(model);
-            return _mapper.Map<UserGetViewModel>(user);
+            return Ok(_mapper.Map<UserGetViewModel>(user));
         }
     }
 }
