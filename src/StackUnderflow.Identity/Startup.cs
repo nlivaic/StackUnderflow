@@ -39,7 +39,7 @@ namespace StackUnderflow.Identity
 
             services.AddDbContext<AppIdentityDbContext>(options =>
             {
-                options.UseNpgsql(_configuration.GetConnectionString("StackUnderflowIdentityDb"));
+                options.UseNpgsql(_configuration["ConnectionStrings:StackUnderflowIdentityDb"]);
             });
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -75,7 +75,7 @@ namespace StackUnderflow.Identity
                 options.ConfigureDbContext = builder =>
                 {
                     builder.UseNpgsql(
-                        _configuration.GetConnectionString("StackUnderflowIdentityDb"),
+                        _configuration["ConnectionStrings:StackUnderflowIdentityDb"],
                         options => options.MigrationsAssembly(migrationsAssembly)
                     );
                 };
@@ -86,7 +86,7 @@ namespace StackUnderflow.Identity
                 options.ConfigureDbContext = builder =>
                 {
                     builder.UseNpgsql(
-                        _configuration.GetConnectionString("StackUnderflowIdentityDb"),
+                        _configuration["ConnectionStrings:StackUnderflowIdentityDb"],
                         options => options.MigrationsAssembly(migrationsAssembly)
                     );
                 };
@@ -108,8 +108,8 @@ namespace StackUnderflow.Identity
                 "Facebook",
                 options =>
                 {
-                    options.ClientId = "443418523372670";
-                    options.ClientSecret = "8bc8483a225aea8895fd9221be7d5794";
+                    options.ClientId = _configuration["Facebook:ClientId"];
+                    options.ClientSecret = _configuration["Facebook:ClientSecret"];
                     options.SignInScheme = IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme;
                 });
             // To be used for simple, non-cryptographically secure random number generation.

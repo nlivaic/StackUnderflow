@@ -137,8 +137,8 @@ namespace StackUnderflow.Api
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:6001";       // Our IDP. Middleware uses this to know where to find public keys and endpoints.
-                    options.ApiName = "stack_underflow_api";            // Allows the access token validator to check if the access token `audience` is for this API.
+                    options.Authority = _configuration["IdP:Authority"];       // Our IDP. Middleware uses this to know where to find public keys and endpoints.
+                    options.ApiName = _configuration["IdP:ApiName"];           // Allows the access token validator to check if the access token `audience` is for this API.
                 });
             services.AddAuthorization();
         }

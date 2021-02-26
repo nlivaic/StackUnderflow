@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>d5663cff-d5cc-4832-9e97-cc483e3ca974</UserSecretsId>
   </PropertyGroup>
-  
   <ItemGroup>
     <PackageReference Include="IdentityServer4" Version="4.0.0" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.0.0" />
@@ -16,7 +16,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.1" />
-
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
   </ItemGroup>
 </Project>
