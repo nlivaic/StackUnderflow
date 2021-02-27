@@ -134,6 +134,13 @@ namespace StackUnderflow.Api
                     .WithExposedHeaders(Headers.Pagination);
             }));
 
+            services.AddCors(o => o.AddPolicy("StackUnderflowClient", builder =>
+            {
+                var allowedOrigins = _configuration["AllowedOrigins"]?.Split(',') ?? new string[0];
+                builder.WithOrigins(allowedOrigins)
+                    .WithExposedHeaders(Headers.Pagination);
+            }));
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication("Bearer", options =>
                 {
@@ -157,7 +164,7 @@ namespace StackUnderflow.Api
                 app.UseHsts();
             }
 
-            app.UseCors("All");
+            app.UseCors("StackUnderflowClient");
             app.UseHttpsRedirection();
 
             // Commented out as we are running front end as a standalone app.

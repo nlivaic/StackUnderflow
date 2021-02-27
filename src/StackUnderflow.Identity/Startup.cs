@@ -3,6 +3,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
@@ -101,7 +102,11 @@ namespace StackUnderflow.Identity
                 var logger = container.GetRequiredService<ILogger<IdentityServer4.Services.DefaultCorsPolicyService>>();
                 return new DefaultCorsPolicyService(logger)
                 {
-                    AllowAll = true
+                    AllowAll = false,
+                    AllowedOrigins = new List<string>
+                    {
+                        "http://localhost:3000"
+                    }
                 };
             });
             services.AddAuthentication().AddFacebook(
