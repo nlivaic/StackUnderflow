@@ -9,3 +9,6 @@
     dotnet user-secrets set Facebook:ClientId <Facebook_Login_Client_Id_here>
     dotnet user-secrets set Facebook:ClientSecret <Facebook_Login_Client_Secret_here>
     dotnet user-secrets set ConnectionStrings:StackUnderflowIdentityDb <connection_string_here>
+    dotnet user-secrets set "EmailSettings:Username" <username_here>
+    dotnet user-secrets set "EmailSettings:Password" <password_here>
+    

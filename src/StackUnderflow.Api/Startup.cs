@@ -139,7 +139,7 @@ namespace StackUnderflow.Api
                 var allowedOrigins = _configuration["AllowedOrigins"]?.Split(',') ?? new string[0];
                 builder
                     .WithOrigins(allowedOrigins)
-                    .WithHeaders("Authorization")
+                    .WithHeaders("Authorization", "Content-Type")
                     .WithExposedHeaders(Headers.Pagination);
             }));
 

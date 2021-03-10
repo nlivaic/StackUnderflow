@@ -117,6 +117,14 @@ namespace StackUnderflow.Identity
                     options.ClientSecret = _configuration["Facebook:ClientSecret"];
                     options.SignInScheme = IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme;
                 });
+            services.AddEmailService(opts =>
+            {
+                opts.DoNotReplyEmail = _configuration["EmailSettings:DoNotReply"];
+                opts.Host = _configuration["EmailSettings:Host"];
+                opts.Password = _configuration["EmailSettings:Password"];
+                opts.Port = Int32.Parse(_configuration["EmailSettings:Port"]);
+                opts.Username = _configuration["EmailSettings:Username"];
+            });
             // To be used for simple, non-cryptographically secure random number generation.
             services.AddSingleton<Random>(new Random());
             services.AddSingleton<IClaimsMappingFactory, ClaimsMappingFactory>();

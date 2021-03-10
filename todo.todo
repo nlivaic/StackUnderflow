@@ -5,6 +5,7 @@
     ☐ Security: connection stringove razraditi: dev, prod
 
 Front end:
+  ☐ Natjerati ga da u Profile.js pročita getUser() kako spada. Na temelju toga onda pokazati SignIn/SignOut gumbe.
   ☐ Add styles
   ☐ Bug:
     ☐ Stalno se reloada front end.
@@ -36,33 +37,28 @@ Backend:
     ☐ Komponenta signinOidc redirecta na '/'. Neka redirecta tamo gdje si zadnje bio. Pretraži IdS4 za "returnUrl" parametar.
     ☐ onDelete: ReferentialAction.Cascade
       ☐ Ako pogledaš 20210130221500_UserRole.cs vidjet ćeš taj redak. Što to točno znači?
-      ☐ IdP: CORS za dev i prod env.
-    ☐ Roles @today 
-      ☐ User
-      ☐ Admin
-        ☐ Može izbrisati i editirati svaki resurs.
-      ☐ Moderator
-      ☐ Steps:
-        1. Potreban je jedan, defaultni Admin user.
-        2. Admin user onda može pretvarati druge usere u Admin usere.
-        3. Admin user može editirati bilo koji entry.
+      ✔ IdP: CORS za dev i prod env. @done (27. 02. 2021. 23:16:17)
+    ✔ Roles @today @done (24. 02. 2021. 23:06:37)
+      ✔ User @done (24. 02. 2021. 23:06:29)
+      ✔ Moderator @done (24. 02. 2021. 23:06:30)
+        ✔ Može editirati svaki resurs. @done (24. 02. 2021. 23:06:30)
 
   Cross-Cutting Concerns:
     ☐ Security
       ✔ Avoid XSS in React @done (19. 02. 2021. 23:16:00)
       ✔ Sanitize outputs in React @done (19. 02. 2021. 23:16:05)
-      ☐ Content Security Policy
+      ✔ Content Security Policy @done (25. 02. 2021. 22:16:36)
         ✔ Ne dopustiti inline scripts @done (21. 02. 2021. 22:13:57)
         ✔ Riješiti inlined React runtime js @done (21. 02. 2021. 21:42:28)
-        ☐ Ne dopustiti inline styles
+        ✔ Ne dopustiti inline styles @done (25. 02. 2021. 22:16:35)
         ✔ iframe za silent auth treba biti dopušten @done (21. 02. 2021. 21:42:41)
         ✔ Kako učiniti da CSP bude drugačiji preko raznih okolina? @done (22. 02. 2021. 00:11:30)
           ✔ CSP treba samo na produkciji. @done (22. 02. 2021. 00:11:29)
-      ☐ Https to API
+      ✔ Https to API @done (24. 02. 2021. 23:06:46)
       ☐ Https to Identity
       ☐ Https to Front end
-      ☐ Add HSTS to API.
-      ☐ Secure Application Secrets
+      ✔ Add HSTS to API. @done (25. 02. 2021. 22:16:27)
+      ✔ Secure Application Secrets @done (26. 02. 2021. 22:20:24)
       ☐ React: remove source maps in production
     ☐ Logging
       ☐ Problem: LoggingFilter je ok zasad, ali scopeovi se ne logiraju za exception. Valjda zato jer ApiExceptionHandlerMiddleware nije unutar Action filtera.
@@ -77,6 +73,7 @@ Backend:
     ☐ Some projects are built against netstandard2.0, others against netstandard2.1
 
   Must Have:
+    ☐ Options class
     ☐ Move all AutoMapper profiles to appropriate model classes.
     ☐ QuestionSummariesController bi trebao nasljeđivati od ApiControllerBase.
     ☐ CORS

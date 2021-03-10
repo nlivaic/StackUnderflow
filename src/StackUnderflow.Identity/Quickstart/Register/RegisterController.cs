@@ -8,20 +8,24 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using StackUnderflow.Common.Email;
 
 namespace IdentityServerHost.Quickstart.UI
 {
     public class RegisterController : Controller
     {
+        private readonly IEmailService _emailService;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
         public RegisterController(
+            IEmailService emailService,
             IIdentityServerInteractionService interaction,
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager)
         {
+            _emailService = emailService;
             _interaction = interaction;
             _signInManager = signInManager;
             _userManager = userManager;
@@ -131,7 +135,11 @@ namespace IdentityServerHost.Quickstart.UI
         {
             var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             emailConfirmationToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(emailConfirmationToken));
-            System.Diagnostics.Debug.WriteLine(Url.ActionLink("Activate", "Activation", new { userId = user.Id, token = emailConfirmationToken, returnUrl }));
+            await _emailService.SendFromDoNotReplyAsync(
+                user.Email,
+                "Stack Underflow - Confirm Account",
+                Url.ActionLink("Activate", "Activation", new { userId = user.Id, token = emailConfirmationToken, returnUrl })
+            );
         }
     }
 }

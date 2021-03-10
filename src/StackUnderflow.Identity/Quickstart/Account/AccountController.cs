@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using StackUnderflow.Common.Email;
 using StackUnderflow.Identity.Quickstart;
 using System;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace IdentityServerHost.Quickstart.UI
         private readonly IEventService _events;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IEmailService _emailService;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
@@ -42,7 +44,8 @@ namespace IdentityServerHost.Quickstart.UI
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IEmailService emailService)
         {
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
 
@@ -52,6 +55,7 @@ namespace IdentityServerHost.Quickstart.UI
             _events = events;
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -249,7 +253,10 @@ namespace IdentityServerHost.Quickstart.UI
             }
             var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
             passwordResetToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(passwordResetToken));
-            System.Diagnostics.Debug.WriteLine(Url.ActionLink("ResetPasswordConfirmation", "Account", new { email = model.Email, token = passwordResetToken }));
+            await _emailService.SendFromDoNotReplyAsync(
+                user.Email,
+                "Stack Underflow - Reset Password Request",
+                Url.ActionLink("ResetPasswordConfirmation", "Account", new { email = model.Email, token = passwordResetToken }));
             return RedirectToAction(nameof(ResetPasswordEmailSent));
         }
 
