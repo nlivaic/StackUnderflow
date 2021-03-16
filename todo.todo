@@ -74,6 +74,8 @@ Backend:
 
   Must Have:
     ☐ Options class
+    ☐ Docker email ne podržava Tls. Naš Email service isto ne podržava Tls.
+    ☐ We communicate with Seq on http. Make that https.
     ☐ Move all AutoMapper profiles to appropriate model classes.
     ☐ QuestionSummariesController bi trebao nasljeđivati od ApiControllerBase.
     ☐ CORS
