@@ -20,7 +20,7 @@ namespace StackUnderflow.Api
                 .ReadFrom.Configuration(configuration)
                 .WriteTo.Console()
                 .WriteTo.File(new JsonFormatter(), @"c:\temp\logs\stack-underflow.json", shared: true)
-                .WriteTo.Seq("http://localhost:5341")
+                .WriteTo.Seq(configuration["Logs:Url"])
                 .CreateLogger();
 
             try
@@ -28,7 +28,7 @@ namespace StackUnderflow.Api
                 Log.Information("Starting up StackUnderflow.");
                 CreateHostBuilder(args)
                     .Build()
-                    .Seed()
+                    //.Seed()
                     .Run();
             }
             catch (Exception ex)
