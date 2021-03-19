@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  stackunderflow.identity:
+    image: ${DOCKER_REGISTRY-}stackunderflowidentity
+    build:
+      context: .
+      dockerfile: src/StackUnderflow.Identity/Dockerfile
