@@ -21,10 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackUnderflow.Identity", "
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{721B7C9A-330E-4F59-B3EB-66CBA821AC2D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{9E927B3B-E7F0-4D43-8E35-FE463DF95197}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{BEFF195B-BE7D-4D99-BE6A-B7A41F848CA2}"
 	ProjectSection(SolutionItems) = preProject
-		nginx.Dockerfile = nginx.Dockerfile
-		nginx.local.conf = nginx.local.conf
+		nginx\nginx.Dockerfile = nginx\nginx.Dockerfile
+		nginx\nginx.local.conf = nginx\nginx.local.conf
 	EndProjectSection
 EndProject
 Global
@@ -132,7 +132,6 @@ Global
 		{1DF3FD6B-1D09-4678-A870-2815B7292D6D} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
 		{274DBAF4-FD4E-407E-B2BD-73A8E814EFD6} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
 		{A03C608A-441F-4019-95D5-0D4B9AC85861} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
-		{9E927B3B-E7F0-4D43-8E35-FE463DF95197} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2799A94-8AA1-41D8-B547-56219C23F71E}
