@@ -1,6 +1,17 @@
 version: '3.7'
 
 services:
+  reverseproxy:
+    build:
+      context: .
+      # NOTE!!!
+      # Even though we keep nginx.Dockerfile inside /nginx solution folder,
+      # docker-compose tool is not aware of it since it is only a Visual Studio construct.
+      # On the filesystem nginx.Dockerfile is on the same level as docker-compose.yml
+      dockerfile: nginx.Dockerfile
+    depends_on:
+      # Start Identity Server before starting nginx.
+      - stackunderflow.identity
   stackunderflow.identity:
     image: ${DOCKER_REGISTRY-}stackunderflowidentity
     build:
