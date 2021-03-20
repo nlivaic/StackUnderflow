@@ -161,10 +161,10 @@ namespace StackUnderflow.Api
                 options.LogLevelHandler = LogLevelHandler;
             });
 
-            if (env.IsProduction())
-            {
-                app.UseHsts();
-            }
+            //if (env.IsProduction())
+            //{
+            //    app.UseHsts();
+            //}
 
             app.UseCors("StackUnderflowClient");
             app.UseHttpsRedirection();
