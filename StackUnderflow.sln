@@ -25,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{BEFF195B
 	ProjectSection(SolutionItems) = preProject
 		nginx\nginx.Dockerfile = nginx\nginx.Dockerfile
 		nginx\nginx.local.conf = nginx\nginx.local.conf
+		nginx\stack-underflow.conf = nginx\stack-underflow.conf
+		nginx\stack-underflow.crt = nginx\stack-underflow.crt
+		nginx\stack-underflow.key = nginx\stack-underflow.key
+		nginx\stack-underflow.pfx = nginx\stack-underflow.pfx
 	EndProjectSection
 EndProject
 Global
