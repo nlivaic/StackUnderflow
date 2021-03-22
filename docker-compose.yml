@@ -22,3 +22,6 @@ services:
     restart: unless-stopped
     environment:
       - ACCEPT_EULA=Y
+  stackunderflow.smtp:
+    image: rnwood/smtp4dev
+    restart: always

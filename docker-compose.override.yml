@@ -16,3 +16,6 @@ services:
   stackunderflow.seq:
     ports:
       - "5341:80"
+  stackunderflow.smtp:
+    ports:
+      - "5010:80"
