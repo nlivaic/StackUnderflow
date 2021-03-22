@@ -17,3 +17,8 @@ services:
     build:
       context: .
       dockerfile: src/StackUnderflow.Identity/Dockerfile
+  stackunderflow.seq:
+    image: datalust/seq
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
