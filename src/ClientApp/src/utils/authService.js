@@ -1,7 +1,7 @@
 import { localStorage, UserManager, WebStorageStateStore } from "oidc-client";
 
 const config = {
-  authority: "https://localhost:6001",
+  authority: "https://id-local.stack-underflow.com:44395",
   client_id: "stack_underflow_client",
   redirect_uri: "http://localhost:3000/signin-oidc",
   response_type: "code",

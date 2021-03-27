@@ -26,6 +26,7 @@ using StackUnderflow.Api.Middlewares;
 using StackUnderflow.Api.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace StackUnderflow.Api
 {
@@ -160,6 +161,12 @@ namespace StackUnderflow.Api
                 options.ApiErrorHandler = UpdateApiErrorResponse;
                 options.LogLevelHandler = LogLevelHandler;
             });
+
+            // Use headers forwarded by reverse proxy.
+            var forwardedHeaderOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
 
             //if (env.IsProduction())
             //{

@@ -2,6 +2,8 @@ version: '3.7'
 
 services:
   reverseproxy:
+    ports:
+      - "44395:44395"
     build:
       context: .
       # NOTE!!!
@@ -12,16 +14,56 @@ services:
     depends_on:
       # Start Identity Server before starting nginx.
       - stackunderflow.identity
+    networks:
+      sunet:
+        aliases:
+          - "id-local.stack-underflow"
+          - "api-local.stack-underflow"
   stackunderflow.identity:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:7000
+    ports:
+      - "7000:7000"
     image: ${DOCKER_REGISTRY-}stackunderflowidentity
     build:
       context: .
       dockerfile: src/StackUnderflow.Identity/Dockerfile
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks:
+      - sunet
+  stackunderflow.api:
+    #image: ${DOCKER_REGISTRY-}stackunderflowapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+    ports:
+      - "5000:5000"
+    build:
+      context: .
+      dockerfile: src/StackUnderflow.Api/Dockerfile
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks:
+      - sunet
   stackunderflow.seq:
+    ports:
+      - "5341:80"
     image: datalust/seq
     restart: unless-stopped
     environment:
       - ACCEPT_EULA=Y
+    networks:
+      - sunet
   stackunderflow.smtp:
+    ports:
+      - "5010:80"
     image: rnwood/smtp4dev
     restart: always
+    networks:
+      - sunet
+networks:
+  sunet: {}

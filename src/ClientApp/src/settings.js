@@ -3,7 +3,7 @@ const commonSettings = {
 };
 
 const dev = {
-  API_URL: "https://localhost:5001/api",
+  API_URL: "https://api-local.stack-underflow.com:44395/api",
 };
 
 const prod = {

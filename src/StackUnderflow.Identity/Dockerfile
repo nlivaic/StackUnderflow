@@ -2,6 +2,8 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
 WORKDIR /app
+COPY nginx/id-local.crt /usr/local/share/ca-certficates/id-local.crt
+RUN update-ca-certificates
 EXPOSE 7000
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
