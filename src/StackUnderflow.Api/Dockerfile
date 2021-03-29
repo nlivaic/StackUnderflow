@@ -2,7 +2,7 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
 WORKDIR /app
-COPY nginx/api-local.crt /usr/local/share/ca-certficates/api-local.crt
+COPY nginx/id-local.crt /usr/local/share/ca-certificates/id-local.crt
 RUN update-ca-certificates
 EXPOSE 5000
 

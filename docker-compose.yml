@@ -17,8 +17,8 @@ services:
     networks:
       sunet:
         aliases:
-          - "id-local.stack-underflow"
-          - "api-local.stack-underflow"
+          - "id-local.stack-underflow.com"
+          - "api-local.stack-underflow.com"
   stackunderflow.identity:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -65,5 +65,6 @@ services:
     restart: always
     networks:
       - sunet
+
 networks:
   sunet: {}
