@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Compumed.Migrations
+namespace StackUnderflow.Migrations
 {
     class Program
     {
@@ -12,6 +12,7 @@ namespace Compumed.Migrations
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
                 ?? "Development";
+            Console.WriteLine($"Environment: {env}.");
             var builder = new ConfigurationBuilder()
                 .AddJsonFile($"appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{env}.json", true, true)
@@ -19,34 +20,56 @@ namespace Compumed.Migrations
 
             var config = builder.Build();
 
-            var connectionString =
+            var connectionStringStackUnderflow =
                 args.FirstOrDefault()
-                ?? config["ConnectionStrings:CompumedDB"];
+                ?? config["ConnectionStrings:StackUnderflowDbConnection"];
 
-            string scriptsPath = null;
-            if (args.Length == 2)
-            {
-                scriptsPath = args[1];
-            }
-
-            var upgrader =
+            var upgraderStackUnderflow =
                 DeployChanges.To
-                    .SqlDatabase(connectionString)
-                    .WithScriptsFromFileSystem(scriptsPath != null ? Path.Combine(scriptsPath, "Scripts") : Path.Combine(Environment.CurrentDirectory, "Scripts"))
+                    .PostgresqlDatabase(connectionStringStackUnderflow)
+                    .WithScriptsFromFileSystem(Path.Combine(Environment.CurrentDirectory, "StackUnderflowScripts"))
                     .LogToConsole()
                     .Build();
-            // Comment the following two lines out
-            // before the first run ONLY in case you want
-            // to create the database from scratch.
-            upgrader.MarkAsExecuted("0001_schema.sql");
-            upgrader.MarkAsExecuted("0002_data.sql");
+            Console.WriteLine($"Now upgrading Stack Underflow.");
+            if (env != "Development")
+            {
+                Console.WriteLine($"Skipping 0005_InitialData.sql since we are not in Development environment.");
+                upgraderStackUnderflow.MarkAsExecuted("0005_InitialData.sql");
+            }
+            var resultStackUnderflow = upgraderStackUnderflow.PerformUpgrade();
 
-            var result = upgrader.PerformUpgrade();
-
-            if (!result.Successful)
+            if (!resultStackUnderflow.Successful)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(result.Error);
+                Console.WriteLine($"Stack Underflow upgrade error: {resultStackUnderflow.Error}");
+                Console.ResetColor();
+#if DEBUG
+                Console.ReadLine();
+#endif
+                return -1;
+            }
+
+            var connectionStringStackUnderflowIdentity =
+                args.Length == 2 ? args[1] : config["ConnectionStrings:StackUnderflowIdentityDb"];
+
+            var upgraderStackUnderflowIdentity =
+                DeployChanges.To
+                    .PostgresqlDatabase(connectionStringStackUnderflowIdentity)
+                    .WithScriptsFromFileSystem(Path.Combine(Environment.CurrentDirectory, "StackUnderflowIdentityScripts"))
+                    .LogToConsole()
+                    .Build();
+            Console.WriteLine($"Now upgrading Stack Underflow Identity.");
+            if (env != "Development")
+            {
+                upgraderStackUnderflowIdentity.MarkAsExecuted("0004_InitialData.sql");
+                Console.WriteLine($"Skipping 0004_InitialData.sql since we are not in Development environment.");
+            }
+            var resultStackUnderflowIdentity = upgraderStackUnderflowIdentity.PerformUpgrade();
+
+            if (!resultStackUnderflowIdentity.Successful)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Stack Underflow Identity upgrade error: {resultStackUnderflowIdentity.Error}");
                 Console.ResetColor();
 #if DEBUG
                 Console.ReadLine();

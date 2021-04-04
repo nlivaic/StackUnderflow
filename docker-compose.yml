@@ -1,5 +1,8 @@
 version: '3.7'
 
+volumes:
+  pgdata:
+
 services:
   reverseproxy:
     ports:
@@ -49,6 +52,31 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
       - sunet
+  stackunderflow.sql:
+    image: postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "rootpw"
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    command: "-p 5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/InitializeStackUnderflowDb.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+      - ./sql/InitializeStackUnderflowIdentityDb.sql:/docker-entrypoint-initdb.d/docker_postgres_identity_init.sql
+    networks:
+      - sunet
+  stackunderflow.migrations:
+    image: ${DOCKER_REGISTRY-}stackunderflowsql
+    depends_on:
+      - stackunderflow.sql
+    build:
+      context: .
+      dockerfile: src/StackUnderflow.Migrations/Dockerfile
+    networks:
+      - sunet
   stackunderflow.seq:
     ports:
       - "5341:80"
@@ -65,6 +93,5 @@ services:
     restart: always
     networks:
       - sunet
-
 networks:
   sunet: {}

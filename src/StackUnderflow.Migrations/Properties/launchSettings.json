@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "StackUnderflow.Migrations": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
