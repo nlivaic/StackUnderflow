@@ -14,6 +14,7 @@ namespace StackUnderflow.Api
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
                 .Build();
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
