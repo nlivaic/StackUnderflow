@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StackUnderflow.Core.Entities;
+using StackUnderflow.Data.Models;
 
 namespace StackUnderflow.Data
 {
@@ -16,6 +17,8 @@ namespace StackUnderflow.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<QuestionTag> QuestionTags { get; set; }
+        // Made internal so as not to allow any clients to have access outside the repository/data assembly.
+        internal DbSet<LimitsKeyValuePair> LimitsKeyValuePairs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
