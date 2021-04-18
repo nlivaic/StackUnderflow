@@ -241,6 +241,24 @@ namespace StackUnderflow.Data.Migrations
                     b.ToTable("Votes");
                 });
 
+            modelBuilder.Entity("StackUnderflow.Data.Models.LimitsKeyValuePair", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("LimitKey")
+                        .HasColumnType("text");
+
+                    b.Property<int>("LimitValue")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LimitsKeyValuePairs");
+                });
+
             modelBuilder.Entity("StackUnderflow.Core.Entities.Answer", b =>
                 {
                     b.HasOne("StackUnderflow.Core.Entities.Question", "Question")
