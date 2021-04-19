@@ -9,7 +9,7 @@ namespace StackUnderflow.Api.Models
 
         public class UpdateCommentRequestValidator : AbstractValidator<UpdateCommentRequest>
         {
-            public UpdateCommentRequestValidator(ILimits limits)
+            public UpdateCommentRequestValidator(BaseLimits limits)
             {
                 RuleFor(x => x.Body)
                     .MinimumLength(limits.CommentBodyMinimumLength)

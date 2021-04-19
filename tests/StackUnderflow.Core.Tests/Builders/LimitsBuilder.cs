@@ -5,14 +5,14 @@ namespace StackUnderflow.Core.Tests.Builders
 {
     public class LimitsBuilder
     {
-        private Mock<ILimits> _target;
+        private Mock<BaseLimits> _target;
 
         public LimitsBuilder()
         {
-            _target = new Mock<ILimits>();
+            _target = new Mock<BaseLimits>();
         }
 
-        public ILimits Build()
+        public BaseLimits Build()
         {
             _target.Setup(m => m.QuestionEditDeadline).Returns(new System.TimeSpan(0, 10, 0));
             _target.Setup(m => m.AnswerEditDeadline).Returns(new System.TimeSpan(0, 10, 0));

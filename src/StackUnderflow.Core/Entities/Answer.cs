@@ -61,7 +61,7 @@ namespace StackUnderflow.Core.Entities
             AcceptedOn = null;
         }
 
-        public void Edit(User user, string body, ILimits limits)
+        public void Edit(User user, string body, BaseLimits limits)
         {
             if (!CanBeEditedBy(user))
             {
@@ -80,13 +80,13 @@ namespace StackUnderflow.Core.Entities
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 
-        public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
+        public void RevokeVote(Vote vote, BaseLimits limits) => _voteable.RevokeVote(vote, limits);
 
         public static Answer Create(
             User user,
             string body,
             Question question,
-            ILimits limits)
+            BaseLimits limits)
         {
             Validate(user, body, limits);
             var answer = new Answer();
@@ -98,7 +98,7 @@ namespace StackUnderflow.Core.Entities
             return answer;
         }
 
-        private static void Validate(User user, string body, ILimits limits)
+        private static void Validate(User user, string body, BaseLimits limits)
         {
             if (user.Id == default(Guid))       // @nl: glupo!!!
             {

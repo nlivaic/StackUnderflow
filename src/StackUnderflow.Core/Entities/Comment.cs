@@ -47,7 +47,7 @@ namespace StackUnderflow.Core.Entities
             _owneable = new Owneable();
         }
 
-        public void Edit(User user, string body, ILimits limits)
+        public void Edit(User user, string body, BaseLimits limits)
         {
             if (!CanBeEditedBy(user))
             {
@@ -63,12 +63,12 @@ namespace StackUnderflow.Core.Entities
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 
-        public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
+        public void RevokeVote(Vote vote, BaseLimits limits) => _voteable.RevokeVote(vote, limits);
 
         public static Comment Create(User user,
             string body,
             int orderNumber,
-            ILimits limits)
+            BaseLimits limits)
         {
             Validate(user, body, limits);
             if (orderNumber < 1)
@@ -84,7 +84,7 @@ namespace StackUnderflow.Core.Entities
             return comment;
         }
 
-        private static void Validate(User user, string body, ILimits limits)
+        private static void Validate(User user, string body, BaseLimits limits)
         {
             if (user.Id == default(Guid))
             {

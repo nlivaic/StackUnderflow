@@ -52,7 +52,7 @@ namespace StackUnderflow.Core.Entities
             _owneable = new Owneable();
         }
 
-        public void Edit(User user, string title, string body, IEnumerable<Tag> tags, ILimits limits)
+        public void Edit(User user, string title, string body, IEnumerable<Tag> tags, BaseLimits limits)
         {
             if (!CanBeEditedBy(user))
             {
@@ -92,7 +92,7 @@ namespace StackUnderflow.Core.Entities
             HasAcceptedAnswer = true;
         }
 
-        public void UndoAcceptAnswer(Answer answer, ILimits limits)
+        public void UndoAcceptAnswer(Answer answer, BaseLimits limits)
         {
             if (_answers.Find(a => a.Id == answer.Id) == null)
             {
@@ -113,13 +113,13 @@ namespace StackUnderflow.Core.Entities
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 
-        public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
+        public void RevokeVote(Vote vote, BaseLimits limits) => _voteable.RevokeVote(vote, limits);
 
         public static Question Create(User user,
             string title,
             string body,
             IEnumerable<Tag> tags,
-            ILimits limits)
+            BaseLimits limits)
         {
             var question = new Question();
             question.Id = Guid.NewGuid();
@@ -133,7 +133,7 @@ namespace StackUnderflow.Core.Entities
             return question;
         }
 
-        private static void Validate(User user, string title, string body, IEnumerable<Tag> tags, ILimits limits)
+        private static void Validate(User user, string title, string body, IEnumerable<Tag> tags, BaseLimits limits)
         {
             if (user.Id == default(Guid))
             {

@@ -16,14 +16,14 @@ namespace StackUnderflow.Core.Services
         private readonly IRepository<Answer> _answerRepository;
         private readonly IRepository<Comment> _commentRepository;
         private readonly IUnitOfWork _uow;
-        private readonly ILimits _limits;
+        private readonly BaseLimits _limits;
 
         public VoteService(IVoteRepository voteRepository,
             IRepository<Question> questionRepository,
             IRepository<Answer> answerRepository,
             IRepository<Comment> commentRepository,
             IUnitOfWork uow,
-            ILimits limits)
+            BaseLimits limits)
         {
             _voteRepository = voteRepository;
             _questionRepository = questionRepository;

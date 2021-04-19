@@ -9,7 +9,7 @@ namespace StackUnderflow.Api.Models
 
         public class AnswerCreateRequestValidator : AbstractValidator<AnswerCreateRequest>
         {
-            public AnswerCreateRequestValidator(ILimits limits)
+            public AnswerCreateRequestValidator(BaseLimits limits)
             {
                 RuleFor(x => x.Body)
                     .MinimumLength(limits.AnswerBodyMinimumLength)

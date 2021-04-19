@@ -27,7 +27,7 @@ namespace StackUnderflow.Core.Entities
         {
         }
 
-        public void Edit(string websiteUrl, string aboutMe, ILimits limits)
+        public void Edit(string websiteUrl, string aboutMe, BaseLimits limits)
         {
             Validate(websiteUrl, aboutMe, limits);
             WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
@@ -41,7 +41,7 @@ namespace StackUnderflow.Core.Entities
         /// <summary>
         /// Provide Id based on token service's user identifier.
         /// </summary>
-        public static User Create(ILimits limits, Guid id, string username, string email = null, string websiteUrl = null, string aboutMe = null)
+        public static User Create(BaseLimits limits, Guid id, string username, string email = null, string websiteUrl = null, string aboutMe = null)
         {
             Validate(websiteUrl, aboutMe, limits);
             User user = new User();
@@ -70,7 +70,7 @@ namespace StackUnderflow.Core.Entities
         public void SeenNow() =>
             LastSeen = DateTime.UtcNow;
 
-        private static void Validate(string websiteUrl, string aboutMe, ILimits limits)
+        private static void Validate(string websiteUrl, string aboutMe, BaseLimits limits)
         {
             if (!string.IsNullOrWhiteSpace(websiteUrl) && !Uri.TryCreate(websiteUrl, UriKind.Absolute, out var _))
             {

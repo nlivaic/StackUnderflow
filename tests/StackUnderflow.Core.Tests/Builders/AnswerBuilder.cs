@@ -7,7 +7,7 @@ namespace StackUnderflow.Core.Tests.Builders
     public class AnswerBuilder
     {
         private Answer _target;
-        private ILimits _limits = new LimitsBuilder().Build();
+        private BaseLimits _limits = new LimitsBuilder().Build();
 
         public AnswerBuilder SetupValidAnswer(Question question, Guid? userId = null)
         {

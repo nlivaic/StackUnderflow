@@ -27,6 +27,8 @@ using StackUnderflow.Api.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
+using StackUnderflow.Infrastructure.Caching;
+using StackUnderflow.Core.Entities;
 
 namespace StackUnderflow.Api
 {
@@ -84,17 +86,22 @@ namespace StackUnderflow.Api
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IAnswerRepository, AnswerRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ILimitsRepository, LimitsRepository>();
+            services.AddTransient<ILimitsService, LimitsService>();
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<IAnswerService, AnswerService>();
             services.AddTransient<ITagService, TagService>();
             services.AddTransient<IUserService, UserService>();
-            services.AddSingleton<ILimits, Limits>();
             services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
 
             services.AddSingleton<IScopeInformation, ScopeInformation>();
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionProfile).Assembly);
+
+            services.AddScoped<BaseLimits, Limits>();
+            services.AddTransient<ICache, Cache>();
+            services.AddMemoryCache();
 
             services.AddSwaggerGen(setupAction =>
             {

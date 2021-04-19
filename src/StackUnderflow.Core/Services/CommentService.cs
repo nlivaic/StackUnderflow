@@ -18,7 +18,7 @@ namespace StackUnderflow.Core.Services
         private readonly IAnswerRepository _answerRepository;
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _uow;
-        private readonly ILimits _limits;
+        private readonly BaseLimits _limits;
         private readonly IVoteable _voteable;
         private readonly IMapper _mapper;
 
@@ -27,7 +27,7 @@ namespace StackUnderflow.Core.Services
             IAnswerRepository answerRepository,
             IUserRepository userRepository,
             IUnitOfWork unitOfWork,
-            ILimits limits,
+            BaseLimits limits,
             IMapper mapper)
         {
             _questionRepository = questionRepository;

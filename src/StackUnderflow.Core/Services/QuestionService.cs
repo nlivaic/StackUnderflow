@@ -17,7 +17,7 @@ namespace StackUnderflow.Core.Services
         private readonly IUnitOfWork _uow;
         private readonly ICommentService _commentService;
         private readonly ITagService _tagService;
-        private readonly ILimits _limits;
+        private readonly BaseLimits _limits;
         private readonly IMapper _mapper;
 
         public QuestionService(
@@ -26,7 +26,7 @@ namespace StackUnderflow.Core.Services
             IUnitOfWork uow,
             ICommentService commentService,
             ITagService tagService,
-            ILimits limits,
+            BaseLimits limits,
             IMapper mapper)
         {
             _questionRepository = questionRepository;

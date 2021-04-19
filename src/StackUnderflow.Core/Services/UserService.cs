@@ -13,13 +13,13 @@ namespace StackUnderflow.Core.Services
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        private readonly ILimits _limits;
+        private readonly BaseLimits _limits;
 
         public UserService(
             IUserRepository userRepository,
             IUnitOfWork uow,
             IMapper mapper,
-            ILimits limits)
+            BaseLimits limits)
         {
             _userRepository = userRepository;
             _uow = uow;

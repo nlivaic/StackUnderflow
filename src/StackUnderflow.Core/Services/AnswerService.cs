@@ -18,7 +18,7 @@ namespace StackUnderflow.Core.Services
         private readonly IUserRepository _userRepository;
         private readonly ICommentService _commentService;
         private readonly IMapper _mapper;
-        private readonly ILimits _limits;
+        private readonly BaseLimits _limits;
         private readonly IVoteable _voteable;
         private readonly ICommentable _commentable;
 
@@ -28,7 +28,7 @@ namespace StackUnderflow.Core.Services
             IUserRepository userRepository,
             ICommentService commentService,
             IMapper mapper,
-            ILimits limits)
+            BaseLimits limits)
         {
             _uow = uow;
             _questionRepository = questionRepository;
