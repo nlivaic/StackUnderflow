@@ -87,12 +87,12 @@ namespace StackUnderflow.Api
             services.AddScoped<IAnswerRepository, AnswerRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILimitsRepository, LimitsRepository>();
-            services.AddTransient<ILimitsService, LimitsService>();
-            services.AddTransient<IQuestionService, QuestionService>();
-            services.AddTransient<ICommentService, CommentService>();
-            services.AddTransient<IAnswerService, AnswerService>();
-            services.AddTransient<ITagService, TagService>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<ILimitsService, LimitsService>();
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IAnswerService, AnswerService>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
 
             services.AddSingleton<IScopeInformation, ScopeInformation>();
@@ -100,7 +100,7 @@ namespace StackUnderflow.Api
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionProfile).Assembly);
 
             services.AddScoped<BaseLimits, Limits>();
-            services.AddTransient<ICache, Cache>();
+            services.AddScoped<ICache, Cache>();
             services.AddMemoryCache();
 
             services.AddSwaggerGen(setupAction =>

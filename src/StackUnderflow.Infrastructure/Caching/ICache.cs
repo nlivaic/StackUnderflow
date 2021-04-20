@@ -5,7 +5,7 @@ namespace StackUnderflow.Infrastructure.Caching
 {
     public interface ICache
     {
-        Task<T> Get<T>(object key, Func<Task<T>> source, int seconds);
+        Task<T> GetOrCreate<T>(object key, Func<Task<T>> source, int seconds);
         void Remove(object key);
         void Set<T>(object key, T value, int seconds);
     }
