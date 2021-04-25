@@ -5,8 +5,10 @@ namespace StackUnderflow.Infrastructure.Caching
 {
     public interface ICache
     {
-        Task<T> GetOrCreate<T>(object key, Func<Task<T>> source, int seconds);
-        void Remove(object key);
-        void Set<T>(object key, T value, int seconds);
+        Task<T> GetOrCreateAsync<T>(string key, Func<Task<T>> source, int seconds);
+        Task<T> GetOrCreateConcurrentAsync<T>(string key, Func<Task<T>> source, int seconds);
+        Task<int> IncrementAndGetConcurrent(string key, int seconds);
+        void Remove(string key);
+        void Set<T>(string key, T value, int seconds);
     }
 }

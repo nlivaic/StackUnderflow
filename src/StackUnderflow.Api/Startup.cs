@@ -100,7 +100,7 @@ namespace StackUnderflow.Api
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionProfile).Assembly);
 
             services.AddScoped<BaseLimits, Limits>();
-            services.AddScoped<ICache, Cache>();
+            services.AddSingleton<ICache, Cache>();
             services.AddMemoryCache();
 
             services.AddSwaggerGen(setupAction =>
