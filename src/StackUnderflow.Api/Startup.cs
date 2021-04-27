@@ -86,14 +86,17 @@ namespace StackUnderflow.Api
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IAnswerRepository, AnswerRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<ILimitsRepository, LimitsRepository>();
             services.AddScoped<ILimitsService, LimitsService>();
+            services.AddScoped<IVoteService, VoteService>();
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IAnswerService, AnswerService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<IScopeInformation, ScopeInformation>();
 

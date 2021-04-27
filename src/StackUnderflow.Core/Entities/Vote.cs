@@ -1,5 +1,6 @@
 using System;
 using StackUnderflow.Common.Base;
+using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Core.Entities
 {
@@ -49,13 +50,15 @@ namespace StackUnderflow.Core.Entities
             CreatedOn = DateTime.UtcNow;
         }
 
-        public static Vote CreateVote(Guid userId, Question question, VoteTypeEnum voteType) =>
-            new Vote(userId, question, voteType);
-
-        public static Vote CreateVote(Guid userId, Answer answer, VoteTypeEnum voteType) =>
-            new Vote(userId, answer, voteType);
-
-        public static Vote CreateVote(Guid userId, Comment comment, VoteTypeEnum voteType) =>
-            new Vote(userId, comment, voteType);
+        public static Vote CreateVote(Guid userId, IVoteable voteable, VoteTypeEnum voteType)
+        {
+            return voteable switch
+            {
+                Question question => new Vote(userId, question, voteType),
+                Answer answer => new Vote(userId, answer, voteType),
+                Comment comment => new Vote(userId, comment, voteType),
+                _ => throw new ArgumentException()
+            };
+        }
     }
 }

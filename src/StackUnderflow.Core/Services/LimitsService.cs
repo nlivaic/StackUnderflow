@@ -17,6 +17,6 @@ namespace StackUnderflow.Core.Services
         }
 
         public async Task<Limits> Get() =>
-            await _cache.GetOrCreate<Limits>("limits", async () => await _limitsRepository.GetAsync(), 600);
+            await _cache.GetOrCreateAsync("limits", async () => await _limitsRepository.GetAsync(), 600);
     }
 }

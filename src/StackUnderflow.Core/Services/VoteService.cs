@@ -1,11 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
+using StackUnderflow.Core.Models.Votes;
 
 namespace StackUnderflow.Core.Services
 {
@@ -17,13 +19,15 @@ namespace StackUnderflow.Core.Services
         private readonly IRepository<Comment> _commentRepository;
         private readonly IUnitOfWork _uow;
         private readonly BaseLimits _limits;
+        private readonly IMapper _mapper;
 
         public VoteService(IVoteRepository voteRepository,
             IRepository<Question> questionRepository,
             IRepository<Answer> answerRepository,
             IRepository<Comment> commentRepository,
             IUnitOfWork uow,
-            BaseLimits limits)
+            BaseLimits limits,
+            IMapper mapper)
         {
             _voteRepository = voteRepository;
             _questionRepository = questionRepository;
@@ -31,9 +35,17 @@ namespace StackUnderflow.Core.Services
             _commentRepository = commentRepository;
             _uow = uow;
             _limits = limits;
+            _mapper = mapper;
         }
 
-        public async Task CastVoteAsync(VoteCreateModel voteModel)
+        public async Task<VoteGetModel> GetVoteAsync(Guid voteId)
+        {
+            var vote = await _voteRepository.GetByIdAsync(voteId);
+            var voteModel = _mapper.Map<VoteGetModel>(vote);
+            return voteModel;
+        }
+
+        public async Task<VoteGetModel> CastVoteAsync(VoteCreateModel voteModel)
         {
             var vote = (await _voteRepository
                 .GetSingleAsync(v => v.UserId == voteModel.UserId
@@ -42,12 +54,20 @@ namespace StackUnderflow.Core.Services
                     && (v.CommentId == null || v.CommentId == voteModel.TargetId)));
             if (vote != null)
             {
-                throw new BusinessException($"User already voted on {voteModel.VoteTarget.ToString()} on '{vote.CreatedOn}'.");
+                throw new BusinessException($"User already voted on {voteModel.VoteTarget} on '{vote.CreatedOn}'.");
             }
             IVoteable target = await GetVoteableFromRepositoryAsync(voteModel.VoteTarget, voteModel.TargetId);
+            if (target == null)
+            {
+                throw new EntityNotFoundException(voteModel.VoteTarget.ToString(), voteModel.TargetId);
+            }
+            vote = Vote.CreateVote(voteModel.UserId, target, voteModel.VoteType);
             target.ApplyVote(vote);
-            await AddVoteableToRepositoryAsync(voteModel.VoteTarget, target);
             await _uow.SaveAsync();
+            return new VoteGetModel
+            {
+                VoteId = vote.Id
+            };
         }
 
         public async Task RevokeVoteAsync(VoteRevokeModel voteModel)
