@@ -43,9 +43,6 @@ namespace StackUnderflow.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("VotesSum")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
@@ -79,9 +76,6 @@ namespace StackUnderflow.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("VotesSum")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ParentAnswerId");
@@ -113,9 +107,6 @@ namespace StackUnderflow.Data.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("VotesSum")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
