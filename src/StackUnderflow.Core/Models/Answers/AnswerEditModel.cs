@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 
 namespace StackUnderflow.Core.Models

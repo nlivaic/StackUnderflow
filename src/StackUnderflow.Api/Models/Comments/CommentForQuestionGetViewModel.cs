@@ -1,3 +1,5 @@
+using AutoMapper;
+using StackUnderflow.Core.Models;
 using System;
 
 namespace StackUnderflow.Api.Models
@@ -12,5 +14,15 @@ namespace StackUnderflow.Api.Models
         public int VotesSum { get; set; }
         public bool IsOwner { get; set; }
         public bool IsModerator { get; set; }
+
+        public class CommentProfile : Profile
+        {
+            public CommentProfile()
+            {
+                CreateMap<CommentForQuestionGetModel, CommentForQuestionGetViewModel>()
+                    .ForMember(dest => dest.CreatedOn,
+                        opts => opts.MapFrom(src => src.CreatedOn.ToString("yyyy-MM-dd hh:mm:ss")));
+            }
+        }
     }
 }

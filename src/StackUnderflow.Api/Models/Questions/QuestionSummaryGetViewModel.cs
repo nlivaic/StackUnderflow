@@ -1,3 +1,5 @@
+using AutoMapper;
+using StackUnderflow.Core.Models;
 using System;
 using System.Collections.Generic;
 
@@ -14,5 +16,17 @@ namespace StackUnderflow.Api.Models
         public IEnumerable<string> Tags { get; set; } = new List<string>();
         public int Answers { get; set; }
         public int VotesSum { get; set; }
+
+        public class QuestionProfile : Profile
+        {
+            public QuestionProfile()
+            {
+                CreateMap<QuestionSummaryGetModel, QuestionSummaryGetViewModel>()
+                    .ForMember(dest => dest.Tags,
+                        opts => opts.MapFrom(src => src.Tags.Select(t => t.Name)))
+                    .ForMember(dest => dest.CreatedOn,
+                        opts => opts.MapFrom(src => src.CreatedOn.ToString("yyyy-MM-dd hh:mm:ss")));
+            }
+        }
     }
 }

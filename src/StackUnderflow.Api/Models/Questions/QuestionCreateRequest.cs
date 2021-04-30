@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using FluentValidation;
 using StackUnderflow.Core.Interfaces;
+using AutoMapper;
 
 namespace StackUnderflow.Api.Models
 {
@@ -11,6 +12,14 @@ namespace StackUnderflow.Api.Models
         public string Title { get; set; }
         public string Body { get; set; }
         public IEnumerable<Guid> TagIds { get; set; }
+
+        public class QuestionProfile : Profile
+        {
+            public QuestionProfile()
+            {
+                CreateMap<QuestionCreateRequest, QuestionCreateModel>();
+            }
+        }
 
         public class QuestionCreateRequestValidator : AbstractValidator<QuestionCreateRequest>
         {

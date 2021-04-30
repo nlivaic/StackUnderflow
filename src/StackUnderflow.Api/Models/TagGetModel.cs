@@ -1,3 +1,5 @@
+using AutoMapper;
+using StackUnderflow.Core.Models;
 using System;
 
 namespace StackUnderflow.Api.Models
@@ -6,5 +8,13 @@ namespace StackUnderflow.Api.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-    }
+
+        public class TagProfile : Profile
+        {
+            public TagProfile()
+            {
+                CreateMap<TagGetModel, TagGetViewModel>();
+            }
+
+        }
 }

@@ -1,11 +1,21 @@
+using AutoMapper;
 using FluentValidation;
 using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.Models
 {
     public class UpdateCommentRequest
     {
         public string Body { get; set; }
+
+        public class CommentProfile : Profile
+        {
+            public CommentProfile()
+            {
+                CreateMap<UpdateCommentRequest, CommentEditModel>();
+            }
+        }
 
         public class UpdateCommentRequestValidator : AbstractValidator<UpdateCommentRequest>
         {
