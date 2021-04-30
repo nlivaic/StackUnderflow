@@ -17,5 +17,6 @@ namespace StackUnderflow.Common.Interfaces
         void Delete(T entity);
         void Delete(IEnumerable<T> entities);
         Task<bool> ExistsAsync(IEnumerable<Guid> ids);
+        Task<int> CountAsync(Expression<Func<T, bool>> predicate = null);
     }
 }

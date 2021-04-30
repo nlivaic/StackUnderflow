@@ -7,6 +7,7 @@ using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
+using StackUnderflow.Infrastructure.Caching;
 
 namespace StackUnderflow.Core.Services
 {
@@ -17,6 +18,8 @@ namespace StackUnderflow.Core.Services
         private readonly IRepository<Answer> _answerRepository;
         private readonly IUserRepository _userRepository;
         private readonly ICommentService _commentService;
+        private readonly ICache _cache;
+        private readonly IRepository<Vote> _voteRepository;
         private readonly IMapper _mapper;
         private readonly BaseLimits _limits;
         private readonly IVoteable _voteable;
@@ -27,6 +30,8 @@ namespace StackUnderflow.Core.Services
             IRepository<Answer> answerRepository,
             IUserRepository userRepository,
             ICommentService commentService,
+            ICache cache,
+            IRepository<Vote> voteRepository,
             IMapper mapper,
             BaseLimits limits)
         {
@@ -35,6 +40,8 @@ namespace StackUnderflow.Core.Services
             _answerRepository = answerRepository;
             _userRepository = userRepository;
             _commentService = commentService;
+            _cache = cache;
+            _voteRepository = voteRepository;
             _mapper = mapper;
             _limits = limits;
             _voteable = new Voteable();
@@ -43,11 +50,6 @@ namespace StackUnderflow.Core.Services
 
         public async Task<AnswerGetModel> PostAnswerAsync(AnswerCreateModel answerModel)
         {
-            // @nl: check if null.
-            // var owner = _ownerRepository.GetByIdAsync(ownerId);
-            // if (owner == null)
-            // {
-            // }
             var question = (await _questionRepository.GetQuestionWithAnswersAsync(answerModel.QuestionId))
                 ?? throw new BusinessException($"Question '{answerModel.QuestionId}' does not exist!");
             var user = await _userRepository.GetByIdAsync(answerModel.UserId);
@@ -107,7 +109,8 @@ namespace StackUnderflow.Core.Services
             {
                 throw new BusinessException($"Answer with id '{answerId}' has been accepted on '{answer.AcceptedOn}'.");
             }
-            if (answer.VotesSum > 0)
+            var votesSum = await _voteRepository.CountAsync(v => v.AnswerId == answerId);
+            if (votesSum > 0)
             {
                 throw new BusinessException($"Cannot delete answer '{answerId}' because associated votes exist.");
             }

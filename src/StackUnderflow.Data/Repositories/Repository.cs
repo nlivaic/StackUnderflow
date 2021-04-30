@@ -69,5 +69,17 @@ namespace StackUnderflow.Data.Repositories
         {
             _context.Set<T>().RemoveRange(entities);
         }
+
+        public async Task<int> CountAsync(Expression<Func<T, bool>> predicate = null)
+        {
+            if (predicate != null)
+            {
+                return await _context.Set<T>().CountAsync(predicate);
+            }
+            else
+            {
+                return await _context.Set<T>().CountAsync();
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
+using StackUnderflow.Infrastructure.Caching;
 
 namespace StackUnderflow.Core.Services
 {
@@ -17,6 +18,8 @@ namespace StackUnderflow.Core.Services
         private readonly ICommentRepository _commentRepository;
         private readonly IAnswerRepository _answerRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ICache _cache;
+        private readonly IRepository<Vote> _voteRepository;
         private readonly IUnitOfWork _uow;
         private readonly BaseLimits _limits;
         private readonly IVoteable _voteable;
@@ -26,6 +29,8 @@ namespace StackUnderflow.Core.Services
             ICommentRepository commentRepository,
             IAnswerRepository answerRepository,
             IUserRepository userRepository,
+            ICache cache,
+            IRepository<Vote> voteRepository,
             IUnitOfWork unitOfWork,
             BaseLimits limits,
             IMapper mapper)
@@ -34,6 +39,8 @@ namespace StackUnderflow.Core.Services
             _answerRepository = answerRepository;
             _commentRepository = commentRepository;
             _userRepository = userRepository;
+            _cache = cache;
+            _voteRepository = voteRepository;
             _uow = unitOfWork;
             _limits = limits;
             _voteable = new Voteable();
@@ -89,7 +96,8 @@ namespace StackUnderflow.Core.Services
         public async Task DeleteAsync(CommentDeleteModel commentModel)
         {
             var comment = await GetCommentOnEditOrDeleteAsync(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
-            if (comment.Votes.Any() == true)
+            var votesSum = await _voteRepository.CountAsync(v => v.CommentId == commentModel.CommentId);
+            if (votesSum > 0)
             {
                 throw new BusinessException($"Cannot delete comment '{commentModel.CommentId}' because associated votes exist.");
             }
@@ -130,7 +138,9 @@ namespace StackUnderflow.Core.Services
                 comments = await
                     _commentRepository.GetCommentsForQuestionAsync<Comment>(commentModel.ParentQuestionId.Value);
             }
-            if (comments.Any(c => c.VotesSum > 0))
+            // No point in caching count result since the comments will be deleted.
+            var votesSum = await _voteRepository.CountAsync(v => comments.Any(c => c.Id == v.CommentId));
+            if (votesSum > 0)
             {
                 throw new BusinessException($"Cannot delete because associated votes exist on at least one comment.");
             }

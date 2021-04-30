@@ -31,11 +31,6 @@ namespace StackUnderflow.Core.Entities
         public Answer ParentAnswer { get; private set; }
         public Guid? ParentAnswerId { get; private set; }
         public int OrderNumber { get; private set; }
-        public int VotesSum
-        {
-            get => _voteable.VotesSum;
-            set => _voteable.VotesSum = value;
-        }
         public IEnumerable<Vote> Votes => _voteable.Votes;
 
         private Voteable _voteable;

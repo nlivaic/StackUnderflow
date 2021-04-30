@@ -9,7 +9,6 @@ namespace StackUnderflow.Core.Entities
 {
     public class Voteable : IVoteable
     {
-        public int VotesSum { get; set; } = 0;
         public IEnumerable<Vote> Votes => _votes;
         private List<Vote> _votes = new List<Vote>();
 
@@ -21,17 +20,6 @@ namespace StackUnderflow.Core.Entities
                 throw new BusinessException($"User '{vote.UserId}' has already voted on {Target(vote)} '{TargetId(vote)}'.");
             }
             _votes.Add(vote);
-            // @nl: code below might be open to concurrency issues.
-            // Perhaps sum this up in a dedicated thread, using Hangfire.
-            switch (vote.VoteType)
-            {
-                case VoteTypeEnum.Upvote:
-                    VotesSum++;
-                    break;
-                case VoteTypeEnum.Downvote:
-                    VotesSum--;
-                    break;
-            }
             // @nl: Tell (q/a/c) target owner that they received an upvote/downvote (use inbox).
             // @nl: initiate point recalculation for (q/a/c) target owner.
         }
@@ -45,15 +33,6 @@ namespace StackUnderflow.Core.Entities
             if (vote.CreatedOn.Add(limits.VoteEditDeadline) < DateTime.UtcNow)
             {
                 throw new BusinessException($"{Target(vote)} with id '{TargetId(vote)}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
-            }
-            switch (vote.VoteType)
-            {
-                case VoteTypeEnum.Upvote:
-                    VotesSum--;
-                    break;
-                case VoteTypeEnum.Downvote:
-                    VotesSum++;
-                    break;
             }
             // @nl: Tell (q/a/c) target owner that they received an upvote/downvote (use inbox).
             // @nl: initiate point recalculation for (q/a/c) target owner.

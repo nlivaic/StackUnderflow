@@ -1,8 +1,8 @@
 
-  Moving to production:
-    ☐ Use https instead of http on React server.
-    ☐ Https cert
-    ☐ Security: connection stringove razraditi: dev, prod
+Moving to production:
+  ☐ Use https instead of http on React server.
+  ☐ Https cert
+  ☐ Security: connection stringove razraditi: dev, prod
 
 Front end:
   ☐ Natjerati ga da u Profile.js pročita getUser() kako spada. Na temelju toga onda pokazati SignIn/SignOut gumbe.
@@ -73,28 +73,42 @@ Backend:
     ☐ Some projects are built against netstandard2.0, others against netstandard2.1
 
   Must Have:
+    ☐ ServiceBus/MT
+      ☐ Watch out: events can be raised only AFTER a commit is made. Take a look at FrontDesk for this. @critical 
+      ☐ On developing locally: https://jimmybogard.com/local-development-with-azure-service-bus/
+    ☐ Make Postman authenticate.
+    ☐ AutoMapper
+      ☐ Move all profiles to appropriate model classes.
+      ☐ Use UserIdResolver. Stop mapping UserId manually.
+    ☐ Error handling: there is a bunch of catch blocks dealing with NotFound and 422. Move it somewhere centrally?
+    ☐ 504 Gateway Time-out na nginxu prilikom duljeg debuggiranja.
     ☐ Options class
-    ☐ Docker email ne podržava Tls. Naš Email service isto ne podržava Tls.
-    ☐ We communicate with Seq on http. Make that https.
-    ☐ Move all AutoMapper profiles to appropriate model classes.
     ☐ QuestionSummariesController bi trebao nasljeđivati od ApiControllerBase.
     ☐ CORS
       ☐ Bolje definirati, trenutno dopuštamo sve.
     ☐ Unit tests: rerun, review, fix.
-    ☐ Azure
     ☐ Startup.cs
       ☐ Tidy up all the registrations.
       ☐ services.AddController()
+
   Bugs:
+    ☐ 201 vraća http u Locations headeru.
     ☐ Baca neki warning u testovima.
     ☐ Debug, breakpoint na QuestionRepository.cs:GetQuestionSummariesAsync()
       ☐ Open Locals
       ☐ 'searchQueryLowercase' threw an exception of type 'System.NullReferenceException'
+    ☐ .Common projekt, folder Interfaces - nema smisla, posebno kad pogledaš da postoji u istom projektu dediciran folder za neke druge stvari i interfejsi su u tim folderima. Bolje da preimenujem folder Interfaces u folder Data il tak neš.
 
+  Things to redo:
+    ☐ Rewrite all controllers as endpoints. I became aware of this when I implemented BaseLimits. This gets created even on GETs, even though there is no need. To test this, put a breakpoint on Cache.Get() and check how many times it gets hit for "limits" on each request.
+    
   Nice To Have:
     ☐ User endpoint
       ☐ Retrieve user by id. Allow anonymous.
       ☐ User 
+    ☐ Admin screen
+      ☐ Administer Limits
+      ☐ Admin can assign other users as admins
     ☐ Po repoima ima glupih queryja, rade .Where() pa .ProjectTo, pa .Single. To se može skratiti, pogledaj USerRepository.GetUser()
     ☐ Repository: switch from .ProjectTo<T>() to .Projector<T>()
     ☐ VotesSum je loš podatak. Upvote i downvote će rezultirati nulom, a to nije ok. * Sad ovo opet čitam, nije točno to što sam napisao. +1 pa -1 trebaju na front endu rezultirati nulom. Ali interno trebamo voditi računa o broju jednih i drugih da znamo procesuirati zato jer ne nosi +1 nužno (?) isti broj bodova kao i -1.

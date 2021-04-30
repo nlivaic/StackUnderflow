@@ -5,7 +5,6 @@ namespace StackUnderflow.Core.Interfaces
 {
     public interface IVoteable
     {
-        int VotesSum { get; }
         IEnumerable<Vote> Votes { get; }
 
         void ApplyVote(Vote vote);

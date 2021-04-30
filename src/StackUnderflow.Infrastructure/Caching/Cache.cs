@@ -17,6 +17,9 @@ namespace StackUnderflow.Infrastructure.Caching
             _semaphores = new ConcurrentDictionary<string, SemaphoreSlim>();
         }
 
+        public T Get<T>(string key) =>
+            _cache.Get<T>(key);
+
         /// <summary>
         /// Simple implementation. In case two threads hit this method with the same key,
         /// it won't coordinate between the two and the source Func will be called twice.
