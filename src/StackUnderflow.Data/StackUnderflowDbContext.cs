@@ -37,6 +37,10 @@ namespace StackUnderflow.Data
 
             modelBuilder.Entity<Tag>()
                 .HasIndex(t => t.Name);
+
+            modelBuilder.Entity<Vote>()
+                .Ignore(t => t.TargetId)
+                .Ignore(t => t.Target);
         }
     }
 }

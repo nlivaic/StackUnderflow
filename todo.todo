@@ -73,13 +73,20 @@ Backend:
     ☐ Some projects are built against netstandard2.0, others against netstandard2.1
 
   Must Have:
+    ☐ Voting:
+      ☐ Increment
+      ☐ Decrement
+      ☐ Test multiple requests simultaneously
+      ☐ Uncomment relevant code.
     ☐ ServiceBus/MT
       ☐ Watch out: events can be raised only AFTER a commit is made. Take a look at FrontDesk for this. @critical 
       ☐ On developing locally: https://jimmybogard.com/local-development-with-azure-service-bus/
     ☐ Make Postman authenticate.
     ☐ AutoMapper
-      ☐ Move all profiles to appropriate model classes.
+      ✔ Move all profiles to appropriate model classes. @done (01. 05. 2021. 00:05:43)
       ☐ Use UserIdResolver. Stop mapping UserId manually.
+    ☐ All outgoing (and incoming?) Dtos should be made records.
+      ☐ Introduce .Net 5 :)
     ☐ Error handling: there is a bunch of catch blocks dealing with NotFound and 422. Move it somewhere centrally?
     ☐ 504 Gateway Time-out na nginxu prilikom duljeg debuggiranja.
     ☐ Options class
@@ -98,6 +105,7 @@ Backend:
       ☐ Open Locals
       ☐ 'searchQueryLowercase' threw an exception of type 'System.NullReferenceException'
     ☐ .Common projekt, folder Interfaces - nema smisla, posebno kad pogledaš da postoji u istom projektu dediciran folder za neke druge stvari i interfejsi su u tim folderima. Bolje da preimenujem folder Interfaces u folder Data il tak neš.
+    ☐ Api call (Postman "Answers - Ordering, paging") baca error.
 
   Things to redo:
     ☐ Rewrite all controllers as endpoints. I became aware of this when I implemented BaseLimits. This gets created even on GETs, even though there is no need. To test this, put a breakpoint on Cache.Get() and check how many times it gets hit for "limits" on each request.

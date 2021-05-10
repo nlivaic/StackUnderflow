@@ -2,6 +2,7 @@ using AutoMapper;
 using StackUnderflow.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StackUnderflow.Api.Models
 {

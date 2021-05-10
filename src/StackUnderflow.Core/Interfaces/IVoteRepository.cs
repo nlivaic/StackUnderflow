@@ -9,5 +9,7 @@ namespace StackUnderflow.Core.Interfaces
     {
         Task<Vote> GetVoteAsync(Guid voteUserId, Guid voteId);
         Task<Vote> GetVoteAsync(Guid voteUserId, Guid? questionId, Guid? answerId, Guid? commentId);
+        Task<int> GetVotesSum(Guid targetId);
+        Task<Vote> GetVoteWithTargetAsync(Guid voteUserId, Guid voteId);
     }
 }

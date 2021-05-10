@@ -7,8 +7,5 @@ namespace StackUnderflow.Core.Models
     {
         public Guid UserId { get; set; }
         public Guid VoteId { get; set; }
-        public Guid TargetId { get; set; }
-        public VoteTargetEnum VoteTarget { get; set; }
-        public VoteTypeEnum VoteType { get; set; }
     }
 }

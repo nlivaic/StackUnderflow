@@ -35,17 +35,51 @@ namespace StackUnderflow.Infrastructure.Caching
             return result;
         }
 
-        public async Task<int> IncrementAndGetConcurrent(string key, int seconds)
+        /// <summary>
+        /// Reads the cached value, increments it and stores.
+        /// First time the value is read from the source it does not increment,
+        /// but is only stored. Make sure to use this method only after
+        /// persisting your value to database.
+        /// </summary>
+        public async Task<int> IncrementAndGetConcurrentAsync(string key, Func<Task<int>> source, int seconds)
         {
-            var cacheSemaphore = _semaphores.GetOrAdd(key, new SemaphoreSlim(1,1));
+            return await ChangeValueAndGetConcurrentAsync(key, source, seconds, ChangeValue.Increment);
+        }
+
+        /// <summary>
+        /// Reads the cached value, decrements it and stores.
+        /// First time the value is read from the source it does not increment,
+        /// but is only stored. Make sure to use this method only after
+        /// persisting your value to database.
+        /// </summary>
+        public async Task<int> DecrementAndGetConcurrentAsync(string key, Func<Task<int>> source, int seconds)
+        {
+            return await ChangeValueAndGetConcurrentAsync(key, source, seconds, ChangeValue.Decrement);
+        }
+
+        private async Task<int> ChangeValueAndGetConcurrentAsync(string key, Func<Task<int>> source, int seconds, ChangeValue changeValue)
+        {
+            var cacheSemaphore = _semaphores.GetOrAdd(key, new SemaphoreSlim(1, 1));
             await cacheSemaphore.WaitAsync();
-            if (_cache.TryGetValue<int>(key, out int resultFromCache))
+            int result;
+            try
             {
-                resultFromCache++;
-                Set(key, resultFromCache, 60);
+                if (_cache.TryGetValue(key, out result))
+                {
+                    result = result + (int)changeValue;
+                    Set(key, result, 60);
+                }
+                else
+                {
+                    result = await source();
+                    Set(key, result, seconds);
+                }
             }
-            cacheSemaphore.Release();
-            return resultFromCache;
+            finally
+            {
+                cacheSemaphore.Release();
+            }
+            return result;
         }
 
         /// <summary>
@@ -89,6 +123,12 @@ namespace StackUnderflow.Infrastructure.Caching
         public void Remove(string key)
         {
             _cache.Remove(key);
+        }
+
+        private enum ChangeValue
+        {
+            Decrement = -1,
+            Increment = 1
         }
     }
 }

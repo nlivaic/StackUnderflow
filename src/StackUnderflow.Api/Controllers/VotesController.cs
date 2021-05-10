@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.BaseControllers;
+using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models.Votes;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
@@ -18,22 +19,13 @@ namespace StackUnderflow.Api.Controllers
     public class VotesController : ApiControllerBase
     {
         private readonly IVoteService _voteService;
-        private readonly IQuestionRepository _questionRepository;
-        private readonly IAnswerRepository _answerRepository;
-        private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
 
         public VotesController(
             IVoteService voteService,
-            IQuestionRepository questionRepository,
-            IAnswerRepository answerRepository,
-            ICommentRepository commentRepository,
             IMapper mapper)
         {
             _voteService = voteService;
-            _questionRepository = questionRepository;
-            _answerRepository = answerRepository;
-            _commentRepository = commentRepository;
             _mapper = mapper;
         }
 
@@ -80,6 +72,26 @@ namespace StackUnderflow.Api.Controllers
             }
             var voteResponseModel = _mapper.Map<VoteGetViewModel>(vote);
             return CreatedAtRoute("GetVote", new { voteId = vote.VoteId }, voteResponseModel);
+        }
+
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpDelete("{voteId}")]
+        [Authorize]
+        public async Task<ActionResult> DeleteAsync([FromRoute]Guid voteId)
+        {
+            try
+            {
+                await _voteService.RevokeVoteAsync(new VoteRevokeModel
+                {
+                    UserId = User.UserId().Value,
+                    VoteId = voteId
+                });
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound();
+            }
+            return NoContent();
         }
     }
 }

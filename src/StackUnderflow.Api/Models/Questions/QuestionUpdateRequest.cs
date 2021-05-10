@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FluentValidation;
 using StackUnderflow.Core.Interfaces;
 using AutoMapper;
+using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.Models
 {

@@ -1,5 +1,6 @@
 using System;
 using StackUnderflow.Common.Base;
+using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Core.Entities
@@ -21,6 +22,13 @@ namespace StackUnderflow.Core.Entities
         public Comment Comment { get; private set; }
         public Guid? CommentId { get; private set; }
         public VoteTypeEnum VoteType { get; private set; }
+        public Guid TargetId => QuestionId ?? AnswerId ?? CommentId.Value;
+        public VoteTargets Target =>
+            QuestionId.HasValue
+                ? VoteTargets.Question
+                : AnswerId.HasValue
+                    ? VoteTargets.Answer
+                    : VoteTargets.Comment;
 
         private Vote()
         {

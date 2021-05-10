@@ -28,24 +28,14 @@ namespace StackUnderflow.Core.Entities
         {
             if (_votes.SingleOrDefault(v => v.UserId == vote.UserId) == null)
             {
-                throw new BusinessException($"Vote does not exist on {Target(vote)} '{TargetId(vote)}'.");
+                throw new BusinessException($"Vote does not exist on {vote.Target.Name} '{vote.TargetId}'.");
             }
             if (vote.CreatedOn.Add(limits.VoteEditDeadline) < DateTime.UtcNow)
             {
-                throw new BusinessException($"{Target(vote)} with id '{TargetId(vote)}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
+                throw new BusinessException($"{vote.Target.Name} with id '{vote.TargetId}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
             }
             // @nl: Tell (q/a/c) target owner that they received an upvote/downvote (use inbox).
             // @nl: initiate point recalculation for (q/a/c) target owner.
         }
-
-        private string Target(Vote vote) =>
-            vote.QuestionId.HasValue
-                ? "question"
-                : vote.AnswerId.HasValue
-                    ? "answer"
-                    : "comment";
-
-        private Guid TargetId(Vote vote) =>
-            vote.QuestionId ?? vote.AnswerId ?? vote.CommentId.Value;
     }
 }
