@@ -1,5 +1,4 @@
 using System;
-using static StackUnderflow.Core.Entities.Vote;
 
 namespace StackUnderflow.Core.Models
 {

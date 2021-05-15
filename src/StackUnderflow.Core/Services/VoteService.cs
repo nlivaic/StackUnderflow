@@ -89,13 +89,13 @@ namespace StackUnderflow.Core.Services
             }
         }
 
-        public async Task RevokeVoteAsync(VoteRevokeModel voteModel)
+        public async Task RevokeVoteAsync(VoteRevokeModel voteRevokeModel)
         {
             var vote = (await _voteRepository
-                .GetVoteWithTargetAsync(voteModel.UserId, voteModel.VoteId))
-                ?? throw new EntityNotFoundException("No vote to revoke or user not owner of target vote.", voteModel.VoteId);
+                .GetVoteWithTargetAsync(voteRevokeModel.UserId, voteRevokeModel.VoteId))
+                ?? throw new EntityNotFoundException(nameof(Vote), voteRevokeModel.VoteId);
             if (vote.CreatedOn.Add(_limits.VoteEditDeadline) < DateTime.UtcNow)
-                throw new BusinessException($"Vote with id '{voteModel.VoteId}' cannot be edited since more than '{_limits.VoteEditDeadline.Minutes}' minutes passed.");
+                throw new BusinessException($"Vote cannot be edited since more than '{_limits.VoteEditDeadline.Minutes}' minutes passed.");
             var voteable = GetVoteable(vote);
             voteable.RevokeVote(vote, _limits);
             _voteRepository.Delete(vote);

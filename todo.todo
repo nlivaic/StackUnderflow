@@ -72,12 +72,23 @@ Backend:
     ☐ Migrate to net 5.0
     ☐ Some projects are built against netstandard2.0, others against netstandard2.1
 
+  Testing:
+      ☐ Review all unit tests
+      ☐ Integration tests
+      ☐ End-to-end tests
+
   Must Have:
     ☐ Voting:
-      ☐ Increment
-      ☐ Decrement
-      ☐ Test multiple requests simultaneously
-      ☐ Uncomment relevant code.
+      ✔ Increment @done (10. 05. 2021. 22:43:26)
+      ✔ Decrement @done (10. 05. 2021. 22:43:27)
+      ✔ Test multiple requests simultaneously @done (10. 05. 2021. 22:43:27)
+      ✔ Uncomment relevant code. @done (10. 05. 2021. 22:43:28)
+      ✔ Delete all votes. @done (10. 05. 2021. 22:43:29)
+      ☐ Front end
+        ☐ Vote only if logged in.
+        ☐ Voting state
+        ☐ Upvote
+        ☐ Downvote
     ☐ ServiceBus/MT
       ☐ Watch out: events can be raised only AFTER a commit is made. Take a look at FrontDesk for this. @critical 
       ☐ On developing locally: https://jimmybogard.com/local-development-with-azure-service-bus/

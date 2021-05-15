@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Profiles;
 using StackUnderflow.Core.Models;
 using System;
@@ -14,9 +12,9 @@ namespace StackUnderflow.Api.Models.Votes
         public VoteTargetEnum VoteTarget { get; set; }
         public VoteTypeEnum VoteType { get; set; }
 
-        public class VoteOnQuestionCreateRequestProfile : Profile
+        public class VoteCreateRequestProfile : Profile
         {
-            public VoteOnQuestionCreateRequestProfile()
+            public VoteCreateRequestProfile()
             {
                 CreateMap<VoteCreateRequest, VoteCreateModel>()
                     .ForMember(dest => dest.UserId,

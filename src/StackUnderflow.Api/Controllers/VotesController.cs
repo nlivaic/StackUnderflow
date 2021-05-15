@@ -77,15 +77,12 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{voteId}")]
         [Authorize]
-        public async Task<ActionResult> DeleteAsync([FromRoute]Guid voteId)
+        public async Task<ActionResult> DeleteAsync([FromRoute]VoteDeleteRequest voteDeleteRequest)
         {
+            var voteRevokeModel = _mapper.Map<VoteRevokeModel>(voteDeleteRequest);
             try
             {
-                await _voteService.RevokeVoteAsync(new VoteRevokeModel
-                {
-                    UserId = User.UserId().Value,
-                    VoteId = voteId
-                });
+                await _voteService.RevokeVoteAsync(voteRevokeModel);
             }
             catch (EntityNotFoundException)
             {

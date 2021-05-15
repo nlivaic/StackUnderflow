@@ -17,7 +17,7 @@ namespace StackUnderflow.Core.Entities
             var targetId = vote.QuestionId ?? vote.AnswerId ?? vote.CommentId.Value;
             if (_votes.SingleOrDefault(v => v.UserId == vote.UserId) != null)
             {
-                throw new BusinessException($"User '{vote.UserId}' has already voted on {Target(vote)} '{TargetId(vote)}'.");
+                throw new BusinessException($"User '{vote.UserId}' has already voted on {vote.Target} '{vote.TargetId}'.");
             }
             _votes.Add(vote);
             // @nl: Tell (q/a/c) target owner that they received an upvote/downvote (use inbox).
