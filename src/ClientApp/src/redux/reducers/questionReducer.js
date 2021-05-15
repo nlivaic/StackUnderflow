@@ -10,7 +10,8 @@ import {
   DRAFT_QUESTION,
   CLEAR_DRAFT_QUESTION,
   UPVOTE_QUESTION_SUCCESS,
-  DOWNVOTE_QUESTION_SUCCESS
+  DOWNVOTE_QUESTION_SUCCESS,
+  REVOKE_VOTE_QUESTION_SUCCESS
 } from "../actions/actionTypes";
 import { combineReducers } from "redux";
 
@@ -30,6 +31,14 @@ function questionReducer(state = initialState.question, action) {
       return { ...state, voteId: action.vote.id, voteType: action.vote.voteType, votesSum: state.votesSum + 1 };
     case DOWNVOTE_QUESTION_SUCCESS:
       return { ...state, voteId: action.vote.id, voteType: action.vote.voteType, votesSum: state.votesSum - 1 };
+    case REVOKE_VOTE_QUESTION_SUCCESS:
+      return {
+        ...state,
+        voteId: null,
+        voteType: null,
+        votesSum: state.votesSum + (
+          action.vote.voteType === 'Upvote' ? -1 : 1
+        ) };
     default:
       return state;
   }

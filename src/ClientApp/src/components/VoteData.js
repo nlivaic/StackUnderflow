@@ -9,6 +9,7 @@ import Downvote from "./Downvote";
 
 const VoteData = ({votingActions, targetId, targetType, vote}) => {
   const [errors, setErrors] = useState({});
+
   const onUpvoting = async e => {
         e.preventDefault();
         try {
@@ -30,7 +31,7 @@ const VoteData = ({votingActions, targetId, targetType, vote}) => {
     const onRevoking = async e => {
         e.preventDefault();
         try {
-            await downvote(targetId, targetType);
+            await revokeVote(vote.voteId, vote.voteType, targetType);
         } catch (error) {
             setErrors({ apiError: getErrorMessage(error) });
         }
@@ -50,6 +51,16 @@ const VoteData = ({votingActions, targetId, targetType, vote}) => {
         switch (targetType) {
             case 'question':
                 await votingActions.downvoteQuestion(targetId);
+                break;
+            default:
+                throw new Error(`Unknown vote target type ${targetType}.`);
+        }
+    };
+
+    const revokeVote = async (voteId, voteType, targetType) => {
+        switch (targetType) {
+            case 'question':
+                await votingActions.revokeVoteQuestion(voteId, voteType);
                 break;
             default:
                 throw new Error(`Unknown vote target type ${targetType}.`);

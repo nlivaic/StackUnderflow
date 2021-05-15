@@ -20,10 +20,10 @@ import {
     };
   }
   
-  function revokeVoteQuestionSuccess(voteId) {
+  function revokeVoteQuestionSuccess(voteId, voteType) {
     return {
       type: REVOKE_VOTE_QUESTION_SUCCESS,
-      voteId,
+      vote: { voteId, voteType},
     };
   }
   
@@ -49,6 +49,21 @@ import {
         dispatch(
           downvoteQuestionSuccess(
             await votesApi.downvoteQuestion(questionId)));
+      } catch (error) {
+        console.error(error);
+        dispatch(apiStatusActions.apiCallError());
+        throw error;
+      }
+    };
+  }
+  
+  export function revokeVoteQuestion(voteId, voteType) {
+    return async (dispatch) => {
+      dispatch(apiStatusActions.beginApiCall());
+      try {
+        dispatch(
+          revokeVoteQuestionSuccess(
+            await votesApi.revokeVote(voteId), voteType));
       } catch (error) {
         console.error(error);
         dispatch(apiStatusActions.apiCallError());
