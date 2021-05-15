@@ -53,7 +53,7 @@ namespace StackUnderflow.Api.Controllers
         [Consumes("application/json")]
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<int>> PostAsync([FromBody]VoteCreateRequest model)
+        public async Task<ActionResult<VoteGetViewModel>> PostAsync([FromBody]VoteCreateRequest model)
         {
             var voteCreateModel = _mapper.Map<VoteCreateModel>(model);
             VoteGetModel vote;
@@ -71,7 +71,8 @@ namespace StackUnderflow.Api.Controllers
                 return UnprocessableEntity();
             }
             var voteResponseModel = _mapper.Map<VoteGetViewModel>(vote);
-            return CreatedAtRoute("GetVote", new { voteId = vote.VoteId }, voteResponseModel);
+            // @nl: Map this properly.
+            return CreatedAtRoute("GetVote", new { voteId = vote.Id }, voteResponseModel);
         }
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]

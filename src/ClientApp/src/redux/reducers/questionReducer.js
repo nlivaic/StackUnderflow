@@ -9,6 +9,8 @@ import {
   ACCEPT_ANSWER_SUCCESS,
   DRAFT_QUESTION,
   CLEAR_DRAFT_QUESTION,
+  UPVOTE_QUESTION_SUCCESS,
+  DOWNVOTE_QUESTION_SUCCESS
 } from "../actions/actionTypes";
 import { combineReducers } from "redux";
 
@@ -24,6 +26,10 @@ function questionReducer(state = initialState.question, action) {
       return initialState.question;
     case ACCEPT_ANSWER_SUCCESS:
       return { ...state, hasAcceptedAnswer: true };
+    case UPVOTE_QUESTION_SUCCESS:
+      return { ...state, voteId: action.vote.id, voteType: action.vote.voteType, votesSum: state.votesSum + 1 };
+    case DOWNVOTE_QUESTION_SUCCESS:
+      return { ...state, voteId: action.vote.id, voteType: action.vote.voteType, votesSum: state.votesSum - 1 };
     default:
       return state;
   }
@@ -76,3 +82,6 @@ export const getRedirectToQuestion = (state) => state.redirectToQuestion;
 export const getRedirectToHome = (state) => state.redirectToHome;
 export const getQuestionHasAcceptedAnswer = (state) =>
   state.question.hasAcceptedAnswer;
+export const getVoteOnQuestion = (state) => {
+  return {voteId: state.question.voteId, voteType: state.question.voteType};
+};

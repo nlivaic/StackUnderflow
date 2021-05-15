@@ -7,6 +7,7 @@ import ManageComment from "./ManageComment.js";
 import * as actionTypes from "../utils/actionTypes.js";
 import { connect } from "react-redux";
 import { getQuestion } from "../redux/reducers/index.js";
+import VoteData from "./VoteData";
 
 const QuestionPage = (props) => {
   const { questionId } = props.match.params;
@@ -19,7 +20,7 @@ const QuestionPage = (props) => {
     <>
       <div>
         <div>
-          <div>Voting</div>
+          <VoteData targetId={questionId} targetType='question'></VoteData>
           <QuestionData
             questionId={questionId}
             action={actionTypes.ReadAndEdit}

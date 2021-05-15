@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Data.Repositories
@@ -34,7 +35,7 @@ namespace StackUnderflow.Data.Repositories
                     && (v.AnswerId == null || v.AnswerId == targetId)
                     && (v.CommentId == null || v.CommentId == targetId))
                 .GroupBy(v => v.VoteType)
-                .Select(g => g.Key == Vote.VoteTypeEnum.Upvote ? g.Count() : -1 * g.Count())
+                .Select(g => g.Key == VoteTypeEnum.Upvote ? g.Count() : -1 * g.Count())
                 .SumAsync();
         }
     }

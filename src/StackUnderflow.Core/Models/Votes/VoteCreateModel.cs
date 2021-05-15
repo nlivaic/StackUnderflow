@@ -1,3 +1,4 @@
+using StackUnderflow.Core.Enums;
 using System;
 using static StackUnderflow.Core.Entities.Vote;
 

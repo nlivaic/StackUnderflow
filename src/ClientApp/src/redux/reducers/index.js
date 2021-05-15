@@ -26,6 +26,8 @@ export const getQuestionHasAcceptedAnswer = (state) =>
   fromQuestion.getQuestionHasAcceptedAnswer(state.question);
 export const getQuestionDraft = (state) =>
   fromQuestion.getQuestionDraft(state.question);
+export const getVoteOnQuestion = (state) =>
+  fromQuestion.getVoteOnQuestion(state.question);
 // Top level selectors - Comments
 export const getComments = (parentType, state) => {
   switch (parentType) {

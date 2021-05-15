@@ -70,20 +70,17 @@ namespace StackUnderflow.Core.Services
             target.ApplyVote(vote);
             await _uow.SaveAsync();
             await ChangeCachedVotesSumAfterVoteCast(vote);
-            return new VoteGetModel
-            {
-                VoteId = vote.Id
-            };
+            return _mapper.Map<VoteGetModel>(vote);
         }
 
         private async Task ChangeCachedVotesSumAfterVoteCast(Vote vote)
         {
             switch (vote.VoteType)
             {
-                case Vote.VoteTypeEnum.Upvote:
+                case VoteTypeEnum.Upvote:
                     await IncrementCachedVotesSum(vote);
                     break;
-                case Vote.VoteTypeEnum.Downvote:
+                case VoteTypeEnum.Downvote:
                     await DecrementCachedVotesSum(vote);
                     break;
             }
@@ -107,10 +104,10 @@ namespace StackUnderflow.Core.Services
         {
             switch (vote.VoteType)
             {
-                case Vote.VoteTypeEnum.Upvote:
+                case VoteTypeEnum.Upvote:
                     await DecrementCachedVotesSum(vote);
                     break;
-                case Vote.VoteTypeEnum.Downvote:
+                case VoteTypeEnum.Downvote:
                     await IncrementCachedVotesSum(vote);
                     break;
             }

@@ -7,11 +7,6 @@ namespace StackUnderflow.Core.Entities
 {
     public class Vote : BaseEntity<Guid>
     {
-        public enum VoteTypeEnum
-        {
-            Upvote = 1,
-            Downvote = 2
-        }
         public Guid UserId { get; private set; }
         public User User { get; private set; }
         public DateTime CreatedOn { get; private set; }

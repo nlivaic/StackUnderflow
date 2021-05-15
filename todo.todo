@@ -84,11 +84,35 @@ Backend:
       ✔ Test multiple requests simultaneously @done (10. 05. 2021. 22:43:27)
       ✔ Uncomment relevant code. @done (10. 05. 2021. 22:43:28)
       ✔ Delete all votes. @done (10. 05. 2021. 22:43:29)
-      ☐ Front end
+      ☐ Q/a/c must return (vote id, vote type) if user voted.
+      ☐ Q/a/c must return votes sum always.
+      ✔ When voting, return (voteId, voteType, targetId) @done (15. 05. 2021. 14:56:46)
+      ☐ When voting, return (targetType)
+
+      
+      ☐ 
+      ☐ @critical  @critical  @critical @critical @critical  @critical  @critical @critical 
+      ☐ Where are we?
+        ☐ First thing to do is to implement revoking. @critical
+        ☐ I can do a fresh upvote and fresh downvote on question only. @critical
+        ☐ Question upvote and downvote are registered in Redux state. @critical
+        ☐ Api does not return vote details when loading q/a/c. There is a "@nl: Map this properly." in c#, find it. @critical 
+        ☐ Move on to doing a/c voting. Might be a bit different from q because we load more than one a/c and yada yada @critical 
+      ☐ @critical  @critical  @critical @critical @critical  @critical  @critical @critical 
+
+      
+      
+      
+
+        
+      ☐ Front end - vote on question
+        ✔ Reducer @done (15. 05. 2021. 12:31:18)
+        ✔ Action @done (15. 05. 2021. 12:31:19)
+        ☐ VoteData @critical 
+        ✔ Upvote @done (15. 05. 2021. 12:31:37)
+        ✔ Downvote @done (15. 05. 2021. 12:31:38)
         ☐ Vote only if logged in.
-        ☐ Voting state
-        ☐ Upvote
-        ☐ Downvote
+        ✔ Voting state @done (15. 05. 2021. 12:31:43)
     ☐ ServiceBus/MT
       ☐ Watch out: events can be raised only AFTER a commit is made. Take a look at FrontDesk for this. @critical 
       ☐ On developing locally: https://jimmybogard.com/local-development-with-azure-service-bus/

@@ -15,6 +15,8 @@ namespace StackUnderflow.Api.Models
         public bool HasAcceptedAnswer { get; set; }
         public string CreatedOn { get; set; }
         public int VotesSum { get; set; }
+        public Guid VoteId { get; set; }
+        public string VoteType { get; set; }
         public bool IsOwner { get; set; }
         public bool IsModerator { get; set; }
         public IEnumerable<TagGetViewModel> Tags { get; set; } = new List<TagGetViewModel>();

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using StackUnderflow.Api.Profiles;
+using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Models;
 using System;
-using static StackUnderflow.Core.Entities.Vote;
 
 namespace StackUnderflow.Api.Models.Votes
 {
