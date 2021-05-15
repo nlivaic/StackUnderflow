@@ -151,7 +151,8 @@ namespace StackUnderflow.Api
                 builder
                     .WithOrigins(allowedOrigins)
                     .WithHeaders("Authorization", "Content-Type")
-                    .WithExposedHeaders(Headers.Pagination);
+                    .WithExposedHeaders(Headers.Pagination)
+                    .WithMethods(HttpMethods.Get, HttpMethods.Post, HttpMethods.Put, HttpMethods.Delete);
             }));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
