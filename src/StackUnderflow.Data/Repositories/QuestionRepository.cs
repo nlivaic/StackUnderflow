@@ -11,6 +11,7 @@ using StackUnderflow.Core.QueryParameters;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Data.QueryableExtensions;
+using StackUnderflow.Core.Models.Questions;
 
 namespace StackUnderflow.Data.Repositories
 {
@@ -24,14 +25,15 @@ namespace StackUnderflow.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId) =>
+        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(QuestionFindModel questionFindModel) =>
             await _context
                 .Questions
-                .Where(q => q.Id == questionId)
+                .Where(q => q.Id == questionFindModel.Id)
                 .Include(q => q.User)
                 .ThenInclude(u => u.Roles)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
+                .Include(q => q.Votes.Where(v => v.UserId == questionFindModel.UserId))
                 .AsNoTracking()
                 .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();

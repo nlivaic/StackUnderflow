@@ -8,6 +8,7 @@ using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using AutoMapper;
 using StackUnderflow.Infrastructure.Caching;
+using StackUnderflow.Core.Models.Questions;
 
 namespace StackUnderflow.Core.Services
 {
@@ -45,8 +46,8 @@ namespace StackUnderflow.Core.Services
             _mapper = mapper;
         }
 
-        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId) =>
-            await _questionRepository.GetQuestionWithUserAndTagsAsync(questionId);
+        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(QuestionFindModel questionFindModel) =>
+            await _questionRepository.GetQuestionWithUserAndTagsAsync(questionFindModel);
 
         public async Task<QuestionGetModel> AskQuestionAsync(QuestionCreateModel questionModel)
         {

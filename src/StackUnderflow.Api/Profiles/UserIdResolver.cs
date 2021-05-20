@@ -6,7 +6,7 @@ using StackUnderflow.Api.Helpers;
 namespace StackUnderflow.Api.Profiles
 {
     public class UserIdResolver<TSource, TDestination>
-        : IValueResolver<TSource, TDestination, Guid>
+        : IValueResolver<TSource, TDestination, Guid?>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -15,7 +15,7 @@ namespace StackUnderflow.Api.Profiles
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Guid Resolve(TSource source, TDestination destination, Guid destMember, ResolutionContext context) =>
-            _httpContextAccessor.HttpContext.User.UserId().Value;
+        public Guid? Resolve(TSource source, TDestination destination, Guid? destMember, ResolutionContext context) =>
+            _httpContextAccessor.HttpContext.User.UserId();
     }
 }

@@ -18,7 +18,7 @@ namespace StackUnderflow.Api.Models.Votes
             {
                 CreateMap<VoteCreateRequest, VoteCreateModel>()
                     .ForMember(dest => dest.UserId,
-                        opts => opts.MapFrom<UserIdResolver<VoteCreateRequest, VoteCreateModel>>());
+                        opts => opts.MapFrom<UserIdLoggedInResolver<VoteCreateRequest, VoteCreateModel>>());
             }
         }
     }

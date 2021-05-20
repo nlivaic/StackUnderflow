@@ -15,7 +15,7 @@ namespace StackUnderflow.Api.Models.Votes
             {
                 CreateMap<VoteDeleteRequest, VoteRevokeModel>()
                     .ForMember(dest => dest.UserId,
-                        opts => opts.MapFrom<UserIdResolver<VoteDeleteRequest, VoteRevokeModel>>());
+                        opts => opts.MapFrom<UserIdLoggedInResolver<VoteDeleteRequest, VoteRevokeModel>>());
             }
         }
     }

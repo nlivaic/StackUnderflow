@@ -5,12 +5,13 @@ using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.QueryParameters;
 using StackUnderflow.Core.Models;
+using StackUnderflow.Core.Models.Questions;
 
 namespace StackUnderflow.Core.Interfaces
 {
     public interface IQuestionRepository : IRepository<Question>
     {
-        Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid questionId);
+        Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(QuestionFindModel questionFindModel);
         Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummariesAsync(QuestionQueryParameters questionQueryParameters);
         Task<Question> GetQuestionWithAnswersAsync(Guid questionId);
         Task<Question> GetQuestionWithAnswersAndCommentsAsync(Guid questionId);

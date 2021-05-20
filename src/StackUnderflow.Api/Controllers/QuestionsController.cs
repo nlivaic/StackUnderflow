@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
+using StackUnderflow.Api.Models.Questions;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
+using StackUnderflow.Core.Models.Questions;
 
 namespace StackUnderflow.Api.Controllers
 {
@@ -39,9 +41,10 @@ namespace StackUnderflow.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet("{id}", Name = "GetQuestion")]
-        public async Task<ActionResult<QuestionGetViewModel>> GetAsync([FromRoute] Guid id)
+        public async Task<ActionResult<QuestionGetViewModel>> GetAsync([FromRoute]QuestionGetRequest questionGetRequest)
         {
-            var question = await _questionService.GetQuestionWithUserAndTagsAsync(id);
+            var questionFindModel = _mapper.Map<QuestionFindModel>(questionGetRequest);
+            var question = await _questionService.GetQuestionWithUserAndTagsAsync(questionFindModel);
             if (question == null)
             {
                 return NotFound();
