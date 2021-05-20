@@ -1,5 +1,8 @@
+using AutoMapper;
+using StackUnderflow.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StackUnderflow.Core.Models
 {
@@ -14,5 +17,26 @@ namespace StackUnderflow.Core.Models
         public DateTime CreatedOn { get; set; }
         public int VotesSum { get; set; }
         public IEnumerable<TagGetModel> Tags { get; set; } = new List<TagGetModel>();
+
+        public class QuestionGetModelProfile : Profile
+        {
+            public QuestionGetModelProfile()
+            {
+                CreateMap<Question, QuestionGetModel>()
+                    .ForMember(dest => dest.Username,
+                        opts => opts.MapFrom(src => src.User.Username))
+                    .ForMember(dest => dest.VotesSum,
+                        opts => opts.MapFrom(src => src
+                            .Votes
+                            .GroupBy(v =>v.VoteType)
+                            .Select(grp => grp
+                                .Sum(g => g.VoteType == Enums.VoteTypeEnum.Upvote
+                                    ? 1
+                                    : -1))
+                            .Sum()))
+                    .ForMember(dest => dest.Tags,
+                        opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)));
+            }
+        }
     }
 }

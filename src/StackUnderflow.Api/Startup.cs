@@ -100,7 +100,7 @@ namespace StackUnderflow.Api
 
             services.AddSingleton<IScopeInformation, ScopeInformation>();
 
-            services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(QuestionProfile).Assembly);
+            services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(CommentProfile).Assembly);
 
             services.AddScoped<BaseLimits, Limits>();
             services.AddSingleton<ICache, Cache>();
