@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as votingActions from "../redux/actions/votingActions.js";
-import { getVoteOnQuestion } from "../redux/reducers/index.js";
+import { getVoteOnQuestion, getVotesSum } from "../redux/reducers/index.js";
 import { getErrorMessage } from "../utils/getErrorMessage.js";
 import Upvote from "./Upvote";
 import Downvote from "./Downvote";
 
-const VoteData = ({votingActions, targetId, targetType, vote}) => {
+const VoteData = ({votingActions, targetId, targetType, vote, votesSum}) => {
   const [errors, setErrors] = useState({});
 
   const onUpvoting = async e => {
@@ -79,6 +79,7 @@ const VoteData = ({votingActions, targetId, targetType, vote}) => {
                 onUpvoting={onUpvoting}
                 onRevoking={onRevoking}>
             </Upvote>
+            <span>{votesSum}</span>
             <Downvote
                 isVoted={vote.voteType === 'Downvote'}
                 onDownvoting={onDownvoting}
@@ -90,7 +91,8 @@ const VoteData = ({votingActions, targetId, targetType, vote}) => {
 
 const mapStateToProps = (state) => {
     return {
-        vote: getVoteOnQuestion(state)
+        vote: getVoteOnQuestion(state),
+        votesSum: getVotesSum(state)
     };
   };
 

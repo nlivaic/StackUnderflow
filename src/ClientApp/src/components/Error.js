@@ -7,7 +7,6 @@ class Error extends Component {
     }
 
     componentDidCatch(error, info) {
-        debugger;
         this.setState({ hasError: true });
     }
 

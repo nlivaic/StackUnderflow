@@ -28,6 +28,8 @@ export const getQuestionDraft = (state) =>
   fromQuestion.getQuestionDraft(state.question);
 export const getVoteOnQuestion = (state) =>
   fromQuestion.getVoteOnQuestion(state.question);
+  export const getVotesSum = (state) =>
+    fromQuestion.getVotesSum(state.question);
 // Top level selectors - Comments
 export const getComments = (parentType, state) => {
   switch (parentType) {

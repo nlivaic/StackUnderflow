@@ -10,6 +10,7 @@ import {
 } from "./actionTypes";
 import * as apiStatusActions from "./apiStatusActions.js";
 import * as questionApi from "../../api/questionApi.js";
+import initialState from "../reducers/initialState.js";
 
 export function clearQuestion() {
   return { type: CLEAR_QUESTION };
@@ -64,6 +65,9 @@ export function getQuestion(id) {
     dispatch(apiStatusActions.beginApiCall());
     try {
       const question = await questionApi.getQuestion(id);
+      if (question.vote === null) {
+        question.vote = initialState.vote;
+      }
       dispatch(loadQuestionSuccess(question));
     } catch (error) {
       dispatch(apiStatusActions.apiCallError());

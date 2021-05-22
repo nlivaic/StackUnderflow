@@ -28,17 +28,30 @@ function questionReducer(state = initialState.question, action) {
     case ACCEPT_ANSWER_SUCCESS:
       return { ...state, hasAcceptedAnswer: true };
     case UPVOTE_QUESTION_SUCCESS:
-      return { ...state, voteId: action.vote.id, voteType: action.vote.voteType, votesSum: state.votesSum + 1 };
+      return { ...state,
+        votesSum: state.votesSum + 1,
+        vote: {
+          id: action.vote.id,
+          voteType: action.vote.voteType,
+          targetId: action.vote.targetId
+        }};
     case DOWNVOTE_QUESTION_SUCCESS:
-      return { ...state, voteId: action.vote.id, voteType: action.vote.voteType, votesSum: state.votesSum - 1 };
+      return { ...state,
+        votesSum: state.votesSum - 1,
+        vote: {
+          id: action.vote.id,
+          voteType: action.vote.voteType,
+          targetId: action.vote.targetId
+        }
+      };
     case REVOKE_VOTE_QUESTION_SUCCESS:
       return {
         ...state,
-        voteId: null,
-        voteType: null,
         votesSum: state.votesSum + (
           action.vote.voteType === 'Upvote' ? -1 : 1
-        ) };
+        ),
+          vote: initialState.vote
+      };
     default:
       return state;
   }
@@ -92,5 +105,10 @@ export const getRedirectToHome = (state) => state.redirectToHome;
 export const getQuestionHasAcceptedAnswer = (state) =>
   state.question.hasAcceptedAnswer;
 export const getVoteOnQuestion = (state) => {
-  return {voteId: state.question.voteId, voteType: state.question.voteType};
+  return { 
+    voteId: state.question.vote.id,
+    voteType: state.question.vote.voteType,
+    voteTargetId: state.question.vote.targetId
+  };
 };
+export const getVotesSum = (state) => state.question.votesSum;
