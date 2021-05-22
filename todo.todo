@@ -90,16 +90,66 @@ Backend:
       ☐ When voting, return (targetType)
 
       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
       ☐ 
       ☐ @critical  @critical  @critical @critical @critical  @critical  @critical @critical 
       ☐ Where are we?
-        ☐ First thing to do is to implement revoking. @critical
-        ☐ I can do a fresh upvote and fresh downvote on question only. @critical
-        ☐ Question upvote and downvote are registered in Redux state. @critical
-        ☐ Api does not return vote details when loading q/a/c. There is a "@nl: Map this properly." in c#, find it. @critical 
+        ☐ I can do a fresh upvote, fresh downvote and revoke on those fresh entries, but on questions only. @critical
+        ☐ Question upvote, downvote are registered in Redux state, but do cause errors. I changed the structure that the backend returns. @critical
+        ✔ Api does not return vote details when loading q/a/c. There is a "@nl: Map this properly." in c#, find it. @critical @done (20. 05. 2021. 13:37:52)
         ☐ Move on to doing a/c voting. Might be a bit different from q because we load more than one a/c and yada yada @critical 
       ☐ @critical  @critical  @critical @critical @critical  @critical  @critical @critical 
 
+      
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
       
       
