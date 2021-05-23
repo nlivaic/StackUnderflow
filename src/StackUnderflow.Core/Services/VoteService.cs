@@ -50,6 +50,12 @@ namespace StackUnderflow.Core.Services
             return voteModel;
         }
 
+        public async Task<int> GetVotesSumAsync(Guid targetId, VoteTargetEnum voteTarget) =>
+            await _cache.GetOrCreateConcurrentAsync(
+                GetCachingKey(new VoteCachingContext(targetId, voteTarget)),
+                () => _voteRepository.GetVotesSumAsync(targetId),
+                60);
+
         public async Task<VoteGetModel> CastVoteAsync(VoteCreateModel voteModel)
         {
             var matchedVote = await _voteRepository
@@ -113,25 +119,25 @@ namespace StackUnderflow.Core.Services
             }
         }
 
-        private async Task<int> IncrementCachedVotesSum(Vote vote)
-        {
-            var cachingKey = GetCachingKey(vote);
-            return await _cache.IncrementAndGetConcurrentAsync(cachingKey, () => _voteRepository.GetVotesSum(vote.TargetId), 60);
-        }
+        private async Task<int> IncrementCachedVotesSum(Vote vote) =>
+            await _cache.IncrementAndGetConcurrentAsync(
+                GetCachingKey(new VoteCachingContext(vote.TargetId, vote.Target.Target)),
+                () => _voteRepository.GetVotesSumAsync(vote.TargetId),
+                60);
 
-        private async Task<int> DecrementCachedVotesSum(Vote vote)
-        {
-            var cachingKey = GetCachingKey(vote);
-            return await _cache.DecrementAndGetConcurrentAsync(cachingKey, () => _voteRepository.GetVotesSum(vote.TargetId), 60);
-        }
+        private async Task<int> DecrementCachedVotesSum(Vote vote) =>
+            await _cache.DecrementAndGetConcurrentAsync(
+                GetCachingKey(new VoteCachingContext(vote.TargetId, vote.Target.Target)),
+                () => _voteRepository.GetVotesSumAsync(vote.TargetId),
+                60);
 
-        private string GetCachingKey(Vote vote) =>
-            vote.Target.Target switch
+        private string GetCachingKey(VoteCachingContext vote) =>
+            vote.Target switch
             {
                 VoteTargetEnum.Question => CachingKeys.VotesSumForQuestion + vote.TargetId,
                 VoteTargetEnum.Answer => CachingKeys.VotesSumForAnswer + vote.TargetId,
                 VoteTargetEnum.Comment => CachingKeys.VotesSumForComment + vote.TargetId,
-                _ => throw new ArgumentException($"Unknown vote target on vote {vote.Id}.")
+                _ => throw new ArgumentException($"Unknown vote target.")
             };
 
         private async Task<IVoteable> GetVoteableFromRepositoryAsync(VoteTargetEnum voteTarget, Guid voteTargetId)
@@ -167,6 +173,18 @@ namespace StackUnderflow.Core.Services
                 _ => throw new ArgumentException()          // Had to introduce this to avoid the warning.
             };
             await task;
+        }
+
+        private class VoteCachingContext
+        {
+            public Guid TargetId { get; set; }
+            public VoteTargetEnum Target { get; set; }
+
+            public VoteCachingContext(Guid targetId, VoteTargetEnum target)
+            {
+                TargetId = targetId;
+                Target = target;
+            }
         }
     }
 }

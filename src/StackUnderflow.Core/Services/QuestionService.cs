@@ -19,7 +19,8 @@ namespace StackUnderflow.Core.Services
         private readonly IUnitOfWork _uow;
         private readonly ICommentService _commentService;
         private readonly ICache _cache;
-        private readonly IRepository<Vote> _voteRepository;
+        private readonly IVoteRepository _voteRepository;
+        private readonly IVoteService _voteService;
         private readonly ITagService _tagService;
         private readonly BaseLimits _limits;
         private readonly IMapper _mapper;
@@ -30,7 +31,8 @@ namespace StackUnderflow.Core.Services
             IUnitOfWork uow,
             ICommentService commentService,
             ICache cache,
-            IRepository<Vote> voteRepository,
+            IVoteRepository voteRepository,
+            IVoteService voteService,
             ITagService tagService,
             BaseLimits limits,
             IMapper mapper)
@@ -41,13 +43,18 @@ namespace StackUnderflow.Core.Services
             _commentService = commentService;
             _cache = cache;
             _voteRepository = voteRepository;
+            _voteService = voteService;
             _tagService = tagService;
             _limits = limits;
             _mapper = mapper;
         }
 
-        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(QuestionFindModel questionFindModel) =>
-            await _questionRepository.GetQuestionWithUserAndTagsAsync(questionFindModel);
+        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(QuestionFindModel questionFindModel)
+        {
+            var question = await _questionRepository.GetQuestionWithUserAndTagsAsync(questionFindModel);
+            question.VotesSum = await _voteService.GetVotesSumAsync(questionFindModel.Id, VoteTargetEnum.Question);
+            return question;
+        }
 
         public async Task<QuestionGetModel> AskQuestionAsync(QuestionCreateModel questionModel)
         {

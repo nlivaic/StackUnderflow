@@ -10,5 +10,6 @@ namespace StackUnderflow.Core.Interfaces
         Task<VoteGetModel> CastVoteAsync(VoteCreateModel voteModel);
         Task RevokeVoteAsync(VoteRevokeModel voteModel);
         Task<VoteGetModel> GetVoteAsync(Guid voteId);
+        Task<int> GetVotesSumAsync(Guid targetId, VoteTargetEnum voteTarget);
     }
 }

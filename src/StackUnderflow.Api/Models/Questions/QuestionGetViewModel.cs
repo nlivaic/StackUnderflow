@@ -3,6 +3,7 @@ using StackUnderflow.Api.Models.Votes;
 using StackUnderflow.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StackUnderflow.Api.Models
 {
@@ -27,7 +28,9 @@ namespace StackUnderflow.Api.Models
             {
                 CreateMap<QuestionGetModel, QuestionGetViewModel>()
                     .ForMember(dest => dest.CreatedOn,
-                        opts => opts.MapFrom(src => src.CreatedOn.ToString("yyyy-MM-dd hh:mm:ss")));
+                        opts => opts.MapFrom(src => src.CreatedOn.ToString("yyyy-MM-dd hh:mm:ss")))
+                    .ForMember(dest => dest.Vote,
+                        opts => opts.MapFrom(src => src.Votes.FirstOrDefault()));
             }
         }
 

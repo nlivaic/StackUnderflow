@@ -8,7 +8,7 @@ namespace StackUnderflow.Core.Interfaces
     public interface IVoteRepository : IRepository<Vote>
     {
         Task<Vote> GetVoteAsync(Guid voteUserId, Guid voteId);
-        Task<int> GetVotesSum(Guid targetId);
+        Task<int> GetVotesSumAsync(Guid targetId);
         Task<Vote> GetVoteWithTargetAsync(Guid voteUserId, Guid voteId);
     }
 }

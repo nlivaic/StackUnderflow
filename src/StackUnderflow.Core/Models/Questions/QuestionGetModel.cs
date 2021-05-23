@@ -18,7 +18,7 @@ namespace StackUnderflow.Core.Models
         public bool HasAcceptedAnswer { get; set; }
         public DateTime CreatedOn { get; set; }
         public int VotesSum { get; set; }
-        public VoteGetModel Vote { get; set; }
+        public IEnumerable<VoteGetModel> Votes { get; set; } = new List<VoteGetModel>();
         public IEnumerable<TagGetModel> Tags { get; set; } = new List<TagGetModel>();
 
         public class QuestionGetModelProfile : Profile
@@ -28,17 +28,6 @@ namespace StackUnderflow.Core.Models
                 CreateMap<Question, QuestionGetModel>()
                     .ForMember(dest => dest.Username,
                         opts => opts.MapFrom(src => src.User.Username))
-                    .ForMember(dest => dest.VotesSum,
-                        opts => opts.MapFrom(src => src
-                            .Votes
-                            .GroupBy(v => v.VoteType)
-                            .Select(grp => grp
-                                .Sum(g => g.VoteType == VoteTypeEnum.Upvote
-                                    ? 1
-                                    : -1))
-                            .Sum()))
-                    .ForMember(dest => dest.Vote,
-                        opts => opts.MapFrom(src => src.Votes.FirstOrDefault()))
                     .ForMember(dest => dest.Tags,
                         opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)));
             }

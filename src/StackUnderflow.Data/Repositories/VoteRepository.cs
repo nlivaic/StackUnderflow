@@ -27,7 +27,7 @@ namespace StackUnderflow.Data.Repositories
                 .Include(v => v.Comment)
                 .SingleOrDefaultAsync(v => v.UserId == voteUserId && v.Id == voteId);
 
-        public async Task<int> GetVotesSum(Guid targetId)
+        public async Task<int> GetVotesSumAsync(Guid targetId)
         {
             return await _context
                 .Votes

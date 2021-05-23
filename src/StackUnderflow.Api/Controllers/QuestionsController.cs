@@ -36,7 +36,6 @@ namespace StackUnderflow.Api.Controllers
         /// <summary>
         /// Get a single question.
         /// </summary>
-        /// <param name="id">Question identifier</param>
         /// <returns>Question data.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]

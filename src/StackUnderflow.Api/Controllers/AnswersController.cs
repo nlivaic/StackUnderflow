@@ -130,14 +130,14 @@ namespace StackUnderflow.Api.Controllers
             var answer = _mapper.Map<AnswerCreateModel>(request);
             answer.QuestionId = questionId;
             answer.UserId = User.UserId().Value;
-            AnswerGetModel answerGetModel = null;
+            AnswerGetModel answerGetModel;
             try
             {
                 answerGetModel = await _answerService.PostAnswerAsync(answer);
             }
             catch (BusinessException ex)
             {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
+                ModelState.AddModelError(string.Empty, ex.Message);
                 return UnprocessableEntity();
             }
             var answerGetViewModel = _mapper.Map<AnswerGetViewModel>(answerGetModel);

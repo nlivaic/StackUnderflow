@@ -25,8 +25,9 @@ namespace StackUnderflow.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(QuestionFindModel questionFindModel) =>
-            await _context
+        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(QuestionFindModel questionFindModel)
+        {
+            var q = await _context
                 .Questions
                 .Where(q => q.Id == questionFindModel.Id)
                 .Include(q => q.User)
@@ -35,8 +36,13 @@ namespace StackUnderflow.Data.Repositories
                 .ThenInclude(qt => qt.Tag)
                 .Include(q => q.Votes.Where(v => v.UserId == questionFindModel.UserId))
                 .AsNoTracking()
-                .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
+                // Below line commented out because it was messing up
+                // votes - all votes would be included no matter
+                // the user id value (or lack of).
+                //.ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
+            return _mapper.Map<QuestionGetModel>(q);
+        }
 
         public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummariesAsync(QuestionQueryParameters questionQueryParameters)
         {

@@ -128,6 +128,12 @@ Backend:
         ☐ I can do a fresh upvote, fresh downvote and revoke on those fresh entries, but on questions only. @critical
         ☐ Question upvote, downvote are registered in Redux state, but do cause errors. I changed the structure that the backend returns. @critical
         ✔ Api does not return vote details when loading q/a/c. There is a "@nl: Map this properly." in c#, find it. @critical @done (20. 05. 2021. 13:37:52)
+        ✔ When not logged in, do not include votes. @done (22. 05. 2021. 14:45:41)
+        ✔ When logged in, do not include votes that do not belong to logged in user. @done (22. 05. 2021. 15:23:49)
+        ✔ Cache vote count on question GET. Call GetVotesSum via VoteService and do the caching there. @done (23. 05. 2021. 09:44:39)
+        ☐ Potestirati:
+          ☐ do not log in. load q. log in. vote. remove vote. how does cache look?   
+          ☐ do not log in. load q. log in. on incognito load q. vote on logged in. refresh incognito. How does cache look?
         ☐ Move on to doing a/c voting. Might be a bit different from q because we load more than one a/c and yada yada @critical 
       ☐ @critical  @critical  @critical @critical @critical  @critical  @critical @critical 
 

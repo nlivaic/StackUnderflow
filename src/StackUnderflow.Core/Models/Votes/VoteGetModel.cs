@@ -2,8 +2,6 @@
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace StackUnderflow.Core.Models.Votes
 {
