@@ -1,7 +1,7 @@
 ﻿using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Infrastructure.Caching;
 using System.Threading.Tasks;
+using StackUnderflow.Common.Interfaces;
 
 namespace StackUnderflow.Core.Services
 {

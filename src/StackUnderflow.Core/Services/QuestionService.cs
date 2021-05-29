@@ -7,7 +7,6 @@ using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using AutoMapper;
-using StackUnderflow.Infrastructure.Caching;
 using StackUnderflow.Core.Models.Questions;
 
 namespace StackUnderflow.Core.Services

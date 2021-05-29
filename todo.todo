@@ -71,6 +71,8 @@ Backend:
     ☐ Prepare for production.
     ☐ Migrate to net 5.0
     ☐ Some projects are built against netstandard2.0, others against netstandard2.1
+    ✔ Infrastructure project has interface in it. @done (29. 05. 2021. 07:46:29)
+    ✔ Review other projects if there is anything in there that should be Infrastructure. Review in general for anything that is out of place. @done (29. 05. 2021. 07:46:32)
 
   Testing:
       ☐ Review all unit tests
@@ -78,98 +80,16 @@ Backend:
       ☐ End-to-end tests
 
   Must Have:
-    ☐ Voting:
-      ✔ Increment @done (10. 05. 2021. 22:43:26)
-      ✔ Decrement @done (10. 05. 2021. 22:43:27)
-      ✔ Test multiple requests simultaneously @done (10. 05. 2021. 22:43:27)
-      ✔ Uncomment relevant code. @done (10. 05. 2021. 22:43:28)
-      ✔ Delete all votes. @done (10. 05. 2021. 22:43:29)
-      ☐ Q/a/c must return (vote id, vote type) if user voted.
-      ☐ Q/a/c must return votes sum always.
-      ✔ When voting, return (voteId, voteType, targetId) @done (15. 05. 2021. 14:56:46)
-      ☐ When voting, return (targetType)
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-      ☐ 
-      ☐ @critical  @critical  @critical @critical @critical  @critical  @critical @critical 
-      ☐ Where are we?
-        ☐ I can do a fresh upvote, fresh downvote and revoke on those fresh entries, but on questions only. @critical
-        ☐ Question upvote, downvote are registered in Redux state, but do cause errors. I changed the structure that the backend returns. @critical
-        ✔ Api does not return vote details when loading q/a/c. There is a "@nl: Map this properly." in c#, find it. @critical @done (20. 05. 2021. 13:37:52)
-        ✔ When not logged in, do not include votes. @done (22. 05. 2021. 14:45:41)
-        ✔ When logged in, do not include votes that do not belong to logged in user. @done (22. 05. 2021. 15:23:49)
-        ✔ Cache vote count on question GET. Call GetVotesSum via VoteService and do the caching there. @done (23. 05. 2021. 09:44:39)
-        ☐ Potestirati:
-          ☐ do not log in. load q. log in. vote. remove vote. how does cache look?   
-          ☐ do not log in. load q. log in. on incognito load q. vote on logged in. refresh incognito. How does cache look?
-        ☐ Move on to doing a/c voting. Might be a bit different from q because we load more than one a/c and yada yada @critical 
-      ☐ @critical  @critical  @critical @critical @critical  @critical  @critical @critical 
-
-      
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-        
-      ☐ Front end - vote on question
-        ✔ Reducer @done (15. 05. 2021. 12:31:18)
-        ✔ Action @done (15. 05. 2021. 12:31:19)
-        ☐ VoteData @critical 
-        ✔ Upvote @done (15. 05. 2021. 12:31:37)
-        ✔ Downvote @done (15. 05. 2021. 12:31:38)
-        ☐ Vote only if logged in.
-        ✔ Voting state @done (15. 05. 2021. 12:31:43)
     ☐ ServiceBus/MT
+      ✔ Nuget @done (29. 05. 2021. 06:33:22)
+          ✔ dotnet add package MassTransit --version 7.1.8 @done (29. 05. 2021. 06:33:22)
+          ✔ dotnet add package MassTransit.AspNetCore --version 7.1.8 @done (29. 05. 2021. 06:33:23)
+          ✔ dotnet add package MassTransit.Extensions.DependencyInjection --version 7.1.8 @done (29. 05. 2021. 06:33:24)
+          ✔ dotnet add package MassTransit.Azure.ServiceBus.Core --version 7.1.8 @done (29. 05. 2021. 06:33:25)
+      ✔ MT creates a topic + subscription -> forward to queue. Can we make this more direct, w/o the queue? @done (29. 05. 2021. 06:50:35)
+      ✔ On Api startup, topic and subscription are created which ignore names I wanted. After the first request, proper topic name is created, but no subscriber. @done (29. 05. 2021. 07:45:10)
+      ☐ Had to move stuff around (Infra, Common). Do a quick test of caching.
+      ☐ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-performance-improvements?tabs=net-standard-sdk-2#prefetching
       ☐ Watch out: events can be raised only AFTER a commit is made. Take a look at FrontDesk for this. @critical 
       ☐ On developing locally: https://jimmybogard.com/local-development-with-azure-service-bus/
     ☐ Make Postman authenticate.
@@ -184,6 +104,7 @@ Backend:
     ☐ QuestionSummariesController bi trebao nasljeđivati od ApiControllerBase.
     ☐ CORS
       ☐ Bolje definirati, trenutno dopuštamo sve.
+      ☐ Mora ići UseCors after UseRouting 
     ☐ Unit tests: rerun, review, fix.
     ☐ Startup.cs
       ☐ Tidy up all the registrations.
@@ -210,12 +131,9 @@ Backend:
       ☐ Admin can assign other users as admins
     ☐ Po repoima ima glupih queryja, rade .Where() pa .ProjectTo, pa .Single. To se može skratiti, pogledaj USerRepository.GetUser()
     ☐ Repository: switch from .ProjectTo<T>() to .Projector<T>()
-    ☐ VotesSum je loš podatak. Upvote i downvote će rezultirati nulom, a to nije ok. * Sad ovo opet čitam, nije točno to što sam napisao. +1 pa -1 trebaju na front endu rezultirati nulom. Ali interno trebamo voditi računa o broju jednih i drugih da znamo procesuirati zato jer ne nosi +1 nužno (?) isti broj bodova kao i -1.
     ☐ POST question {body: "", title: "", tags: []} - how does it behave?
     ☐ MaximumPageSize nema efekta.
     ☐ TagIds should be renamed to Tags.
-    ☐ Da li q/a/c.VotesSum uistinu potreban? Razmisli o tome kako će se q/a/c queryati i da li je VotesSum uistinu optimizacija? Ako ćemo micati VotesSum, razmisliti kako će se taj podatak vidjeti onda na queryjima (join, count), te što je sa orderingom u toj situaciji?
-    ☐ Riješiti ovo gore prije nego odem predaleko. Onda treba QuestionSummary proglasiti gotovim i krenuti na idući endpoint na listi.
     ☐ Na dosta mjesta u servisima povučemo usera da bi napravili neku ručnu validaciju down the line, ali nikad ne reagiramo ako tog usera nema u sustavu. Razmisliti.
     ☐ Upravo sam išao implementirati novi resource parameters. Stvar je ajde-de, razumljiva, ali samo mapiranje propertyja između view modela i application modela (u PropertyMappingService.cs) je malo icky. Mislim da bi to trebalo izvesti preko atributa na view modelu.
     ☐ Čudno puno ima situacija gdje se ne tracka upravo dodan related entity. Npr. Kad postam novi answer, onda moram ručno napraviti .AddAsync(answer). To ne bi trebalo tako funkcionirati.
@@ -241,19 +159,3 @@ Backend:
         ☐ This will need more thinking through.
       ☐ /api/users
         ☐ This will need more thinking through.
-      ☐ /api/questions/{id}/vote
-        ☐ POST
-      ☐ /api/questions/{id}/vote/{id}
-        ☐ DELETE
-      ☐ /api/questions/{questionId}/comments/{commentId}/vote
-        ☐ POST
-      ☐ /api/questions/{questionId}/comments/{commentId}/vote/{id}
-        ☐ DELETE
-      ☐ /api/questions/{questionId}/answers/{answerId}/vote
-        ☐ POST
-      ☐ /api/questions/{questionId}/answers/{answerId}/vote/{id}
-        ☐ DELETE
-      ☐ /api/questions/{questionId}/answers/{answerId}/comments/{commentId}/vote
-        ☐ POST
-      ☐ /api/questions/{questionId}/answers/{answerId}/comments/{commentId}/vote/{id}
-        ☐ DELETE

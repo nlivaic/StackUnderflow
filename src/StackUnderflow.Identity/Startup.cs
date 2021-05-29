@@ -8,7 +8,6 @@ using System.Linq;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Services;
-using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -20,6 +19,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StackUnderflow.Identity.DbContexts;
 using StackUnderflow.Identity.Services;
+using StackUnderflow.Infrastructure.Email.DependencyInjection;
 
 namespace StackUnderflow.Identity
 {

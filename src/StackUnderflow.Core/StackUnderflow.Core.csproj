@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StackUnderflow.Common\StackUnderflow.Common.csproj" />
-    <ProjectReference Include="..\StackUnderflow.Infrastructure\StackUnderflow.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

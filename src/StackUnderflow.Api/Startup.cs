@@ -29,6 +29,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using StackUnderflow.Infrastructure.Caching;
 using StackUnderflow.Core.Entities;
+using MassTransit;
+using StackUnderflow.Api.Controllers;
 
 namespace StackUnderflow.Api
 {
@@ -142,7 +144,7 @@ namespace StackUnderflow.Api
                 builder.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .WithExposedHeaders(Headers.Pagination);
+                    .WithExposedHeaders(Constants.Headers.Pagination);
             }));
 
             services.AddCors(o => o.AddPolicy("StackUnderflowClient", builder =>
@@ -151,7 +153,7 @@ namespace StackUnderflow.Api
                 builder
                     .WithOrigins(allowedOrigins)
                     .WithHeaders("Authorization", "Content-Type")
-                    .WithExposedHeaders(Headers.Pagination)
+                    .WithExposedHeaders(Constants.Headers.Pagination)
                     .WithMethods(HttpMethods.Get, HttpMethods.Post, HttpMethods.Put, HttpMethods.Delete);
             }));
 
@@ -162,10 +164,20 @@ namespace StackUnderflow.Api
                     options.ApiName = _configuration["IdP:ApiName"];           // Allows the access token validator to check if the access token `audience` is for this API.
                 });
             services.AddAuthorization();
+            services.AddMassTransit(x =>
+            {
+                x.UsingAzureServiceBus((ctx, cfg) =>
+                {
+                    cfg.Host(_configuration["CONNECTIONSTRINGS:MESSAGEBROKER:WRITE"]);
+                    cfg.Message<SomeEventHappened>(x => x.SetEntityName("some-event-happened"));
+                    cfg.SubscriptionEndpoint<SomeEventHappened>("some-event-happened-service", e => e.Consumer<SomeEventHappenedConsumer>());
+                });
+            });
+            services.AddMassTransitHostedService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseApiExceptionHandler(options =>
             {

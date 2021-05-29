@@ -1,4 +1,4 @@
-﻿namespace StackUnderflow.Infrastructure.Caching
+﻿namespace StackUnderflow.Common.Caching
 {
     public static class CachingKeys
     {

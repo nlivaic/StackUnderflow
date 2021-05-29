@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Infrastructure.Caching
+namespace StackUnderflow.Common.Interfaces
 {
     public interface ICache
     {

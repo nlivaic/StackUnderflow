@@ -7,7 +7,6 @@ using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
-using StackUnderflow.Infrastructure.Caching;
 
 namespace StackUnderflow.Core.Services
 {

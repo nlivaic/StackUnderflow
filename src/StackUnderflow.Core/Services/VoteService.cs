@@ -1,7 +1,7 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using StackUnderflow.Common.Caching;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
@@ -9,7 +9,6 @@ using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Models.Votes;
-using StackUnderflow.Infrastructure.Caching;
 
 namespace StackUnderflow.Core.Services
 {
