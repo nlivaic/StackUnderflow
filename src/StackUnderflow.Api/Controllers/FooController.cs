@@ -1,5 +1,6 @@
-﻿using MassTransit;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using StackUnderflow.Common.Interfaces;
+using StackUnderflow.Core.Events;
 using System;
 using System.Threading.Tasks;
 
@@ -9,30 +10,17 @@ namespace StackUnderflow.Api.Controllers
     [ApiController]
     public class FooController : ControllerBase
     {
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IEventPublisher _eventPublisher;
 
-        public FooController(IPublishEndpoint publishEndpoint)
+        public FooController(IEventPublisher eventPublisher)
         {
-            _publishEndpoint = publishEndpoint;
+            _eventPublisher = eventPublisher;
         }
         [HttpGet]
         public async Task<ActionResult<int>> Get()
         {
-            await _publishEndpoint.Publish<SomeEventHappened>(new { Id = Guid.NewGuid() } );
+            await _eventPublisher.PublishEvent<SomeEventHappened>(new { Id = Guid.NewGuid() } );
             return Ok(1);
-        }
-    }
-    public interface SomeEventHappened
-    {
-        public int Id { get; set; }
-    }
-
-    public class SomeEventHappenedConsumer : IConsumer<SomeEventHappened>
-    {
-        public Task Consume(ConsumeContext<SomeEventHappened> context)
-        {
-            //throw new Exception("Bad things happened in consumer.");
-            return Task.CompletedTask;
         }
     }
 }
