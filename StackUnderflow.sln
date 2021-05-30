@@ -42,6 +42,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{C84F805E-3F0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackUnderflow.Infrastructure", "src\StackUnderflow.Infrastructure\StackUnderflow.Infrastructure.csproj", "{2F0BC516-566B-47DA-9B4E-9018AD15813F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackUnderflow.WorkerServices", "src\StackUnderflow.WorkerServices\StackUnderflow.WorkerServices.csproj", "{126E0511-7CA2-4234-8145-D957C0518702}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +162,18 @@ Global
 		{2F0BC516-566B-47DA-9B4E-9018AD15813F}.Release|x64.Build.0 = Release|Any CPU
 		{2F0BC516-566B-47DA-9B4E-9018AD15813F}.Release|x86.ActiveCfg = Release|Any CPU
 		{2F0BC516-566B-47DA-9B4E-9018AD15813F}.Release|x86.Build.0 = Release|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Debug|x64.Build.0 = Debug|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Debug|x86.Build.0 = Debug|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Release|x64.ActiveCfg = Release|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Release|x64.Build.0 = Release|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Release|x86.ActiveCfg = Release|Any CPU
+		{126E0511-7CA2-4234-8145-D957C0518702}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -173,6 +187,7 @@ Global
 		{A03C608A-441F-4019-95D5-0D4B9AC85861} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
 		{0289D9FE-5475-4A12-9885-BBAC85D721DB} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
 		{2F0BC516-566B-47DA-9B4E-9018AD15813F} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
+		{126E0511-7CA2-4234-8145-D957C0518702} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2799A94-8AA1-41D8-B547-56219C23F71E}
