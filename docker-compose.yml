@@ -79,6 +79,16 @@ services:
       dockerfile: src/StackUnderflow.Migrations/Dockerfile
     networks:
       - sunet
+  stackunderflow.workerservices:
+    image: ${DOCKER_REGISTRY-}stackunderflowworkerservices
+    env_file: .env
+    depends_on:
+      - stackunderflow.sql
+    build:
+      context: .
+      dockerfile: src/StackUnderflow.WorkerServices/Dockerfile
+    networks:
+      - sunet
   stackunderflow.seq:
     ports:
       - "5341:80"

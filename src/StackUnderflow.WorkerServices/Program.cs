@@ -18,7 +18,6 @@ namespace StackUnderflow.WorkerServices
                 .ConfigureServices((hostContext, services) =>
                 {
                     var configuration = hostContext.Configuration;
-                    services.AddHostedService<PointWorker>();
 
                     services.AddMassTransit(x =>
                     {
