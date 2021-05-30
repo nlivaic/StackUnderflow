@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StackUnderflow.Core.Events;
+using StackUnderflow.WorkerServices.PointService;
 
 namespace StackUnderflow.WorkerServices
 {
@@ -18,7 +17,19 @@ namespace StackUnderflow.WorkerServices
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                    var configuration = hostContext.Configuration;
+                    services.AddHostedService<PointWorker>();
+
+                    services.AddMassTransit(x =>
+                    {
+                        x.UsingAzureServiceBus((ctx, cfg) =>
+                        {
+                            cfg.Host(configuration["CONNECTIONSTRINGS:MESSAGEBROKER:READ"]);
+                            cfg.Message<VoteCast>(c => c.SetEntityName("vote-cast"));
+                            cfg.SubscriptionEndpoint<VoteCast>("point-service", e => e.Consumer<VoteConsumer>());
+                        });
+                    });
+                    services.AddMassTransitHostedService();
                 });
     }
 }

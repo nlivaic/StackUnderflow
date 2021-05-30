@@ -19,7 +19,7 @@ namespace StackUnderflow.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<int>> Get()
         {
-            await _eventPublisher.PublishEvent<SomeEventHappened>(new { Id = Guid.NewGuid() } );
+            await _eventPublisher.PublishEvent<VoteCast>(new { Id = Guid.NewGuid() } );
             return Ok(1);
         }
     }

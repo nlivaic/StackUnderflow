@@ -1,18 +1,16 @@
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-namespace StackUnderflow.WorkerServices
+namespace StackUnderflow.WorkerServices.PointService
 {
-    public class Worker : BackgroundService
+    class PointWorker : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
+        private readonly ILogger<PointWorker> _logger;
 
-        public Worker(ILogger<Worker> logger)
+        public PointWorker(ILogger<PointWorker> logger)
         {
             _logger = logger;
         }

@@ -2,7 +2,7 @@
 
 namespace StackUnderflow.Core.Events
 {
-    public interface SomeEventHappened
+    public interface VoteCast
     {
         public Guid Id { get; set; }
     }
