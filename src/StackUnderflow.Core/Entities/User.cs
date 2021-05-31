@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Mail;
 using StackUnderflow.Common.Base;
 using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Core.Entities
@@ -16,6 +17,7 @@ namespace StackUnderflow.Core.Entities
         public string AboutMe { get; private set; }
         public DateTime CreatedOn { get; private set; }
         public DateTime LastSeen { get; private set; }
+        public int Points { get; private set; }
         public IEnumerable<UserRole> Roles => _roles;
         public IEnumerable<Question> Questions { get; private set; } = new List<Question>();
         public IEnumerable<Answer> Answers { get; private set; } = new List<Answer>();
@@ -69,6 +71,16 @@ namespace StackUnderflow.Core.Entities
 
         public void SeenNow() =>
             LastSeen = DateTime.UtcNow;
+
+        public int ApplyVoteToPoint(VoteTypeEnum voteType) =>
+            voteType switch
+            {
+                VoteTypeEnum.Upvote => Points++,
+                VoteTypeEnum.Downvote => Points--,
+                _ => throw new ArgumentException("Unknown vote type during point recalculation.")
+            };
+
+        public void PointDown() => Points--;
 
         private static void Validate(string websiteUrl, string aboutMe, BaseLimits limits)
         {

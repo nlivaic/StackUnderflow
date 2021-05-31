@@ -15,9 +15,9 @@ namespace StackUnderflow.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
+                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("StackUnderflow.Core.Entities.Answer", b =>
                 {
@@ -164,6 +164,9 @@ namespace StackUnderflow.Data.Migrations
                     b.Property<DateTime>("LastSeen")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int>("Points")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Username")
                         .HasColumnType("text");
 
@@ -263,6 +266,10 @@ namespace StackUnderflow.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Question");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("StackUnderflow.Core.Entities.Comment", b =>
@@ -280,6 +287,12 @@ namespace StackUnderflow.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ParentAnswer");
+
+                    b.Navigation("ParentQuestion");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("StackUnderflow.Core.Entities.Question", b =>
@@ -289,6 +302,8 @@ namespace StackUnderflow.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("StackUnderflow.Core.Entities.QuestionTag", b =>
@@ -304,6 +319,10 @@ namespace StackUnderflow.Data.Migrations
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Question");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("StackUnderflow.Core.Entities.UserRole", b =>
@@ -334,6 +353,53 @@ namespace StackUnderflow.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Answer");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("StackUnderflow.Core.Entities.Answer", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("StackUnderflow.Core.Entities.Comment", b =>
+                {
+                    b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("StackUnderflow.Core.Entities.Question", b =>
+                {
+                    b.Navigation("Answers");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("QuestionTags");
+
+                    b.Navigation("Votes");
+                });
+
+            modelBuilder.Entity("StackUnderflow.Core.Entities.Tag", b =>
+                {
+                    b.Navigation("QuestionTags");
+                });
+
+            modelBuilder.Entity("StackUnderflow.Core.Entities.User", b =>
+                {
+                    b.Navigation("Answers");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Questions");
+
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }
