@@ -20,14 +20,23 @@ namespace StackUnderflow.Migrations
 
             var config = builder.Build();
 
-            var connectionStringStackUnderflow =
-                args.FirstOrDefault()
-                ?? config["ConnectionStrings:StackUnderflowDbConnection"];
+            var connectionStringStackUnderflow = string.IsNullOrWhiteSpace(args.FirstOrDefault())
+                ? config["ConnectionStrings:StackUnderflowDbConnection"]
+                : args.FirstOrDefault();
+
+            string scriptsPath = null;
+            if (args.Length == 3)
+            {
+                scriptsPath = args[2];
+            }
 
             var upgraderStackUnderflow =
                 DeployChanges.To
                     .PostgresqlDatabase(connectionStringStackUnderflow)
-                    .WithScriptsFromFileSystem(Path.Combine(Environment.CurrentDirectory, "StackUnderflowScripts"))
+                    .WithScriptsFromFileSystem(
+                        scriptsPath != null
+                            ? Path.Combine(scriptsPath, "StackUnderflowScripts")
+                            : Path.Combine(Environment.CurrentDirectory, "StackUnderflowScripts"))
                     .LogToConsole()
                     .Build();
             Console.WriteLine($"Now upgrading Stack Underflow.");
@@ -49,13 +58,17 @@ namespace StackUnderflow.Migrations
                 return -1;
             }
 
-            var connectionStringStackUnderflowIdentity =
-                args.Length == 2 ? args[1] : config["ConnectionStrings:StackUnderflowIdentityDb"];
+            var connectionStringStackUnderflowIdentity = string.IsNullOrWhiteSpace(args.FirstOrDefault())
+                ? config["ConnectionStrings:StackUnderflowIdentityDb"]
+                : args.FirstOrDefault();
 
             var upgraderStackUnderflowIdentity =
                 DeployChanges.To
                     .PostgresqlDatabase(connectionStringStackUnderflowIdentity)
-                    .WithScriptsFromFileSystem(Path.Combine(Environment.CurrentDirectory, "StackUnderflowIdentityScripts"))
+                    .WithScriptsFromFileSystem(
+                        scriptsPath != null
+                            ? Path.Combine(scriptsPath, "StackUnderflowIdentityScripts")
+                            : Path.Combine(Environment.CurrentDirectory, "StackUnderflowIdentityScripts"))
                     .LogToConsole()
                     .Build();
             Console.WriteLine($"Now upgrading Stack Underflow Identity.");
