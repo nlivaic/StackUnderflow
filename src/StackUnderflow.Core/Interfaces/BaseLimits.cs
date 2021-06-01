@@ -17,5 +17,7 @@ namespace StackUnderflow.Core.Interfaces
         public int UsernameMinimumLength { get; protected set; }
         public int UsernameMaximumLength { get; protected set; }
         public int AboutMeMaximumLength { get; protected set; }
-   }
+        public int UpvotePoints { get; protected set; }
+        public int DownvotePoints { get; protected set; }
+    }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
-using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Core.Interfaces
 {
@@ -10,5 +9,6 @@ namespace StackUnderflow.Core.Interfaces
     {
         Task<T> GetUser<T>(Guid userId);
         Task<bool> IsModeratorAsync(Guid userId);
+        Task CalculatePointsAsync(Guid userId, int pointAmount);
     }
 }

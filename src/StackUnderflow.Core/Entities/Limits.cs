@@ -24,6 +24,8 @@ namespace StackUnderflow.Core.Entities
             UsernameMinimumLength = limits.UsernameMinimumLength;
             UsernameMaximumLength = limits.UsernameMaximumLength;
             AboutMeMaximumLength = limits.AboutMeMaximumLength;
+            UpvotePoints = limits.UpvotePoints;
+            DownvotePoints = limits.DownvotePoints;
         }
 
         public static Limits Create() =>

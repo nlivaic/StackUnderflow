@@ -1,9 +1,11 @@
-﻿using System;
+﻿using StackUnderflow.Core.Enums;
+using System;
 
 namespace StackUnderflow.Core.Events
 {
     public interface VoteCast
     {
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
+        public VoteTypeEnum VoteType { get; set; }
     }
 }

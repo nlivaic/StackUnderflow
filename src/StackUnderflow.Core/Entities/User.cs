@@ -72,14 +72,6 @@ namespace StackUnderflow.Core.Entities
         public void SeenNow() =>
             LastSeen = DateTime.UtcNow;
 
-        public int ApplyVoteToPoint(VoteTypeEnum voteType) =>
-            voteType switch
-            {
-                VoteTypeEnum.Upvote => Points++,
-                VoteTypeEnum.Downvote => Points--,
-                _ => throw new ArgumentException("Unknown vote type during point recalculation.")
-            };
-
         public void PointDown() => Points--;
 
         private static void Validate(string websiteUrl, string aboutMe, BaseLimits limits)

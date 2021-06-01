@@ -7,9 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using StackUnderflow.Data;
-using StackUnderflow.Data.Repositories;
-using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Services;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Profiles;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -27,8 +24,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using StackUnderflow.Infrastructure.Caching;
-using StackUnderflow.Core.Entities;
 using StackUnderflow.Infrastructure.MessageBroker;
+using StackUnderflow.Core;
 
 namespace StackUnderflow.Api
 {
@@ -80,21 +77,11 @@ namespace StackUnderflow.Api
                 if (_hostEnvironment.IsDevelopment())
                     options.EnableSensitiveDataLogging(true);
             });
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IQuestionRepository, QuestionRepository>();
-            services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<IAnswerRepository, AnswerRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IVoteRepository, VoteRepository>();
-            services.AddScoped<ILimitsRepository, LimitsRepository>();
-            services.AddScoped<ILimitsService, LimitsService>();
-            services.AddScoped<IVoteService, VoteService>();
-            services.AddScoped<IQuestionService, QuestionService>();
-            services.AddScoped<ICommentService, CommentService>();
-            services.AddScoped<IAnswerService, AnswerService>();
-            services.AddScoped<ITagService, TagService>();
-            services.AddScoped<IUserService, UserService>();
+
+            services.AddGenericRepository();
+            services.AddSpecificRepositories();
+            services.AddCoreServices();
+
             services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -102,7 +89,6 @@ namespace StackUnderflow.Api
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(CommentProfile).Assembly);
 
-            services.AddScoped<BaseLimits, Limits>();
             services.AddSingleton<ICache, Cache>();
             services.AddMemoryCache();
 

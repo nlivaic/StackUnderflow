@@ -70,6 +70,8 @@ Backend:
       ☐ Research što sve uopće logirati?
     ☐ Prepare for production.
     ☐ Migrate to net 5.0
+    ☐ Upgrade libs:
+      ☐ AutoMapper @Api
     ☐ Some projects are built against netstandard2.0, others against netstandard2.1
     ✔ Infrastructure project has interface in it. @done (29. 05. 2021. 07:46:29)
     ✔ Review other projects if there is anything in there that should be Infrastructure. Review in general for anything that is out of place. @done (29. 05. 2021. 07:46:32)
@@ -88,7 +90,27 @@ Backend:
           ✔ dotnet add package MassTransit.Azure.ServiceBus.Core --version 7.1.8 @done (29. 05. 2021. 06:33:25)
       ✔ MT creates a topic + subscription -> forward to queue. Can we make this more direct, w/o the queue? @done (29. 05. 2021. 06:50:35)
       ✔ On Api startup, topic and subscription are created which ignore names I wanted. After the first request, proper topic name is created, but no subscriber. @done (29. 05. 2021. 07:45:10)
-      ☐ Had to move stuff around (Infra, Common). Do a quick test of caching.
+      ✔ Had to move stuff around (Infra, Common). Do a quick test of caching. @done (29. 05. 2021. 15:03:41)
+      ✔ Move DI stuff into a new DI class in Infrastructure.MessageBroker @done (29. 05. 2021. 15:38:49)
+      ✔ Maknuti ref na MassTransit iz APIja. @done (29. 05. 2021. 15:38:47)
+      ☐ Background service:
+        ✔ MassTransit DI setup @done (30. 05. 2021. 08:00:28)
+        ✔ Dockerize @done (30. 05. 2021. 08:00:30)
+          ✔ Must wait for database. @done (30. 05. 2021. 08:00:31)
+          ✔ No ports @done (30. 05. 2021. 08:00:32)
+        ☐ Call consumer - write consumer properly, call Core points service
+        ☐ Worker service error handling
+        ☐ Logging
+      ☐ Point calculation service in Core  @high  
+        ☐ No need for sp. Call from EF core if possible. Drop sp. @critical 
+        ☐ Return value from sp. Out parameters in PG?
+        ☐ BaseLimits
+          ☐ new property UpvotePoints
+          ☐ new property DownvotePoints
+          ☐ Cache
+          ☐ Insert new values to Limits table.
+          ☐ Execute 2 migrations.
+          ☐ BaseLimits je scoped u Apiju!!! Zašto? Svaki se put nanovo cacheira! No good.
       ☐ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-performance-improvements?tabs=net-standard-sdk-2#prefetching
       ☐ Watch out: events can be raised only AFTER a commit is made. Take a look at FrontDesk for this. @critical 
       ☐ On developing locally: https://jimmybogard.com/local-development-with-azure-service-bus/
@@ -111,6 +133,10 @@ Backend:
       ☐ services.AddController()
 
   Bugs:
+    ☐ Na startupu se javlja error u Outputu: Cannot assign requested address [::1]:5432
+    ☐ Migrations Dockerfile
+      ☐ ima liniju: image: ${DOCKER_REGISTRY-}stackunderflowsql
+      ☐ Nema envfile definiran
     ☐ 201 vraća http u Locations headeru.
     ☐ Baca neki warning u testovima.
     ☐ Debug, breakpoint na QuestionRepository.cs:GetQuestionSummariesAsync()

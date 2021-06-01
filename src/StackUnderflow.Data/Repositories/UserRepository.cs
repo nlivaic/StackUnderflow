@@ -2,12 +2,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using NpgsqlTypes;
 using StackUnderflow.Common.Extensions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Data.Repositories
 {
@@ -35,5 +35,16 @@ namespace StackUnderflow.Data.Repositories
             await _context
                 .Users
                 .AnyAsync(u => u.Id == userId && u.Roles.Any(ur => ur.Role == Role.Moderator));
+
+        public async Task CalculatePointsAsync(Guid userId, int pointAmount)
+        {
+            var userIdParam = new NpgsqlParameter("user_id", NpgsqlDbType.Uuid) { Value = userId };
+            var pointAmountParam = new NpgsqlParameter("points_amount", NpgsqlDbType.Integer) { Value = pointAmount };
+
+            await _context.Database.ExecuteSqlRawAsync(
+                @"UPDATE ""Users""" +
+                @"   SET ""Points"" = (SELECT ""Points"" FROM ""Users"" WHERE ""Id"" = @user_id) + @points_amount" +
+                @" WHERE ""Id"" = @user_id", userIdParam, pointAmountParam);
+        }
     }
 }

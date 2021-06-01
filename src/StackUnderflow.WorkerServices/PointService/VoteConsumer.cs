@@ -1,15 +1,20 @@
 ﻿using MassTransit;
 using StackUnderflow.Core.Events;
+using StackUnderflow.Core.Interfaces;
 using System.Threading.Tasks;
 
 namespace StackUnderflow.WorkerServices.PointService
 {
     class VoteConsumer : IConsumer<VoteCast>
     {
-        public Task Consume(ConsumeContext<VoteCast> context)
+        private readonly IPointService _pointService;
+
+        public VoteConsumer(IPointService pointService)
         {
-            //throw new Exception("Bad things happened in consumer.");
-            return Task.CompletedTask;
+            _pointService = pointService;
         }
+
+        public async Task Consume(ConsumeContext<VoteCast> context) =>
+            await _pointService.CalculateAsync(context.Message.UserId, context.Message.VoteType);
     }
 }

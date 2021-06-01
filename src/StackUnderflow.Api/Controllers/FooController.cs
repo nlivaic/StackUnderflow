@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Common.Interfaces;
+using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Events;
 using System;
 using System.Threading.Tasks;
@@ -19,7 +20,12 @@ namespace StackUnderflow.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<int>> Get()
         {
-            await _eventPublisher.PublishEvent<VoteCast>(new { Id = Guid.NewGuid() } );
+            await _eventPublisher.PublishEvent<VoteCast>(
+                new
+                {
+                    UserId = Guid.Parse("1e392be2-e621-4ac1-86c3-81aa7f4873ea"),
+                    VoteType = VoteTypeEnum.Upvote
+                });
             return Ok(1);
         }
     }
