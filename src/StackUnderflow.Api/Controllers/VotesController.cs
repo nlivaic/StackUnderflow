@@ -6,6 +6,7 @@ using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models.Votes;
 using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Models.Votes;
@@ -19,13 +20,16 @@ namespace StackUnderflow.Api.Controllers
     public class VotesController : ApiControllerBase
     {
         private readonly IVoteService _voteService;
+        private readonly IRegisteredEventPublisher _eventPublisher;
         private readonly IMapper _mapper;
 
         public VotesController(
             IVoteService voteService,
+            IRegisteredEventPublisher eventPublisher,
             IMapper mapper)
         {
             _voteService = voteService;
+            _eventPublisher = eventPublisher;
             _mapper = mapper;
         }
 
@@ -70,6 +74,7 @@ namespace StackUnderflow.Api.Controllers
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return UnprocessableEntity();
             }
+            await _eventPublisher.PublishAll();
             var voteResponseModel = _mapper.Map<VoteGetViewModel>(vote);
             // @nl: Map this properly.
             return CreatedAtRoute("GetVote", new { voteId = vote.Id }, voteResponseModel);

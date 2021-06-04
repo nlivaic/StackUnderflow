@@ -6,6 +6,7 @@ using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Enums;
+using StackUnderflow.Core.Events;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Models.Votes;
@@ -20,6 +21,7 @@ namespace StackUnderflow.Core.Services
         private readonly IRepository<Comment> _commentRepository;
         private readonly IUnitOfWork _uow;
         private readonly BaseLimits _limits;
+        private readonly IEventRegister _eventRegister;
         private readonly ICache _cache;
         private readonly IMapper _mapper;
 
@@ -29,6 +31,7 @@ namespace StackUnderflow.Core.Services
             IRepository<Comment> commentRepository,
             IUnitOfWork uow,
             BaseLimits limits,
+            IEventRegister eventRegister,
             ICache cache,
             IMapper mapper)
         {
@@ -38,6 +41,7 @@ namespace StackUnderflow.Core.Services
             _commentRepository = commentRepository;
             _uow = uow;
             _limits = limits;
+            _eventRegister = eventRegister;
             _cache = cache;
             _mapper = mapper;
         }
@@ -75,6 +79,7 @@ namespace StackUnderflow.Core.Services
             target.ApplyVote(vote);
             await _uow.SaveAsync();
             await ChangeCachedVotesSumAfterVoteCast(vote);
+            _eventRegister.RegisterEvent<VoteCast>(new { UserId = vote.UserId, VoteType = vote.VoteType });
             return _mapper.Map<VoteGetModel>(vote);
         }
 

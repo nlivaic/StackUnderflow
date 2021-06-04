@@ -101,18 +101,24 @@ Backend:
         ☐ Call consumer - write consumer properly, call Core points service
         ☐ Worker service error handling
         ☐ Logging
-      ☐ Point calculation service in Core  @high  
-        ☐ No need for sp. Call from EF core if possible. Drop sp. @critical 
-        ☐ Return value from sp. Out parameters in PG?
-        ☐ BaseLimits
-          ☐ new property UpvotePoints
-          ☐ new property DownvotePoints
-          ☐ Cache
-          ☐ Insert new values to Limits table.
-          ☐ Execute 2 migrations.
-          ☐ BaseLimits je scoped u Apiju!!! Zašto? Svaki se put nanovo cacheira! No good.
+      ✔ Point calculation service in Core  @high @done (04. 06. 2021. 12:07:38)
+        ✔ No need for sp. Call from EF core if possible. Drop sp. @critical @done (04. 06. 2021. 12:06:48)
+        ✔ Return value from sp. Out parameters in PG? @done (04. 06. 2021. 12:07:20)
+        ✔ BaseLimits @done (04. 06. 2021. 12:07:23)
+          ✔ new property UpvotePoints @done (04. 06. 2021. 12:07:24)
+          ✔ new property DownvotePoints @done (04. 06. 2021. 12:07:26)
+          ✔ Cache @done (04. 06. 2021. 12:07:31)
+          ✔ Insert new values to Limits table. @done (04. 06. 2021. 12:07:32)
+          ✔ Execute 2 migrations. @done (04. 06. 2021. 12:07:34)
+          ✔ BaseLimits je scoped u Apiju!!! Zašto? Svaki se put nanovo cacheira! No good. @done (04. 06. 2021. 12:07:35)
       ☐ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-performance-improvements?tabs=net-standard-sdk-2#prefetching
-      ☐ Watch out: events can be raised only AFTER a commit is made. Take a look at FrontDesk for this. @critical 
+      ✔ Watch out: events can be raised only AFTER a commit is made. Take a look at FrontDesk for this. @critical @done (04. 06. 2021. 12:07:41)
+      ☐ Move uow and publisher to controller.
+        ☐ Move to attribute?
+      ☐ Raise events where neccessary. Downvote, revoke vote whatever. 
+      ☐ Try to raise an event from identity project
+        ☐ Send a confirmation email
+        ☐ Create a new user
       ☐ On developing locally: https://jimmybogard.com/local-development-with-azure-service-bus/
     ☐ Make Postman authenticate.
     ☐ AutoMapper
