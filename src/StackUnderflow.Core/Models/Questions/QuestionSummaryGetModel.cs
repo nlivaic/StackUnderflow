@@ -31,11 +31,10 @@ namespace StackUnderflow.Core.Models
                     .ForMember(dest => dest.Answers,
                         opts => opts.MapFrom(src => src.Answers.Count()))
                     .ForMember(dest => dest.Tags,
-                        opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)));
+                        opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)))
+                    .ForMember(dest => dest.VotesSum,
+                        opts => opts.MapFrom(src => src.Votes.Count()));    // Should be read from cache
             }
         }
-
-
-
     }
 }
