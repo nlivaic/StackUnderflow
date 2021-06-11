@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StackUnderflow.Api.BaseControllers;
+using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Events;
@@ -9,24 +11,32 @@ namespace StackUnderflow.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FooController : ControllerBase
+    public class FooController : ApiControllerBase
     {
-        private readonly IEventPublisher _eventPublisher;
-
-        public FooController(IEventPublisher eventPublisher)
+        [HttpGet("1")]
+        public async Task<ActionResult<int>> Get1()
         {
-            _eventPublisher = eventPublisher;
+            throw new EntityNotFoundException("something not found.", Guid.NewGuid());
         }
-        [HttpGet]
-        public async Task<ActionResult<int>> Get()
+
+        [HttpGet("2")]
+        public async Task<ActionResult<int>> Get2()
         {
-            await _eventPublisher.PublishEvent<VoteCast>(
-                new
-                {
-                    UserId = Guid.Parse("1e392be2-e621-4ac1-86c3-81aa7f4873ea"),
-                    VoteType = VoteTypeEnum.Upvote
-                });
-            return Ok(1);
+            throw new LimitNotMappable($"Limit not found, even though it is defined in database.");
+        }
+
+        [HttpGet("3")]
+        public async Task<ActionResult<int>> Get3()
+        {
+            try
+            {
+                throw new BusinessException("Something bad happened.");
+            }
+            catch (BusinessException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return UnprocessableEntity();
+            }
         }
     }
 }

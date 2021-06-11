@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using StackUnderflow.Infrastructure.Caching;
 using StackUnderflow.Infrastructure.MessageBroker;
 using StackUnderflow.Core;
+using StackUnderflow.Common.Exceptions;
 
 namespace StackUnderflow.Api
 {
@@ -213,12 +214,12 @@ namespace StackUnderflow.Api
         /// <summary>
         /// A demonstration of how returned message can be modified.
         /// </summary>
-        private void UpdateApiErrorResponse(HttpContext context, Exception ex, ApiError apiError)
+        private void UpdateApiErrorResponse(HttpContext context, Exception ex, ProblemDetails problemDetails)
         {
-            if (ex is Exception)
-            {
-                apiError.Detail = "A general error occurred.";
-            }
+            //if (ex is LimitNotMappable)
+            //{
+            //    problemDetails.Detail = "A general error occurred.";
+            //}
         }
 
         /// <summary>
@@ -226,11 +227,12 @@ namespace StackUnderflow.Api
         /// </summary>
         private LogLevel LogLevelHandler(HttpContext context, Exception ex)
         {
-            if (ex is Exception)
-            {
-                return LogLevel.Critical;
-            }
-            return LogLevel.Error;
+            //if (ex is Exception)
+            //{
+            //    return LogLevel.Critical;
+            //}
+            //return LogLevel.Error;
+            return LogLevel.Critical;
         }
     }
 }

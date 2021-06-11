@@ -51,7 +51,10 @@ namespace StackUnderflow.Core.Services
         public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(QuestionFindModel questionFindModel)
         {
             var question = await _questionRepository.GetQuestionWithUserAndTagsAsync(questionFindModel);
-            question.VotesSum = await _voteService.GetVotesSumAsync(questionFindModel.Id, VoteTargetEnum.Question);
+            if (question != null)
+            {
+                question.VotesSum = await _voteService.GetVotesSumAsync(questionFindModel.Id, VoteTargetEnum.Question);
+            }
             return question;
         }
 

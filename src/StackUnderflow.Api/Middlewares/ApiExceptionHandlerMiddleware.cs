@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using StackUnderflow.Api.Helpers;
+using StackUnderflow.Common.Exceptions;
 
 namespace StackUnderflow.Api.Middlewares
 {
@@ -31,7 +34,7 @@ namespace StackUnderflow.Api.Middlewares
             {
                 await _next(context);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 HandleError(context, ex);
             }
@@ -39,32 +42,74 @@ namespace StackUnderflow.Api.Middlewares
 
         private async void HandleError(HttpContext context, Exception ex)
         {
-            var apiError = new ApiError
+            if (ex is BusinessException)
             {
-                Id = Guid.NewGuid().ToString(),
-                Status = (short)HttpStatusCode.InternalServerError,
-                Title = "Some kind of error occurred in the API. Please use provided Id and get in touch with support."
-            };
-            _options.ApiErrorHandler?.Invoke(context, ex, apiError);
+                await HandleBusinessException(context, ex);
+            }
+            else if (ex is EntityNotFoundException)
+            {
+                await HandleEntityNotFoundException(context, ex);
+            }
+            else
+            {
+                await HandleException(context, ex);
+            }
+        }
+
+        private async Task HandleBusinessException(HttpContext context, Exception ex)
+        {
+            var validationProblemDetails = ValidationProblemDetailsFactory
+                    .Create(context, new Dictionary<string, string[]>
+                    {
+                        { "", new string[] { ex.Message } }
+                    });
+            var result = JsonConvert.SerializeObject(validationProblemDetails);
+            context.Response.ContentType = "application/problem+json";
+            context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+            await context.Response.WriteAsync(result);
+        }
+
+        private static async Task HandleEntityNotFoundException(HttpContext context, Exception ex)
+        {
+            var problemDetails = ValidationProblemDetailsFactory.CreateNotFoundProblemDetails(context, ex.Message);
+            var result = JsonConvert.SerializeObject(problemDetails);
+            context.Response.ContentType = "application/problem+json";
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            await context.Response.WriteAsync(result);
+        }
+
+        private async Task HandleException(HttpContext context, Exception ex)
+        {
             var innermostException = GetInnermostException(ex);
+            var problemDetail = ValidationProblemDetailsFactory.CreateInternalServerErrorProblemDetails(context, innermostException.Message);
+
+            _options.ApiErrorHandler?.Invoke(context, ex, problemDetail);
             var logLevel = _options.LogLevelHandler?.Invoke(context, ex) ?? LogLevel.Error;
             if (context.Request.Method == "POST" || context.Request.Method == "PUT")
             {
-                string body = String.Empty;
+                string body = string.Empty;
                 using (var reader = new StreamReader(context.Request.Body))
                 {
                     context.Request.Body.Seek(0, SeekOrigin.Begin);
                     body = await reader.ReadToEndAsync();
                 }
-                _logger.Log(logLevel, innermostException, innermostException.Message + " -- {ErrorId} -- {Body}", apiError.Id, body);
-
+                _logger.Log(
+                    logLevel,
+                    innermostException,
+                    innermostException.Message + " -- {TraceId} -- {Body}",
+                    problemDetail.Extensions["traceId"],
+                    body);
             }
             else
             {
-                _logger.Log(logLevel, innermostException, innermostException.Message + " -- {ErrorId}", apiError.Id);
+                _logger.Log(
+                    logLevel,
+                    innermostException,
+                    innermostException.Message + " -- {TraceId}",
+                    problemDetail.Extensions["traceId"]);
             }
-            var result = JsonConvert.SerializeObject(apiError);
-            context.Response.ContentType = "application/json";
+            var result = JsonConvert.SerializeObject(problemDetail);
+            context.Response.ContentType = "application/problem+json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             await context.Response.WriteAsync(result);
         }
