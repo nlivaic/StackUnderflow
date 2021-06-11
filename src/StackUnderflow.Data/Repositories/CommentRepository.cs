@@ -43,6 +43,7 @@ namespace StackUnderflow.Data.Repositories
             await
                 CommentsForAnswerQuery(c =>
                     c.ParentAnswerId.HasValue && c.ParentAnswerId.Value == answerId)
+                .Include(c => c.Votes)
                 .ToListAsync();
 
         public async Task<IEnumerable<CommentForAnswerGetModel>> GetCommentsForAnswersAsync(IEnumerable<Guid> answerIds) =>

@@ -138,9 +138,8 @@ namespace StackUnderflow.Core.Services
                 comments = await
                     _commentRepository.GetCommentsForQuestionAsync<Comment>(commentModel.ParentQuestionId.Value);
             }
-            // No point in caching count result since the comments will be deleted.
-            var votesSum = await _voteRepository.CountAsync(v => comments.Any(c => c.Id == v.CommentId));
-            if (votesSum > 0)
+            var hasVotes = comments.SelectMany(c => c.Votes).Any();
+            if (hasVotes)
             {
                 throw new BusinessException($"Cannot delete because associated votes exist on at least one comment.");
             }
