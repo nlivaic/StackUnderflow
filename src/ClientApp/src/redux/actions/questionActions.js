@@ -44,7 +44,11 @@ export function saveQuestion(question) {
   return async (dispatch) => {
     dispatch(apiStatusActions.beginApiCall());
     try {
-      dispatch(saveQuestionSuccess(await questionApi.askQuestion(question)));
+      const savedQuestion = await questionApi.askQuestion(question);
+      if (savedQuestion.vote === null) {
+        savedQuestion.vote = initialState.vote;
+      }
+      dispatch(saveQuestionSuccess(savedQuestion));
     } catch (error) {
       console.error(error);
       dispatch(apiStatusActions.apiCallError());
