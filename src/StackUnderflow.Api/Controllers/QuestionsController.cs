@@ -8,7 +8,6 @@ using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.Models.Questions;
-using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Models.Questions;
@@ -91,19 +90,7 @@ namespace StackUnderflow.Api.Controllers
             var question = _mapper.Map<QuestionEditModel>(request);
             question.QuestionUserId = User.UserId().Value;
             question.QuestionId = id;
-            try
-            {
-                await _questionService.EditQuestionAsync(question);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return UnprocessableEntity();
-            }
+            await _questionService.EditQuestionAsync(question);
             return NoContent();
         }
 
@@ -119,19 +106,7 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
             var userId = User.UserId().Value;
-            try
-            {
-                await _questionService.DeleteQuestionAsync(id, userId);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return Conflict(ModelState);
-            }
+            await _questionService.DeleteQuestionAsync(id, userId);
             return NoContent();
         }
     }

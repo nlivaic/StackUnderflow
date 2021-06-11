@@ -65,7 +65,9 @@ namespace StackUnderflow.Api.Middlewares
                     });
             var result = JsonConvert.SerializeObject(validationProblemDetails);
             context.Response.ContentType = "application/problem+json";
-            context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+            context.Response.StatusCode = context.Request.Method == HttpMethods.Delete
+                ? StatusCodes.Status409Conflict
+                : StatusCodes.Status422UnprocessableEntity;
             await context.Response.WriteAsync(result);
         }
 

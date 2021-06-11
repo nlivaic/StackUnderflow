@@ -60,23 +60,9 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult<VoteGetViewModel>> PostAsync([FromBody]VoteCreateRequest model)
         {
             var voteCreateModel = _mapper.Map<VoteCreateModel>(model);
-            VoteGetModel vote;
-            try
-            {
-                vote = await _voteService.CastVoteAsync(voteCreateModel);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return UnprocessableEntity();
-            }
+            var vote = await _voteService.CastVoteAsync(voteCreateModel);
             await _eventPublisher.PublishAll();
             var voteResponseModel = _mapper.Map<VoteGetViewModel>(vote);
-            // @nl: Map this properly.
             return CreatedAtRoute("GetVote", new { voteId = vote.Id }, voteResponseModel);
         }
 
@@ -86,19 +72,7 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult> DeleteAsync([FromRoute]VoteDeleteRequest voteDeleteRequest)
         {
             var voteRevokeModel = _mapper.Map<VoteRevokeModel>(voteDeleteRequest);
-            try
-            {
-                await _voteService.RevokeVoteAsync(voteRevokeModel);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return UnprocessableEntity();
-            }
+            await _voteService.RevokeVoteAsync(voteRevokeModel);
             return NoContent();
         }
     }

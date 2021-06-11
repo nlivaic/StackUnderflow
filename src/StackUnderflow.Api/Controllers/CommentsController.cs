@@ -154,15 +154,7 @@ namespace StackUnderflow.Api.Controllers
             var comment = _mapper.Map<CommentOnQuestionCreateModel>(request);
             comment.QuestionId = questionId;
             comment.UserId = User.UserId().Value;
-            CommentForQuestionGetModel newCommentModel = null;
-            try
-            {
-                newCommentModel = await _commentService.CommentOnQuestionAsync(comment);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
+            var newCommentModel = await _commentService.CommentOnQuestionAsync(comment);
             var result = _mapper.Map<CommentForQuestionGetViewModel>(newCommentModel);
             result.IsOwner = User.IsOwner(result);
             result.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
@@ -191,15 +183,7 @@ namespace StackUnderflow.Api.Controllers
             comment.QuestionId = questionId;
             comment.AnswerId = answerId;
             comment.UserId = User.UserId().Value;
-            CommentForAnswerGetModel newCommentModel = null;
-            try
-            {
-                newCommentModel = await _commentService.CommentOnAnswerAsync(comment);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
+            var newCommentModel = await _commentService.CommentOnAnswerAsync(comment);
             var result = _mapper.Map<CommentForAnswerGetViewModel>(newCommentModel);
             result.IsOwner = User.IsOwner(result);
             result.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
@@ -227,19 +211,7 @@ namespace StackUnderflow.Api.Controllers
             comment.ParentQuestionId = questionId;
             comment.UserId = User.UserId().Value;
             comment.CommentId = commentId;
-            try
-            {
-                await _commentService.EditAsync(comment);
-            }
-            catch (BusinessException ex)
-            {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                return UnprocessableEntity();
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
+            await _commentService.EditAsync(comment);
             return NoContent();
         }
 
@@ -267,19 +239,7 @@ namespace StackUnderflow.Api.Controllers
             comment.ParentAnswerId = answerId;
             comment.CommentId = commentId;
             comment.UserId = User.UserId().Value;
-            try
-            {
-                await _commentService.EditAsync(comment);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return UnprocessableEntity();
-            }
+            await _commentService.EditAsync(comment);
             return NoContent();
         }
 
@@ -297,19 +257,7 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromRoute] Guid commentId)
         {
-            try
-            {
-                await _commentService.DeleteAsync(new CommentDeleteModel { CommentId = commentId, ParentQuestionId = questionId });
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return Conflict(ModelState);
-            }
+            await _commentService.DeleteAsync(new CommentDeleteModel { CommentId = commentId, ParentQuestionId = questionId });
             return NoContent();
         }
 
@@ -335,19 +283,7 @@ namespace StackUnderflow.Api.Controllers
                 ParentAnswerId = answerId,
                 CommentId = commentId
             };
-            try
-            {
-                await _commentService.DeleteAsync(comment);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return Conflict(ModelState);
-            }
+            await _commentService.DeleteAsync(comment);
             return NoContent();
         }
     }

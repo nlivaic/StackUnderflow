@@ -12,7 +12,6 @@ using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
-using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.QueryParameters;
@@ -130,16 +129,7 @@ namespace StackUnderflow.Api.Controllers
             var answer = _mapper.Map<AnswerCreateModel>(request);
             answer.QuestionId = questionId;
             answer.UserId = User.UserId().Value;
-            AnswerGetModel answerGetModel;
-            try
-            {
-                answerGetModel = await _answerService.PostAnswerAsync(answer);
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return UnprocessableEntity();
-            }
+            var answerGetModel = await _answerService.PostAnswerAsync(answer);
             var answerGetViewModel = _mapper.Map<AnswerGetViewModel>(answerGetModel);
             answerGetViewModel.IsOwner = User.IsOwner(answerGetViewModel);
             answerGetViewModel.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
@@ -167,19 +157,7 @@ namespace StackUnderflow.Api.Controllers
             answer.AnswerId = answerId;
             answer.QuestionId = questionId;
             answer.UserId = User.UserId().Value;
-            try
-            {
-                await _answerService.EditAnswerAsync(answer);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return UnprocessableEntity();
-            }
+            await _answerService.EditAnswerAsync(answer);
             return NoContent();
         }
 
@@ -198,19 +176,7 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid answerId)
         {
             var userId = User.UserId().Value;
-            try
-            {
-                await _answerService.DeleteAnswerAsync(userId, questionId, answerId);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return Conflict(ModelState);
-            }
+            await _answerService.DeleteAnswerAsync(userId, questionId, answerId);
             return NoContent();
         }
 
@@ -236,20 +202,7 @@ namespace StackUnderflow.Api.Controllers
                 QuestionId = questionId,
                 AnswerId = answerId
             };
-            AnswerGetModel answerModel = null;
-            try
-            {
-                answerModel = await _answerService.AcceptAnswerAsync(acceptAnswer);
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (BusinessException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return UnprocessableEntity();
-            }
+            var answerModel = await _answerService.AcceptAnswerAsync(acceptAnswer);
             var answerViewModel = _mapper.Map<AnswerGetViewModel>(answerModel);
             answerViewModel.IsOwner = User.IsOwner(answerViewModel);
             return CreatedAtRoute("Get", new { questionId, answerId }, answerViewModel);
