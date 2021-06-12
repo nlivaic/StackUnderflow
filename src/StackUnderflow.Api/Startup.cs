@@ -27,6 +27,10 @@ using StackUnderflow.Infrastructure.Caching;
 using StackUnderflow.Infrastructure.MessageBroker;
 using StackUnderflow.Core;
 using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Api.Models;
+using StackUnderflow.Core.Models;
+using StackUnderflow.Core.Entities;
+using System.Collections.Generic;
 
 namespace StackUnderflow.Api
 {
@@ -83,7 +87,19 @@ namespace StackUnderflow.Api
             services.AddSpecificRepositories();
             services.AddCoreServices();
 
-            services.AddSingleton<IPropertyMappingService, PropertyMappingService>();
+            services.AddPropertyMappingService(opts =>
+                opts.PropertyMappings = new List<IPropertyMapping>
+                {
+                    new PropertyMapping<QuestionSummaryGetViewModel, QuestionSummaryGetModel>()
+                        .Add(nameof(QuestionSummaryGetViewModel.Username), $"{nameof(User)}.{nameof(User.Username)}")
+                        .Add(nameof(QuestionSummaryGetViewModel.HasAcceptedAnswer), nameof(QuestionSummaryGetModel.HasAcceptedAnswer))
+                        .Add(nameof(QuestionSummaryGetViewModel.CreatedOn), nameof(QuestionSummaryGetModel.CreatedOn))
+                        .Add(nameof(QuestionSummaryGetViewModel.VotesSum), nameof(QuestionSummaryGetModel.VotesSum)),
+                    new PropertyMapping<AnswerGetViewModel, AnswerGetModel>()
+                        .Add(nameof(AnswerGetViewModel.CreatedOn), nameof(AnswerGetModel.CreatedOn))
+                        .Add(nameof(AnswerGetViewModel.VotesSum), nameof(AnswerGetModel.VotesSum))
+                });
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<IScopeInformation, ScopeInformation>();

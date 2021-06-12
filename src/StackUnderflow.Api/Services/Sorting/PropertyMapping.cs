@@ -29,8 +29,7 @@ namespace StackUnderflow.Api.Services.Sorting
 
         public PropertyMappingValue GetMapping(string sourcePropertyName)
         {
-            PropertyMappingValue propertyMappingValue = null;
-            _propertyMappingValues.TryGetValue(sourcePropertyName, out propertyMappingValue);
+            _propertyMappingValues.TryGetValue(sourcePropertyName, out var propertyMappingValue);
             return
                 propertyMappingValue
                 ?? throw new InvalidPropertyMappingException($"Source property name '{sourcePropertyName}' for source type {typeof(TSource)} not mapped to target type {typeof(TTarget)}.");

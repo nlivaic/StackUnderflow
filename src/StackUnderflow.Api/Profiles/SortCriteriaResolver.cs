@@ -12,7 +12,12 @@ namespace StackUnderflow.Api.Profiles
         where TSource : StackUnderflow.Api.ResourceParameters.ISortable
         where TDestination : StackUnderflow.Core.QueryParameters.ISortable
     {
-        static IPropertyMappingService PropertyMappingService = new PropertyMappingService();
+        private readonly IPropertyMappingService _propertyMappingService;
+
+        public SortCriteriaResolver(IPropertyMappingService propertyMappingService)
+        {
+            _propertyMappingService = propertyMappingService;
+        }
 
         public IEnumerable<SortCriteria> Resolve(TSource source, TDestination destination, IEnumerable<SortCriteria> destMember, ResolutionContext context)
         {
@@ -22,7 +27,7 @@ namespace StackUnderflow.Api.Profiles
                 PropertyMappingValue tp = null;
                 try
                 {
-                    tp = PropertyMappingService.GetMapping<TResource, TEntity>(s.SortByCriteria);
+                    tp = _propertyMappingService.GetMapping<TResource, TEntity>(s.SortByCriteria);
                 }
                 catch (InvalidPropertyMappingException)
                 {

@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using StackUnderflow.Api.Models;
-using StackUnderflow.Core.Entities;
-using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.Services.Sorting
 {
@@ -15,18 +12,12 @@ namespace StackUnderflow.Api.Services.Sorting
 
     public class PropertyMappingService : IPropertyMappingService
     {
-        private readonly IEnumerable<IPropertyMapping> _propertyMappings =
-            new List<IPropertyMapping>
-            {
-                new PropertyMapping<QuestionSummaryGetViewModel, QuestionSummaryGetModel>()
-                    .Add(nameof(QuestionSummaryGetViewModel.Username), $"{nameof(User)}.{nameof(User.Username)}")
-                    .Add(nameof(QuestionSummaryGetViewModel.HasAcceptedAnswer), nameof(QuestionSummaryGetModel.HasAcceptedAnswer))
-                    .Add(nameof(QuestionSummaryGetViewModel.CreatedOn), nameof(QuestionSummaryGetModel.CreatedOn))
-                    .Add(nameof(QuestionSummaryGetViewModel.VotesSum), nameof(QuestionSummaryGetModel.VotesSum)),
-                new PropertyMapping<AnswerGetViewModel, AnswerGetModel>()
-                    .Add(nameof(AnswerGetViewModel.CreatedOn), nameof(AnswerGetModel.CreatedOn))
-                    .Add(nameof(AnswerGetViewModel.VotesSum), nameof(AnswerGetModel.VotesSum))
-            };
+        private readonly IEnumerable<IPropertyMapping> _propertyMappings;
+
+        public PropertyMappingService(PropertyMappingOptions propertyMappingOptions)
+        {
+            _propertyMappings = propertyMappingOptions.PropertyMappings ?? new List<IPropertyMapping>();
+        }
 
         public PropertyMappingValue GetMapping<TSource, TTarget>(string sourcePropertyName)
         {
