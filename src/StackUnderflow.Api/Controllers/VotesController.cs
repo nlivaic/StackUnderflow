@@ -2,14 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StackUnderflow.Api.BaseControllers;
-using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models.Votes;
-using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
-using StackUnderflow.Core.Models.Votes;
 using System;
 using System.Threading.Tasks;
 
@@ -17,7 +13,7 @@ namespace StackUnderflow.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class VotesController : ApiControllerBase
+    public class VotesController : ControllerBase
     {
         private readonly IVoteService _voteService;
         private readonly IRegisteredEventPublisher _eventPublisher;

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
@@ -20,7 +19,7 @@ namespace StackUnderflow.Api.Controllers
 {
     [ApiController]
     [Route("/api/questions/{questionId}/[controller]")]
-    public class AnswersController : ApiControllerBase
+    public class AnswersController : ControllerBase
     {
         private readonly IAnswerService _answerService;
         private readonly IQuestionRepository _questionRepository;

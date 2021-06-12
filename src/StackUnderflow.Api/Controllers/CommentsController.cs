@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.Helpers;
-using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace StackUnderflow.Api.Controllers
 {
     [ApiController]
-    public class CommentsController : ApiControllerBase
+    public class CommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IQuestionRepository _questionRepository;

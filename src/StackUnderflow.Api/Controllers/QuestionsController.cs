@@ -4,7 +4,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StackUnderflow.Api.BaseControllers;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.Models.Questions;
@@ -16,7 +15,7 @@ namespace StackUnderflow.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class QuestionsController : ApiControllerBase
+    public class QuestionsController : ControllerBase
     {
         private readonly IQuestionService _questionService;
         private readonly IUserService _userService;
