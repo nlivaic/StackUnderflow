@@ -9,8 +9,8 @@ using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
 using StackUnderflow.Api.Services.Sorting;
+using StackUnderflow.Application.Services.Sorting;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.QueryParameters;
 
 namespace StackUnderflow.Api.Controllers
 {

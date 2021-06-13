@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackUnderflow.Api.Helpers;
-using StackUnderflow.Api.Services.Sorting;
+using StackUnderflow.Application.Services.Sorting;
 
 namespace StackUnderflow.Api.ResourceParameters
 {
@@ -19,6 +19,6 @@ namespace StackUnderflow.Api.ResourceParameters
         public IEnumerable<Guid> Users { get; set; }
         public string SearchQuery { get; set; }
         [BindProperty(BinderType = typeof(ArrayModelBinder))]
-        public IEnumerable<SortCriteriaDto> SortBy { get; set; }
+        public IEnumerable<SortCriteria> SortBy { get; set; }
     }
 }

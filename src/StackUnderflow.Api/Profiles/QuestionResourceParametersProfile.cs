@@ -2,7 +2,7 @@ using AutoMapper;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Api.ResourceParameters;
-using StackUnderflow.Core.QueryParameters;
+using StackUnderflow.Application.Services.Sorting;
 
 namespace StackUnderflow.Api.Profiles
 {

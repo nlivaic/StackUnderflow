@@ -11,9 +11,9 @@ using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
+using StackUnderflow.Application.Services.Sorting;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
-using StackUnderflow.Core.QueryParameters;
 
 namespace StackUnderflow.Api.Controllers
 {

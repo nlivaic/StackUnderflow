@@ -7,11 +7,11 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflow.Common.Collections;
 using StackUnderflow.Core.Entities;
-using StackUnderflow.Core.QueryParameters;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Data.QueryableExtensions;
 using StackUnderflow.Core.Models.Questions;
+using StackUnderflow.Application.Services.Sorting;
 
 namespace StackUnderflow.Data.Repositories
 {

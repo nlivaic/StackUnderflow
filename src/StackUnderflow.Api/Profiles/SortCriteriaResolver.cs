@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using StackUnderflow.Api.Exceptions;
 using StackUnderflow.Api.Services.Sorting;
-using StackUnderflow.Core.QueryParameters.Sorting;
+using StackUnderflow.Application.Services.Sorting;
 
 namespace StackUnderflow.Api.Profiles
 {
     public class SortCriteriaResolver<TResource, TEntity, TSource, TDestination>
         : IValueResolver<TSource, TDestination, IEnumerable<SortCriteria>>
-        where TSource : StackUnderflow.Api.ResourceParameters.ISortable
-        where TDestination : StackUnderflow.Core.QueryParameters.ISortable
+        where TSource : ISortable
+        where TDestination : ISortable
     {
         private readonly IPropertyMappingService _propertyMappingService;
 
@@ -40,10 +39,10 @@ namespace StackUnderflow.Api.Profiles
                         {
                             SortByCriteria = tpn,
                             SortDirection = tp.Revert
-                                ? s.SortDirection == SortDirectionDto.Desc
+                                ? s.SortDirection == SortDirection.Desc
                                     ? SortDirection.Asc
                                     : SortDirection.Desc
-                                : s.SortDirection == SortDirectionDto.Asc
+                                : s.SortDirection == SortDirection.Asc
                                     ? SortDirection.Asc
                                     : SortDirection.Desc
                         }));

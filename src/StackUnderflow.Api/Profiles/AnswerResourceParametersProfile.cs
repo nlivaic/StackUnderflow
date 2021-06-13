@@ -1,8 +1,8 @@
 using AutoMapper;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
+using StackUnderflow.Application.Services.Sorting;
 using StackUnderflow.Core.Models;
-using StackUnderflow.Core.QueryParameters;
 
 namespace StackUnderflow.Api.Profiles
 {

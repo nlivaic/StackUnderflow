@@ -1,6 +1,6 @@
+using StackUnderflow.Application.Services.Sorting;
 using System;
 using System.Collections.Generic;
-using StackUnderflow.Api.Exceptions;
 
 namespace StackUnderflow.Api.Services.Sorting
 {

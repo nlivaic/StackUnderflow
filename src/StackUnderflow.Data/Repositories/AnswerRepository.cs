@@ -9,9 +9,9 @@ using StackUnderflow.Common.Collections;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
-using StackUnderflow.Core.QueryParameters;
 using StackUnderflow.Data.QueryableExtensions;
 using System.Linq.Dynamic.Core;
+using StackUnderflow.Application.Services.Sorting;
 
 namespace StackUnderflow.Data.Repositories
 {

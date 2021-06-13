@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using StackUnderflow.Application.Services.Sorting;
 using StackUnderflow.Common.Collections;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Models;
-using StackUnderflow.Core.QueryParameters;
 
 namespace StackUnderflow.Core.Interfaces
 {

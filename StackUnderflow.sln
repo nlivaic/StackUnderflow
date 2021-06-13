@@ -40,9 +40,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{C84F805E-3F0
 		sql\InitializeStackUnderflowIdentityDb.sql = sql\InitializeStackUnderflowIdentityDb.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackUnderflow.Infrastructure", "src\StackUnderflow.Infrastructure\StackUnderflow.Infrastructure.csproj", "{2F0BC516-566B-47DA-9B4E-9018AD15813F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackUnderflow.Infrastructure", "src\StackUnderflow.Infrastructure\StackUnderflow.Infrastructure.csproj", "{2F0BC516-566B-47DA-9B4E-9018AD15813F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackUnderflow.WorkerServices", "src\StackUnderflow.WorkerServices\StackUnderflow.WorkerServices.csproj", "{126E0511-7CA2-4234-8145-D957C0518702}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackUnderflow.WorkerServices", "src\StackUnderflow.WorkerServices\StackUnderflow.WorkerServices.csproj", "{126E0511-7CA2-4234-8145-D957C0518702}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackUnderflow.Application", "src\StackUnderflow.Application\StackUnderflow.Application.csproj", "{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,6 +176,18 @@ Global
 		{126E0511-7CA2-4234-8145-D957C0518702}.Release|x64.Build.0 = Release|Any CPU
 		{126E0511-7CA2-4234-8145-D957C0518702}.Release|x86.ActiveCfg = Release|Any CPU
 		{126E0511-7CA2-4234-8145-D957C0518702}.Release|x86.Build.0 = Release|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Debug|x64.Build.0 = Debug|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Debug|x86.Build.0 = Debug|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Release|x64.ActiveCfg = Release|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Release|x64.Build.0 = Release|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Release|x86.ActiveCfg = Release|Any CPU
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +202,7 @@ Global
 		{0289D9FE-5475-4A12-9885-BBAC85D721DB} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
 		{2F0BC516-566B-47DA-9B4E-9018AD15813F} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
 		{126E0511-7CA2-4234-8145-D957C0518702} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
+		{FB37EF7F-2EDC-4057-A0A5-CFB4A4652C84} = {E3E9A99C-C12A-4E84-8AFA-2201DF8ECCB9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2799A94-8AA1-41D8-B547-56219C23F71E}
