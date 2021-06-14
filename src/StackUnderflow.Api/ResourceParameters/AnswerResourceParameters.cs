@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
-using StackUnderflow.Api.Profiles;
 using StackUnderflow.Application.Services.Sorting;
 using StackUnderflow.Core.Models;
 
