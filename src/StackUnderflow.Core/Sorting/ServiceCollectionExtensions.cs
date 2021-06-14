@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace StackUnderflow.Api.Services.Sorting
+namespace StackUnderflow.Application.Services.Sorting
 {
     public static class ServiceCollectionExtensions
     {

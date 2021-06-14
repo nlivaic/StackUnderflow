@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackUnderflow.Api.Helpers;
+using StackUnderflow.Api.Models;
+using StackUnderflow.Api.Profiles;
 using StackUnderflow.Application.Services.Sorting;
+using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.ResourceParameters
 {
@@ -20,5 +24,14 @@ namespace StackUnderflow.Api.ResourceParameters
         public string SearchQuery { get; set; }
         [BindProperty(BinderType = typeof(ArrayModelBinder))]
         public IEnumerable<SortCriteria> SortBy { get; set; }
+
+        public class QuestionSummaryResourceParametersProfile : Profile
+        {
+            public QuestionSummaryResourceParametersProfile()
+            {
+                CreateMap<QuestionSummaryResourceParameters, QuestionQueryParameters>()
+                    .ForSortableMembers<QuestionSummaryGetViewModel, QuestionSummaryGetModel, QuestionSummaryResourceParameters, QuestionQueryParameters>();
+            }
+        }
     }
 }

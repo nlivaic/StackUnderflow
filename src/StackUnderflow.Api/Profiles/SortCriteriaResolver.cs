@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using StackUnderflow.Api.Services.Sorting;
 using StackUnderflow.Application.Services.Sorting;
 
 namespace StackUnderflow.Api.Profiles

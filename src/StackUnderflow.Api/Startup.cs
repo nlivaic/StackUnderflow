@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using StackUnderflow.Api.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StackUnderflow.Api.Services.Sorting;
 using FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using System;
@@ -31,6 +30,7 @@ using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Entities;
 using System.Collections.Generic;
+using StackUnderflow.Application.Services.Sorting;
 
 namespace StackUnderflow.Api
 {
