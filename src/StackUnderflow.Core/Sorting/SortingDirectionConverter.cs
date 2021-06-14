@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using StackUnderflow.Application.Services.Sorting.Models;
 using StackUnderflow.Common.Extensions;
 
 namespace StackUnderflow.Application.Services.Sorting

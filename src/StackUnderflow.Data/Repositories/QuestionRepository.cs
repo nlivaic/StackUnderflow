@@ -11,7 +11,7 @@ using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Data.QueryableExtensions;
 using StackUnderflow.Core.Models.Questions;
-using StackUnderflow.Application.Services.Sorting;
+using StackUnderflow.Application.Services.Sorting.Models;
 
 namespace StackUnderflow.Data.Repositories
 {

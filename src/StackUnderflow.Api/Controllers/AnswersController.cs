@@ -11,7 +11,7 @@ using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
-using StackUnderflow.Application.Services.Sorting;
+using StackUnderflow.Application.Services.Sorting.Models;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 

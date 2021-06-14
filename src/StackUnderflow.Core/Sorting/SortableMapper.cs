@@ -1,4 +1,5 @@
 using AutoMapper;
+using StackUnderflow.Application.Services.Sorting.Models;
 
 namespace StackUnderflow.Application.Services.Sorting
 {

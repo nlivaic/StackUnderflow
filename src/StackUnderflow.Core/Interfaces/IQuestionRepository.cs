@@ -5,7 +5,7 @@ using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Models.Questions;
-using StackUnderflow.Application.Services.Sorting;
+using StackUnderflow.Application.Services.Sorting.Models;
 
 namespace StackUnderflow.Core.Interfaces
 {

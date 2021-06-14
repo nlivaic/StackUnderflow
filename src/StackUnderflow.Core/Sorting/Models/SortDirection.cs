@@ -1,4 +1,4 @@
-namespace StackUnderflow.Application.Services.Sorting
+namespace StackUnderflow.Application.Services.Sorting.Models
 {
     public enum SortDirection
     {
