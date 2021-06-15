@@ -16,7 +16,6 @@ namespace StackUnderflow.Api.Models
         public bool IsOwner { get; set; }
         public bool IsModerator { get; set; }
 
-
         public class AnswerProfile : Profile
         {
             public AnswerProfile()

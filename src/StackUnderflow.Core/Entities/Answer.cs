@@ -108,5 +108,18 @@ namespace StackUnderflow.Core.Entities
 
         public bool CanBeEditedBy(User editingUser) =>
             _owneable.CanBeEditedBy(editingUser);
+
+        public bool IsDeleteable(int votesSum)
+        {
+            if (IsAcceptedAnswer)
+            {
+                throw new BusinessException($"Answer with id '{Id}' has been accepted on '{AcceptedOn}'.");
+            }
+            if (votesSum > 0)
+            {
+                throw new BusinessException($"Cannot delete answer '{Id}' because associated votes exist.");
+            }
+            return true;
+        }
     }
 }

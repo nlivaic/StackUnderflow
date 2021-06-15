@@ -31,6 +31,7 @@ using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Entities;
 using System.Collections.Generic;
 using StackUnderflow.Application.Services.Sorting;
+using StackUnderflow.Application;
 
 namespace StackUnderflow.Api
 {
@@ -166,10 +167,11 @@ namespace StackUnderflow.Api
                 });
             services.AddAuthorization();
             services.AddApiEventPublisher(_configuration["CONNECTIONSTRINGS:MESSAGEBROKER:WRITE"]);
+            services.AddStackUnderflowApplicationHandlers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseApiExceptionHandler(options =>
             {

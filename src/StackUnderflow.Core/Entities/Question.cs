@@ -73,7 +73,7 @@ namespace StackUnderflow.Core.Entities
             // @nl: Raise an event!
         }
 
-        public void AcceptAnswer(Answer answer)
+        public void AcceptAnswer(Answer answer, Guid acceptingUserId)
         {
             if (_answers.Find(a => a.Id == answer.Id) == null)
             {
@@ -82,6 +82,10 @@ namespace StackUnderflow.Core.Entities
             if (HasAcceptedAnswer)
             {
                 throw new BusinessException($"Question '{this.Id}' already has an accepted answer.");
+            }
+            if (UserId != acceptingUserId)
+            {
+                throw new BusinessException("Only question owner can accept an answer!");
             }
             answer.AcceptedAnswer();
             HasAcceptedAnswer = true;

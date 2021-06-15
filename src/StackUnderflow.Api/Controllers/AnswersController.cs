@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
+using StackUnderflow.Application.Answers.Commands;
+using StackUnderflow.Application.Answers.Queries;
 using StackUnderflow.Application.Services.Sorting.Models;
-using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.Controllers
 {
@@ -21,23 +22,14 @@ namespace StackUnderflow.Api.Controllers
     [Route("/api/questions/{questionId}/[controller]")]
     public class AnswersController : ControllerBase
     {
-        private readonly IAnswerService _answerService;
-        private readonly IQuestionRepository _questionRepository;
-        private readonly IAnswerRepository _answerRepository;
-        private readonly IUserService _userService;
+        private readonly ISender _sender;
         private readonly IMapper _mapper;
 
         public AnswersController(
-            IAnswerService answerService,
-            IAnswerRepository answerRepository,
-            IQuestionRepository questionRepository,
-            IUserService userService,
+            ISender sender,
             IMapper mapper)
         {
-            _answerService = answerService;
-            _answerRepository = answerRepository;
-            _questionRepository = questionRepository;
-            _userService = userService;
+            _sender = sender;
             _mapper = mapper;
         }
 
@@ -57,27 +49,14 @@ namespace StackUnderflow.Api.Controllers
             [FromQuery] AnswerResourceParameters answerResourceParameters)
         {
             var answerQueryParameters = _mapper.Map<AnswerQueryParameters>(answerResourceParameters);
-            if (!(await _questionRepository.ExistsAsync(questionId)))
-            {
-                return NotFound();
-            }
-            var pagedAnswers = await _answerRepository.GetAnswersWithUserAsync(questionId, answerQueryParameters);
-            var pagingHeader = new PagingDto(
-                pagedAnswers.CurrentPage,
-                pagedAnswers.TotalPages,
-                pagedAnswers.TotalItems,
-                answerResourceParameters.PageSize > answerResourceParameters.MaximumPageSize
-                    ? answerResourceParameters.MaximumPageSize
-                    : answerResourceParameters.PageSize);
+            var pagedAnswers = await _sender.Send(new GetAnswersQuery(
+                questionId,
+                answerQueryParameters,
+                User.UserId()));
             HttpContext.Response.Headers.Add(
                 Headers.Pagination,
-                new StringValues(JsonSerializer.Serialize(pagingHeader)));
+                new StringValues(JsonSerializer.Serialize(pagedAnswers.Paging)));
             var response = _mapper.Map<List<AnswerGetViewModel>>(pagedAnswers.Items);
-            response.ForEach(async (a) =>
-            {
-                a.IsOwner = User.IsOwner(a);
-                a.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
-            });
             return Ok(response);
         }
 
@@ -94,14 +73,14 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId)
         {
-            var result = await _answerRepository.GetAnswerWithUserAsync(questionId, answerId);
-            if (result == null)
+            var getAnswerQuery = new GetAnswerQuery
             {
-                return NotFound();
-            }
+                QuestionId = questionId,
+                AnswerId = answerId,
+                CurrentUserId = User.UserId()
+            };
+            var result = await _sender.Send(getAnswerQuery);
             var response = _mapper.Map<AnswerGetViewModel>(result);
-            response.IsOwner = User.IsOwner(response);
-            response.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
             return Ok(response);
         }
 
@@ -121,18 +100,15 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromBody] AnswerCreateRequest request)
         {
-            if (!(await _questionRepository.ExistsAsync(questionId)))
+            var createAnswerCommand = new CreateAnswerCommand
             {
-                return NotFound();
-            }
-            var answer = _mapper.Map<AnswerCreateModel>(request);
-            answer.QuestionId = questionId;
-            answer.UserId = User.UserId().Value;
-            var answerGetModel = await _answerService.PostAnswerAsync(answer);
-            var answerGetViewModel = _mapper.Map<AnswerGetViewModel>(answerGetModel);
-            answerGetViewModel.IsOwner = User.IsOwner(answerGetViewModel);
-            answerGetViewModel.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
-            return CreatedAtRoute("Get", new { answerId = answerGetModel.Id, questionId }, answerGetViewModel);
+                QuestionId = questionId,
+                UserId = User.UserId().Value,
+                Body = request.Body
+            };
+            var result = await _sender.Send(createAnswerCommand);
+            var answerGetViewModel = _mapper.Map<AnswerGetViewModel>(result);
+            return CreatedAtRoute("Get", new { answerId = result.Id, questionId }, answerGetViewModel);
         }
 
         /// <summary>
@@ -152,11 +128,14 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid answerId,
             [FromBody] AnswerUpdateRequest request)
         {
-            var answer = _mapper.Map<AnswerEditModel>(request);
-            answer.AnswerId = answerId;
-            answer.QuestionId = questionId;
-            answer.UserId = User.UserId().Value;
-            await _answerService.EditAnswerAsync(answer);
+            var updateAnswerCommand = new UpdateAnswerCommand
+            {
+                CurrentUserId = User.UserId().Value,
+                QuestionId = questionId,
+                AnswerId = answerId,
+                Body = request.Body
+            };
+            await _sender.Send(updateAnswerCommand);
             return NoContent();
         }
 
@@ -174,8 +153,12 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId)
         {
-            var userId = User.UserId().Value;
-            await _answerService.DeleteAnswerAsync(userId, questionId, answerId);
+            await _sender.Send(new DeleteAnswerCommand
+            {
+                QuestionId = questionId,
+                AnswerId = answerId,
+                CurrentUserId = User.UserId().Value
+            });
             return NoContent();
         }
 
@@ -195,15 +178,14 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromRoute] Guid answerId)
         {
-            var acceptAnswer = new AnswerAcceptModel
+            var acceptAnswer = new AcceptAnswerCommand
             {
-                QuestionUserId = User.UserId().Value,
+                CurrentUserId = User.UserId().Value,
                 QuestionId = questionId,
                 AnswerId = answerId
             };
-            var answerModel = await _answerService.AcceptAnswerAsync(acceptAnswer);
+            var answerModel = await _sender.Send(acceptAnswer);
             var answerViewModel = _mapper.Map<AnswerGetViewModel>(answerModel);
-            answerViewModel.IsOwner = User.IsOwner(answerViewModel);
             return CreatedAtRoute("Get", new { questionId, answerId }, answerViewModel);
         }
     }

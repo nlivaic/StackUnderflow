@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using StackUnderflow.Common.Collections;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Models.Questions;
 using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.Common.Paging;
 
 namespace StackUnderflow.Core.Interfaces
 {
@@ -17,5 +17,6 @@ namespace StackUnderflow.Core.Interfaces
         Task<Question> GetQuestionWithAnswersAndCommentsAsync(Guid questionId);
         Task<Question> GetQuestionWithCommentsAsync(Guid questionId);
         Task<Question> GetQuestionWithTagsAsync(Guid questionId);
+        Task<Question> GetQuestionWithAnswerAsync(Guid questionId, Guid answerId);
     }
 }

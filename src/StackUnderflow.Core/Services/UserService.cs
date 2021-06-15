@@ -39,9 +39,9 @@ namespace StackUnderflow.Core.Services
             return userGetModel;
         }
 
-        public async Task<bool> IsModeratorAsync(Guid userId) =>
-            userId == default(Guid)
-                ? false
-                : await _userRepository.IsModeratorAsync(userId);
+        public async Task<bool> IsModeratorAsync(Guid? userId) =>
+            userId != null &&
+            userId != default(Guid) &&
+            await _userRepository.IsModeratorAsync(userId.Value);
     }
 }

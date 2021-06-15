@@ -1,17 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using StackUnderflow.Common.Collections;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Data.QueryableExtensions;
 using System.Linq.Dynamic.Core;
 using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.Common.Paging;
 
 namespace StackUnderflow.Data.Repositories
 {

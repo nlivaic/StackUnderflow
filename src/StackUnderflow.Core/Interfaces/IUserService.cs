@@ -8,6 +8,6 @@ namespace StackUnderflow.Core.Interfaces
     {
         Task<UserGetModel> GetUserAsync(Guid userId);
         Task<UserGetModel> CreateUserAsync(UserCreateModel user);
-        Task<bool> IsModeratorAsync(Guid userId);
+        Task<bool> IsModeratorAsync(Guid? userId);
     }
 }

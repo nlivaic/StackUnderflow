@@ -10,6 +10,7 @@ using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
 using StackUnderflow.Application.Services.Sorting;
 using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Api.Controllers
@@ -47,7 +48,7 @@ namespace StackUnderflow.Api.Controllers
         {
             var questionQueryParameters = _mapper.Map<QuestionQueryParameters>(questionSummaryResourceParameters);
             var pagedSummaries = await _questionRepository.GetQuestionSummariesAsync(questionQueryParameters);
-            var pagingHeader = new PagingDto(
+            var pagingHeader = new Paging(
                 pagedSummaries.CurrentPage,
                 pagedSummaries.TotalPages,
                 pagedSummaries.TotalItems,

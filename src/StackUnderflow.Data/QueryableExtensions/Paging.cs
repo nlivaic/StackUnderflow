@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using StackUnderflow.Common.Collections;
+using StackUnderflow.Common.Paging;
 
 namespace StackUnderflow.Data.QueryableExtensions
 {
