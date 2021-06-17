@@ -20,6 +20,8 @@ namespace StackUnderflow.Core.Models
         public int VotesSum { get; set; }
         public IEnumerable<VoteGetModel> Votes { get; set; } = new List<VoteGetModel>();
         public IEnumerable<TagGetModel> Tags { get; set; } = new List<TagGetModel>();
+        public bool IsOwner { get; set; }
+        public bool IsModerator { get; set; }
 
         public class QuestionGetModelProfile : Profile
         {

@@ -1,23 +1,22 @@
 ﻿using AutoMapper;
 using StackUnderflow.Api.Profiles;
-using StackUnderflow.Core.Models.Questions;
+using StackUnderflow.Application.Questions.Commands;
 using System;
 
 namespace StackUnderflow.Api.Models.Questions
 {
     public class QuestionGetRequest
     {
-        public Guid Id { get; set; }
+        public Guid QuestionId { get; set; }
 
         public class QuestionGetRequestProfile : Profile
         {
             public QuestionGetRequestProfile()
             {
-                CreateMap<QuestionGetRequest, QuestionFindModel>()
-                    .ForMember(dest => dest.UserId,
-                        opts => opts.MapFrom<UserIdResolver<QuestionGetRequest, QuestionFindModel>>());
+                CreateMap<QuestionGetRequest, GetQuestionQuery>()
+                    .ForMember(dest => dest.CurrentUserId,
+                        opts => opts.MapFrom<UserIdResolver<QuestionGetRequest, GetQuestionQuery>>());
             }
         }
-
     }
 }

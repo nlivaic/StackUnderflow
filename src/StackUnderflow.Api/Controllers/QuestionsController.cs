@@ -1,12 +1,14 @@
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.Models.Questions;
+using StackUnderflow.Application.Questions.Commands;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Models.Questions;
@@ -19,15 +21,18 @@ namespace StackUnderflow.Api.Controllers
     {
         private readonly IQuestionService _questionService;
         private readonly IUserService _userService;
+        private readonly ISender _sender;
         private readonly IMapper _mapper;
 
         public QuestionsController(
             IQuestionService questionService,
             IUserService userService,
+            ISender sender,
             IMapper mapper)
         {
             _questionService = questionService;
             _userService = userService;
+            _sender = sender;
             _mapper = mapper;
         }
 
@@ -37,18 +42,12 @@ namespace StackUnderflow.Api.Controllers
         /// <returns>Question data.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
-        [HttpGet("{id}", Name = "GetQuestion")]
+        [HttpGet("{questionId}", Name = "GetQuestion")]
         public async Task<ActionResult<QuestionGetViewModel>> GetAsync([FromRoute]QuestionGetRequest questionGetRequest)
         {
-            var questionFindModel = _mapper.Map<QuestionFindModel>(questionGetRequest);
-            var question = await _questionService.GetQuestionWithUserAndTagsAsync(questionFindModel);
-            if (question == null)
-            {
-                return NotFound();
-            }
+            var getQuestionQuery = _mapper.Map<GetQuestionQuery>(questionGetRequest);
+            var question = await _sender.Send(getQuestionQuery);
             var response = _mapper.Map<QuestionGetViewModel>(question);
-            response.IsOwner = User.IsOwner(response);
-            response.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
             return Ok(response);
         }
 
@@ -65,47 +64,59 @@ namespace StackUnderflow.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<QuestionGetViewModel>> PostAsync([FromBody] QuestionCreateRequest request)
         {
-            var question = _mapper.Map<QuestionCreateModel>(request);
-            question.UserId = User.UserId().Value;
-            var questionModel = await _questionService.AskQuestionAsync(question);
-            var response = _mapper.Map<QuestionGetViewModel>(questionModel);
-            response.IsOwner = true;
-            response.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
-            return CreatedAtRoute("GetQuestion", new { id = questionModel.Id }, response);
+            var createQuestionCommand = new CreateQuestionCommand
+            {
+                Title = request.Title,
+                Body = request.Body,
+                TagIds = request.TagIds,
+                CurrentUserId = User.UserId().Value
+            };
+            var question = await _sender.Send(createQuestionCommand);
+            var response = _mapper.Map<QuestionGetViewModel>(question);
+            return CreatedAtRoute("GetQuestion", new { questionId = question.Id }, response);
         }
 
         /// <summary>
         /// Edit question. Question can be edited only a certain amount of time after it was created [requires authentication].
         /// </summary>
-        /// <param name="id">Question identifier.</param>
+        /// <param name="questionId">Question identifier.</param>
         /// <param name="request">Question edit data.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Produces("application/json")]
         [Consumes("application/json")]
         [Authorize]
-        [HttpPut("{id}")]
-        public async Task<ActionResult> PutAsync([FromRoute] Guid id, [FromBody] QuestionUpdateRequest request)
+        [HttpPut("{questionId}")]
+        public async Task<ActionResult> PutAsync([FromRoute]Guid questionId, [FromBody] QuestionUpdateRequest request)
         {
-            var question = _mapper.Map<QuestionEditModel>(request);
-            question.QuestionUserId = User.UserId().Value;
-            question.QuestionId = id;
-            await _questionService.EditQuestionAsync(question);
+            var updateQuestionCommand = new UpdateQuestionCommand
+            {
+                CurrentUserId = User.UserId().Value,
+                QuestionId = questionId,
+                Title = request.Title,
+                Body = request.Body,
+                TagIds = request.TagIds
+            };
+            await _sender.Send(updateQuestionCommand);
             return NoContent();
         }
 
         /// <summary>
         /// Delete question. Question can be deleted only a certain amount of time after it was created [requires authentication].
         /// </summary>
-        /// <param name="id">Question identifier.</param>
+        /// <param name="questionId">Question identifier.</param>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [Produces("application/json")]
         [Authorize]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAsync(Guid id)
+        [HttpDelete("{questionId}")]
+        public async Task<ActionResult> DeleteAsync(Guid questionId)
         {
-            var userId = User.UserId().Value;
-            await _questionService.DeleteQuestionAsync(id, userId);
+            var deleteQuestionCommand = new DeleteQuestionCommand
+            {
+                QuestionId = questionId,
+                CurrentUserId = User.UserId().Value
+            };
+            await _sender.Send(deleteQuestionCommand);
             return NoContent();
         }
     }

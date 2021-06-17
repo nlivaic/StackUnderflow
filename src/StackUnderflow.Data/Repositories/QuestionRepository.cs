@@ -24,16 +24,16 @@ namespace StackUnderflow.Data.Repositories
             _mapper = mapper;
         }
 
-        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(QuestionFindModel questionFindModel)
+        public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid id, Guid? currentUserId)
         {
             var q = await _context
                 .Questions
-                .Where(q => q.Id == questionFindModel.Id)
+                .Where(q => q.Id == id)
                 .Include(q => q.User)
                 .ThenInclude(u => u.Roles)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)
-                .Include(q => q.Votes.Where(v => v.UserId == questionFindModel.UserId))
+                .Include(q => q.Votes.Where(v => v.UserId == currentUserId))
                 .AsNoTracking()
                 // Below line commented out because it was messing up
                 // votes - all votes would be included no matter
