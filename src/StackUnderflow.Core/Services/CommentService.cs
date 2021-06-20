@@ -14,115 +14,11 @@ namespace StackUnderflow.Core.Services
 {
     public class CommentService : ICommentService
     {
-        private readonly IQuestionRepository _questionRepository;
         private readonly ICommentRepository _commentRepository;
-        private readonly IAnswerRepository _answerRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly ICache _cache;
-        private readonly IRepository<Vote> _voteRepository;
-        private readonly IUnitOfWork _uow;
-        private readonly BaseLimits _limits;
-        private readonly IVoteable _voteable;
-        private readonly IMapper _mapper;
 
-        public CommentService(IQuestionRepository questionRepository,
-            ICommentRepository commentRepository,
-            IAnswerRepository answerRepository,
-            IUserRepository userRepository,
-            ICache cache,
-            IRepository<Vote> voteRepository,
-            IUnitOfWork unitOfWork,
-            BaseLimits limits,
-            IMapper mapper)
+        public CommentService(ICommentRepository commentRepository)
         {
-            _questionRepository = questionRepository;
-            _answerRepository = answerRepository;
             _commentRepository = commentRepository;
-            _userRepository = userRepository;
-            _cache = cache;
-            _voteRepository = voteRepository;
-            _uow = unitOfWork;
-            _limits = limits;
-            _voteable = new Voteable();
-            _mapper = mapper;
-        }
-
-        public async Task<CommentForQuestionGetModel> CommentOnQuestionAsync(CommentOnQuestionCreateModel commentModel)
-        {
-            var question = (await _questionRepository.GetQuestionWithCommentsAsync(commentModel.QuestionId))
-                ?? throw new EntityNotFoundException(nameof(Question), commentModel.QuestionId);
-            var user = await _userRepository.GetByIdAsync(commentModel.UserId);
-            var commentOrderNumber = question
-                .Comments
-                .Select(c => c.OrderNumber)
-                .OrderByDescending(c => c)
-                .FirstOrDefault() + 1;
-            var comment = Comment.Create(user, commentModel.Body, commentOrderNumber, _limits);
-            question.Comment(comment);
-            await _commentRepository.AddAsync(comment);
-            await _uow.SaveAsync();
-            return _mapper.Map<CommentForQuestionGetModel>(comment);
-        }
-
-        public async Task<CommentForAnswerGetModel> CommentOnAnswerAsync(CommentOnAnswerCreateModel commentModel)
-        {
-            var user = await _userRepository.GetByIdAsync(commentModel.UserId);
-            var answer = await _answerRepository.GetAnswerWithCommentsAsync(commentModel.QuestionId, commentModel.AnswerId);
-            if (answer == null)
-            {
-                throw new EntityNotFoundException(nameof(Answer), commentModel.AnswerId);
-            }
-            var commentOrderNumber = answer
-                .Comments
-                .Select(c => c.OrderNumber)
-                .OrderByDescending(c => c)
-                .FirstOrDefault() + 1;
-            var comment = Comment.Create(user, commentModel.Body, commentOrderNumber, _limits);
-            answer.Comment(comment);
-            await _commentRepository.AddAsync(comment);
-            await _uow.SaveAsync();
-            return _mapper.Map<CommentForAnswerGetModel>(comment);
-        }
-
-        public async Task EditAsync(CommentEditModel commentModel)
-        {
-            var comment = await GetCommentOnEditOrDeleteAsync(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
-            var user = await _userRepository.GetUser<User>(commentModel.UserId);
-            comment.Edit(user, commentModel.Body, _limits);
-            await _uow.SaveAsync();
-            // @nl: raise an event?
-        }
-
-        public async Task DeleteAsync(CommentDeleteModel commentModel)
-        {
-            var comment = await GetCommentOnEditOrDeleteAsync(commentModel.ParentQuestionId, commentModel.ParentAnswerId, commentModel.CommentId);
-            var votesSum = await _voteRepository.CountAsync(v => v.CommentId == commentModel.CommentId);
-            if (votesSum > 0)
-            {
-                throw new BusinessException($"Cannot delete comment '{commentModel.CommentId}' because associated votes exist.");
-            }
-            _commentRepository.Delete(comment);
-            await _uow.SaveAsync();
-        }
-
-        private async Task<Comment> GetCommentOnEditOrDeleteAsync(Guid? parentQuestionId, Guid? parentAnswerId, Guid commentId)
-        {
-            Comment comment = null;
-            if (parentAnswerId.HasValue)
-            {
-                comment = await _commentRepository.GetCommentWithAnswerAsync(commentId);
-                if (comment == null
-                    || comment.ParentAnswerId != parentAnswerId
-                    || comment.ParentAnswer.QuestionId != parentQuestionId)
-                    throw new EntityNotFoundException(nameof(Comment), commentId);
-            }
-            else if (parentQuestionId.HasValue)
-            {
-                comment = await _commentRepository.GetCommentWithQuestionAsync(commentId);
-                if (comment == null || comment.ParentQuestionId != parentQuestionId)
-                    throw new EntityNotFoundException(nameof(Comment), commentId);
-            }
-            return comment;
         }
 
         public async Task DeleteRangeAsync(CommentsDeleteModel commentModel)

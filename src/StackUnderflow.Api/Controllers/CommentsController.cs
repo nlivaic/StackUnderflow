@@ -6,35 +6,24 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.Helpers;
-using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 using Microsoft.AspNetCore.Authorization;
+using StackUnderflow.Application.Comments.Queries;
+using MediatR;
+using StackUnderflow.Application.Comments.Commands;
 
 namespace StackUnderflow.Api.Controllers
 {
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly ICommentRepository _commentRepository;
-        private readonly IQuestionRepository _questionRepository;
-        private readonly IAnswerRepository _answerRepository;
-        private readonly ICommentService _commentService;
-        private readonly IUserService _userService;
+        private readonly ISender _sender;
         private readonly IMapper _mapper;
 
         public CommentsController(
-            ICommentRepository commentRepository,
-            IQuestionRepository questionRepository,
-            IAnswerRepository answerRepository,
-            ICommentService commentService,
-            IUserService userService,
+            ISender sender,
             IMapper mapper)
         {
-            _commentRepository = commentRepository;
-            _questionRepository = questionRepository;
-            _answerRepository = answerRepository;
-            _commentService = commentService;
-            _userService = userService;
+            _sender = sender;
             _mapper = mapper;
         }
 
@@ -48,17 +37,12 @@ namespace StackUnderflow.Api.Controllers
         [HttpGet("api/questions/{questionId}/[controller]")]
         public async Task<ActionResult<IEnumerable<CommentForQuestionGetViewModel>>> GetCommentsForQuestionAsync([FromRoute] Guid questionId)
         {
-            if (!(await _questionRepository.ExistsAsync(questionId)))
+            var comments = await _sender.Send(new GetCommentsForQuestionQuery
             {
-                return NotFound();
-            }
-            var comments = await _commentRepository.GetCommentsForQuestionAsync<CommentForQuestionGetModel>(questionId);
-            List<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comments);
-            result.ForEach(async (comment) =>
-            {
-                comment.IsOwner = User.IsOwner(comment);
-                comment.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
+                QuestionId = questionId,
+                CurrentUserId = User.UserId()
             });
+            List<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comments);
             return Ok(result);
         }
 
@@ -73,14 +57,13 @@ namespace StackUnderflow.Api.Controllers
         [HttpGet("api/questions/{questionId}/[controller]/{commentId}", Name = "GetCommentForQuestion")]
         public async Task<ActionResult<CommentForQuestionGetViewModel>> GetCommentForQuestionAsync([FromRoute] Guid questionId, [FromRoute] Guid commentId)
         {
-            var comment = await _commentRepository.GetCommentModelAsync(questionId, commentId);
-            if (comment == null)
+            var comment = await _sender.Send(new GetCommentForQuestionQuery
             {
-                return NotFound();
-            }
+                QuestionId = questionId,
+                CommentId = commentId,
+                CurrentUserId = User.UserId()
+            });
             CommentForQuestionGetViewModel result = _mapper.Map<CommentForQuestionGetViewModel>(comment);
-            result.IsOwner = User.IsOwner(result);
-            result.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
             return Ok(result);
         }
 
@@ -97,17 +80,13 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromRoute][ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<Guid> answerIds)
         {
-            if (!(await _questionRepository.ExistsAsync(questionId)) || !(await _answerRepository.ExistsAsync(answerIds)))
+            var comments = await _sender.Send(new GetCommentsForAnswersQuery
             {
-                return NotFound();
-            }
-            var comments = await _commentRepository.GetCommentsForAnswersAsync(answerIds);
-            var result = _mapper.Map<List<CommentForAnswerGetViewModel>>(comments);
-            result.ForEach(async (comment) =>
-            {
-                comment.IsOwner = User.IsOwner(comment);
-                comment.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
+                QuestionId = questionId,
+                AnswerIds = answerIds,
+                CurrentUserId = User.UserId()
             });
+            var result = _mapper.Map<List<CommentForAnswerGetViewModel>>(comments);
             return Ok(result);
         }
 
@@ -126,12 +105,14 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid answerId,
             [FromRoute] Guid commentId)
         {
-            var comment = await _commentRepository.GetCommentForAnswerAsync(answerId, commentId);
-            if (comment == null || comment.QuestionId != questionId)
-                return NotFound();
+            var comment = await _sender.Send(new GetCommentForAnswerQuery
+            {
+                QuestionId = questionId,
+                AnswerId = answerId,
+                CommentId = commentId,
+                CurrentUserId = User.UserId()
+            });
             var result = _mapper.Map<CommentForAnswerGetViewModel>(comment);
-            result.IsOwner = User.IsOwner(result);
-            result.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
             return Ok(result);
         }
 
@@ -149,14 +130,15 @@ namespace StackUnderflow.Api.Controllers
         [HttpPost("/api/questions/{questionId}/[controller]")]
         public async Task<ActionResult<CommentForQuestionGetViewModel>> PostOnQuestionAsync([FromRoute] Guid questionId, [FromBody] CommentCreateRequest request)
         {
-            var comment = _mapper.Map<CommentOnQuestionCreateModel>(request);
-            comment.QuestionId = questionId;
-            comment.UserId = User.UserId().Value;
-            var newCommentModel = await _commentService.CommentOnQuestionAsync(comment);
-            var result = _mapper.Map<CommentForQuestionGetViewModel>(newCommentModel);
-            result.IsOwner = User.IsOwner(result);
-            result.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
-            return CreatedAtRoute("GetCommentForQuestion", new { questionId = questionId, commentId = newCommentModel.Id }, result);
+            var createCommentOnQuestionCommand = new CreateCommentOnQuestionCommand
+            {
+                QuestionId = questionId,
+                Body = request.Body,
+                CurrentUserId = User.UserId().Value
+            };
+            var comment = await _sender.Send(createCommentOnQuestionCommand);
+            var result = _mapper.Map<CommentForQuestionGetViewModel>(comment);
+            return CreatedAtRoute("GetCommentForQuestion", new { questionId = questionId, commentId = comment.Id }, result);
         }
 
         /// <summary>
@@ -177,14 +159,15 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid answerId,
             [FromBody] CommentCreateRequest request)
         {
-            var comment = _mapper.Map<CommentOnAnswerCreateModel>(request);
-            comment.QuestionId = questionId;
-            comment.AnswerId = answerId;
-            comment.UserId = User.UserId().Value;
-            var newCommentModel = await _commentService.CommentOnAnswerAsync(comment);
+            var createCommentOnAnswerCommand = new CreateCommentOnAnswerCommand
+            {
+                QuestionId = questionId,
+                AnswerId = answerId,
+                Body = request.Body,
+                CurrentUserId = User.UserId().Value
+            };
+            var newCommentModel = await _sender.Send(createCommentOnAnswerCommand);
             var result = _mapper.Map<CommentForAnswerGetViewModel>(newCommentModel);
-            result.IsOwner = User.IsOwner(result);
-            result.IsModerator = User.Identity.IsAuthenticated && await _userService.IsModeratorAsync(User.UserId().Value);
             return CreatedAtRoute("GetCommentForAnswer", new { questionId, answerId, commentId = result.Id }, result);
         }
 
@@ -205,11 +188,14 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid commentId,
             [FromBody] UpdateCommentRequest request)
         {
-            var comment = _mapper.Map<CommentEditModel>(request);
-            comment.ParentQuestionId = questionId;
-            comment.UserId = User.UserId().Value;
-            comment.CommentId = commentId;
-            await _commentService.EditAsync(comment);
+            var updateCommentOnQuestionCommand = new UpdateCommentOnQuestionCommand
+            {
+                ParentQuestionId = questionId,
+                CommentId = commentId,
+                CurrentUserId = User.UserId().Value,
+                Body = request.Body
+            };
+            await _sender.Send(updateCommentOnQuestionCommand);
             return NoContent();
         }
 
@@ -232,12 +218,15 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid commentId,
             [FromBody] UpdateCommentRequest request)
         {
-            var comment = _mapper.Map<CommentEditModel>(request);
-            comment.ParentQuestionId = questionId;
-            comment.ParentAnswerId = answerId;
-            comment.CommentId = commentId;
-            comment.UserId = User.UserId().Value;
-            await _commentService.EditAsync(comment);
+            var updateCommentOnAnswerCommand = new UpdateCommentOnAnswerCommand
+            {
+                ParentQuestionId = questionId,
+                ParentAnswerId = answerId,
+                CurrentUserId = User.UserId().Value,
+                CommentId = commentId,
+                Body = request.Body
+            };
+            await _sender.Send(updateCommentOnAnswerCommand);
             return NoContent();
         }
 
@@ -255,7 +244,13 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid questionId,
             [FromRoute] Guid commentId)
         {
-            await _commentService.DeleteAsync(new CommentDeleteModel { CommentId = commentId, ParentQuestionId = questionId });
+            var deleteCommentOnQuestionCommand = new DeleteCommentOnQuestionCommand
+            {
+                ParentQuestionId = questionId,
+                CommentId = commentId,
+                CurrentUserId = User.UserId().Value
+            };
+            await _sender.Send(deleteCommentOnQuestionCommand);
             return NoContent();
         }
 
@@ -275,13 +270,14 @@ namespace StackUnderflow.Api.Controllers
             [FromRoute] Guid answerId,
             [FromRoute] Guid commentId)
         {
-            var comment = new CommentDeleteModel
+            var deleteCommentOnAnswerCommand = new DeleteCommentOnAnswerCommand
             {
                 ParentQuestionId = questionId,
                 ParentAnswerId = answerId,
-                CommentId = commentId
+                CommentId = commentId,
+                CurrentUserId = User.UserId().Value
             };
-            await _commentService.DeleteAsync(comment);
+            await _sender.Send(deleteCommentOnAnswerCommand);
             return NoContent();
         }
     }

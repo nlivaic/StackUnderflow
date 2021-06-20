@@ -93,5 +93,18 @@ namespace StackUnderflow.Core.Entities
 
         public bool CanBeEditedBy(User editingUser) =>
             _owneable.CanBeEditedBy(editingUser);
+
+        public bool IsDeleteable(int votesSum, User deletingUser)
+        {
+            if (UserId != deletingUser.Id)
+            {
+                throw new BusinessException($"Only comment owner can delete a comment.");
+            }
+            if (votesSum > 0)
+            {
+                throw new BusinessException($"Cannot delete comment '{Id}' because associated votes exist.");
+            }
+            return true;
+        }
     }
 }
