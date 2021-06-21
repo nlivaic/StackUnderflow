@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using StackUnderflow.Api.Profiles;
-using StackUnderflow.Core.Models;
+using StackUnderflow.Application.Votes.Commands;
 using System;
 
 namespace StackUnderflow.Api.Models.Votes
@@ -13,9 +13,9 @@ namespace StackUnderflow.Api.Models.Votes
         {
             public VoteDeleteRequestProfile()
             {
-                CreateMap<VoteDeleteRequest, VoteRevokeModel>()
-                    .ForMember(dest => dest.UserId,
-                        opts => opts.MapFrom<UserIdLoggedInResolver<VoteDeleteRequest, VoteRevokeModel>>());
+                CreateMap<VoteDeleteRequest, RevokeVoteCommand>()
+                    .ForMember(dest => dest.CurrentUserId,
+                        opts => opts.MapFrom<UserIdLoggedInResolver<VoteDeleteRequest, RevokeVoteCommand>>());
             }
         }
     }

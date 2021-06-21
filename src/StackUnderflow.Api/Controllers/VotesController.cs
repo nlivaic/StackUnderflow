@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Models.Votes;
+using StackUnderflow.Application.Votes.Commands;
+using StackUnderflow.Application.Votes.Queries;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
@@ -15,16 +18,16 @@ namespace StackUnderflow.Api.Controllers
     [Route("api/[controller]")]
     public class VotesController : ControllerBase
     {
-        private readonly IVoteService _voteService;
+        private readonly ISender _sender;
         private readonly IRegisteredEventPublisher _eventPublisher;
         private readonly IMapper _mapper;
 
         public VotesController(
-            IVoteService voteService,
+            ISender sender,
             IRegisteredEventPublisher eventPublisher,
             IMapper mapper)
         {
-            _voteService = voteService;
+            _sender = sender;
             _eventPublisher = eventPublisher;
             _mapper = mapper;
         }
@@ -38,11 +41,11 @@ namespace StackUnderflow.Api.Controllers
         [HttpGet(Name = "GetVote")]
         public async Task<ActionResult<VoteGetViewModel>> GetVoteAsync([FromRoute] Guid voteId)
         {
-            var vote = await _voteService.GetVoteAsync(voteId);
-            if (vote != null)
+            var getVoteQuery = new GetVoteQuery
             {
-                return NotFound();
-            }
+                VoteId = voteId
+            };
+            var vote = await _sender.Send(getVoteQuery);
             var voteModel = _mapper.Map<VoteGetViewModel>(vote);
             return Ok(voteModel);
         }
@@ -55,8 +58,8 @@ namespace StackUnderflow.Api.Controllers
         [Authorize]
         public async Task<ActionResult<VoteGetViewModel>> PostAsync([FromBody]VoteCreateRequest model)
         {
-            var voteCreateModel = _mapper.Map<VoteCreateModel>(model);
-            var vote = await _voteService.CastVoteAsync(voteCreateModel);
+            var castVoteCommand = _mapper.Map<CastVoteCommand>(model);
+            var vote = await _sender.Send(castVoteCommand);
             await _eventPublisher.PublishAll();
             var voteResponseModel = _mapper.Map<VoteGetViewModel>(vote);
             return CreatedAtRoute("GetVote", new { voteId = vote.Id }, voteResponseModel);
@@ -67,8 +70,8 @@ namespace StackUnderflow.Api.Controllers
         [Authorize]
         public async Task<ActionResult> DeleteAsync([FromRoute]VoteDeleteRequest voteDeleteRequest)
         {
-            var voteRevokeModel = _mapper.Map<VoteRevokeModel>(voteDeleteRequest);
-            await _voteService.RevokeVoteAsync(voteRevokeModel);
+            var revokeVoteCommand = _mapper.Map<RevokeVoteCommand>(voteDeleteRequest);
+            await _sender.Send(revokeVoteCommand);
             return NoContent();
         }
     }
