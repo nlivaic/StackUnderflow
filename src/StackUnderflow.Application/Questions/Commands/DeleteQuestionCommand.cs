@@ -18,18 +18,18 @@ namespace StackUnderflow.Application.Questions.Commands
         {
             private readonly IQuestionRepository _questionRepository;
             private readonly IVoteRepository _voteRepository;
-            private readonly IQuestionService _questionService;
+            private readonly IRepository<Comment> _commentRepository;
             private readonly IUnitOfWork _uow;
 
             public DeleteQuestionCommandHandler(
                 IQuestionRepository questionRepository,
                 IVoteRepository voteRepository,
-                IQuestionService questionService,
+                IRepository<Comment> commentRepository,
                 IUnitOfWork uow)
             {
                 _questionRepository = questionRepository;
                 _voteRepository = voteRepository;
-                _questionService = questionService;
+                _commentRepository = commentRepository;
                 _uow = uow;
             }
 
@@ -42,7 +42,8 @@ namespace StackUnderflow.Application.Questions.Commands
                     throw new EntityNotFoundException(nameof(Question), request.QuestionId);
                 }
                 var votesSum = await _voteRepository.CountAsync(v => v.QuestionId == request.QuestionId);
-                await _questionService.DeleteQuestionAsync(question, votesSum);
+                question.IsDeleteable();
+                _commentRepository.Delete(question.Comments);
                 _questionRepository.Delete(question);
                 await _uow.SaveAsync();
                 return Unit.Value;

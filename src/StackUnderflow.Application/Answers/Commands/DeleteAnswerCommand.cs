@@ -17,36 +17,34 @@ namespace StackUnderflow.Application.Answers.Commands
 
         class DeleteAnswerCommandHandler : IRequestHandler<DeleteAnswerCommand, Unit>
         {
-            private readonly IRepository<Answer> _answerRepository;
+            private readonly IAnswerRepository _answerRepository;
             private readonly IRepository<Vote> _voteRepository;
-            private readonly IAnswerService _answerService;
+            private readonly IRepository<Comment> _commentRepository;
             private readonly IUnitOfWork _uow;
 
             public DeleteAnswerCommandHandler(
-                IRepository<Answer> answerRepository,
+                IAnswerRepository answerRepository,
                 IRepository<Vote> voteRepository,
-                IAnswerService answerService,
+                IRepository<Comment> commentRepository,
                 IUnitOfWork uow)
             {
                 _answerRepository = answerRepository;
                 _voteRepository = voteRepository;
-                _answerService = answerService;
+                _commentRepository = commentRepository;
                 _uow = uow;
             }
 
             public async Task<Unit> Handle(DeleteAnswerCommand request, CancellationToken cancellationToken)
             {
-                var answer = (await
+                var answer = await
                     _answerRepository
-                        .GetSingleAsync(a =>
-                            a.UserId == request.CurrentUserId
-                            && a.Id == request.AnswerId
-                            && a.QuestionId == request.QuestionId))
+                        .GetAnswerWithCommentsAndVotesAsync(request.QuestionId, request.AnswerId)
                     ?? throw new EntityNotFoundException(nameof(Answer), request.AnswerId);
                 var votesSum = await
                     _voteRepository
                     .CountAsync(v => v.AnswerId == request.AnswerId);
-                await _answerService.DeleteAnswerAsync(answer, votesSum);
+                answer.IsDeleteable();
+                _commentRepository.Delete(answer.Comments);
                 _answerRepository.Delete(answer);
                 await _uow.SaveAsync();
                 return Unit.Value;

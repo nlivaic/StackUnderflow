@@ -19,21 +19,15 @@ namespace StackUnderflow.Api.Controllers
     [Route("api/[controller]")]
     public class QuestionSummariesController : ControllerBase
     {
-        private readonly IQuestionService _questionService;
         private readonly IQuestionRepository _questionRepository;
         private readonly IMapper _mapper;
-        private readonly IPropertyMappingService _propertyMappingService;
 
         public QuestionSummariesController(
-            IQuestionService questionService,
             IQuestionRepository questionRepository,
-            IMapper mapper,
-            IPropertyMappingService propertyMappingService)
+            IMapper mapper)
         {
-            _questionService = questionService;
             _questionRepository = questionRepository;
             _mapper = mapper;
-            _propertyMappingService = propertyMappingService;
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StackUnderflow.Core.Entities
 {
@@ -109,15 +110,19 @@ namespace StackUnderflow.Core.Entities
         public bool CanBeEditedBy(User editingUser) =>
             _owneable.CanBeEditedBy(editingUser);
 
-        public bool IsDeleteable(int votesSum)
+        public bool IsDeleteable()
         {
             if (IsAcceptedAnswer)
             {
                 throw new BusinessException($"Answer with id '{Id}' has been accepted on '{AcceptedOn}'.");
             }
-            if (votesSum > 0)
+            if (Votes.Any())
             {
                 throw new BusinessException($"Cannot delete answer '{Id}' because associated votes exist.");
+            }
+            if (Comments.SelectMany(c => c.Votes).Any())
+            {
+                throw new BusinessException($"Cannot delete because associated votes exist on at least one comment.");
             }
             return true;
         }

@@ -9,6 +9,5 @@ namespace StackUnderflow.Application
         {
             services.AddMediatR(typeof(ServiceCollectionExtensions).Assembly);
         }
-
     }
 }

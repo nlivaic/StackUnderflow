@@ -9,9 +9,6 @@ using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.Models.Questions;
 using StackUnderflow.Application.Questions.Commands;
-using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
-using StackUnderflow.Core.Models.Questions;
 
 namespace StackUnderflow.Api.Controllers
 {
@@ -19,19 +16,13 @@ namespace StackUnderflow.Api.Controllers
     [Route("api/[controller]")]
     public class QuestionsController : ControllerBase
     {
-        private readonly IQuestionService _questionService;
-        private readonly IUserService _userService;
         private readonly ISender _sender;
         private readonly IMapper _mapper;
 
         public QuestionsController(
-            IQuestionService questionService,
-            IUserService userService,
             ISender sender,
             IMapper mapper)
         {
-            _questionService = questionService;
-            _userService = userService;
             _sender = sender;
             _mapper = mapper;
         }

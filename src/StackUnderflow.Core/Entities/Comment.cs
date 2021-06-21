@@ -3,6 +3,7 @@ using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StackUnderflow.Core.Entities
 {
@@ -101,6 +102,15 @@ namespace StackUnderflow.Core.Entities
                 throw new BusinessException($"Only comment owner can delete a comment.");
             }
             if (votesSum > 0)
+            {
+                throw new BusinessException($"Cannot delete comment '{Id}' because associated votes exist.");
+            }
+            return true;
+        }
+
+        public bool IsDeleteable()
+        {
+            if (Votes.Any())
             {
                 throw new BusinessException($"Cannot delete comment '{Id}' because associated votes exist.");
             }

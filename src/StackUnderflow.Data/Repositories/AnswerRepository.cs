@@ -56,5 +56,14 @@ namespace StackUnderflow.Data.Repositories
                 .Include(q => q.Comments)
                 .Where(a => a.Id == answerId && a.QuestionId == questionId)
                 .SingleOrDefaultAsync();
+
+        public async Task<Answer> GetAnswerWithCommentsAndVotesAsync(Guid questionId, Guid answerId) =>
+            await _context
+                .Answers
+                .Include(a => a.Votes.Take(1))
+                .Include(q => q.Comments)
+                .ThenInclude(c => c.Votes.Take(1))
+                .Where(a => a.Id == answerId && a.QuestionId == questionId)
+                .SingleOrDefaultAsync();
     }
 }
