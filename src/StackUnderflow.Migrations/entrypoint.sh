@@ -1,1 +1,1 @@
-﻿./wait-for-it.sh stackunderflow.sql:5432 --timeout=0 --strict -- sleep 5s && dotnet ./StackUnderflow.Migrations.dll
+./src/wait-for-it.sh stackunderflow.sql:5432 --timeout=0 --strict -- sleep 5s && dotnet ./StackUnderflow.Migrations.dll
