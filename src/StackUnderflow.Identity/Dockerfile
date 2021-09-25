@@ -21,4 +21,5 @@ RUN dotnet publish "StackUnderflow.Identity.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "StackUnderflow.Identity.dll"]
+COPY ["src/StackUnderflow.Identity/entrypoint.sh", "src/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "src/entrypoint.sh"]
