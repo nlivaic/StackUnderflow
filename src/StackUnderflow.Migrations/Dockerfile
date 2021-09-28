@@ -17,4 +17,6 @@ RUN dotnet publish "StackUnderflow.Migrations.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-CMD ["/bin/bash", "entrypoint.sh"]
+COPY ["src/StackUnderflow.Migrations/entrypoint.sh", "src/entrypoint.sh"]
+COPY ["src/StackUnderflow.Migrations/wait-for-it.sh", "src/wait-for-it.sh"]
+CMD ["/bin/bash", "src/entrypoint.sh"]

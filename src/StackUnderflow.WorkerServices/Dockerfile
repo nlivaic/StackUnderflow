@@ -19,4 +19,6 @@ RUN dotnet publish "StackUnderflow.WorkerServices.csproj" -c Release -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-CMD ["/bin/bash", "entrypoint.sh"]
+COPY ["src/StackUnderflow.WorkerServices/entrypoint.sh", "src/entrypoint.sh"]
+COPY ["src/StackUnderflow.WorkerServices/wait-for-it.sh", "src/wait-for-it.sh"]
+CMD ["/bin/bash", "src/entrypoint.sh"]
