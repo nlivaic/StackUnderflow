@@ -26,8 +26,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:7000
-    ports:
-      - "7000:7000"
+    #ports:
+    #  - "7000:7000"
     env_file: .env
     image: ${DOCKER_REGISTRY-}stackunderflowidentity
     build:
@@ -44,8 +44,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5000
     env_file: .env
-    ports:
-      - "5000:5000"
+    #ports:
+    #  - "5000:5000"
     build:
       context: .
       dockerfile: src/StackUnderflow.Api/Dockerfile
