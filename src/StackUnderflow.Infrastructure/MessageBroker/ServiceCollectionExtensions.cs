@@ -1,7 +1,7 @@
 ﻿using MassTransit;
+using MassTransit.Topology;
 using Microsoft.Extensions.DependencyInjection;
 using StackUnderflow.Common.Interfaces;
-using StackUnderflow.Core.Events;
 
 namespace StackUnderflow.Infrastructure.MessageBroker
 {
@@ -11,10 +11,11 @@ namespace StackUnderflow.Infrastructure.MessageBroker
         {
             services.AddMassTransit(x =>
             {
-                x.UsingAzureServiceBus((ctx, cfg) =>
+                x.SetKebabCaseEndpointNameFormatter();
+                x.UsingAzureServiceBus((_, cfg) =>
                 {
                     cfg.Host(connectionString);
-                    cfg.Message<VoteCast>(c => c.SetEntityName("vote-cast"));
+
                 });
             });
             services.AddMassTransitHostedService();

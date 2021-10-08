@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 
 namespace StackUnderflow.WorkerServices.PointService
 {
-    class VoteConsumer : IConsumer<VoteCast>
+    class VoteCastConsumer : IConsumer<VoteCast>
     {
         private readonly IPointService _pointService;
 
-        public VoteConsumer(IPointService pointService)
+        public VoteCastConsumer(IPointService pointService)
         {
             _pointService = pointService;
         }
 
         public async Task Consume(ConsumeContext<VoteCast> context) =>
-            await _pointService.CalculateAsync(context.Message.UserId, context.Message.VoteType);
+            throw new System.Exception("foofoofoo");
+            //await _pointService.CalculateAsync(context.Message.UserId, context.Message.VoteType);
     }
 }

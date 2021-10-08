@@ -1,4 +1,5 @@
 using MassTransit;
+using MassTransit.Topology;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,14 +43,15 @@ namespace StackUnderflow.WorkerServices
 
                     services.AddMassTransit(x =>
                     {
-                        x.AddConsumer<VoteConsumer>().Endpoint(cfg =>
-                        {
-                            cfg.Name = "point-service";
-                        });
+                        x.SetKebabCaseEndpointNameFormatter();
+                        x.AddConsumer<VoteCastConsumer>();
                         x.UsingAzureServiceBus((ctx, cfg) =>
                         {
                             cfg.Host(configuration["CONNECTIONSTRINGS:MESSAGEBROKER:READ"]);
-                            cfg.Message<VoteCast>(c => c.SetEntityName("vote-cast"));
+                            cfg.SubscriptionEndpoint<VoteCast>("vote-cast-consumer", e =>
+                            {
+                                e.ConfigureConsumer<VoteCastConsumer>(ctx);
+                            });
                             cfg.ConfigureEndpoints(ctx);
                         });
                     });

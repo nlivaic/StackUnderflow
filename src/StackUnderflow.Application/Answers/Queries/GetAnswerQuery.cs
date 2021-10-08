@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
@@ -15,7 +14,6 @@ namespace StackUnderflow.Application.Answers.Queries
         public Guid QuestionId { get; set; }
         public Guid AnswerId { get; set; }
         public Guid? CurrentUserId { get; set; }
-
 
         class GetAnswerQueryHandler : IRequestHandler<GetAnswerQuery, AnswerGetModel>
         {
