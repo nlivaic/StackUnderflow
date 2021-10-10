@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Services;
 
 namespace StackUnderflow.Core
 {
@@ -10,7 +9,6 @@ namespace StackUnderflow.Core
         public static void AddCoreServices(this IServiceCollection services)
         {
             services.AddScoped<BaseLimits, Limits>();
-            services.AddScoped<IPointService, PointService>();
         }
     }
 }

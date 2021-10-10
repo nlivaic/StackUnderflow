@@ -17,6 +17,7 @@ namespace StackUnderflow.Application
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILimitsService, LimitsService>();
             services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IPointService, PointService>();
         }
     }
 }

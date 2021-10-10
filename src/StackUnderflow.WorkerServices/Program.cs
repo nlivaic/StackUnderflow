@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StackUnderflow.Application;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core;
 using StackUnderflow.Core.Entities;
@@ -73,6 +74,7 @@ namespace StackUnderflow.WorkerServices
                         });
                     });
                     services.AddMassTransitHostedService();
+                    services.AddStackUnderflowApplicationHandlers();
                 });
     }
 }

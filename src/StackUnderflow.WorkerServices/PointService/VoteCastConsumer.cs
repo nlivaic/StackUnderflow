@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using StackUnderflow.Application.Services;
 using StackUnderflow.Core.Events;
 using StackUnderflow.Core.Interfaces;
 using System.Threading.Tasks;
