@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StackUnderflow.Application.Tags;
 using StackUnderflow.Application.Users;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;

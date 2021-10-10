@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
-using StackUnderflow.Core.Interfaces;
 
-namespace StackUnderflow.Core.Services
+namespace StackUnderflow.Application.Tags
 {
     public class TagService : ITagService
     {

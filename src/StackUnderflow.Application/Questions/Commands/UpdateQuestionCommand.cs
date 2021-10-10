@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using StackUnderflow.Application.Tags;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;

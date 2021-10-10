@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using StackUnderflow.Application.Services;
+using StackUnderflow.Application.Tags;
 using StackUnderflow.Application.Users;
 using StackUnderflow.Application.Votes;
 using StackUnderflow.Core.Interfaces;
@@ -15,6 +16,7 @@ namespace StackUnderflow.Application
             services.AddScoped<IVoteService, VoteService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILimitsService, LimitsService>();
+            services.AddScoped<ITagService, TagService>();
         }
     }
 }

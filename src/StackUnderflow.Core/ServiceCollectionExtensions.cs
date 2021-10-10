@@ -10,7 +10,6 @@ namespace StackUnderflow.Core
         public static void AddCoreServices(this IServiceCollection services)
         {
             services.AddScoped<BaseLimits, Limits>();
-            services.AddScoped<ITagService, TagService>();
             services.AddScoped<IPointService, PointService>();
         }
     }
