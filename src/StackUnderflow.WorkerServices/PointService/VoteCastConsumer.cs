@@ -14,8 +14,11 @@ namespace StackUnderflow.WorkerServices.PointService
             _pointService = pointService;
         }
 
+        /// <summary>
+        /// Make this method throw if you want to see MassTransit error handling.
+        /// in action.
+        /// </summary>
         public async Task Consume(ConsumeContext<VoteCast> context) =>
-            throw new System.Exception("foofoofoo");
-            //await _pointService.CalculateAsync(context.Message.UserId, context.Message.VoteType);
+            await _pointService.CalculateAsync(context.Message.UserId, context.Message.VoteType);
     }
 }

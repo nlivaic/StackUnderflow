@@ -2,6 +2,7 @@
 using MassTransit.Topology;
 using Microsoft.Extensions.DependencyInjection;
 using StackUnderflow.Common.Interfaces;
+using StackUnderflow.Core.Events;
 
 namespace StackUnderflow.Infrastructure.MessageBroker
 {
@@ -12,10 +13,12 @@ namespace StackUnderflow.Infrastructure.MessageBroker
             services.AddMassTransit(x =>
             {
                 x.SetKebabCaseEndpointNameFormatter();
-                x.UsingAzureServiceBus((_, cfg) =>
+                x.UsingAzureServiceBus((ctx, cfg) =>
                 {
                     cfg.Host(connectionString);
-
+                    // Use the below line if you are not going with SetKebabCaseEndpointNameFormatter() above.
+                    // Remember to configure the subscription endpoint accordingly (see WorkerServices Program.cs).
+                    //cfg.Message<VoteCast>(configTopology => configTopology.SetEntityName("vote-cast-topic"));
                 });
             });
             services.AddMassTransitHostedService();
