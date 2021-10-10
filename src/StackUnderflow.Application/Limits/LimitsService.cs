@@ -3,7 +3,7 @@ using StackUnderflow.Core.Interfaces;
 using System.Threading.Tasks;
 using StackUnderflow.Common.Interfaces;
 
-namespace StackUnderflow.Core.Services
+namespace StackUnderflow.Application.Services
 {
     public class LimitsService : ILimitsService
     {
