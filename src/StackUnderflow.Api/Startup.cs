@@ -32,6 +32,8 @@ using StackUnderflow.Core.Entities;
 using System.Collections.Generic;
 using StackUnderflow.Application.Services.Sorting;
 using StackUnderflow.Application;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace StackUnderflow.Api
 {
@@ -168,6 +170,8 @@ namespace StackUnderflow.Api
             services.AddAuthorization();
             services.AddApiEventPublisher(_configuration["CONNECTIONSTRINGS:MESSAGEBROKER:WRITE"]);
             services.AddStackUnderflowApplicationHandlers();
+
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -209,6 +213,7 @@ namespace StackUnderflow.Api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
 
