@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using StackUnderflow.Application.Users;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;

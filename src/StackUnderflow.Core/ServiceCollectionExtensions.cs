@@ -12,7 +12,6 @@ namespace StackUnderflow.Core
             services.AddScoped<BaseLimits, Limits>();
             services.AddScoped<ILimitsService, LimitsService>();
             services.AddScoped<ITagService, TagService>();
-            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPointService, PointService>();
         }
     }

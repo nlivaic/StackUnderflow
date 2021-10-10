@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using StackUnderflow.Application.Users;
 using StackUnderflow.Application.Votes;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;

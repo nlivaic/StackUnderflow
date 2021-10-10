@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using StackUnderflow.Application.Users;
 using StackUnderflow.Application.Votes;
 
 namespace StackUnderflow.Application
@@ -10,6 +11,7 @@ namespace StackUnderflow.Application
         {
             services.AddMediatR(typeof(ServiceCollectionExtensions).Assembly);
             services.AddScoped<IVoteService, VoteService>();
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }

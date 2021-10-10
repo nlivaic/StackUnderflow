@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
+using StackUnderflow.Application.Users;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using System.Linq;

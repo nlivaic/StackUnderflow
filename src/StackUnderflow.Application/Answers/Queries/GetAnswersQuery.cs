@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.Application.Users;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Entities;
