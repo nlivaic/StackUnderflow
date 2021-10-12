@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.Models.Questions;
-using StackUnderflow.Application.Questions.Commands;
+using StackUnderflow.WorkerServices.Questions.Commands;
 
 namespace StackUnderflow.Api.Controllers
 {

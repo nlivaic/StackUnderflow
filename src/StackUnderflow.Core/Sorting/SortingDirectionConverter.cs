@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel;
-using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 using StackUnderflow.Common.Extensions;
 
-namespace StackUnderflow.Application.Services.Sorting
+namespace StackUnderflow.WorkerServices.PointServices.Sorting
 {
     public class SortingDirectionConverter : TypeConverter
     {

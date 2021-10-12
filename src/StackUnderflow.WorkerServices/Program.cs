@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using StackUnderflow.Application;
+using StackUnderflow.WorkerServices;
+using StackUnderflow.WorkerServices.PointServices;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core;
 using StackUnderflow.Core.Entities;
@@ -35,6 +36,7 @@ namespace StackUnderflow.WorkerServices
                         if (hostEnvironment.IsDevelopment())
                             options.EnableSensitiveDataLogging(true);
                     });
+                    services.AddScoped<IPointService, PointServices.PointService>();
                     services.AddGenericRepository();
                     services.AddSpecificRepositories();
                     services.AddCoreServices();

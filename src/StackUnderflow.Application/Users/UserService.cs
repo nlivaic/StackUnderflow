@@ -6,7 +6,7 @@ using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 
-namespace StackUnderflow.Application.Users
+namespace StackUnderflow.WorkerServices.Users
 {
     public class UserService : IUserService
     {

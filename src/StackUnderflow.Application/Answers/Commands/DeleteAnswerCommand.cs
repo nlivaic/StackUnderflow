@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Answers.Commands
+namespace StackUnderflow.WorkerServices.Answers.Commands
 {
     public class DeleteAnswerCommand : IRequest<Unit>
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace StackUnderflow.Application.Services.Sorting.Models
+namespace StackUnderflow.WorkerServices.PointServices.Sorting.Models
 {
     public class QuestionQueryParameters : ISortable
     {

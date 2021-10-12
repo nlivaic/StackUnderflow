@@ -3,7 +3,7 @@ using StackUnderflow.Core.Interfaces;
 using System;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Services
+namespace StackUnderflow.WorkerServices.PointServices
 {
     public class PointService : IPointService
     {

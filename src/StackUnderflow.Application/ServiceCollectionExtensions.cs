@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using StackUnderflow.Application.Services;
-using StackUnderflow.Application.Tags;
-using StackUnderflow.Application.Users;
-using StackUnderflow.Application.Votes;
+using StackUnderflow.WorkerServices.PointServices;
+using StackUnderflow.WorkerServices.Tags;
+using StackUnderflow.WorkerServices.Users;
+using StackUnderflow.WorkerServices.Votes;
 using StackUnderflow.Core.Interfaces;
 
-namespace StackUnderflow.Application
+namespace StackUnderflow.WorkerServices
 {
     public static class ServiceCollectionExtensions
     {
@@ -17,7 +17,6 @@ namespace StackUnderflow.Application
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILimitsService, LimitsService>();
             services.AddScoped<ITagService, TagService>();
-            services.AddScoped<IPointService, PointService>();
         }
     }
 }

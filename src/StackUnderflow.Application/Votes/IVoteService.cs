@@ -4,7 +4,7 @@ using StackUnderflow.Core.Models;
 using System;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Votes
+namespace StackUnderflow.WorkerServices.Votes
 {
     public interface IVoteService
     {

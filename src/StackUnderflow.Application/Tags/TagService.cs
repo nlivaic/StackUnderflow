@@ -6,7 +6,7 @@ using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 
-namespace StackUnderflow.Application.Tags
+namespace StackUnderflow.WorkerServices.Tags
 {
     public class TagService : ITagService
     {

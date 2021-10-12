@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
-using StackUnderflow.Application.Services.Sorting;
-using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.WorkerServices.PointServices.Sorting;
+using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.ResourceParameters

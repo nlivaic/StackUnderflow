@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Comments.Commands
+namespace StackUnderflow.WorkerServices.Comments.Commands
 {
     public class UpdateCommentOnQuestionCommand : IRequest<Unit>
     {

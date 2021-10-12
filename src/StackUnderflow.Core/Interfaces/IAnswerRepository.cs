@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Entities;

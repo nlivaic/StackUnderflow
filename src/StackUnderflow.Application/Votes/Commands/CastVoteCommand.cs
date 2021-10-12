@@ -12,7 +12,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Votes.Commands
+namespace StackUnderflow.WorkerServices.Votes.Commands
 {
     public class CastVoteCommand : IRequest<VoteGetModel>
     {

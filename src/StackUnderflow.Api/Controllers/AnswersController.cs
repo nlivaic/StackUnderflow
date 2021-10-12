@@ -12,9 +12,9 @@ using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
-using StackUnderflow.Application.Answers.Commands;
-using StackUnderflow.Application.Answers.Queries;
-using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.WorkerServices.Answers.Commands;
+using StackUnderflow.WorkerServices.Answers.Queries;
+using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 
 namespace StackUnderflow.Api.Controllers
 {

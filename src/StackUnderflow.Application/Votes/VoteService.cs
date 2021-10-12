@@ -10,7 +10,7 @@ using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Models.Votes;
 
-namespace StackUnderflow.Application.Votes
+namespace StackUnderflow.WorkerServices.Votes
 {
     public class VoteService : IVoteService
     {

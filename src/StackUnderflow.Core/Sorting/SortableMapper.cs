@@ -1,7 +1,7 @@
 using AutoMapper;
-using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 
-namespace StackUnderflow.Application.Services.Sorting
+namespace StackUnderflow.WorkerServices.PointServices.Sorting
 {
     public static class SortableMapper
     {

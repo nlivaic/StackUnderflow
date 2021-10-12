@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Models;
-using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 using StackUnderflow.Common.Paging;
 
 namespace StackUnderflow.Core.Interfaces

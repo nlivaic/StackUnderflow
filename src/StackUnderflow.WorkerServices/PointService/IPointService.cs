@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Services
+namespace StackUnderflow.WorkerServices.PointServices
 {
     public interface IPointService
     {

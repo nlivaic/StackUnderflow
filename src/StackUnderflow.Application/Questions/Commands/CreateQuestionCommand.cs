@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using StackUnderflow.Application.Tags;
-using StackUnderflow.Application.Users;
+using StackUnderflow.WorkerServices.Tags;
+using StackUnderflow.WorkerServices.Users;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Questions.Commands
+namespace StackUnderflow.WorkerServices.Questions.Commands
 {
     public class CreateQuestionCommand : IRequest<QuestionGetModel>
     {

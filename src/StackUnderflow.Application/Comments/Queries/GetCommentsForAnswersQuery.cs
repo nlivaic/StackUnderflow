@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using StackUnderflow.Application.Users;
+using StackUnderflow.WorkerServices.Users;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Comments.Queries
+namespace StackUnderflow.WorkerServices.Comments.Queries
 {
     public class GetCommentsForAnswersQuery : IRequest<IEnumerable<CommentForAnswerGetModel>>
     {

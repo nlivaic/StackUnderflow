@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using StackUnderflow.Application.Users;
-using StackUnderflow.Application.Votes;
+using StackUnderflow.WorkerServices.Users;
+using StackUnderflow.WorkerServices.Votes;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
@@ -9,7 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Questions.Commands
+namespace StackUnderflow.WorkerServices.Questions.Commands
 {
     public class GetQuestionQuery : IRequest<QuestionGetModel>
     {

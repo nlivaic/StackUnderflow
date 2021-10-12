@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using StackUnderflow.Core.Models;
 
-namespace StackUnderflow.Application.Users
+namespace StackUnderflow.WorkerServices.Users
 {
     public interface IUserService
     {

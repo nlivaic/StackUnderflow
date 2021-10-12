@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace StackUnderflow.Application.Services.Sorting
+namespace StackUnderflow.WorkerServices.PointServices.Sorting
 {
     // Marker interface, to facilitate generic collections.
     public interface IPropertyMapping

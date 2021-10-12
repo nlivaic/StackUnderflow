@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using StackUnderflow.Application.Users;
+using StackUnderflow.WorkerServices.Users;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.Application.Answers.Commands
+namespace StackUnderflow.WorkerServices.Answers.Commands
 {
     public class AcceptAnswerCommand : IRequest<AnswerGetModel>
     {

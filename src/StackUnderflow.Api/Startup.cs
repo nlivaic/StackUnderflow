@@ -30,8 +30,8 @@ using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Entities;
 using System.Collections.Generic;
-using StackUnderflow.Application.Services.Sorting;
-using StackUnderflow.Application;
+using StackUnderflow.WorkerServices.PointServices.Sorting;
+using StackUnderflow.WorkerServices;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 

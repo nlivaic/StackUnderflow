@@ -9,7 +9,7 @@ using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Models;
 using StackUnderflow.Data.QueryableExtensions;
 using StackUnderflow.Core.Models.Questions;
-using StackUnderflow.Application.Services.Sorting.Models;
+using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 using StackUnderflow.Common.Paging;
 
 namespace StackUnderflow.Data.Repositories
