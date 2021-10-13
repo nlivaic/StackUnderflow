@@ -5,7 +5,7 @@ using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Application.Answers.Models;
 using StackUnderflow.Application.Comments.Models;
-using StackUnderflow.Core.Sorting.Models;
+using StackUnderflow.Application.Sorting.Models;
 
 namespace StackUnderflow.Core.Interfaces
 {

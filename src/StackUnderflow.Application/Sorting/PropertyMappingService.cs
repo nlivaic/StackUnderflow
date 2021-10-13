@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StackUnderflow.Core.Sorting
+namespace StackUnderflow.Application.Sorting
 {
     public interface IPropertyMappingService
     {

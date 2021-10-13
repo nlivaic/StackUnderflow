@@ -4,7 +4,7 @@ using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Common.Paging;
 using StackUnderflow.Application.Questions.Models;
-using StackUnderflow.Core.Sorting.Models;
+using StackUnderflow.Application.Sorting.Models;
 
 namespace StackUnderflow.Core.Interfaces
 {

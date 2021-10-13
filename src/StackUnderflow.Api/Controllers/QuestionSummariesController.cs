@@ -10,7 +10,7 @@ using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
 using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Sorting.Models;
+using StackUnderflow.Application.Sorting.Models;
 
 namespace StackUnderflow.Api.Controllers
 {

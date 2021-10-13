@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using StackUnderflow.Core.Sorting.Models;
+using StackUnderflow.Application.Sorting.Models;
 
-namespace StackUnderflow.Core.Sorting
+namespace StackUnderflow.Application.Sorting
 {
     public class SortCriteriaResolver<TResource, TEntity, TSource, TDestination>
         : IValueResolver<TSource, TDestination, IEnumerable<SortCriteria>>

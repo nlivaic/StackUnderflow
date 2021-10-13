@@ -9,7 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using StackUnderflow.Application.Answers.Models;
-using StackUnderflow.Core.Sorting.Models;
+using StackUnderflow.Application.Sorting.Models;
 
 namespace StackUnderflow.Application.Answers.Queries
 {

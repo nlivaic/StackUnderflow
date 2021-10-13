@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using StackUnderflow.Data;
 using StackUnderflow.Common.Interfaces;
-using StackUnderflow.Core.Sorting;
+using StackUnderflow.Application.Sorting;
 using Microsoft.AspNetCore.Mvc.Filters;
 using StackUnderflow.Api.Helpers;
 using Microsoft.AspNetCore.Http;

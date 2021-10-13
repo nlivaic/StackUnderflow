@@ -11,7 +11,7 @@ using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Application.Answers.Models;
 using StackUnderflow.Application.Comments.Models;
-using StackUnderflow.Core.Sorting.Models;
+using StackUnderflow.Application.Sorting.Models;
 
 namespace StackUnderflow.Data.Repositories
 {
