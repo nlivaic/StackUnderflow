@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using StackUnderflow.Application.Votes.Models;
 using StackUnderflow.Core.Enums;
-using StackUnderflow.Core.Models.Votes;
 using System;
 
 namespace StackUnderflow.Api.Models.Votes

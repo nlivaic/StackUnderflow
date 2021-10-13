@@ -7,8 +7,6 @@ using StackUnderflow.Api.Models.Votes;
 using StackUnderflow.WorkerServices.Votes.Commands;
 using StackUnderflow.WorkerServices.Votes.Queries;
 using StackUnderflow.Common.Interfaces;
-using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 using System;
 using System.Threading.Tasks;
 

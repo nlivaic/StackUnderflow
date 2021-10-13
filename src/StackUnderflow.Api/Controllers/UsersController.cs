@@ -1,14 +1,11 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
 using StackUnderflow.WorkerServices.Users;
-using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
-using System.Linq;
 using System.Threading.Tasks;
+using StackUnderflow.Application.Users.Models;
 
 namespace StackUnderflow.Api.Controllers
 {

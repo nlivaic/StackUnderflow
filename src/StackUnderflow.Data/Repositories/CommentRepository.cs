@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Common.Extensions;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
+using StackUnderflow.Application.Comments.Models;
 
 namespace StackUnderflow.Data.Repositories
 {

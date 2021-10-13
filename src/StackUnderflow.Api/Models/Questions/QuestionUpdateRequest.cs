@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using FluentValidation;
 using StackUnderflow.Core.Interfaces;
 using AutoMapper;
-using StackUnderflow.Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using StackUnderflow.Application.Questions.Models;
 
 namespace StackUnderflow.Api.Models
 {

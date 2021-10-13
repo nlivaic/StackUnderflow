@@ -5,11 +5,11 @@ using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using StackUnderflow.Application.Comments.Models;
 
 namespace StackUnderflow.WorkerServices.Comments.Commands
 {

@@ -1,3 +1,4 @@
+using AutoMapper;
 using StackUnderflow.Common.Base;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Interfaces;
@@ -115,6 +116,14 @@ namespace StackUnderflow.Core.Entities
                 throw new BusinessException($"Cannot delete comment '{Id}' because associated votes exist.");
             }
             return true;
+        }
+
+        public class MapperProfile : Profile
+        {
+            public MapperProfile()
+            {
+                CreateMap<Comment, Comment>();
+            }
         }
     }
 }

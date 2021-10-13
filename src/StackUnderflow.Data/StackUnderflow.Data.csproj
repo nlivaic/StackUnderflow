@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StackUnderflow.Application\StackUnderflow.Application.csproj" />
     <ProjectReference Include="..\StackUnderflow.Common\StackUnderflow.Common.csproj" />
     <ProjectReference Include="..\StackUnderflow.Core\StackUnderflow.Core.csproj" />
   </ItemGroup>

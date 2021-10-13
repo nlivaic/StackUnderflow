@@ -6,10 +6,10 @@ using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using StackUnderflow.Application.Answers.Models;
 
 namespace StackUnderflow.WorkerServices.Answers.Queries
 {

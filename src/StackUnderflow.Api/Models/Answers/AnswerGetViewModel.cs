@@ -1,5 +1,5 @@
 using AutoMapper;
-using StackUnderflow.Core.Models;
+using StackUnderflow.Application.Answers.Models;
 using System;
 
 namespace StackUnderflow.Api.Models

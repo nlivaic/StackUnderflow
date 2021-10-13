@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using StackUnderflow.Data;
 using StackUnderflow.Common.Interfaces;
-using StackUnderflow.Core.Profiles;
 using Microsoft.AspNetCore.Mvc.Filters;
 using StackUnderflow.Api.Helpers;
 using Microsoft.AspNetCore.Http;
@@ -25,15 +24,13 @@ using Microsoft.AspNetCore.HttpOverrides;
 using StackUnderflow.Infrastructure.Caching;
 using StackUnderflow.Infrastructure.MessageBroker;
 using StackUnderflow.Core;
-using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Api.Models;
-using StackUnderflow.Core.Models;
 using StackUnderflow.Core.Entities;
 using System.Collections.Generic;
 using StackUnderflow.WorkerServices.PointServices.Sorting;
 using StackUnderflow.WorkerServices;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using StackUnderflow.Application.Questions.Models;
+using StackUnderflow.Application.Answers.Models;
 
 namespace StackUnderflow.Api
 {
@@ -107,7 +104,7 @@ namespace StackUnderflow.Api
 
             services.AddSingleton<IScopeInformation, ScopeInformation>();
 
-            services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(CommentProfile).Assembly);
+            services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(Comment).Assembly);
 
             services.AddSingleton<ICache, Cache>();
             services.AddMemoryCache();

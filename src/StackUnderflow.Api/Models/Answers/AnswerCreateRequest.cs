@@ -1,7 +1,7 @@
 using AutoMapper;
 using FluentValidation;
+using StackUnderflow.Application.Answers.Models;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.Api.Models
 {

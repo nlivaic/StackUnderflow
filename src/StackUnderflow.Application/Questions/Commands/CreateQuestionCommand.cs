@@ -5,11 +5,11 @@ using StackUnderflow.WorkerServices.Users;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using StackUnderflow.Application.Questions.Models;
 
 namespace StackUnderflow.WorkerServices.Questions.Commands
 {

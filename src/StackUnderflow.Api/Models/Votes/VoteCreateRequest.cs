@@ -2,7 +2,6 @@
 using StackUnderflow.Api.Profiles;
 using StackUnderflow.WorkerServices.Votes.Commands;
 using StackUnderflow.Core.Enums;
-using StackUnderflow.Core.Models;
 using System;
 
 namespace StackUnderflow.Api.Models.Votes

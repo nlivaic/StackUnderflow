@@ -1,6 +1,6 @@
+using StackUnderflow.Application.Users.Models;
 using System;
 using System.Threading.Tasks;
-using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.WorkerServices.Users
 {

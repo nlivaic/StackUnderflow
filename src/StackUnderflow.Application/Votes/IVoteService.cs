@@ -1,6 +1,6 @@
 ﻿using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 using System;
 using System.Threading.Tasks;
 

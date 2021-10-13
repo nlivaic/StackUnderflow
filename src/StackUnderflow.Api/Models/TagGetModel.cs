@@ -1,5 +1,5 @@
 using AutoMapper;
-using StackUnderflow.Core.Models;
+using StackUnderflow.Application.Tags.Models;
 using System;
 
 namespace StackUnderflow.Api.Models
@@ -15,7 +15,6 @@ namespace StackUnderflow.Api.Models
             {
                 CreateMap<TagGetModel, TagGetViewModel>();
             }
-
         }
     }
 }

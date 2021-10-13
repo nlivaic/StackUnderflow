@@ -3,12 +3,12 @@ using StackUnderflow.WorkerServices.Users;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using StackUnderflow.Application.Comments.Models;
 
 namespace StackUnderflow.WorkerServices.Comments.Queries
 {

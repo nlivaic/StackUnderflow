@@ -4,10 +4,11 @@ using StackUnderflow.WorkerServices.Votes;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using StackUnderflow.Application.Questions.Models;
+using StackUnderflow.Core.Enums;
 
 namespace StackUnderflow.WorkerServices.Questions.Commands
 {

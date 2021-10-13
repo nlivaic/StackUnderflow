@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflow.Core.Entities;
-using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 using StackUnderflow.Data.QueryableExtensions;
-using StackUnderflow.Core.Models.Questions;
 using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 using StackUnderflow.Common.Paging;
+using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Application.Questions.Models;
 
 namespace StackUnderflow.Data.Repositories
 {

@@ -1,6 +1,4 @@
-﻿using StackUnderflow.Core.Models;
-
-namespace StackUnderflow.Core.Enums
+﻿namespace StackUnderflow.Core.Enums
 {
     public class VoteTargets
     {

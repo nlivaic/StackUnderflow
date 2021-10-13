@@ -1,5 +1,5 @@
 using AutoMapper;
-using StackUnderflow.Core.Models;
+using StackUnderflow.Application.Questions.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

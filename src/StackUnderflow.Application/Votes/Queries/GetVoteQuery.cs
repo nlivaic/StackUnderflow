@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
+using StackUnderflow.Application.Votes.Models;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models.Votes;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

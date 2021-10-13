@@ -17,6 +17,8 @@ namespace StackUnderflow.WorkerServices
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILimitsService, LimitsService>();
             services.AddScoped<ITagService, TagService>();
+
+            services.AddAutoMapper(typeof(ServiceCollectionExtensions).Assembly);
         }
     }
 }

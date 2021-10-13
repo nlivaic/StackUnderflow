@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using StackUnderflow.Application.Users.Models;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Core.Models;
 
 namespace StackUnderflow.WorkerServices.Users
 {
