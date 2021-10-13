@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 using StackUnderflow.WorkerServices.Users;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Paging;
@@ -10,8 +9,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using StackUnderflow.Application.Answers.Models;
+using StackUnderflow.Core.Sorting.Models;
 
-namespace StackUnderflow.WorkerServices.Answers.Queries
+namespace StackUnderflow.Application.Answers.Queries
 {
     public class GetAnswersQuery : IRequest<PagedList<AnswerGetModel>>
     {

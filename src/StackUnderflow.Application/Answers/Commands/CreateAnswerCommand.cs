@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using StackUnderflow.Application.Answers.Models;
 
-namespace StackUnderflow.WorkerServices.Answers.Commands
+namespace StackUnderflow.Application.Answers.Commands
 {
     public class CreateAnswerCommand : IRequest<AnswerGetModel>
     {

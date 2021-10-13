@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using StackUnderflow.Application.Comments.Models;
 
-namespace StackUnderflow.WorkerServices.Comments.Queries
+namespace StackUnderflow.Application.Comments.Queries
 {
     public class GetCommentsForAnswersQuery : IRequest<IEnumerable<CommentForAnswerGetModel>>
     {

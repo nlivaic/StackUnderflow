@@ -9,7 +9,7 @@ using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
 
-namespace StackUnderflow.WorkerServices.Votes
+namespace StackUnderflow.Application.Votes
 {
     public class VoteService : IVoteService
     {

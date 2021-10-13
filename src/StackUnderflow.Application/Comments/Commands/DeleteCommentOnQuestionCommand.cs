@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.WorkerServices.Comments.Commands
+namespace StackUnderflow.Application.Comments.Commands
 {
     public class DeleteCommentOnQuestionCommand : IRequest<Unit>
     {

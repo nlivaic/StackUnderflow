@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.WorkerServices.Votes.Queries
+namespace StackUnderflow.Application.Votes.Queries
 {
     public class GetVoteQuery : IRequest<VoteGetModel>
     {

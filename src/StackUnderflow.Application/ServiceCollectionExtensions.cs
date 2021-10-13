@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using StackUnderflow.WorkerServices.PointServices;
-using StackUnderflow.WorkerServices.Tags;
 using StackUnderflow.WorkerServices.Users;
-using StackUnderflow.WorkerServices.Votes;
 using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Application.Votes;
+using StackUnderflow.Application.Users;
+using StackUnderflow.Application.PointServices;
+using StackUnderflow.Application.Tags;
 
-namespace StackUnderflow.WorkerServices
+namespace StackUnderflow.Application
 {
     public static class ServiceCollectionExtensions
     {

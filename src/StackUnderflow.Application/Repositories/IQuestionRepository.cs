@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
-using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 using StackUnderflow.Common.Paging;
 using StackUnderflow.Application.Questions.Models;
+using StackUnderflow.Core.Sorting.Models;
 
 namespace StackUnderflow.Core.Interfaces
 {

@@ -1,5 +1,6 @@
 using System;
 using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Tests.Builders;
 using static StackUnderflow.Core.Entities.Vote;

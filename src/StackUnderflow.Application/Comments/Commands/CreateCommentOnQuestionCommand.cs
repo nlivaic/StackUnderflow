@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using StackUnderflow.Application.Comments.Models;
 
-namespace StackUnderflow.WorkerServices.Comments.Commands
+namespace StackUnderflow.Application.Comments.Commands
 {
     public class CreateCommentOnQuestionCommand : IRequest<CommentForQuestionGetModel>
     {

@@ -6,10 +6,10 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Data.QueryableExtensions;
-using StackUnderflow.WorkerServices.PointServices.Sorting.Models;
 using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Application.Questions.Models;
+using StackUnderflow.Core.Sorting.Models;
 
 namespace StackUnderflow.Data.Repositories
 {

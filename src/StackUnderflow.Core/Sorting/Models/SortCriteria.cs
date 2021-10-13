@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace StackUnderflow.WorkerServices.PointServices.Sorting.Models
+namespace StackUnderflow.Core.Sorting.Models
 {
     [TypeConverter(typeof(SortingDirectionConverter))]
     public class SortCriteria

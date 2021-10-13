@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using StackUnderflow.Core.Entities;
 
-namespace StackUnderflow.WorkerServices.Tags
+namespace StackUnderflow.Application.Tags
 {
     public interface ITagService
     {

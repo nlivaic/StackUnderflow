@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.WorkerServices.Votes.Commands
+namespace StackUnderflow.Application.Votes.Commands
 {
     public class RevokeVoteCommand : IRequest<Unit>
     {

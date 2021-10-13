@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace StackUnderflow.WorkerServices.PointServices.Sorting
+namespace StackUnderflow.Core.Sorting
 {
     public class PropertyMappingValue
     {

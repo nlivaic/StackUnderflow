@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.WorkerServices.Questions.Commands
+namespace StackUnderflow.Application.Questions.Commands
 {
     public class DeleteQuestionCommand : IRequest<Unit>
     {

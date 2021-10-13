@@ -1,6 +1,6 @@
 using System;
 
-namespace StackUnderflow.WorkerServices.PointServices.Sorting
+namespace StackUnderflow.Core.Sorting
 {
     public class InvalidPropertyMappingException : Exception
     {

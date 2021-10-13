@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.WorkerServices.Answers.Commands
+namespace StackUnderflow.Application.Answers.Commands
 {
     public class UpdateAnswerCommand : IRequest<Unit>
     {

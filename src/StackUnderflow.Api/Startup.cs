@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using StackUnderflow.Data;
 using StackUnderflow.Common.Interfaces;
+using StackUnderflow.Core.Sorting;
 using Microsoft.AspNetCore.Mvc.Filters;
 using StackUnderflow.Api.Helpers;
 using Microsoft.AspNetCore.Http;
@@ -27,10 +28,9 @@ using StackUnderflow.Core;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Core.Entities;
 using System.Collections.Generic;
-using StackUnderflow.WorkerServices.PointServices.Sorting;
-using StackUnderflow.WorkerServices;
 using StackUnderflow.Application.Questions.Models;
 using StackUnderflow.Application.Answers.Models;
+using StackUnderflow.Application;
 
 namespace StackUnderflow.Api
 {

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using StackUnderflow.WorkerServices.Tags;
+using StackUnderflow.Application.Tags;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StackUnderflow.WorkerServices.Questions.Commands
+namespace StackUnderflow.Application.Questions.Commands
 {
     public class UpdateQuestionCommand : IRequest<Unit>
     {

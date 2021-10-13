@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using StackUnderflow.Application.Answers.Models;
 
-namespace StackUnderflow.WorkerServices.Answers.Queries
+namespace StackUnderflow.Application.Answers.Queries
 {
     public class GetAnswerQuery : IRequest<AnswerGetModel>
     {

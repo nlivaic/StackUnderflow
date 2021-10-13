@@ -14,6 +14,7 @@ using StackUnderflow.Infrastructure.Caching;
 using StackUnderflow.WorkerServices.FaultService;
 using StackUnderflow.WorkerServices.PointService;
 using System.Reflection;
+using StackUnderflow.Application;
 
 namespace StackUnderflow.WorkerServices
 {

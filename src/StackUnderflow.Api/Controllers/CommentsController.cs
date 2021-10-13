@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using StackUnderflow.WorkerServices.Comments.Queries;
 using MediatR;
-using StackUnderflow.WorkerServices.Comments.Commands;
+using StackUnderflow.Application.Comments.Queries;
+using StackUnderflow.Application.Comments.Commands;
 
 namespace StackUnderflow.Api.Controllers
 {
