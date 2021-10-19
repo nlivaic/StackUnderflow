@@ -55,7 +55,7 @@ services:
     networks:
       - sunet
   stackunderflow.sql:
-    image: postgres
+    image: postgres:12-buster
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
