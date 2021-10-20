@@ -23,7 +23,6 @@ namespace StackUnderflow.Infrastructure.MessageBroker
             });
             services.AddMassTransitHostedService();
             services.AddScoped<EventPublisher>();
-            services.AddScoped<IEventPublisher>(x => x.GetRequiredService<EventPublisher>());
             services.AddScoped<IEventRegister>(x => x.GetRequiredService<EventPublisher>());
             services.AddScoped<IRegisteredEventPublisher>(x => x.GetRequiredService<EventPublisher>());
         }

@@ -1,7 +1,6 @@
 ﻿using MassTransit;
 using StackUnderflow.WorkerServices.PointServices;
 using StackUnderflow.Core.Events;
-using StackUnderflow.Core.Interfaces;
 using System.Threading.Tasks;
 
 namespace StackUnderflow.WorkerServices.PointService
