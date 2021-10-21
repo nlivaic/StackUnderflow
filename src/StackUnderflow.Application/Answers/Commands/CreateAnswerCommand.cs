@@ -25,7 +25,6 @@ namespace StackUnderflow.Application.Answers.Commands
             private readonly IAnswerRepository _answerRepository;
             private readonly IUserRepository _userRepository;
             private readonly IUserService _userService;
-            private readonly IUnitOfWork _uow;
             private readonly BaseLimits _limits;
             private readonly IMapper _mapper;
 
@@ -34,7 +33,6 @@ namespace StackUnderflow.Application.Answers.Commands
                 IAnswerRepository answerRepository,
                 IUserRepository userRepository,
                 IUserService userService,
-                IUnitOfWork uow,
                 BaseLimits limits,
                 IMapper mapper)
             {
@@ -42,7 +40,6 @@ namespace StackUnderflow.Application.Answers.Commands
                 _answerRepository = answerRepository;
                 _userRepository = userRepository;
                 _userService = userService;
-                _uow = uow;
                 _limits = limits;
                 _mapper = mapper;
             }

@@ -24,20 +24,17 @@ namespace StackUnderflow.Application.Votes.Commands
         {
             private readonly IVoteService _voteService;
             private readonly IVoteRepository _voteRepository;
-            private readonly IUnitOfWork _uow;
             private readonly IEventRegister _eventRegister;
             private readonly IMapper _mapper;
 
             public CastVoteCommandHandler(
                 IVoteService voteService,
                 IVoteRepository voteRepository,
-                IUnitOfWork uow,
                 IEventRegister eventRegister,
                 IMapper mapper)
             {
                 _voteService = voteService;
                 _voteRepository = voteRepository;
-                _uow = uow;
                 _eventRegister = eventRegister;
                 _mapper = mapper;
             }

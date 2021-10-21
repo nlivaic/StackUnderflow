@@ -21,18 +21,15 @@ namespace StackUnderflow.Application.Comments.Commands
             private readonly ICommentRepository _commentRepository;
             private readonly IUserRepository _userRepository;
             private readonly BaseLimits _limits;
-            private readonly IUnitOfWork _uow;
 
             public UpdateCommentOnQuestionCommandHandler(
                 ICommentRepository commentRepository,
                 IUserRepository userRepository,
-                BaseLimits limits,
-                IUnitOfWork unitOfWork)
+                BaseLimits limits)
             {
                 _commentRepository = commentRepository;
                 _userRepository = userRepository;
                 _limits = limits;
-                _uow = unitOfWork;
             }
 
             public async Task<Unit> Handle(UpdateCommentOnQuestionCommand request, CancellationToken cancellationToken)

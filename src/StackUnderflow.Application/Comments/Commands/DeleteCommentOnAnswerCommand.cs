@@ -21,18 +21,15 @@ namespace StackUnderflow.Application.Comments.Commands
             private readonly ICommentRepository _commentRepository;
             private readonly IUserRepository _userRepository;
             private readonly IVoteRepository _voteRepository;
-            private readonly IUnitOfWork _uow;
 
             public DeleteCommentOnAnswerCommandHandler(
                 ICommentRepository commentRepository,
                 IUserRepository userRepository,
-                IVoteRepository voteRepository,
-                IUnitOfWork unitOfWork)
+                IVoteRepository voteRepository)
             {
                 _commentRepository = commentRepository;
                 _userRepository = userRepository;
                 _voteRepository = voteRepository;
-                _uow = unitOfWork;
             }
 
             public async Task<Unit> Handle(DeleteCommentOnAnswerCommand request, CancellationToken cancellationToken)

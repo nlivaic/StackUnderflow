@@ -20,18 +20,15 @@ namespace StackUnderflow.Application.Answers.Commands
             private readonly IAnswerRepository _answerRepository;
             private readonly IRepository<Vote> _voteRepository;
             private readonly IRepository<Comment> _commentRepository;
-            private readonly IUnitOfWork _uow;
 
             public DeleteAnswerCommandHandler(
                 IAnswerRepository answerRepository,
                 IRepository<Vote> voteRepository,
-                IRepository<Comment> commentRepository,
-                IUnitOfWork uow)
+                IRepository<Comment> commentRepository)
             {
                 _answerRepository = answerRepository;
                 _voteRepository = voteRepository;
                 _commentRepository = commentRepository;
-                _uow = uow;
             }
 
             public async Task<Unit> Handle(DeleteAnswerCommand request, CancellationToken cancellationToken)

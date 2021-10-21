@@ -12,18 +12,15 @@ namespace StackUnderflow.Application.Users
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
         private readonly BaseLimits _limits;
 
         public UserService(
             IUserRepository userRepository,
-            IUnitOfWork uow,
             IMapper mapper,
             BaseLimits limits)
         {
             _userRepository = userRepository;
-            _uow = uow;
             _mapper = mapper;
             _limits = limits;
         }

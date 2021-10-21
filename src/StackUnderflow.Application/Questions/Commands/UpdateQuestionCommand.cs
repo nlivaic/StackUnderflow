@@ -25,20 +25,17 @@ namespace StackUnderflow.Application.Questions.Commands
             private readonly ITagService _tagService;
             private readonly IUserRepository _userRepository;
             private readonly BaseLimits _limits;
-            private readonly IUnitOfWork _uow;
 
             public UpdateQuestionCommandHandler(
                 IQuestionRepository questionRepository,
                 ITagService tagService,
                 IUserRepository userRepository,
-                BaseLimits limits,
-                IUnitOfWork uow)
+                BaseLimits limits)
             {
                 _questionRepository = questionRepository;
                 _tagService = tagService;
                 _userRepository = userRepository;
                 _limits = limits;
-                _uow = uow;
             }
 
             public async Task<Unit> Handle(UpdateQuestionCommand request, CancellationToken cancellationToken)

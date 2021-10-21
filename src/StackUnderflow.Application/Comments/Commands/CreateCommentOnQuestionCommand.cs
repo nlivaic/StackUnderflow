@@ -25,7 +25,6 @@ namespace StackUnderflow.Application.Comments.Commands
             private readonly ICommentRepository _commentRepository;
             private readonly IUserRepository _userRepository;
             private readonly IUserService _userService;
-            private readonly IUnitOfWork _uow;
             private readonly BaseLimits _limits;
             private readonly IMapper _mapper;
 
@@ -34,7 +33,6 @@ namespace StackUnderflow.Application.Comments.Commands
                 ICommentRepository commentRepository,
                 IUserRepository userRepository,
                 IUserService userService,
-                IUnitOfWork unitOfWork,
                 BaseLimits limits,
                 IMapper mapper)
             {
@@ -42,7 +40,6 @@ namespace StackUnderflow.Application.Comments.Commands
                 _commentRepository = commentRepository;
                 _userRepository = userRepository;
                 _userService = userService;
-                _uow = unitOfWork;
                 _limits = limits;
                 _mapper = mapper;
             }

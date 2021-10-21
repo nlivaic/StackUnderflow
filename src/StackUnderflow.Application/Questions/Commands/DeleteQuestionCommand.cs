@@ -19,18 +19,15 @@ namespace StackUnderflow.Application.Questions.Commands
             private readonly IQuestionRepository _questionRepository;
             private readonly IVoteRepository _voteRepository;
             private readonly IRepository<Comment> _commentRepository;
-            private readonly IUnitOfWork _uow;
 
             public DeleteQuestionCommandHandler(
                 IQuestionRepository questionRepository,
                 IVoteRepository voteRepository,
-                IRepository<Comment> commentRepository,
-                IUnitOfWork uow)
+                IRepository<Comment> commentRepository)
             {
                 _questionRepository = questionRepository;
                 _voteRepository = voteRepository;
                 _commentRepository = commentRepository;
-                _uow = uow;
             }
 
             public async Task<Unit> Handle(DeleteQuestionCommand request, CancellationToken cancellationToken)

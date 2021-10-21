@@ -25,20 +25,17 @@ namespace StackUnderflow.Application.Answers.Commands
             private readonly IAnswerRepository _answerRepository;
             private readonly IUserService _userService;
             private readonly IMapper _mapper;
-            private readonly IUnitOfWork _uow;
 
             public AcceptAnswerCommanHandler(
                 IQuestionRepository questionRepository,
                 IAnswerRepository answerRepository,
                 IUserService userService,
-                IMapper mapper,
-                IUnitOfWork uow)
+                IMapper mapper)
             {
                 _questionRepository = questionRepository;
                 _answerRepository = answerRepository;
                 _userService = userService;
                 _mapper = mapper;
-                _uow = uow;
             }
 
             public async Task<AnswerGetModel> Handle(AcceptAnswerCommand request, CancellationToken cancellationToken)
