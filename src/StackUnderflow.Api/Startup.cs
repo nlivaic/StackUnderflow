@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using StackUnderflow.Application.Questions.Models;
 using StackUnderflow.Application.Answers.Models;
 using StackUnderflow.Application;
+using MediatR;
 
 namespace StackUnderflow.Api
 {
@@ -208,11 +209,15 @@ namespace StackUnderflow.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<EventPublisherMiddleware>();
+            app.UseMiddleware<UnitOfWorkMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
+
 
             // Commented out as we are running front end as a standalone app.
             // app.UseSpa(spa =>

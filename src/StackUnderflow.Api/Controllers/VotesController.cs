@@ -58,7 +58,7 @@ namespace StackUnderflow.Api.Controllers
         {
             var castVoteCommand = _mapper.Map<CastVoteCommand>(model);
             var vote = await _sender.Send(castVoteCommand);
-            await _eventPublisher.PublishAll();
+            //await _eventPublisher.PublishAll();
             var voteResponseModel = _mapper.Map<VoteGetViewModel>(vote);
             return CreatedAtRoute("GetVote", new { voteId = vote.Id }, voteResponseModel);
         }
