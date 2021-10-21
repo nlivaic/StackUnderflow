@@ -60,7 +60,6 @@ namespace StackUnderflow.Application.Comments.Commands
                 var comment = Comment.Create(user, request.Body, commentOrderNumber, _limits);
                 question.Comment(comment);
                 await _commentRepository.AddAsync(comment);
-                await _uow.SaveAsync();
                 var result = _mapper.Map<CommentForQuestionGetModel>(comment);
                 result.IsOwner = result.UserId == request.CurrentUserId;
                 result.IsModerator = await _userService.IsModeratorAsync(request.CurrentUserId);

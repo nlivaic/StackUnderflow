@@ -54,7 +54,6 @@ namespace StackUnderflow.Application.Questions.Commands
                 var user = await _userRepository.GetByIdAsync(request.CurrentUserId);
                 var question = Question.Create(user, request.Title, request.Body, tags, _limits);
                 await _questionRepository.AddAsync(question);
-                await _uow.SaveAsync();
                 var questionGetModel = _mapper.Map<QuestionGetModel>(question);
                 questionGetModel.IsOwner = true;
                 questionGetModel.IsModerator = await _userService.IsModeratorAsync(request.CurrentUserId);

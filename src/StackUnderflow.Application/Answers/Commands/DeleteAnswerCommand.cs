@@ -46,7 +46,6 @@ namespace StackUnderflow.Application.Answers.Commands
                 answer.IsDeleteable();
                 _commentRepository.Delete(answer.Comments);
                 _answerRepository.Delete(answer);
-                await _uow.SaveAsync();
                 return Unit.Value;
             }
         }

@@ -43,7 +43,6 @@ namespace StackUnderflow.Application.Votes.Commands
                 var voteable = _voteService.GetVoteable(vote);
                 voteable.RevokeVote(vote, _limits);
                 _voteRepository.Delete(vote);
-                await _uow.SaveAsync();
                 await _voteService.ChangeCachedVotesSumAfterVoteRevoked(vote);
                 return Unit.Value;
             }

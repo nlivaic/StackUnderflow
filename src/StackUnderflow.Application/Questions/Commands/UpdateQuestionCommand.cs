@@ -49,7 +49,6 @@ namespace StackUnderflow.Application.Questions.Commands
                 var tags = await _tagService.GetTagsAsync(request.TagIds);
                 var user = await _userRepository.GetUser<User>(request.CurrentUserId);
                 question.Edit(user, request.Title, request.Body, tags, _limits);
-                await _uow.SaveAsync();
                 return Unit.Value;
             }
         }

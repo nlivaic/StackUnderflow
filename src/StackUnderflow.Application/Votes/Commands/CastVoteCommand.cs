@@ -60,7 +60,6 @@ namespace StackUnderflow.Application.Votes.Commands
                 }
                 var vote = Vote.CreateVote(request.CurrentUserId, target, request.VoteType);
                 target.ApplyVote(vote);
-                await _uow.SaveAsync();
                 await _voteService.ChangeCachedVotesSumAfterVoteCast(vote);
                 _eventRegister.RegisterEvent<VoteCast>(new { UserId = vote.UserId, VoteType = vote.VoteType });
                 return _mapper.Map<VoteGetModel>(vote);

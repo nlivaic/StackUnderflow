@@ -44,7 +44,6 @@ namespace StackUnderflow.Application.Comments.Commands
                 var votesSum = await _voteRepository.CountAsync(v => v.CommentId == request.CommentId);
                 comment.IsDeleteable(votesSum, user);
                 _commentRepository.Delete(comment);
-                await _uow.SaveAsync();
                 return Unit.Value;
             }
         }

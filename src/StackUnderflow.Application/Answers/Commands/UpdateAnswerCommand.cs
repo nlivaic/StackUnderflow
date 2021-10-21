@@ -46,7 +46,6 @@ namespace StackUnderflow.Application.Answers.Commands
                    ?? throw new EntityNotFoundException(nameof(Answer), request.AnswerId);
                 var user = await _userRepository.GetUser<User>(request.CurrentUserId);
                 answer.Edit(user, request.Body, _limits);
-                await _uow.SaveAsync();
                 return Unit.Value;
             }
         }

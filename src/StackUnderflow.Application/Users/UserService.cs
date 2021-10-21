@@ -35,7 +35,6 @@ namespace StackUnderflow.Application.Users
         {
             var user = User.Create(_limits, model.Id, model.Username, model.Email);
             await _userRepository.AddAsync(user);
-            await _uow.SaveAsync();
             var userGetModel = _mapper.Map<UserGetModel>(user);
             return userGetModel;
         }

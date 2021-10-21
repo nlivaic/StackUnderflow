@@ -47,7 +47,6 @@ namespace StackUnderflow.Application.Answers.Commands
                 var answer = question.Answers.SingleOrDefault()
                     ?? throw new EntityNotFoundException(nameof(Answer), request.AnswerId);
                 question.AcceptAnswer(answer, request.CurrentUserId);
-                await _uow.SaveAsync();
                 var result = _mapper.Map<AnswerGetModel>(answer);
                 result.IsOwner = answer.UserId == request.CurrentUserId;
                 result.IsModerator = await _userService.IsModeratorAsync(request.CurrentUserId);

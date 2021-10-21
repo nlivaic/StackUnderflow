@@ -45,7 +45,6 @@ namespace StackUnderflow.Application.Comments.Commands
                     throw new EntityNotFoundException(nameof(Comment), request.CommentId);
                 var user = await _userRepository.GetUser<User>(request.CurrentUserId);
                 comment.Edit(user, request.Body, _limits);
-                await _uow.SaveAsync();
                 // @nl: raise an event?
                 return Unit.Value;
             }
