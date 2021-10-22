@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using StackUnderflow.Application.Tags;
 using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using System;
@@ -19,7 +18,7 @@ namespace StackUnderflow.Application.Questions.Commands
         public string Body { get; set; }
         public IEnumerable<Guid> TagIds { get; set; }
 
-        public class UpdateQuestionCommandHandler : IRequestHandler<UpdateQuestionCommand, Unit>
+        private class UpdateQuestionCommandHandler : IRequestHandler<UpdateQuestionCommand, Unit>
         {
             private readonly IQuestionRepository _questionRepository;
             private readonly ITagService _tagService;

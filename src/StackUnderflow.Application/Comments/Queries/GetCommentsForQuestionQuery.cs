@@ -16,7 +16,7 @@ namespace StackUnderflow.Application.Comments.Queries
         public Guid QuestionId { get; set; }
         public Guid? CurrentUserId { get; set; }
 
-        class GetCommentsForQuestionQueryHandler : IRequestHandler<GetCommentsForQuestionQuery, IEnumerable<CommentForQuestionGetModel>>
+        private class GetCommentsForQuestionQueryHandler : IRequestHandler<GetCommentsForQuestionQuery, IEnumerable<CommentForQuestionGetModel>>
         {
             private readonly IQuestionRepository _questionRepository;
             private readonly ICommentRepository _commentRepository;

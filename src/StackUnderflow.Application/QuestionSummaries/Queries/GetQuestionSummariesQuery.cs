@@ -12,7 +12,7 @@ namespace StackUnderflow.Application.QuestionSummaries.Queries
     {
         public QuestionQueryParameters QuestionQueryParameters { get; set; }
 
-        class GetQuestionSummariesQueryHandler : IRequestHandler<GetQuestionSummariesQuery, PagedList<QuestionSummaryGetModel>>
+        private class GetQuestionSummariesQueryHandler : IRequestHandler<GetQuestionSummariesQuery, PagedList<QuestionSummaryGetModel>>
         {
             private readonly IQuestionRepository _questionRepository;
 

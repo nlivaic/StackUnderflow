@@ -16,7 +16,7 @@ namespace StackUnderflow.Application.Answers.Commands
         public Guid AnswerId { get; set; }
         public string Body { get; set; }
 
-        class UpdateAnswerCommandHandler : IRequestHandler<UpdateAnswerCommand, Unit>
+        private class UpdateAnswerCommandHandler : IRequestHandler<UpdateAnswerCommand, Unit>
         {
             private readonly IRepository<Answer> _answerRepository;
             private readonly IUserRepository _userRepository;

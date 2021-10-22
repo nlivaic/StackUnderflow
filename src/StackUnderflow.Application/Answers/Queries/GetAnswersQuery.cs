@@ -29,7 +29,7 @@ namespace StackUnderflow.Application.Answers.Queries
             CurrentUserId = currentUserId;
         }
 
-        class GetAnswersQueryHandler : IRequestHandler<GetAnswersQuery, PagedList<AnswerGetModel>>
+        private class GetAnswersQueryHandler : IRequestHandler<GetAnswersQuery, PagedList<AnswerGetModel>>
         {
             private readonly IQuestionRepository _questionRepository;
             private readonly IAnswerRepository _answerRepository;

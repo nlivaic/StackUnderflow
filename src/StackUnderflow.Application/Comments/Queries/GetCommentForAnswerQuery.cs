@@ -19,7 +19,7 @@ namespace StackUnderflow.Application.Comments.Queries
         public Guid CommentId { get; set; }
         public Guid? CurrentUserId { get; set; }
 
-        class GetCommentForAnswerQueryHandler : IRequestHandler<GetCommentForAnswerQuery, CommentForAnswerGetModel>
+        private class GetCommentForAnswerQueryHandler : IRequestHandler<GetCommentForAnswerQuery, CommentForAnswerGetModel>
         {
             private readonly ICommentRepository _commentRepository;
             private readonly IUserService _userService;

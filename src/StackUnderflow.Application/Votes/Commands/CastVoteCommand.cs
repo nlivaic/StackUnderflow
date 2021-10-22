@@ -20,7 +20,7 @@ namespace StackUnderflow.Application.Votes.Commands
         public VoteTargetEnum VoteTarget { get; set; }
         public VoteTypeEnum VoteType { get; set; }
 
-        class CastVoteCommandHandler : IRequestHandler<CastVoteCommand, VoteGetModel>
+        private class CastVoteCommandHandler : IRequestHandler<CastVoteCommand, VoteGetModel>
         {
             private readonly IVoteService _voteService;
             private readonly IVoteRepository _voteRepository;
@@ -50,7 +50,7 @@ namespace StackUnderflow.Application.Votes.Commands
                 {
                     throw new BusinessException($"User already voted on {request.VoteTarget} on '{matchedVote.CreatedOn}'.");
                 }
-                IVoteable target = await _voteService.GetVoteableFromRepositoryAsync(request.VoteTarget, request.TargetId);
+                var target = await _voteService.GetVoteableFromRepositoryAsync(request.VoteTarget, request.TargetId);
                 if (target == null)
                 {
                     throw new EntityNotFoundException(request.VoteTarget.ToString(), request.TargetId);

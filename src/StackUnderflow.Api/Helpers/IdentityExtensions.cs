@@ -21,6 +21,6 @@ namespace StackUnderflow.Api.Helpers
         }
 
         public static bool IsOwner(this ClaimsPrincipal user, IOwneable owneable) =>
-            user.Identity.IsAuthenticated ? user.UserId() == owneable.UserId : false;
+            user.Identity.IsAuthenticated && user.UserId() == owneable.UserId;
     }
 }

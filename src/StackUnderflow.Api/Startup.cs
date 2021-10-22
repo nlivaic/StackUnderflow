@@ -81,7 +81,9 @@ namespace StackUnderflow.Api
             {
                 options.UseNpgsql(_configuration.GetConnectionString("StackUnderflowDbConnection"));
                 if (_hostEnvironment.IsDevelopment())
+                {
                     options.EnableSensitiveDataLogging(true);
+                }
             });
 
             services.AddGenericRepository();
@@ -173,7 +175,7 @@ namespace StackUnderflow.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseApiExceptionHandler(options =>
             {
@@ -250,14 +252,12 @@ namespace StackUnderflow.Api
         /// <summary>
         /// Define cases where a different log level is needed for logging exceptions.
         /// </summary>
-        private LogLevel LogLevelHandler(HttpContext context, Exception ex)
-        {
+        private LogLevel LogLevelHandler(HttpContext context, Exception ex) =>
             //if (ex is Exception)
             //{
             //    return LogLevel.Critical;
             //}
             //return LogLevel.Error;
-            return LogLevel.Critical;
-        }
+            LogLevel.Critical;
     }
 }

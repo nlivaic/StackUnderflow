@@ -2,7 +2,6 @@
 using MediatR;
 using StackUnderflow.WorkerServices.Users;
 using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using System;
@@ -19,7 +18,7 @@ namespace StackUnderflow.Application.Answers.Commands
         public string Body { get; set; }
         public Guid? CurrentUserId { get; set; }
 
-        class CreateAnswerCommandHandler : IRequestHandler<CreateAnswerCommand, AnswerGetModel>
+        private class CreateAnswerCommandHandler : IRequestHandler<CreateAnswerCommand, AnswerGetModel>
         {
             private readonly IQuestionRepository _questionRepository;
             private readonly IAnswerRepository _answerRepository;
@@ -54,7 +53,7 @@ namespace StackUnderflow.Application.Answers.Commands
                     throw new EntityNotFoundException(nameof(Question), request.QuestionId);
                 }
                 var user = await _userRepository.GetByIdAsync(request.UserId);
-                var answer = Answer.Create(user, request.Body, question, _limits);
+                var answer = Answer.Create(user, request.Body, _limits);
                 question.Answer(answer);
                 await _answerRepository.AddAsync(answer);
                 //await _uow.SaveAsync();

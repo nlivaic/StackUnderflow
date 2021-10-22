@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using System;
@@ -16,7 +15,7 @@ namespace StackUnderflow.Application.Comments.Commands
         public Guid CommentId { get; set; }
         public Guid CurrentUserId { get; set; }
 
-        class DeleteCommentOnAnswerCommandHandler : IRequestHandler<DeleteCommentOnAnswerCommand, Unit>
+        private class DeleteCommentOnAnswerCommandHandler : IRequestHandler<DeleteCommentOnAnswerCommand, Unit>
         {
             private readonly ICommentRepository _commentRepository;
             private readonly IUserRepository _userRepository;
@@ -38,7 +37,9 @@ namespace StackUnderflow.Application.Comments.Commands
                 if (comment == null
                     || comment.ParentAnswerId != request.ParentAnswerId
                     || comment.ParentAnswer.QuestionId != request.ParentQuestionId)
+                {
                     throw new EntityNotFoundException(nameof(Comment), request.CommentId);
+                }
                 var user = await _userRepository.GetUser<User>(request.CurrentUserId);
                 var votesSum = await _voteRepository.CountAsync(v => v.CommentId == request.CommentId);
                 comment.IsDeleteable(votesSum, user);

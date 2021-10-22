@@ -21,7 +21,7 @@ namespace StackUnderflow.Core.Tests
             var commentable = new Commentable();
 
             // Act
-            var result = Answer.Create(user, body, question, limits);
+            var result = Answer.Create(user, body, limits);
 
             // Assert
             Assert.NotEqual(default(Guid), result.Id);
@@ -49,7 +49,7 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() =>
-                Answer.Create(user, body, question, limits));
+                Answer.Create(user, body, limits));
         }
 
         [Fact]

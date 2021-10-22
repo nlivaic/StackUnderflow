@@ -9,7 +9,7 @@ namespace StackUnderflow.Infrastructure.MessageBroker
     public class EventPublisher : IEventRegister, IRegisteredEventPublisher
     {
         private readonly IPublishEndpoint _publishEndpoint;
-        private IList<Func<EventPublisher, Task>> _eventActionsToPublish;
+        private readonly IList<Func<EventPublisher, Task>> _eventActionsToPublish;
 
         public EventPublisher(IPublishEndpoint publishEndpoint)
         {
@@ -17,10 +17,8 @@ namespace StackUnderflow.Infrastructure.MessageBroker
             _eventActionsToPublish = new List<Func<EventPublisher, Task>>();
         }
 
-        public void RegisterEvent<T>(object newEvent) where T : class
-        {
+        public void RegisterEvent<T>(object newEvent) where T : class =>
             _eventActionsToPublish.Add(async eventPublisher => await eventPublisher.PublishEvent<T>(newEvent));
-        }
 
         public async Task PublishAll()
         {
@@ -30,9 +28,7 @@ namespace StackUnderflow.Infrastructure.MessageBroker
             }
         }
 
-        private async Task PublishEvent<T>(object eventToPublish) where T : class
-        {
+        private async Task PublishEvent<T>(object eventToPublish) where T : class =>
             await _publishEndpoint.Publish<T>(eventToPublish);
-        }
     }
 }

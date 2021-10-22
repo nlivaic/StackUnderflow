@@ -17,7 +17,7 @@ namespace StackUnderflow.Application.Questions.Commands
         public Guid QuestionId { get; set; }
         public Guid? CurrentUserId { get; set; }
 
-        class GetQuestionQueryHandler : IRequestHandler<GetQuestionQuery, QuestionGetModel>
+        private class GetQuestionQueryHandler : IRequestHandler<GetQuestionQuery, QuestionGetModel>
         {
             private readonly IQuestionRepository _questionRepository;
             private readonly IUserService _userService;

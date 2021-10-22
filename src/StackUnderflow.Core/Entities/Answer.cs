@@ -34,9 +34,9 @@ namespace StackUnderflow.Core.Entities
         public IEnumerable<Comment> Comments => _commentable.Comments;
         public IEnumerable<Vote> Votes => _voteable.Votes;
 
-        private Voteable _voteable;
-        private Commentable _commentable;
-        private Owneable _owneable;
+        private readonly Voteable _voteable;
+        private readonly Commentable _commentable;
+        private readonly Owneable _owneable;
 
         private Answer()
         {
@@ -81,16 +81,17 @@ namespace StackUnderflow.Core.Entities
         public static Answer Create(
             User user,
             string body,
-            Question question,
             BaseLimits limits)
         {
             Validate(user, body, limits);
-            var answer = new Answer();
-            answer.Id = Guid.NewGuid();
-            answer.User = user;
-            answer.Body = body;
-            answer.IsAcceptedAnswer = false;
-            answer.CreatedOn = DateTime.UtcNow;
+            var answer = new Answer
+            {
+                Id = Guid.NewGuid(),
+                User = user,
+                Body = body,
+                IsAcceptedAnswer = false,
+                CreatedOn = DateTime.UtcNow
+            };
             return answer;
         }
 
@@ -104,7 +105,10 @@ namespace StackUnderflow.Core.Entities
             {
                 throw new BusinessException($"Answer body must be at least '{limits.AnswerBodyMinimumLength}' characters.");
             }
-            if (string.IsNullOrWhiteSpace(body)) throw new BusinessException("Question must have a body.");
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                throw new BusinessException("Question must have a body.");
+            }
         }
 
         public bool CanBeEditedBy(User editingUser) =>

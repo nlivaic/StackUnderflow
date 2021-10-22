@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using StackUnderflow.WorkerServices.Users;
-using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using System;
@@ -20,7 +19,7 @@ namespace StackUnderflow.Application.Questions.Commands
         public IEnumerable<Guid> TagIds { get; set; }
         public Guid CurrentUserId { get; set; }
 
-        class CreateQuestionCommandHandler : IRequestHandler<CreateQuestionCommand, QuestionGetModel>
+        private class CreateQuestionCommandHandler : IRequestHandler<CreateQuestionCommand, QuestionGetModel>
         {
             private readonly ITagService _tagService;
             private readonly IUserService _userService;

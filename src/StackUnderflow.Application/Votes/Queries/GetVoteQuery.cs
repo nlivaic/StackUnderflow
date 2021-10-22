@@ -14,7 +14,7 @@ namespace StackUnderflow.Application.Votes.Queries
     {
         public Guid VoteId { get; set; }
 
-        class GetVoteQueryHandler : IRequestHandler<GetVoteQuery, VoteGetModel>
+        private class GetVoteQueryHandler : IRequestHandler<GetVoteQuery, VoteGetModel>
         {
             private readonly IVoteRepository _voteRepository;
             private readonly IMapper _mapper;

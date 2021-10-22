@@ -19,14 +19,14 @@ namespace StackUnderflow.Application.Answers.Commands
         public Guid QuestionId { get; set; }
         public Guid AnswerId { get; set; }
 
-        public class AcceptAnswerCommanHandler : IRequestHandler<AcceptAnswerCommand, AnswerGetModel>
+        private class AcceptAnswerCommandHandler : IRequestHandler<AcceptAnswerCommand, AnswerGetModel>
         {
             private readonly IQuestionRepository _questionRepository;
             private readonly IAnswerRepository _answerRepository;
             private readonly IUserService _userService;
             private readonly IMapper _mapper;
 
-            public AcceptAnswerCommanHandler(
+            public AcceptAnswerCommandHandler(
                 IQuestionRepository questionRepository,
                 IAnswerRepository answerRepository,
                 IUserService userService,

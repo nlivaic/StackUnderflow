@@ -2,7 +2,6 @@
 using MediatR;
 using StackUnderflow.WorkerServices.Users;
 using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
 using System;
@@ -20,7 +19,7 @@ namespace StackUnderflow.Application.Comments.Commands
         public string Body { get; set; }
         public Guid CurrentUserId { get; set; }
 
-        class CreateCommentOnAnswerCommandHandler : IRequestHandler<CreateCommentOnAnswerCommand, CommentForAnswerGetModel>
+        private class CreateCommentOnAnswerCommandHandler : IRequestHandler<CreateCommentOnAnswerCommand, CommentForAnswerGetModel>
         {
             private readonly IAnswerRepository _answerRepository;
             private readonly ICommentRepository _commentRepository;

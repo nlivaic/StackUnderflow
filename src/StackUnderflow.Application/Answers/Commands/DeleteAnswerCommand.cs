@@ -15,7 +15,7 @@ namespace StackUnderflow.Application.Answers.Commands
         public Guid AnswerId { get; set; }
         public Guid? CurrentUserId { get; set; }
 
-        class DeleteAnswerCommandHandler : IRequestHandler<DeleteAnswerCommand, Unit>
+        private class DeleteAnswerCommandHandler : IRequestHandler<DeleteAnswerCommand, Unit>
         {
             private readonly IAnswerRepository _answerRepository;
             private readonly IRepository<Vote> _voteRepository;

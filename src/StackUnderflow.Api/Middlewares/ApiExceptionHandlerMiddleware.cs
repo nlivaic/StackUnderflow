@@ -71,7 +71,7 @@ namespace StackUnderflow.Api.Middlewares
             await context.Response.WriteAsync(result);
         }
 
-        private static async Task HandleEntityNotFoundException(HttpContext context, Exception ex)
+        private async static Task HandleEntityNotFoundException(HttpContext context, Exception ex)
         {
             var problemDetails = ValidationProblemDetailsFactory.CreateNotFoundProblemDetails(context, ex.Message);
             var result = JsonConvert.SerializeObject(problemDetails);
@@ -116,13 +116,9 @@ namespace StackUnderflow.Api.Middlewares
             await context.Response.WriteAsync(result);
         }
 
-        private Exception GetInnermostException(Exception ex)
-        {
-            if (ex.InnerException != null)
-            {
-                var inner = GetInnermostException(ex.InnerException);
-            }
-            return ex;
-        }
+        private Exception GetInnermostException(Exception ex) =>
+            ex.InnerException != null
+                ? GetInnermostException(ex.InnerException)
+                : ex;
     }
 }

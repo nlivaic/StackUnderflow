@@ -16,7 +16,7 @@ namespace StackUnderflow.Application.Answers.Queries
         public Guid AnswerId { get; set; }
         public Guid? CurrentUserId { get; set; }
 
-        class GetAnswerQueryHandler : IRequestHandler<GetAnswerQuery, AnswerGetModel>
+        private class GetAnswerQueryHandler : IRequestHandler<GetAnswerQuery, AnswerGetModel>
         {
             private readonly IAnswerRepository _answerRepository;
             private readonly IUserService _userService;
