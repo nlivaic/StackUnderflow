@@ -112,7 +112,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         /// <summary>
-        /// Edit answer. Answer can be edited only a certain amount of time after it was created [requires authentication]. 
+        /// Edit answer. Answer can be edited only a certain amount of time after it was created [requires authentication].
         /// </summary>
         /// <param name="questionId">Question identifier.</param>
         /// <param name="answerId">Answer identifier.</param>

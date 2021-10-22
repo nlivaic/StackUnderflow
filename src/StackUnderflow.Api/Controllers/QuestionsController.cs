@@ -30,11 +30,12 @@ namespace StackUnderflow.Api.Controllers
         /// <summary>
         /// Get a single question.
         /// </summary>
+        /// <param name="questionGetRequest">Specifies which question to fetch.</param>
         /// <returns>Question data.</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Produces("application/json")]
         [HttpGet("{questionId}", Name = "GetQuestion")]
-        public async Task<ActionResult<QuestionGetViewModel>> GetAsync([FromRoute]QuestionGetRequest questionGetRequest)
+        public async Task<ActionResult<QuestionGetViewModel>> GetAsync([FromRoute] QuestionGetRequest questionGetRequest)
         {
             var getQuestionQuery = _mapper.Map<GetQuestionQuery>(questionGetRequest);
             var question = await _sender.Send(getQuestionQuery);

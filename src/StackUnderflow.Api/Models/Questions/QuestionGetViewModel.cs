@@ -1,9 +1,9 @@
-using AutoMapper;
-using StackUnderflow.Api.Models.Votes;
-using StackUnderflow.Application.Questions.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using StackUnderflow.Api.Models.Votes;
+using StackUnderflow.Application.Questions.Models;
 
 namespace StackUnderflow.Api.Models
 {
@@ -27,12 +27,13 @@ namespace StackUnderflow.Api.Models
             public QuestionProfile()
             {
                 CreateMap<QuestionGetModel, QuestionGetViewModel>()
-                    .ForMember(dest => dest.CreatedOn,
+                    .ForMember(
+                        dest => dest.CreatedOn,
                         opts => opts.MapFrom(src => src.CreatedOn.ToString("yyyy-MM-dd hh:mm:ss")))
-                    .ForMember(dest => dest.Vote,
+                    .ForMember(
+                        dest => dest.Vote,
                         opts => opts.MapFrom(src => src.Votes.FirstOrDefault()));
             }
         }
-
     }
 }

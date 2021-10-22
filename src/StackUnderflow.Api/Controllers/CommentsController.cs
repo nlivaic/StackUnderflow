@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StackUnderflow.Api.Models;
 using StackUnderflow.Api.Helpers;
-using Microsoft.AspNetCore.Authorization;
-using MediatR;
-using StackUnderflow.Application.Comments.Queries;
+using StackUnderflow.Api.Models;
 using StackUnderflow.Application.Comments.Commands;
+using StackUnderflow.Application.Comments.Queries;
 
 namespace StackUnderflow.Api.Controllers
 {
@@ -42,7 +42,7 @@ namespace StackUnderflow.Api.Controllers
                 QuestionId = questionId,
                 CurrentUserId = User.UserId()
             });
-            List<CommentForQuestionGetViewModel> result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comments);
+            var result = _mapper.Map<List<CommentForQuestionGetViewModel>>(comments);
             return Ok(result);
         }
 
@@ -63,7 +63,7 @@ namespace StackUnderflow.Api.Controllers
                 CommentId = commentId,
                 CurrentUserId = User.UserId()
             });
-            CommentForQuestionGetViewModel result = _mapper.Map<CommentForQuestionGetViewModel>(comment);
+            var result = _mapper.Map<CommentForQuestionGetViewModel>(comment);
             return Ok(result);
         }
 
@@ -172,7 +172,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         /// <summary>
-        /// Edit comment on target question. Comment can be edited only a certain amount of time after it was created [requires authentication]. 
+        /// Edit comment on target question. Comment can be edited only a certain amount of time after it was created [requires authentication].
         /// </summary>
         /// <param name="questionId">Question identifier.</param>
         /// <param name="commentId">Comment identifier.</param>
@@ -200,7 +200,7 @@ namespace StackUnderflow.Api.Controllers
         }
 
         /// <summary>
-        /// Edit comment on target answer. Comment can be edited only a certain amount of time after it was created [requires authentication]. 
+        /// Edit comment on target answer. Comment can be edited only a certain amount of time after it was created [requires authentication].
         /// </summary>
         /// <param name="questionId">Question identifier.</param>
         /// <param name="answerId">Answer identifier.</param>

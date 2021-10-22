@@ -20,9 +20,11 @@ namespace StackUnderflow.Api.Models
             public UserGetViewModelProfile()
             {
                 CreateMap<UserGetModel, UserGetViewModel>()
-                    .ForMember(dest => dest.CreatedOn,
+                    .ForMember(
+                        dest => dest.CreatedOn,
                         opts => opts.MapFrom(src => src.CreatedOn.ToString("yyyy-MM-dd")))
-                    .ForMember(dest => dest.LastSeenBeforeDays,
+                    .ForMember(
+                        dest => dest.LastSeenBeforeDays,
                         opts => opts.MapFrom(
                             src => src.LastSeenBefore.Days));
             }

@@ -1,37 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using AutoMapper;
-using StackUnderflow.Data;
-using StackUnderflow.Common.Interfaces;
-using StackUnderflow.Application.Sorting;
-using Microsoft.AspNetCore.Mvc.Filters;
-using StackUnderflow.Api.Helpers;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using FluentValidation.AspNetCore;
-using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using StackUnderflow.Api.Middlewares;
-using StackUnderflow.Api.Filters;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.OpenApi.Models;
+using StackUnderflow.Api.Filters;
+using StackUnderflow.Api.Helpers;
+using StackUnderflow.Api.Middlewares;
+using StackUnderflow.Api.Models;
+using StackUnderflow.Application;
+using StackUnderflow.Application.Answers.Models;
+using StackUnderflow.Application.Questions.Models;
+using StackUnderflow.Application.Sorting;
+using StackUnderflow.Common.Interfaces;
+using StackUnderflow.Core;
+using StackUnderflow.Core.Entities;
+using StackUnderflow.Data;
 using StackUnderflow.Infrastructure.Caching;
 using StackUnderflow.Infrastructure.MessageBroker;
-using StackUnderflow.Core;
-using StackUnderflow.Api.Models;
-using StackUnderflow.Core.Entities;
-using System.Collections.Generic;
-using StackUnderflow.Application.Questions.Models;
-using StackUnderflow.Application.Answers.Models;
-using StackUnderflow.Application;
-using MediatR;
 
 namespace StackUnderflow.Api
 {
@@ -133,16 +131,17 @@ namespace StackUnderflow.Api
                         },
                         TermsOfService = new Uri("https://www.my-terms-of-service.com")
                     });
+
                 // A workaround for having multiple POST methods on one controller.
                 // setupAction.ResolveConflictingActions(r => r.First());
                 setupAction.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "StackUnderflow.Api.xml"));
             });
+
             // Commented out as we are running front end as a standalone app.
             // services.AddSpaStaticFiles(configuration =>
             // {
             //     configuration.RootPath = "ClientApp/build";
             // });
-
             services.AddCors(o => o.AddPolicy("All", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -153,7 +152,7 @@ namespace StackUnderflow.Api
 
             services.AddCors(o => o.AddPolicy("StackUnderflowClient", builder =>
             {
-                var allowedOrigins = _configuration["AllowedOrigins"]?.Split(',') ?? new string[0];
+                var allowedOrigins = _configuration["AllowedOrigins"]?.Split(',') ?? Array.Empty<string>();
                 builder
                     .WithOrigins(allowedOrigins)
                     .WithHeaders("Authorization", "Content-Type")
@@ -189,17 +188,15 @@ namespace StackUnderflow.Api
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             };
 
-            //if (env.IsProduction())
-            //{
+            // if (env.IsProduction())
+            // {
             //    app.UseHsts();
-            //}
-
+            // }
             app.UseCors("StackUnderflowClient");
             app.UseHttpsRedirection();
 
             // Commented out as we are running front end as a standalone app.
             // app.UseSpaStaticFiles();
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -220,12 +217,10 @@ namespace StackUnderflow.Api
                 endpoints.MapControllers();
             });
 
-
             // Commented out as we are running front end as a standalone app.
             // app.UseSpa(spa =>
             // {
             //     spa.Options.SourcePath = "ClientApp";
-
             //     if (env.IsDevelopment())
             //     {
             //         // This is used if starting both front end and back end with the same command.
@@ -243,21 +238,22 @@ namespace StackUnderflow.Api
         /// </summary>
         private void UpdateApiErrorResponse(HttpContext context, Exception ex, ProblemDetails problemDetails)
         {
-            //if (ex is LimitNotMappable)
-            //{
-            //    problemDetails.Detail = "A general error occurred.";
-            //}
+            // if (ex is LimitNotMappable)
+            // {
+            //     problemDetails.Detail = "A general error occurred.";
+            // }
         }
 
         /// <summary>
         /// Define cases where a different log level is needed for logging exceptions.
         /// </summary>
         private LogLevel LogLevelHandler(HttpContext context, Exception ex) =>
-            //if (ex is Exception)
-            //{
-            //    return LogLevel.Critical;
-            //}
-            //return LogLevel.Error;
+
+            // if (ex is Exception)
+            // {
+            //     return LogLevel.Critical;
+            // }
+            // return LogLevel.Error;
             LogLevel.Critical;
     }
 }

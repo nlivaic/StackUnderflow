@@ -1,8 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using StackUnderflow.Api.Profiles;
 using StackUnderflow.Application.Votes.Commands;
 using StackUnderflow.Core.Enums;
-using System;
 
 namespace StackUnderflow.Api.Models.Votes
 {
@@ -17,7 +17,8 @@ namespace StackUnderflow.Api.Models.Votes
             public VoteCreateRequestProfile()
             {
                 CreateMap<VoteCreateRequest, CastVoteCommand>()
-                    .ForMember(dest => dest.CurrentUserId,
+                    .ForMember(
+                        dest => dest.CurrentUserId,
                         opts => opts.MapFrom<UserIdLoggedInResolver<VoteCreateRequest, CastVoteCommand>>());
             }
         }

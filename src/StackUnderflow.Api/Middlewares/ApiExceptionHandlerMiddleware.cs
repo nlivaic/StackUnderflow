@@ -40,6 +40,30 @@ namespace StackUnderflow.Api.Middlewares
             }
         }
 
+        private static async Task HandleBusinessException(HttpContext context, Exception ex)
+        {
+            var validationProblemDetails = ValidationProblemDetailsFactory
+                    .Create(context, new Dictionary<string, string[]>
+                    {
+                        { string.Empty, new string[] { ex.Message } }
+                    });
+            var result = JsonConvert.SerializeObject(validationProblemDetails);
+            context.Response.ContentType = "application/problem+json";
+            context.Response.StatusCode = context.Request.Method == HttpMethods.Delete
+                ? StatusCodes.Status409Conflict
+                : StatusCodes.Status422UnprocessableEntity;
+            await context.Response.WriteAsync(result);
+        }
+
+        private static async Task HandleEntityNotFoundException(HttpContext context, Exception ex)
+        {
+            var problemDetails = ValidationProblemDetailsFactory.CreateNotFoundProblemDetails(context, ex.Message);
+            var result = JsonConvert.SerializeObject(problemDetails);
+            context.Response.ContentType = "application/problem+json";
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            await context.Response.WriteAsync(result);
+        }
+
         private async void HandleError(HttpContext context, Exception ex)
         {
             if (ex is BusinessException)
@@ -54,30 +78,6 @@ namespace StackUnderflow.Api.Middlewares
             {
                 await HandleException(context, ex);
             }
-        }
-
-        private async Task HandleBusinessException(HttpContext context, Exception ex)
-        {
-            var validationProblemDetails = ValidationProblemDetailsFactory
-                    .Create(context, new Dictionary<string, string[]>
-                    {
-                        { "", new string[] { ex.Message } }
-                    });
-            var result = JsonConvert.SerializeObject(validationProblemDetails);
-            context.Response.ContentType = "application/problem+json";
-            context.Response.StatusCode = context.Request.Method == HttpMethods.Delete
-                ? StatusCodes.Status409Conflict
-                : StatusCodes.Status422UnprocessableEntity;
-            await context.Response.WriteAsync(result);
-        }
-
-        private async static Task HandleEntityNotFoundException(HttpContext context, Exception ex)
-        {
-            var problemDetails = ValidationProblemDetailsFactory.CreateNotFoundProblemDetails(context, ex.Message);
-            var result = JsonConvert.SerializeObject(problemDetails);
-            context.Response.ContentType = "application/problem+json";
-            context.Response.StatusCode = StatusCodes.Status404NotFound;
-            await context.Response.WriteAsync(result);
         }
 
         private async Task HandleException(HttpContext context, Exception ex)

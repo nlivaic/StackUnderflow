@@ -1,6 +1,6 @@
+﻿using System;
 using AutoMapper;
 using StackUnderflow.Application.Tags.Models;
-using System;
 
 namespace StackUnderflow.Api.Models
 {

@@ -131,6 +131,10 @@ dotnet_style_qualification_for_method = false:suggestion
 #prefer properties not to be prefaced with this. or Me. in Visual Basic
 dotnet_style_qualification_for_property = false:suggestion
 
+################################################################
+#       Custom rules
+################################################################
+
 # Instance fields are camelCase and start with _
 dotnet_naming_rule.instance_fields_should_be_camel_case.severity = suggestion
 dotnet_naming_rule.instance_fields_should_be_camel_case.symbols = instance_fields
@@ -141,5 +145,31 @@ dotnet_naming_symbols.instance_fields.applicable_kinds = field
 dotnet_naming_style.instance_field_style.capitalization = camel_case
 dotnet_naming_style.instance_field_style.required_prefix = _
 
-dotnet_diagnostic.IDE0027.severity = none
 dotnet_diagnostic.IDE0008.severity = none
+dotnet_diagnostic.IDE0027.severity = none
+# Modifiers are not ordered
+dotnet_diagnostic.IDE0036.severity = none
+dotnet_diagnostic.SA1200.severity = none
+# Use trailing comma in multi-line initializers
+dotnet_diagnostic.SA1413.severity = none
+# Elements should be separated by blank line
+dotnet_diagnostic.SA1516.severity = none
+dotnet_diagnostic.SA1633.severity = none
+
+################################################################
+#       Custom rules that might get changed
+################################################################
+
+# Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+# Field should not begin with an underscore
+dotnet_diagnostic.SA1309.severity = none
+# Closing brace should be followed by blank line
+dotnet_diagnostic.SA1513.severity = none
+# Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+# Elements return value should be documented
+dotnet_diagnostic.SA1615.severity = none
+
+
+

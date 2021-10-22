@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
-using StackUnderflow.Application.Sorting.Models;
-using MediatR;
 using StackUnderflow.Application.QuestionSummaries.Queries;
+using StackUnderflow.Application.Sorting.Models;
 
 namespace StackUnderflow.Api.Controllers
 {

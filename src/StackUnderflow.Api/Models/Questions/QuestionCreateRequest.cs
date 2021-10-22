@@ -1,10 +1,10 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using FluentValidation;
-using StackUnderflow.Core.Interfaces;
+using System.Linq;
 using AutoMapper;
+using FluentValidation;
 using StackUnderflow.Application.Questions.Models;
+using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Api.Models
 {

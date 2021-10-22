@@ -27,8 +27,7 @@ namespace StackUnderflow.Api
             {
                 Log.Information("Starting up StackUnderflow.");
                 CreateHostBuilder(args)
-                    .Build()
-                    //.Seed()
+                    .Build() // .Seed()
                     .Run();
             }
             catch (Exception ex)

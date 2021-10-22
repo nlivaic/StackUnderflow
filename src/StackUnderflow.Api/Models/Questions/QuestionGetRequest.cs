@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using StackUnderflow.Api.Profiles;
 using StackUnderflow.Application.Questions.Commands;
-using System;
 
 namespace StackUnderflow.Api.Models.Questions
 {
@@ -14,7 +14,8 @@ namespace StackUnderflow.Api.Models.Questions
             public QuestionGetRequestProfile()
             {
                 CreateMap<QuestionGetRequest, GetQuestionQuery>()
-                    .ForMember(dest => dest.CurrentUserId,
+                    .ForMember(
+                        dest => dest.CurrentUserId,
                         opts => opts.MapFrom<UserIdResolver<QuestionGetRequest, GetQuestionQuery>>());
             }
         }

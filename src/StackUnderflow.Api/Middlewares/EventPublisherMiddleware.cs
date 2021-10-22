@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using StackUnderflow.Common.Interfaces;
-using System.Threading.Tasks;
 
 namespace StackUnderflow.Api.Middlewares
 {

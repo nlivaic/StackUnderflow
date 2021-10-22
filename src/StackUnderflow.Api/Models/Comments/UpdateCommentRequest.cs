@@ -24,7 +24,6 @@ namespace StackUnderflow.Api.Models
                 RuleFor(x => x.Body)
                     .MinimumLength(limits.CommentBodyMinimumLength)
                     .WithMessage($"Comment's body must be at least {limits.CommentBodyMinimumLength} characters.");
-
             }
         }
     }

@@ -14,6 +14,5 @@ namespace StackUnderflow.Api.Models
                 CreateMap<AnswerUpdateRequest, AnswerEditModel>();
             }
         }
-
     }
 }
