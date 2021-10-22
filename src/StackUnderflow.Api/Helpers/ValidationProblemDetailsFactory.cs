@@ -47,7 +47,7 @@ namespace StackUnderflow.Api.Helpers
             return problemDetails;
         }
 
-        public static ProblemDetails CreateInternalServerErrorProblemDetails(HttpContext context, string message)
+        public static ProblemDetails CreateInternalServerErrorProblemDetails(HttpContext context)
         {
             var problemDetails = new ProblemDetails()
             {

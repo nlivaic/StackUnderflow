@@ -83,7 +83,7 @@ namespace StackUnderflow.Api.Middlewares
         private async Task HandleException(HttpContext context, Exception ex)
         {
             var innermostException = GetInnermostException(ex);
-            var problemDetail = ValidationProblemDetailsFactory.CreateInternalServerErrorProblemDetails(context, innermostException.Message);
+            var problemDetail = ValidationProblemDetailsFactory.CreateInternalServerErrorProblemDetails(context);
 
             _options.ApiErrorHandler?.Invoke(context, ex, problemDetail);
             var logLevel = _options.LogLevelHandler?.Invoke(context, ex) ?? LogLevel.Error;
