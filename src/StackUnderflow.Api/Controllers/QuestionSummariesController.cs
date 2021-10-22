@@ -8,9 +8,9 @@ using Microsoft.Extensions.Primitives;
 using StackUnderflow.Api.Constants;
 using StackUnderflow.Api.Models;
 using StackUnderflow.Api.ResourceParameters;
-using StackUnderflow.Common.Paging;
-using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Application.Sorting.Models;
+using MediatR;
+using StackUnderflow.Application.QuestionSummaries.Queries;
 
 namespace StackUnderflow.Api.Controllers
 {
@@ -18,14 +18,14 @@ namespace StackUnderflow.Api.Controllers
     [Route("api/[controller]")]
     public class QuestionSummariesController : ControllerBase
     {
-        private readonly IQuestionRepository _questionRepository;
+        private readonly ISender _sender;
         private readonly IMapper _mapper;
 
         public QuestionSummariesController(
-            IQuestionRepository questionRepository,
+            ISender sender,
             IMapper mapper)
         {
-            _questionRepository = questionRepository;
+            _sender = sender;
             _mapper = mapper;
         }
 
@@ -40,15 +40,14 @@ namespace StackUnderflow.Api.Controllers
         public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> GetAsync([FromQuery] QuestionSummaryResourceParameters questionSummaryResourceParameters)
         {
             var questionQueryParameters = _mapper.Map<QuestionQueryParameters>(questionSummaryResourceParameters);
-            var pagedSummaries = await _questionRepository.GetQuestionSummariesAsync(questionQueryParameters);
-            var pagingHeader = new Paging(
-                pagedSummaries.CurrentPage,
-                pagedSummaries.TotalPages,
-                pagedSummaries.TotalItems,
-                questionSummaryResourceParameters.PageSize > questionSummaryResourceParameters.MaximumPageSize
-                    ? questionSummaryResourceParameters.MaximumPageSize
-                    : questionSummaryResourceParameters.PageSize);
-            HttpContext.Response.Headers.Add(Headers.Pagination, new StringValues(JsonSerializer.Serialize(pagingHeader)));
+            var getQuestionSummariesQuery = new GetQuestionSummariesQuery
+            {
+                QuestionQueryParameters = questionQueryParameters
+            };
+            var pagedSummaries = await _sender.Send(getQuestionSummariesQuery);
+            HttpContext.Response.Headers.Add(
+                Headers.Pagination,
+                new StringValues(JsonSerializer.Serialize(pagedSummaries.Paging)));
             return Ok(_mapper.Map<List<QuestionSummaryGetViewModel>>(pagedSummaries.Items));
         }
     }
