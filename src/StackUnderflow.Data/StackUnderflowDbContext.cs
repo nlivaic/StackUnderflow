@@ -8,7 +8,8 @@ namespace StackUnderflow.Data
     {
         public StackUnderflowDbContext(DbContextOptions options)
             : base(options)
-        { }
+        {
+        }
 
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
@@ -17,6 +18,7 @@ namespace StackUnderflow.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<QuestionTag> QuestionTags { get; set; }
+
         // Made internal so as not to allow any clients to have access outside the repository/data assembly.
         internal DbSet<LimitsKeyValuePair> LimitsKeyValuePairs { get; set; }
 

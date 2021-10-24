@@ -12,15 +12,16 @@ namespace StackUnderflow.Data.Repositories
     {
         public VoteRepository(StackUnderflowDbContext context)
             : base(context)
-        { }
+        {
+        }
 
         public async Task<Vote> GetVoteAsync(Guid voteUserId, Guid voteId) =>
-            await _context
+            await Context
                 .Votes
                 .SingleOrDefaultAsync(v => v.UserId == voteUserId && v.Id == voteId);
 
         public async Task<Vote> GetVoteWithTargetAsync(Guid voteUserId, Guid voteId) =>
-            await _context
+            await Context
                 .Votes
                 .Include(v => v.Question)
                 .Include(v => v.Answer)
@@ -29,7 +30,7 @@ namespace StackUnderflow.Data.Repositories
 
         public async Task<int> GetVotesSumAsync(Guid targetId)
         {
-            return await _context
+            return await Context
                 .Votes
                 .Where(v => (v.QuestionId == null || v.QuestionId == targetId)
                     && (v.AnswerId == null || v.AnswerId == targetId)

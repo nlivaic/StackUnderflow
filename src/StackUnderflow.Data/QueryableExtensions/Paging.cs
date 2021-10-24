@@ -12,11 +12,18 @@ namespace StackUnderflow.Data.QueryableExtensions
     public static class Paging
     {
         /// <summary>
-        /// Project list from `TSource` to `TTarget` using AutoMapper.
+        /// Project list from TSource to TTarget using AutoMapper.
         /// </summary>
+        /// <typeparam name="TSource">Source data structure.</typeparam>
+        /// <typeparam name="TTarget">Target data structure, usually a Dto.</typeparam>
+        /// <param name="query">Query to attach paging to.</param>
+        /// <param name="mapper">Automapper instance.</param>
+        /// <param name="pageNumber">Which page to project.</param>
+        /// <param name="pageSize">Size of the projected page.</param>
+        /// <returns>A paged projection of TTarget.</returns>
         public static async Task<PagedList<TTarget>> ApplyPagingAsync<TSource, TTarget>(
             this IQueryable<TSource> query,
-            IMapper _mapper,
+            IMapper mapper,
             int pageNumber,
             int pageSize)
         {
@@ -24,15 +31,22 @@ namespace StackUnderflow.Data.QueryableExtensions
             var elements = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ProjectTo<TTarget>(_mapper.ConfigurationProvider)
+                .ProjectTo<TTarget>(mapper.ConfigurationProvider)
                 .ToListAsync();
             return new PagedList<TTarget>(elements, pageNumber, totalItems, pageSize);
         }
 
         /// <summary>
-        /// Project list from `TSource` to `TTarget`.
+        /// Project list from TSource to TTarget.
         /// Provide projection delegate.
         /// </summary>
+        /// <typeparam name="TSource">Source data structure.</typeparam>
+        /// <typeparam name="TTarget">Target data structure, usually a Dto.</typeparam>
+        /// <param name="query">Query to attach paging to.</param>
+        /// <param name="projection">A delegate describing the projection.</param>
+        /// <param name="pageNumber">Which page to project.</param>
+        /// <param name="pageSize">Size of the projected page.</param>
+        /// <returns>A paged projection of TTarget.</returns>
         public static async Task<PagedList<TTarget>> ApplyPagingAsync<TSource, TTarget>(
             this IQueryable<TSource> query,
             Expression<Func<TSource, TTarget>> projection,

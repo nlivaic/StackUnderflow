@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using StackUnderflow.Common.Base;
 using StackUnderflow.Application.Sorting.Models;
+using StackUnderflow.Common.Base;
 
 namespace StackUnderflow.Data.QueryableExtensions
 {

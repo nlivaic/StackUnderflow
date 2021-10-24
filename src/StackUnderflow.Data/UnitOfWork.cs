@@ -15,7 +15,9 @@ namespace StackUnderflow.Data
         public async Task<int> SaveAsync()
         {
             if (_dbContext.ChangeTracker.HasChanges())
+            {
                 return await _dbContext.SaveChangesAsync();
+            }
             return 0;
         }
     }

@@ -1,17 +1,17 @@
 using System;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using StackUnderflow.Core.Entities;
-using StackUnderflow.Data.QueryableExtensions;
-using System.Linq.Dynamic.Core;
-using StackUnderflow.Common.Paging;
-using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Application.Answers.Models;
 using StackUnderflow.Application.Comments.Models;
 using StackUnderflow.Application.Sorting.Models;
+using StackUnderflow.Common.Paging;
+using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Data.QueryableExtensions;
 
 namespace StackUnderflow.Data.Repositories
 {
@@ -26,7 +26,7 @@ namespace StackUnderflow.Data.Repositories
         }
 
         public async Task<AnswerGetModel> GetAnswerWithUserAsync(Guid questionId, Guid answerId) =>
-            await _context
+            await Context
                 .Answers
                 .Include(a => a.User)
                 .Where(a => a.QuestionId == questionId && a.Id == answerId)
@@ -35,7 +35,7 @@ namespace StackUnderflow.Data.Repositories
 
         public async Task<PagedList<AnswerGetModel>> GetAnswersWithUserAsync(Guid questionId, AnswerQueryParameters queryParameters)
         {
-            return await _context
+            return await Context
                 .Answers
                 .Include(a => a.User)
                 .Where(a => a.QuestionId == questionId)
@@ -45,21 +45,21 @@ namespace StackUnderflow.Data.Repositories
         }
 
         public async Task<CommentForAnswerGetModel> GetCommentModelAsync(Guid questionId, Guid answerId, Guid commentId) =>
-            await _context
+            await Context
                 .Comments
                 .Where(c => c.ParentQuestionId == questionId && c.ParentAnswerId == answerId && c.Id == commentId)
                 .ProjectTo<CommentForAnswerGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
         public async Task<Answer> GetAnswerWithCommentsAsync(Guid questionId, Guid answerId) =>
-            await _context
+            await Context
                 .Answers
                 .Include(q => q.Comments)
                 .Where(a => a.Id == answerId && a.QuestionId == questionId)
                 .SingleOrDefaultAsync();
 
         public async Task<Answer> GetAnswerWithCommentsAndVotesAsync(Guid questionId, Guid answerId) =>
-            await _context
+            await Context
                 .Answers
                 .Include(a => a.Votes.Take(1))
                 .Include(q => q.Comments)

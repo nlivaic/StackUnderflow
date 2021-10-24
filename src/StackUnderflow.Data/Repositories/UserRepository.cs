@@ -24,7 +24,7 @@ namespace StackUnderflow.Data.Repositories
         }
 
         public async Task<T> GetUser<T>(Guid userId) =>
-            await _context
+            await Context
                 .Users
                 .Include(u => u.Roles)
                 .Where(u => u.Id == userId)
@@ -32,7 +32,7 @@ namespace StackUnderflow.Data.Repositories
                 .SingleOrDefaultAsync();
 
         public async Task<bool> IsModeratorAsync(Guid userId) =>
-            await _context
+            await Context
                 .Users
                 .AnyAsync(u => u.Id == userId && u.Roles.Any(ur => ur.Role == Role.Moderator));
 
@@ -41,10 +41,12 @@ namespace StackUnderflow.Data.Repositories
             var userIdParam = new NpgsqlParameter("user_id", NpgsqlDbType.Uuid) { Value = userId };
             var pointAmountParam = new NpgsqlParameter("points_amount", NpgsqlDbType.Integer) { Value = pointAmount };
 
-            await _context.Database.ExecuteSqlRawAsync(
+            await Context.Database.ExecuteSqlRawAsync(
                 @"UPDATE ""Users""" +
                 @"   SET ""Points"" = (SELECT ""Points"" FROM ""Users"" WHERE ""Id"" = @user_id) + @points_amount" +
-                @" WHERE ""Id"" = @user_id", userIdParam, pointAmountParam);
+                @" WHERE ""Id"" = @user_id",
+                userIdParam,
+                pointAmountParam);
         }
     }
 }

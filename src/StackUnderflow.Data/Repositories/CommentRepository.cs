@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using StackUnderflow.Core.Entities;
-using StackUnderflow.Common.Extensions;
-using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Application.Comments.Models;
+using StackUnderflow.Common.Extensions;
+using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Data.Repositories
 {
@@ -24,14 +24,14 @@ namespace StackUnderflow.Data.Repositories
         }
 
         public async Task<IEnumerable<T>> GetCommentsForQuestionAsync<T>(Guid questionId) =>
-            await _context
+            await Context
                 .Comments
                 .Where(c => c.ParentQuestionId == questionId)
                 .Projector<T>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
         public async Task<CommentForAnswerGetModel> GetCommentForAnswerAsync(Guid answerId, Guid commentId) =>
-            await _context
+            await Context
                 .Comments
                 .Include(c => c.ParentAnswer)
                 .ThenInclude(a => a.Question)
@@ -53,28 +53,21 @@ namespace StackUnderflow.Data.Repositories
                 .ProjectTo<CommentForAnswerGetModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
-        private IQueryable<Comment> CommentsForAnswerQuery(Expression<Func<Comment, bool>> predicate) =>
-            _context
-                .Comments
-                .Where(predicate)
-                .OrderBy(c => c.ParentAnswerId)
-                .ThenBy(c => c.OrderNumber);
-
         public async Task<CommentForQuestionGetModel> GetCommentModelAsync(Guid questionId, Guid commentId) =>
-            await _context
+            await Context
                 .Comments
                 .Where(c => c.ParentQuestionId == questionId && c.Id == commentId)
                 .ProjectTo<CommentForQuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
 
         public async Task<Comment> GetCommentWithUserAsync(Guid commentId) =>
-            await _context
+            await Context
                 .Comments
                 .Include(c => c.User)
                 .SingleOrDefaultAsync(c => c.Id == commentId);
 
         public async Task<Comment> GetCommentWithAnswerAsync(Guid commentId) =>
-            await _context
+            await Context
                 .Comments
                 .Include(c => c.ParentAnswer)
                 .Include(c => c.User)
@@ -82,11 +75,18 @@ namespace StackUnderflow.Data.Repositories
                 .SingleOrDefaultAsync(c => c.Id == commentId);
 
         public async Task<Comment> GetCommentWithQuestionAsync(Guid commentId) =>
-            await _context
+            await Context
                 .Comments
                 .Include(c => c.ParentQuestion)
                 .Include(c => c.User)
                 .ThenInclude(u => u.Roles)
                 .SingleOrDefaultAsync(c => c.Id == commentId);
+
+        private IQueryable<Comment> CommentsForAnswerQuery(Expression<Func<Comment, bool>> predicate) =>
+            Context
+                .Comments
+                .Where(predicate)
+                .OrderBy(c => c.ParentAnswerId)
+                .ThenBy(c => c.OrderNumber);
     }
 }

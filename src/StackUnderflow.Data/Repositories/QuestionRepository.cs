@@ -4,12 +4,12 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using StackUnderflow.Core.Entities;
-using StackUnderflow.Data.QueryableExtensions;
-using StackUnderflow.Common.Paging;
-using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Application.Questions.Models;
 using StackUnderflow.Application.Sorting.Models;
+using StackUnderflow.Common.Paging;
+using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Data.QueryableExtensions;
 
 namespace StackUnderflow.Data.Repositories
 {
@@ -25,7 +25,7 @@ namespace StackUnderflow.Data.Repositories
 
         public async Task<QuestionGetModel> GetQuestionWithUserAndTagsAsync(Guid id, Guid? currentUserId)
         {
-            var q = await _context
+            var q = await Context
                 .Questions
                 .Where(q => q.Id == id)
                 .Include(q => q.User)
@@ -34,17 +34,18 @@ namespace StackUnderflow.Data.Repositories
                 .ThenInclude(qt => qt.Tag)
                 .Include(q => q.Votes.Where(v => v.UserId == currentUserId))
                 .AsNoTracking()
+
                 // Below line commented out because it was messing up
                 // votes - all votes would be included no matter
                 // the user id value (or lack of).
-                //.ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
+                // .ProjectTo<QuestionGetModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
             return _mapper.Map<QuestionGetModel>(q);
         }
 
         public async Task<PagedList<QuestionSummaryGetModel>> GetQuestionSummariesAsync(QuestionQueryParameters questionQueryParameters)
         {
-            var query = _context
+            var query = Context
                 .Questions as IQueryable<Question>;
             if (questionQueryParameters.Tags.Any())
             {
@@ -62,6 +63,7 @@ namespace StackUnderflow.Data.Repositories
                     q.Body.ToLower().Contains(searchQueryLowercase));
             }
             return await query
+
                 // .OrderBy(q => q.Id)           // @nl: ordering on Guid. Think this through!
                 .Include(q => q.User)
                 .Include(q => q.QuestionTags)
@@ -72,22 +74,21 @@ namespace StackUnderflow.Data.Repositories
         }
 
         public async Task<Question> GetQuestionWithAnswersAsync(Guid questionId) =>
-            await _context
+            await Context
                 .Questions
                 .Where(q => q.Id == questionId)
                 .Include(q => q.Answers)
                 .SingleOrDefaultAsync();
 
-
         public async Task<Question> GetQuestionWithAnswerAsync(Guid questionId, Guid answerId) =>
-            await _context
+            await Context
                 .Questions
                 .Include(q => q.Answers.Where(a => a.Id == answerId))
                 .Where(q => q.Id == questionId)
                 .SingleOrDefaultAsync();
 
         public async Task<Question> GetQuestionWithAnswersAndCommentsAsync(Guid questionId) =>
-            await _context
+            await Context
                 .Questions
                 .Where(q => q.Id == questionId)
                 .Include(q => q.Answers)
@@ -95,14 +96,14 @@ namespace StackUnderflow.Data.Repositories
                 .SingleOrDefaultAsync();
 
         public async Task<Question> GetQuestionWithCommentsAsync(Guid questionId) =>
-            await _context
+            await Context
                 .Questions
                 .Include(q => q.Comments)
                 .Where(q => q.Id == questionId)
                 .SingleOrDefaultAsync();
 
         public async Task<Question> GetQuestionWithTagsAsync(Guid questionId) =>
-            await _context
+            await Context
                 .Questions
                 .Where(q => q.Id == questionId)
                 .Include(q => q.QuestionTags)
