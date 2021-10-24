@@ -1,14 +1,27 @@
-using StackUnderflow.Common.Base;
-using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StackUnderflow.Common.Base;
+using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Core.Entities
 {
     public class Question : BaseEntity<Guid>, IVoteable, ICommentable, IOwneable
     {
+        private readonly List<Answer> _answers = new ();
+        private readonly Voteable _voteable;
+        private readonly Commentable _commentable;
+        private readonly Owneable _owneable;
+        private List<QuestionTag> _questionTags = new ();
+
+        private Question()
+        {
+            _commentable = new Commentable();
+            _voteable = new Voteable();
+            _owneable = new Owneable();
+        }
+
         public Guid UserId
         {
             get => _owneable.UserId;
@@ -34,17 +47,25 @@ namespace StackUnderflow.Core.Entities
         public IEnumerable<QuestionTag> QuestionTags => _questionTags;
         public IEnumerable<Vote> Votes => _voteable.Votes;
 
-        private List<Answer> _answers = new List<Answer>();
-        private List<QuestionTag> _questionTags = new List<QuestionTag>();
-        private Voteable _voteable;
-        private Commentable _commentable;
-        private Owneable _owneable;
-
-        private Question()
+        public static Question Create(
+            User user,
+            string title,
+            string body,
+            IEnumerable<Tag> tags,
+            BaseLimits limits)
         {
-            _commentable = new Commentable();
-            _voteable = new Voteable();
-            _owneable = new Owneable();
+            var question = new Question
+            {
+                Id = Guid.NewGuid(),
+                User = user
+            };
+            Validate(user, title, body, tags, limits);
+            question.Title = title;
+            question.Body = body;
+            question.HasAcceptedAnswer = false;
+            question.CreatedOn = DateTime.UtcNow;
+            question._questionTags = new List<QuestionTag>(tags.Select(t => new QuestionTag { Question = question, Tag = t }));
+            return question;
         }
 
         public void Edit(User user, string title, string body, IEnumerable<Tag> tags, BaseLimits limits)
@@ -70,6 +91,7 @@ namespace StackUnderflow.Core.Entities
                 throw new BusinessException($"User '{answer.User.Id}' has already submitted an answer.");
             }
             _answers.Add(answer);
+
             // @nl: Raise an event!
         }
 
@@ -77,11 +99,11 @@ namespace StackUnderflow.Core.Entities
         {
             if (_answers.Find(a => a.Id == answer.Id) == null)
             {
-                throw new BusinessException($"Answer '{answer.Id}' not associated with question '{this.Id}'.");
+                throw new BusinessException($"Answer '{answer.Id}' not associated with question '{Id}'.");
             }
             if (HasAcceptedAnswer)
             {
-                throw new BusinessException($"Question '{this.Id}' already has an accepted answer.");
+                throw new BusinessException($"Question '{Id}' already has an accepted answer.");
             }
             if (UserId != acceptingUserId)
             {
@@ -95,58 +117,21 @@ namespace StackUnderflow.Core.Entities
         {
             if (_answers.Find(a => a.Id == answer.Id) == null)
             {
-                throw new BusinessException($"Answer '{answer.Id}' not associated with question '{this.Id}'.");
+                throw new BusinessException($"Answer '{answer.Id}' not associated with question '{Id}'.");
             }
             if (answer.AcceptedOn + limits.AcceptAnswerDeadline < DateTime.UtcNow)
             {
-                throw new BusinessException($"You cannot undo accepting the answer '{this.Id}' since more than '{limits.AcceptAnswerDeadline.Minutes}' minutes passed.");
+                throw new BusinessException($"You cannot undo accepting the answer '{Id}' since more than '{limits.AcceptAnswerDeadline.Minutes}' minutes passed.");
             }
             answer.UndoAcceptedAnswer();
             HasAcceptedAnswer = false;
         }
 
-        public void Comment(Comment comment)
-        {
-            _commentable.Comment(comment);
-        }
+        public void Comment(Comment comment) => _commentable.Comment(comment);
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 
         public void RevokeVote(Vote vote, BaseLimits limits) => _voteable.RevokeVote(vote, limits);
-
-        public static Question Create(User user,
-            string title,
-            string body,
-            IEnumerable<Tag> tags,
-            BaseLimits limits)
-        {
-            var question = new Question();
-            question.Id = Guid.NewGuid();
-            question.User = user;
-            Validate(user, title, body, tags, limits);
-            question.Title = title;
-            question.Body = body;
-            question.HasAcceptedAnswer = false;
-            question.CreatedOn = DateTime.UtcNow;
-            question._questionTags = new List<QuestionTag>(tags.Select(t => new QuestionTag { Question = question, Tag = t }));
-            return question;
-        }
-
-        private static void Validate(User user, string title, string body, IEnumerable<Tag> tags, BaseLimits limits)
-        {
-            if (user.Id == default(Guid))
-            {
-                throw new BusinessException("User id cannot be default Guid.");
-            }
-            if (body == null || body.Length < limits.QuestionBodyMinimumLength)
-            {
-                throw new BusinessException($"Answer body must be at least '{limits.QuestionBodyMinimumLength}' characters.");
-            }
-            if (string.IsNullOrWhiteSpace(title)) throw new BusinessException("Question must have a title.");
-            if (string.IsNullOrWhiteSpace(body)) throw new BusinessException("Question must have a body.");
-            var tagCount = tags.Count();
-            if (tags == null || tagCount < limits.TagMinimumCount || tagCount > limits.TagMaximumCount) throw new BusinessException("Question must be tagged with at least one and no more than five tags.");
-        }
 
         public bool CanBeEditedBy(User editingUser) =>
             _owneable.CanBeEditedBy(editingUser);
@@ -166,6 +151,31 @@ namespace StackUnderflow.Core.Entities
                 throw new BusinessException($"Cannot delete because associated votes exist on at least one comment.");
             }
             return true;
+        }
+
+        private static void Validate(User user, string title, string body, IEnumerable<Tag> tags, BaseLimits limits)
+        {
+            if (user.Id == default(Guid))
+            {
+                throw new BusinessException("User id cannot be default Guid.");
+            }
+            if (body == null || body.Length < limits.QuestionBodyMinimumLength)
+            {
+                throw new BusinessException($"Answer body must be at least '{limits.QuestionBodyMinimumLength}' characters.");
+            }
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                throw new BusinessException("Question must have a title.");
+            }
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                throw new BusinessException("Question must have a body.");
+            }
+            var tagCount = tags.Count();
+            if (tags == null || tagCount < limits.TagMinimumCount || tagCount > limits.TagMaximumCount)
+            {
+                throw new BusinessException("Question must be tagged with at least one and no more than five tags.");
+            }
         }
     }
 }

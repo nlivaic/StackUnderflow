@@ -2,17 +2,17 @@
 {
     public class VoteTargets
     {
-        public string Name { get; private set; }
-        public VoteTargetEnum Target { get; set; }
-
         private VoteTargets(string name, VoteTargetEnum target)
         {
             Name = name;
             Target = target;
         }
 
-        public static VoteTargets Question => new VoteTargets("Question", VoteTargetEnum.Question);
-        public static VoteTargets Answer => new VoteTargets("Answer", VoteTargetEnum.Answer);
-        public static VoteTargets Comment => new VoteTargets("Comment", VoteTargetEnum.Comment);
+        public static VoteTargets Answer => new ("Answer", VoteTargetEnum.Answer);
+        public static VoteTargets Comment => new ("Comment", VoteTargetEnum.Comment);
+
+        public static VoteTargets Question => new ("Question", VoteTargetEnum.Question);
+        public string Name { get; private set; }
+        public VoteTargetEnum Target { get; set; }
     }
 }

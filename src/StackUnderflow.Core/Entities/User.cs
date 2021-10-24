@@ -1,16 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using StackUnderflow.Common.Base;
 using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Core.Entities
 {
     public class User : BaseEntity<Guid>
     {
+        private readonly List<UserRole> _roles = new ();
+
+        private User()
+        {
+        }
         public string Username { get; private set; }
         public string Email { get; private set; }
         public Uri WebsiteUrl { get; private set; }
@@ -23,10 +26,23 @@ namespace StackUnderflow.Core.Entities
         public IEnumerable<Answer> Answers { get; private set; } = new List<Answer>();
         public IEnumerable<Comment> Comments { get; private set; } = new List<Comment>();
 
-        private List<UserRole> _roles = new List<UserRole>();
-
-        private User()
+        public static User Create(BaseLimits limits, Guid id, string username, string email = null, string websiteUrl = null, string aboutMe = null)
         {
+            Validate(websiteUrl, aboutMe, limits);
+            var user = new User
+            {
+                Id = id,
+                Username = username,
+                Email = email,
+                WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
+                ? null
+                : new Uri(websiteUrl),
+                AboutMe = aboutMe,
+                CreatedOn = DateTime.UtcNow
+            };
+            user.SeenNow();
+            user.AssignRole(Role.User);
+            return user;
         }
 
         public void Edit(string websiteUrl, string aboutMe, BaseLimits limits)
@@ -40,31 +56,11 @@ namespace StackUnderflow.Core.Entities
             LastSeen = DateTime.UtcNow;
         }
 
-        /// <summary>
-        /// Provide Id based on token service's user identifier.
-        /// </summary>
-        public static User Create(BaseLimits limits, Guid id, string username, string email = null, string websiteUrl = null, string aboutMe = null)
-        {
-            Validate(websiteUrl, aboutMe, limits);
-            User user = new User();
-            user.Id = id;
-            user.Username = username;
-            user.Email = email;
-            user.WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
-                ? null
-                : new Uri(websiteUrl);
-            user.AboutMe = aboutMe;
-            user.CreatedOn = DateTime.UtcNow;
-            user.SeenNow();
-            user.AssignRole(Role.User);
-            return user;
-        }
-
         public void AssignRole(Role role)
         {
             if (_roles.Any(r => r.Role == role))
             {
-                throw new BusinessException($"Role {role.ToString()} already assigned to user.");
+                throw new BusinessException($"Role {role} already assigned to user.");
             }
             _roles.Add(new UserRole(Id, role));
         }

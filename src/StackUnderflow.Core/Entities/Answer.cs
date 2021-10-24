@@ -1,14 +1,25 @@
-using StackUnderflow.Common.Base;
-using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StackUnderflow.Common.Base;
+using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Core.Entities
 {
     public class Answer : BaseEntity<Guid>, IVoteable, ICommentable, IOwneable
     {
+        private readonly Voteable _voteable;
+        private readonly Commentable _commentable;
+        private readonly Owneable _owneable;
+
+        private Answer()
+        {
+            _commentable = new Commentable();
+            _voteable = new Voteable();
+            _owneable = new Owneable();
+        }
+
         public Guid UserId
         {
             get => _owneable.UserId;
@@ -34,15 +45,21 @@ namespace StackUnderflow.Core.Entities
         public IEnumerable<Comment> Comments => _commentable.Comments;
         public IEnumerable<Vote> Votes => _voteable.Votes;
 
-        private readonly Voteable _voteable;
-        private readonly Commentable _commentable;
-        private readonly Owneable _owneable;
-
-        private Answer()
+        public static Answer Create(
+            User user,
+            string body,
+            BaseLimits limits)
         {
-            _commentable = new Commentable();
-            _voteable = new Voteable();
-            _owneable = new Owneable();
+            Validate(user, body, limits);
+            var answer = new Answer
+            {
+                Id = Guid.NewGuid(),
+                User = user,
+                Body = body,
+                IsAcceptedAnswer = false,
+                CreatedOn = DateTime.UtcNow
+            };
+            return answer;
         }
 
         public void AcceptedAnswer()
@@ -78,39 +95,6 @@ namespace StackUnderflow.Core.Entities
 
         public void RevokeVote(Vote vote, BaseLimits limits) => _voteable.RevokeVote(vote, limits);
 
-        public static Answer Create(
-            User user,
-            string body,
-            BaseLimits limits)
-        {
-            Validate(user, body, limits);
-            var answer = new Answer
-            {
-                Id = Guid.NewGuid(),
-                User = user,
-                Body = body,
-                IsAcceptedAnswer = false,
-                CreatedOn = DateTime.UtcNow
-            };
-            return answer;
-        }
-
-        private static void Validate(User user, string body, BaseLimits limits)
-        {
-            if (user.Id == default(Guid))       // @nl: glupo!!!
-            {
-                throw new BusinessException("User id cannot be default Guid.");
-            }
-            if (string.IsNullOrWhiteSpace(body) || body.Length < limits.AnswerBodyMinimumLength)
-            {
-                throw new BusinessException($"Answer body must be at least '{limits.AnswerBodyMinimumLength}' characters.");
-            }
-            if (string.IsNullOrWhiteSpace(body))
-            {
-                throw new BusinessException("Question must have a body.");
-            }
-        }
-
         public bool CanBeEditedBy(User editingUser) =>
             _owneable.CanBeEditedBy(editingUser);
 
@@ -129,6 +113,23 @@ namespace StackUnderflow.Core.Entities
                 throw new BusinessException($"Cannot delete because associated votes exist on at least one comment.");
             }
             return true;
+        }
+
+        private static void Validate(User user, string body, BaseLimits limits)
+        {
+            // @nl: glupo!!!
+            if (user.Id == default(Guid))
+            {
+                throw new BusinessException("User id cannot be default Guid.");
+            }
+            if (string.IsNullOrWhiteSpace(body) || body.Length < limits.AnswerBodyMinimumLength)
+            {
+                throw new BusinessException($"Answer body must be at least '{limits.AnswerBodyMinimumLength}' characters.");
+            }
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                throw new BusinessException("Question must have a body.");
+            }
         }
     }
 }

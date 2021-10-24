@@ -9,8 +9,9 @@ namespace StackUnderflow.Core.Entities
 {
     public class Voteable : IVoteable
     {
+        private readonly List<Vote> _votes = new ();
+
         public IEnumerable<Vote> Votes => _votes;
-        private List<Vote> _votes = new List<Vote>();
 
         public void ApplyVote(Vote vote)
         {
@@ -20,6 +21,7 @@ namespace StackUnderflow.Core.Entities
                 throw new BusinessException($"User '{vote.UserId}' has already voted on {vote.Target} '{vote.TargetId}'.");
             }
             _votes.Add(vote);
+
             // @nl: Tell (q/a/c) target owner that they received an upvote/downvote (use inbox).
             // @nl: initiate point recalculation for (q/a/c) target owner.
         }
@@ -34,6 +36,7 @@ namespace StackUnderflow.Core.Entities
             {
                 throw new BusinessException($"{vote.Target.Name} with id '{vote.TargetId}' cannot be edited since more than '{limits.AnswerEditDeadline.Minutes}' minutes passed.");
             }
+
             // @nl: Tell (q/a/c) target owner that they received an upvote/downvote (use inbox).
             // @nl: initiate point recalculation for (q/a/c) target owner.
         }

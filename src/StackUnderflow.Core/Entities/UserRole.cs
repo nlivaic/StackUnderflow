@@ -5,13 +5,13 @@ namespace StackUnderflow.Core.Entities
 {
     public class UserRole : BaseEntity<int>
     {
-        public Guid UserId { get; private set; }
-        public Role Role { get; private set; }
-
         public UserRole(Guid userId, Role role)
         {
             UserId = userId;
             Role = role;
         }
+
+        public Guid UserId { get; private set; }
+        public Role Role { get; private set; }
     }
 }

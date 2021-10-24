@@ -4,10 +4,6 @@ namespace StackUnderflow.Core.Entities
 {
     public class Limits : BaseLimits
     {
-        private Limits()
-        {
-        }
-
         public Limits(ILimitsService limitsService)
         {
             var limits = limitsService.Get().Result;
@@ -27,8 +23,11 @@ namespace StackUnderflow.Core.Entities
             UpvotePoints = limits.UpvotePoints;
             DownvotePoints = limits.DownvotePoints;
         }
+        private Limits()
+        {
+        }
 
         public static Limits Create() =>
-            new Limits();
+            new ();
     }
 }

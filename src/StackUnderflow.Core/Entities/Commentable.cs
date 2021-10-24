@@ -7,9 +7,9 @@ namespace StackUnderflow.Core.Entities
 {
     public class Commentable : ICommentable
     {
-        public IEnumerable<Comment> Comments => _comments;
+        private readonly List<Comment> _comments = new ();
 
-        private List<Comment> _comments = new List<Comment>();
+        public IEnumerable<Comment> Comments => _comments;
 
         public void Comment(Comment comment)
         {

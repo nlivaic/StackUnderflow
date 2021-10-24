@@ -9,6 +9,6 @@ namespace StackUnderflow.Core.Entities
         public Guid UserId { get; set; }
         public User User { get; set; }
         public bool CanBeEditedBy(User editingUser) =>
-            (UserId == editingUser.Id || editingUser.Roles.Any(r => r.Role == Role.Moderator));
+            UserId == editingUser.Id || editingUser.Roles.Any(r => r.Role == Role.Moderator);
     }
 }
