@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using StackUnderflow.Application.Pipelines;
 using StackUnderflow.Application.PointServices;
 using StackUnderflow.Application.Tags;
 using StackUnderflow.Application.Users;
@@ -18,6 +19,9 @@ namespace StackUnderflow.Application
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILimitsService, LimitsService>();
             services.AddScoped<ITagService, TagService>();
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipeline<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(EventDispatcherPipeline<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkPipeline<,>));
 
             services.AddAutoMapper(typeof(ServiceCollectionExtensions).Assembly);
         }

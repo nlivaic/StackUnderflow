@@ -208,9 +208,6 @@ namespace StackUnderflow.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMiddleware<EventPublisherMiddleware>();
-            app.UseMiddleware<UnitOfWorkMiddleware>();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
