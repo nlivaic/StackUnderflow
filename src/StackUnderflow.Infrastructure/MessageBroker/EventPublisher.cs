@@ -1,8 +1,8 @@
-﻿using MassTransit;
-using StackUnderflow.Common.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MassTransit;
+using StackUnderflow.Common.Interfaces;
 
 namespace StackUnderflow.Infrastructure.MessageBroker
 {
@@ -17,7 +17,9 @@ namespace StackUnderflow.Infrastructure.MessageBroker
             _eventActionsToPublish = new List<Func<EventPublisher, Task>>();
         }
 
-        public void RegisterEvent<T>(object newEvent) where T : class =>
+        public void RegisterEvent<T>(object newEvent)
+            where T : class
+            =>
             _eventActionsToPublish.Add(async eventPublisher => await eventPublisher.PublishEvent<T>(newEvent));
 
         public async Task PublishAll()
@@ -28,7 +30,9 @@ namespace StackUnderflow.Infrastructure.MessageBroker
             }
         }
 
-        private async Task PublishEvent<T>(object eventToPublish) where T : class =>
+        private async Task PublishEvent<T>(object eventToPublish)
+            where T : class
+            =>
             await _publishEndpoint.Publish<T>(eventToPublish);
     }
 }

@@ -1,7 +1,7 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using System;
 using System.Linq;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace StackUnderflow.Common.Extensions
 {
@@ -9,17 +9,18 @@ namespace StackUnderflow.Common.Extensions
     {
         /// <summary>
         /// Provides an opportunity to project to different types.
-        /// If `T` is an entity (inheriting from `BaseEntity<Guid>`) then pass through.
-        /// If `T` is not an entity then map to `T˙ using AutoMapper.
+        /// If T is an entity (inheriting from BaseEntity of Guid) then pass through.
+        /// If T is not an entity then map to T using AutoMapper.
         /// </summary>
-        /// <param name="query"></param>
-        /// <param name="provider"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">Resulting type.</typeparam>
+        /// <param name="query">Query to project from.</param>
+        /// <param name="provider">Definition of class to project into.</param>
+        /// <returns>Query with projection.</returns>
         public static IQueryable<T> Projector<T>(this IQueryable query, IConfigurationProvider provider)
         {
             var type = typeof(T);
-            while (type != typeof(object)) {
+            while (type != typeof(object))
+            {
                 if (type == typeof(Common.Base.BaseEntity<Guid>))
                 {
                     return query.Cast<T>();

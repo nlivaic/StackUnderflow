@@ -6,7 +6,8 @@ using StackUnderflow.Common.Base;
 
 namespace StackUnderflow.Common.Interfaces
 {
-    public interface IRepository<T> where T : BaseEntity<Guid>
+    public interface IRepository<T>
+        where T : BaseEntity<Guid>
     {
         Task<T> GetByIdAsync(Guid id, bool isTracked = true);
         Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, bool isTracked = true);

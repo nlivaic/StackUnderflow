@@ -9,9 +9,9 @@ namespace StackUnderflow.WorkerServices.PointService
     /// I have not thought through a proper error handling strategy.
     /// Make VoteCastConsumer throw in order to kick error handling off.
     /// </summary>
-    class VoteCastFaultConsumer : IConsumer<Fault<VoteCast>>
+    class VoteCastFaultConsumer : IConsumer<Fault<IVoteCast>>
     {
-        public Task Consume(ConsumeContext<Fault<VoteCast>> context)
+        public Task Consume(ConsumeContext<Fault<IVoteCast>> context)
         {
             return Task.CompletedTask;
         }

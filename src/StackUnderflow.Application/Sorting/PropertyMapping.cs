@@ -5,7 +5,7 @@ namespace StackUnderflow.Application.Sorting
 {
     public class PropertyMapping<TSource, TTarget> : IPropertyMapping
     {
-        private Dictionary<string, PropertyMappingValue> _propertyMappingValues
+        private readonly Dictionary<string, PropertyMappingValue> _propertyMappingValues
             = new Dictionary<string, PropertyMappingValue>(StringComparer.OrdinalIgnoreCase);
 
         public PropertyMapping<TSource, TTarget> Add(bool areTargetPropertiesInReversedOrder, string sourcePropertyName, params string[] targetPropertyNames)
@@ -16,10 +16,8 @@ namespace StackUnderflow.Application.Sorting
             return this;
         }
 
-        public PropertyMapping<TSource, TTarget> Add(string sourcePropertyName, params string[] targetPropertyNames)
-        {
-            return Add(false, sourcePropertyName, targetPropertyNames);
-        }
+        public PropertyMapping<TSource, TTarget> Add(string sourcePropertyName, params string[] targetPropertyNames) =>
+            Add(false, sourcePropertyName, targetPropertyNames);
 
         public PropertyMappingValue GetMapping(string sourcePropertyName)
         {
@@ -32,7 +30,7 @@ namespace StackUnderflow.Application.Sorting
         public IEnumerable<PropertyMappingValue> GetMappings(params string[] sourcePropertyNames)
         {
             PropertyMappingValue propertyMappingValue = null;
-            List<PropertyMappingValue> propertyMappingValues = new List<PropertyMappingValue>();
+            var propertyMappingValues = new List<PropertyMappingValue>();
             Array.ForEach(sourcePropertyNames, sourcePropertyName =>
             {
                 _propertyMappingValues.TryGetValue(sourcePropertyName, out propertyMappingValue);

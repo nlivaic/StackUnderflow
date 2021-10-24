@@ -2,11 +2,6 @@ namespace StackUnderflow.Common.Paging
 {
     public class Paging
     {
-        public int CurrentPage { get; set; }
-        public int TotalPages { get; set; }
-        public int TotaItems { get; }
-        public int CurrentPageSize { get; set; }
-
         public Paging(int currentPage, int totalPages, int totaItems, int currentPageSize)
         {
             CurrentPage = currentPage;
@@ -14,5 +9,10 @@ namespace StackUnderflow.Common.Paging
             TotaItems = totaItems;
             CurrentPageSize = currentPageSize;
         }
+
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+        public int TotaItems { get; }
+        public int CurrentPageSize { get; set; }
     }
 }

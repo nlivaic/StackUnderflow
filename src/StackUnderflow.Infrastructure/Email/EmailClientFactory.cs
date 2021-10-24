@@ -1,7 +1,6 @@
-using MailKit.Security;
-using MailKit.Net.Smtp;
 using System.Threading.Tasks;
-using StackUnderflow.Common.Email;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 
 namespace StackUnderflow.Infrastructure.Email
 {

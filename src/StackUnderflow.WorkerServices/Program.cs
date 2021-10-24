@@ -57,13 +57,13 @@ namespace StackUnderflow.WorkerServices
                             // SetKebabCaseEndpointNameFormatter() in the publishing project (see API project),
                             // but have rather given the topic a custom name.
                             //cfg.Message<VoteCast>(configTopology => configTopology.SetEntityName("vote-cast-topic"));
-                            cfg.SubscriptionEndpoint<VoteCast>("vote-cast-consumer", e =>
+                            cfg.SubscriptionEndpoint<IVoteCast>("vote-cast-consumer", e =>
                             {
                                 e.ConfigureConsumer<VoteCastConsumer>(ctx);
                             });
                             // This is here only for show. I have not thought through a proper 
                             // error handling strategy.
-                            cfg.SubscriptionEndpoint<Fault<VoteCast>>("vote-cast-fault-consumer", e =>
+                            cfg.SubscriptionEndpoint<Fault<IVoteCast>>("vote-cast-fault-consumer", e =>
                             {
                                 e.ConfigureConsumer<VoteCastFaultConsumer>(ctx);
                             });

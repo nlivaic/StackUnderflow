@@ -9,11 +9,10 @@ namespace StackUnderflow.Application.Sorting
     {
         public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
         {
-            string source = value as string;
-            if (source != null)
+            if (value is string source)
             {
                 var orderByCriteriaWithDirection = source.Split(' ');
-                SortDirection orderByDirection = SortDirection.Asc;     // Default value.
+                var orderByDirection = SortDirection.Asc;     // Default value.
                 if (orderByCriteriaWithDirection.Length > 1
                     && !Enum.TryParse(
                         orderByCriteriaWithDirection[1].CapitalizeFirstLetter(),

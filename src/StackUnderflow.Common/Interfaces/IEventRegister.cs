@@ -2,6 +2,7 @@
 {
     public interface IEventRegister
     {
-        void RegisterEvent<T>(object newEvent) where T : class;
+        void RegisterEvent<T>(object newEvent)
+            where T : class;
     }
 }

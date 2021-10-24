@@ -72,7 +72,7 @@ namespace StackUnderflow.Application.Votes
                 VoteTargetEnum.Question => _ = await _questionRepository.GetByIdAsync(voteTargetId),
                 VoteTargetEnum.Answer => _ = await _answerRepository.GetByIdAsync(voteTargetId),
                 VoteTargetEnum.Comment => _ = await _commentRepository.GetByIdAsync(voteTargetId),
-                _ => throw new ArgumentException()
+                _ => throw new ArgumentException($"Unknown type: {voteTarget.GetType()}.")
             };
         }
 
@@ -96,6 +96,15 @@ namespace StackUnderflow.Application.Votes
             }
         }
 
+        private static string GetCachingKey(VoteCachingContext vote) =>
+            vote.Target switch
+            {
+                VoteTargetEnum.Question => CachingKeys.VotesSumForQuestion + vote.TargetId,
+                VoteTargetEnum.Answer => CachingKeys.VotesSumForAnswer + vote.TargetId,
+                VoteTargetEnum.Comment => CachingKeys.VotesSumForComment + vote.TargetId,
+                _ => throw new ArgumentException($"Unknown vote target.")
+            };
+
         private async Task<int> IncrementCachedVotesSum(Vote vote) =>
             await _cache.IncrementAndGetConcurrentAsync(
                 GetCachingKey(new VoteCachingContext(vote.TargetId, vote.Target.Target)),
@@ -107,14 +116,5 @@ namespace StackUnderflow.Application.Votes
                 GetCachingKey(new VoteCachingContext(vote.TargetId, vote.Target.Target)),
                 () => _voteRepository.GetVotesSumAsync(vote.TargetId),
                 60);
-
-        private string GetCachingKey(VoteCachingContext vote) =>
-            vote.Target switch
-            {
-                VoteTargetEnum.Question => CachingKeys.VotesSumForQuestion + vote.TargetId,
-                VoteTargetEnum.Answer => CachingKeys.VotesSumForAnswer + vote.TargetId,
-                VoteTargetEnum.Comment => CachingKeys.VotesSumForComment + vote.TargetId,
-                _ => throw new ArgumentException($"Unknown vote target.")
-            };
     }
 }

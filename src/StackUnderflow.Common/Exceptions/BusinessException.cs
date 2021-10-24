@@ -6,6 +6,7 @@ namespace StackUnderflow.Common.Exceptions
     {
         public BusinessException(string message)
             : base(message)
-        { }
+        {
+        }
     }
 }

@@ -5,16 +5,6 @@ namespace StackUnderflow.Common.Paging
 {
     public class PagedList<T>
     {
-        public Paging Paging { get; }
-        public int CurrentPage { get; }
-        public int TotalItems { get; }
-        public int TotalPages { get; }
-        public int PageSize { get; }
-        public bool HasNextPage { get; }
-        public bool HasPreviousPage { get; }
-
-        public List<T> Items { get; }
-
         public PagedList(List<T> items, int currentPage, int totalItems, int pageSize)
         {
             CurrentPage = currentPage;
@@ -30,5 +20,15 @@ namespace StackUnderflow.Common.Paging
                 TotalItems,
                 PageSize);
         }
+
+        public Paging Paging { get; }
+        public int CurrentPage { get; }
+        public int TotalItems { get; }
+        public int TotalPages { get; }
+        public int PageSize { get; }
+        public bool HasNextPage { get; }
+        public bool HasPreviousPage { get; }
+
+        public List<T> Items { get; }
     }
 }

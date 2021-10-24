@@ -15,9 +15,10 @@ namespace StackUnderflow.Infrastructure.MessageBroker
                 x.UsingAzureServiceBus((ctx, cfg) =>
                 {
                     cfg.Host(connectionString);
+
                     // Use the below line if you are not going with SetKebabCaseEndpointNameFormatter() above.
                     // Remember to configure the subscription endpoint accordingly (see WorkerServices Program.cs).
-                    //cfg.Message<VoteCast>(configTopology => configTopology.SetEntityName("vote-cast-topic"));
+                    // cfg.Message<VoteCast>(configTopology => configTopology.SetEntityName("vote-cast-topic"));
                 });
             });
             services.AddMassTransitHostedService();
