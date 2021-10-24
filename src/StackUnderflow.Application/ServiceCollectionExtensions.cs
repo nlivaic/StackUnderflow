@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using StackUnderflow.WorkerServices.Users;
-using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Application.Votes;
-using StackUnderflow.Application.Users;
 using StackUnderflow.Application.PointServices;
 using StackUnderflow.Application.Tags;
+using StackUnderflow.Application.Users;
+using StackUnderflow.Application.Votes;
+using StackUnderflow.Core.Interfaces;
+using StackUnderflow.WorkerServices.Users;
 
 namespace StackUnderflow.Application
 {

@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using StackUnderflow.Common.Interfaces;
-using StackUnderflow.Common.Paging;
-using StackUnderflow.Core.Entities;
 using StackUnderflow.Application.Answers.Models;
 using StackUnderflow.Application.Comments.Models;
 using StackUnderflow.Application.Sorting.Models;
+using StackUnderflow.Common.Interfaces;
+using StackUnderflow.Common.Paging;
+using StackUnderflow.Core.Entities;
 
 namespace StackUnderflow.Core.Interfaces
 {

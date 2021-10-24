@@ -1,12 +1,12 @@
-﻿using MediatR;
-using StackUnderflow.WorkerServices.Users;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
+using StackUnderflow.Application.Answers.Models;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using StackUnderflow.Application.Answers.Models;
+using StackUnderflow.WorkerServices.Users;
 
 namespace StackUnderflow.Application.Answers.Queries
 {

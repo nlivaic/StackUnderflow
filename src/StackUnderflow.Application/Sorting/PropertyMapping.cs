@@ -3,11 +3,6 @@ using System.Collections.Generic;
 
 namespace StackUnderflow.Application.Sorting
 {
-    // Marker interface, to facilitate generic collections.
-    public interface IPropertyMapping
-    {
-    }
-
     public class PropertyMapping<TSource, TTarget> : IPropertyMapping
     {
         private Dictionary<string, PropertyMappingValue> _propertyMappingValues
@@ -46,7 +41,6 @@ namespace StackUnderflow.Application.Sorting
                     throw new InvalidPropertyMappingException($"Source property name '{sourcePropertyName}' for source type {typeof(TSource)} not mapped to target type {typeof(TTarget)}.");
                 }
                 propertyMappingValues.Add(propertyMappingValue);
-
             });
             return propertyMappingValues;
         }

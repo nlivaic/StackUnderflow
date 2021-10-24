@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Enums;
-using System;
 
 namespace StackUnderflow.Application.Votes.Models
 {
@@ -10,13 +10,13 @@ namespace StackUnderflow.Application.Votes.Models
         public Guid Id { get; set; }
         public VoteTypeEnum VoteType { get; set; }
         public Guid TargetId { get; set; }
-    }
 
-    public class VoteGetModelProfile : Profile
-    {
-        public VoteGetModelProfile()
+        public class VoteGetModelProfile : Profile
         {
-            CreateMap<Vote, VoteGetModel>();
+            public VoteGetModelProfile()
+            {
+                CreateMap<Vote, VoteGetModel>();
+            }
         }
     }
 }

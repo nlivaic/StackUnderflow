@@ -21,14 +21,14 @@ namespace StackUnderflow.Application.Users.Models
             public UserGetModelProfile()
             {
                 CreateMap<User, UserGetModel>()
-                    .ForMember(dest => dest.LastSeenBefore,
+                    .ForMember(
+                        dest => dest.LastSeenBefore,
                         opts => opts.MapFrom(
-                            src => DateTime.UtcNow - src.LastSeen
-                        ))
-                    .ForMember(dest => dest.Roles,
+                            src => DateTime.UtcNow - src.LastSeen))
+                    .ForMember(
+                        dest => dest.Roles,
                         opts => opts.MapFrom(
-                            src => src.Roles.Select(r => r.Role.ToString())
-                        ));
+                            src => src.Roles.Select(r => r.Role.ToString())));
             }
         }
     }

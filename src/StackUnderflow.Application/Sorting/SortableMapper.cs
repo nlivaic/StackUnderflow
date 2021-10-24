@@ -10,8 +10,9 @@ namespace StackUnderflow.Application.Sorting
             where TDestinationParameters : ISortable
         {
             mapping
-                .ForMember(dest => dest.SortBy,
-                        opts => opts.MapFrom<SortCriteriaResolver<TResource, TEntity, TSourceParameters, TDestinationParameters>>());
+                .ForMember(
+                    dest => dest.SortBy,
+                    opts => opts.MapFrom<SortCriteriaResolver<TResource, TEntity, TSourceParameters, TDestinationParameters>>());
         }
     }
 }

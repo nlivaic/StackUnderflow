@@ -1,5 +1,5 @@
-﻿using StackUnderflow.Core.Entities;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using StackUnderflow.Core.Entities;
 
 namespace StackUnderflow.Core.Interfaces
 {

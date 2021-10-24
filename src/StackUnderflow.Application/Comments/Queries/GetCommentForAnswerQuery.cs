@@ -1,14 +1,12 @@
-﻿using MediatR;
-using StackUnderflow.WorkerServices.Users;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
+using StackUnderflow.Application.Comments.Models;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using StackUnderflow.Application.Comments.Models;
+using StackUnderflow.WorkerServices.Users;
 
 namespace StackUnderflow.Application.Comments.Queries
 {
@@ -37,7 +35,6 @@ namespace StackUnderflow.Application.Comments.Queries
                 var comment = await _commentRepository.GetCommentForAnswerAsync(request.AnswerId, request.CommentId);
                 if (comment == null || comment.QuestionId != request.QuestionId)
                 {
-
                     throw new EntityNotFoundException(nameof(Comment), request.CommentId);
                 }
                 comment.IsOwner = comment.UserId == request.CurrentUserId;

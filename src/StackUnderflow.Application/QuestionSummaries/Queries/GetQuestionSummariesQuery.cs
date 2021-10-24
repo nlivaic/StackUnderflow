@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using StackUnderflow.Application.Questions.Models;
 using StackUnderflow.Application.Sorting.Models;
 using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Interfaces;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StackUnderflow.Application.QuestionSummaries.Queries
 {

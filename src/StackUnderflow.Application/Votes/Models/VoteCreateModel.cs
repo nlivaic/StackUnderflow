@@ -1,6 +1,5 @@
-using StackUnderflow.Core.Enums;
 using System;
-using static StackUnderflow.Core.Entities.Vote;
+using StackUnderflow.Core.Enums;
 
 namespace StackUnderflow.Application.Votes.Models
 {

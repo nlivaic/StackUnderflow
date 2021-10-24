@@ -1,8 +1,8 @@
-﻿using StackUnderflow.Core.Entities;
+﻿using System;
+using System.Threading.Tasks;
+using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
-using System;
-using System.Threading.Tasks;
 
 namespace StackUnderflow.Application.Votes
 {

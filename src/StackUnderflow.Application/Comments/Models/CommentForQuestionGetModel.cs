@@ -1,6 +1,6 @@
+using System;
 using AutoMapper;
 using StackUnderflow.Core.Entities;
-using System;
 
 namespace StackUnderflow.Application.Comments.Models
 {
@@ -20,7 +20,8 @@ namespace StackUnderflow.Application.Comments.Models
             public MapperProfile()
             {
                 CreateMap<Comment, CommentForQuestionGetModel>()
-                    .ForMember(dest => dest.Username,
+                    .ForMember(
+                        dest => dest.Username,
                         opts => opts.MapFrom(src => src.User.Username));
             }
         }

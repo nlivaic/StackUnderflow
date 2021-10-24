@@ -13,36 +13,24 @@ namespace StackUnderflow.Application.Votes
 {
     public class VoteService : IVoteService
     {
-        public readonly IVoteRepository _voteRepository;
-        public readonly IRepository<Question> _questionRepository;
-        public readonly IRepository<Answer> _answerRepository;
-        public readonly IRepository<Comment> _commentRepository;
-        public readonly IUnitOfWork _uow;
-        public readonly BaseLimits _limits;
-        public readonly IEventRegister _eventRegister;
-        public readonly ICache _cache;
-        public readonly IMapper _mapper;
+        private readonly IVoteRepository _voteRepository;
+        private readonly IRepository<Question> _questionRepository;
+        private readonly IRepository<Answer> _answerRepository;
+        private readonly IRepository<Comment> _commentRepository;
+        private readonly ICache _cache;
 
         public VoteService(
             IVoteRepository voteRepository,
             IRepository<Question> questionRepository,
             IRepository<Answer> answerRepository,
             IRepository<Comment> commentRepository,
-            IUnitOfWork uow,
-            BaseLimits limits,
-            IEventRegister eventRegister,
-            ICache cache,
-            IMapper mapper)
+            ICache cache)
         {
             _voteRepository = voteRepository;
             _questionRepository = questionRepository;
             _answerRepository = answerRepository;
             _commentRepository = commentRepository;
-            _uow = uow;
-            _limits = limits;
-            _eventRegister = eventRegister;
             _cache = cache;
-            _mapper = mapper;
         }
 
         public async Task<int> GetVotesSumAsync(Guid targetId, VoteTargetEnum voteTarget) =>
@@ -77,6 +65,37 @@ namespace StackUnderflow.Application.Votes
             }
         }
 
+        public async Task<IVoteable> GetVoteableFromRepositoryAsync(VoteTargetEnum voteTarget, Guid voteTargetId)
+        {
+            return voteTarget switch
+            {
+                VoteTargetEnum.Question => _ = await _questionRepository.GetByIdAsync(voteTargetId),
+                VoteTargetEnum.Answer => _ = await _answerRepository.GetByIdAsync(voteTargetId),
+                VoteTargetEnum.Comment => _ = await _commentRepository.GetByIdAsync(voteTargetId),
+                _ => throw new ArgumentException()
+            };
+        }
+
+        public IVoteable GetVoteable(Vote vote)
+        {
+            if (vote.Question != null)
+            {
+                return vote.Question;
+            }
+            else if (vote.Answer != null)
+            {
+                return vote.Answer;
+            }
+            else if (vote.Comment != null)
+            {
+                return vote.Comment;
+            }
+            else
+            {
+                throw new BusinessException($"Vote '{vote.Id}' does not have any targets mapped.");
+            }
+        }
+
         private async Task<int> IncrementCachedVotesSum(Vote vote) =>
             await _cache.IncrementAndGetConcurrentAsync(
                 GetCachingKey(new VoteCachingContext(vote.TargetId, vote.Target.Target)),
@@ -97,28 +116,5 @@ namespace StackUnderflow.Application.Votes
                 VoteTargetEnum.Comment => CachingKeys.VotesSumForComment + vote.TargetId,
                 _ => throw new ArgumentException($"Unknown vote target.")
             };
-
-        public async Task<IVoteable> GetVoteableFromRepositoryAsync(VoteTargetEnum voteTarget, Guid voteTargetId)
-        {
-            return voteTarget switch
-            {
-                VoteTargetEnum.Question => _ = await _questionRepository.GetByIdAsync(voteTargetId),
-                VoteTargetEnum.Answer => _ = await _answerRepository.GetByIdAsync(voteTargetId),
-                VoteTargetEnum.Comment => _ = await _commentRepository.GetByIdAsync(voteTargetId),
-                _ => throw new ArgumentException()
-            };
-        }
-
-        public IVoteable GetVoteable(Vote vote)
-        {
-            if (vote.Question != null)
-                return vote.Question;
-            else if (vote.Answer != null)
-                return vote.Answer;
-            else if (vote.Comment != null)
-                return vote.Comment;
-            else
-                throw new BusinessException($"Vote '{vote.Id}' does not have any targets mapped.");
-        }
     }
 }

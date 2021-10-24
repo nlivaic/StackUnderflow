@@ -1,10 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using StackUnderflow.Application.Tags.Models;
 using StackUnderflow.Application.Votes.Models;
 using StackUnderflow.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace StackUnderflow.Application.Questions.Models
 {
@@ -28,9 +28,11 @@ namespace StackUnderflow.Application.Questions.Models
             public QuestionGetModelProfile()
             {
                 CreateMap<Question, QuestionGetModel>()
-                    .ForMember(dest => dest.Username,
+                    .ForMember(
+                        dest => dest.Username,
                         opts => opts.MapFrom(src => src.User.Username))
-                    .ForMember(dest => dest.Tags,
+                    .ForMember(
+                        dest => dest.Tags,
                         opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)));
             }
         }

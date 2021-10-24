@@ -1,15 +1,14 @@
-﻿using AutoMapper;
-using MediatR;
-using StackUnderflow.WorkerServices.Users;
-using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Common.Interfaces;
-using StackUnderflow.Core.Entities;
-using StackUnderflow.Core.Interfaces;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using MediatR;
 using StackUnderflow.Application.Answers.Models;
+using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Interfaces;
+using StackUnderflow.WorkerServices.Users;
 
 namespace StackUnderflow.Application.Answers.Commands
 {
@@ -48,6 +47,7 @@ namespace StackUnderflow.Application.Answers.Commands
                 result.IsOwner = answer.UserId == request.CurrentUserId;
                 result.IsModerator = await _userService.IsModeratorAsync(request.CurrentUserId);
                 return result;
+
                 // @nl: calculate points.
                 // @nl: raise an event. Message must be sent to answer owner's inbox.
             }

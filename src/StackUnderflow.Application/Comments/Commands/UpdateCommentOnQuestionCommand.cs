@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StackUnderflow.Application.Comments.Commands
 {
@@ -40,6 +40,7 @@ namespace StackUnderflow.Application.Comments.Commands
                 }
                 var user = await _userRepository.GetUser<User>(request.CurrentUserId);
                 comment.Edit(user, request.Body, _limits);
+
                 // @nl: raise an event?
                 return Unit.Value;
             }

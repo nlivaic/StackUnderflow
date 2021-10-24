@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using StackUnderflow.Common.Interfaces;
-using StackUnderflow.Core.Entities;
-using StackUnderflow.Common.Paging;
 using StackUnderflow.Application.Questions.Models;
 using StackUnderflow.Application.Sorting.Models;
+using StackUnderflow.Common.Interfaces;
+using StackUnderflow.Common.Paging;
+using StackUnderflow.Core.Entities;
 
 namespace StackUnderflow.Core.Interfaces
 {

@@ -1,9 +1,9 @@
-using AutoMapper;
-using StackUnderflow.Application.Tags.Models;
-using StackUnderflow.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using StackUnderflow.Application.Tags.Models;
+using StackUnderflow.Core.Entities;
 
 namespace StackUnderflow.Application.Questions.Models
 {
@@ -25,15 +25,20 @@ namespace StackUnderflow.Application.Questions.Models
             public QuestionSummaryGetModelProfile()
             {
                 CreateMap<Question, QuestionSummaryGetModel>()
-                    .ForMember(dest => dest.ShortBody,
+                    .ForMember(
+                        dest => dest.ShortBody,
                         opts => opts.MapFrom(src => src.Body.Substring(0, 50) + "..."))
-                    .ForMember(dest => dest.Username,
+                    .ForMember(
+                        dest => dest.Username,
                         opts => opts.MapFrom(src => src.User.Username))
-                    .ForMember(dest => dest.Answers,
+                    .ForMember(
+                        dest => dest.Answers,
                         opts => opts.MapFrom(src => src.Answers.Count()))
-                    .ForMember(dest => dest.Tags,
+                    .ForMember(
+                        dest => dest.Tags,
                         opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)))
-                    .ForMember(dest => dest.VotesSum,
+                    .ForMember(
+                        dest => dest.VotesSum,
                         opts => opts.MapFrom(src => src.Votes.Count()));    // Should be read from cache
             }
         }

@@ -1,6 +1,6 @@
+using System;
 using AutoMapper;
 using StackUnderflow.Core.Entities;
-using System;
 
 namespace StackUnderflow.Application.Comments.Models
 {
@@ -22,11 +22,14 @@ namespace StackUnderflow.Application.Comments.Models
             public MapperProfile()
             {
                 CreateMap<Comment, CommentForAnswerGetModel>()
-                    .ForMember(dest => dest.AnswerId,
+                    .ForMember(
+                        dest => dest.AnswerId,
                         opts => opts.MapFrom(src => src.ParentAnswerId))
-                    .ForMember(dest => dest.QuestionId,
+                    .ForMember(
+                        dest => dest.QuestionId,
                         opts => opts.MapFrom(src => src.ParentAnswer.QuestionId))
-                    .ForMember(dest => dest.Username,
+                    .ForMember(
+                        dest => dest.Username,
                         opts => opts.MapFrom(src => src.User.Username));
             }
         }

@@ -1,11 +1,11 @@
-﻿using MediatR;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StackUnderflow.Application.Questions.Commands
 {
@@ -32,8 +32,8 @@ namespace StackUnderflow.Application.Questions.Commands
 
             public async Task<Unit> Handle(DeleteQuestionCommand request, CancellationToken cancellationToken)
             {
-                var question = (await _questionRepository
-                    .GetQuestionWithAnswersAndCommentsAsync(request.QuestionId));
+                var question = await _questionRepository
+                    .GetQuestionWithAnswersAndCommentsAsync(request.QuestionId);
                 if (question == null || question.UserId != request.CurrentUserId)
                 {
                     throw new EntityNotFoundException(nameof(Question), request.QuestionId);

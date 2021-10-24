@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using StackUnderflow.Application.Votes.Models;
 using StackUnderflow.Common.Exceptions;
@@ -7,9 +10,6 @@ using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Events;
 using StackUnderflow.Core.Interfaces;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StackUnderflow.Application.Votes.Commands
 {
@@ -58,7 +58,7 @@ namespace StackUnderflow.Application.Votes.Commands
                 var vote = Vote.CreateVote(request.CurrentUserId, target, request.VoteType);
                 target.ApplyVote(vote);
                 await _voteService.ChangeCachedVotesSumAfterVoteCast(vote);
-                _eventRegister.RegisterEvent<VoteCast>(new { UserId = vote.UserId, VoteType = vote.VoteType });
+                _eventRegister.RegisterEvent<IVoteCast>(new { UserId = vote.UserId, VoteType = vote.VoteType });
                 return _mapper.Map<VoteGetModel>(vote);
             }
         }

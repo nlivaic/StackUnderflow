@@ -1,13 +1,13 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
-using StackUnderflow.WorkerServices.Users;
+using StackUnderflow.Application.Answers.Models;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using StackUnderflow.Application.Answers.Models;
+using StackUnderflow.WorkerServices.Users;
 
 namespace StackUnderflow.Application.Answers.Commands
 {
@@ -56,10 +56,12 @@ namespace StackUnderflow.Application.Answers.Commands
                 var answer = Answer.Create(user, request.Body, _limits);
                 question.Answer(answer);
                 await _answerRepository.AddAsync(answer);
-                //await _uow.SaveAsync();
+
+                // await _uow.SaveAsync();
                 var result = _mapper.Map<AnswerGetModel>(answer);
                 result.IsOwner = result.UserId == request.CurrentUserId;
                 result.IsModerator = await _userService.IsModeratorAsync(request.CurrentUserId);
+
                 // @nl: Raise an event! Message must be sent to the inbox.
                 return result;
             }

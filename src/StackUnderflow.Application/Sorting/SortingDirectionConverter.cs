@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
-using StackUnderflow.Common.Extensions;
 using StackUnderflow.Application.Sorting.Models;
+using StackUnderflow.Common.Extensions;
 
 namespace StackUnderflow.Application.Sorting
 {
@@ -15,8 +15,9 @@ namespace StackUnderflow.Application.Sorting
                 var orderByCriteriaWithDirection = source.Split(' ');
                 SortDirection orderByDirection = SortDirection.Asc;     // Default value.
                 if (orderByCriteriaWithDirection.Length > 1
-                    && !Enum.TryParse(orderByCriteriaWithDirection[1].CapitalizeFirstLetter(),
-                    out orderByDirection))
+                    && !Enum.TryParse(
+                        orderByCriteriaWithDirection[1].CapitalizeFirstLetter(),
+                        out orderByDirection))
                 {
                     throw new InvalidPropertyMappingException($"Unknown ordering direction: {orderByCriteriaWithDirection[1]}");
                 }

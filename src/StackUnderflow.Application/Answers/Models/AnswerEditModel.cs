@@ -1,4 +1,3 @@
-using AutoMapper;
 using System;
 
 namespace StackUnderflow.Application.Answers.Models

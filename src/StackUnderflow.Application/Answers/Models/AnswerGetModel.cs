@@ -1,6 +1,6 @@
+using System;
 using AutoMapper;
 using StackUnderflow.Core.Entities;
-using System;
 
 namespace StackUnderflow.Application.Answers.Models
 {

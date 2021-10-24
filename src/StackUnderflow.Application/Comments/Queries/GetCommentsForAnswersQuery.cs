@@ -1,14 +1,14 @@
-﻿using AutoMapper;
-using MediatR;
-using StackUnderflow.WorkerServices.Users;
-using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Core.Entities;
-using StackUnderflow.Core.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using MediatR;
 using StackUnderflow.Application.Comments.Models;
+using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Core.Entities;
+using StackUnderflow.Core.Interfaces;
+using StackUnderflow.WorkerServices.Users;
 
 namespace StackUnderflow.Application.Comments.Queries
 {

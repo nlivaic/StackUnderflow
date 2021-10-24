@@ -1,11 +1,11 @@
-﻿using MediatR;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StackUnderflow.Application.Answers.Commands
 {
@@ -26,7 +26,6 @@ namespace StackUnderflow.Application.Answers.Commands
                 IRepository<Answer> answerRepository,
                 IUserRepository userRepository,
                 BaseLimits limits)
-
             {
                 _answerRepository = answerRepository;
                 _userRepository = userRepository;

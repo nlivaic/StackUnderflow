@@ -1,24 +1,19 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
-using StackUnderflow.WorkerServices.Users;
+using StackUnderflow.Application.Answers.Models;
+using StackUnderflow.Application.Sorting.Models;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Common.Paging;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using StackUnderflow.Application.Answers.Models;
-using StackUnderflow.Application.Sorting.Models;
+using StackUnderflow.WorkerServices.Users;
 
 namespace StackUnderflow.Application.Answers.Queries
 {
     public class GetAnswersQuery : IRequest<PagedList<AnswerGetModel>>
     {
-        public Guid QuestionId { get; private set; }
-        public AnswerQueryParameters AnswerQueryParameters { get; private set; }
-        public Guid? CurrentUserId { get; private set; }
-
         public GetAnswersQuery(
             Guid questionId,
             AnswerQueryParameters answerQueryParameters,
@@ -28,6 +23,10 @@ namespace StackUnderflow.Application.Answers.Queries
             AnswerQueryParameters = answerQueryParameters;
             CurrentUserId = currentUserId;
         }
+
+        public Guid QuestionId { get; private set; }
+        public AnswerQueryParameters AnswerQueryParameters { get; private set; }
+        public Guid? CurrentUserId { get; private set; }
 
         private class GetAnswersQueryHandler : IRequestHandler<GetAnswersQuery, PagedList<AnswerGetModel>>
         {
