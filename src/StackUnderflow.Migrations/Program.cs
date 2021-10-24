@@ -1,14 +1,14 @@
-﻿using DbUp;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
+using DbUp;
+using Microsoft.Extensions.Configuration;
 
 namespace StackUnderflow.Migrations
 {
-    class Program
+    public class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
                 ?? "Development";
