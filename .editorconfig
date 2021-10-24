@@ -160,6 +160,8 @@ dotnet_diagnostic.SA1633.severity = none
 #       Custom rules that might get changed
 ################################################################
 
+# XML comment analysis is disabled due to project configuration
+dotnet_diagnostic.SA0001.severity = none
 # Prefix local calls with this
 dotnet_diagnostic.SA1101.severity = none
 # Field should not begin with an underscore
