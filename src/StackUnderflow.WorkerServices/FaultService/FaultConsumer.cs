@@ -1,5 +1,5 @@
-﻿using MassTransit;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MassTransit;
 
 namespace StackUnderflow.WorkerServices.FaultService
 {
@@ -8,11 +8,8 @@ namespace StackUnderflow.WorkerServices.FaultService
     /// I have not thought through a proper error handling strategy.
     /// Make VoteCastConsumer throw in order to kick error handling off.
     /// </summary>
-    class FaultConsumer : IConsumer<Fault>
+    public class FaultConsumer : IConsumer<Fault>
     {
-        public Task Consume(ConsumeContext<Fault> context)
-        {
-            return Task.CompletedTask;
-        }
+        public Task Consume(ConsumeContext<Fault> context) => Task.CompletedTask;
     }
 }

@@ -1,11 +1,11 @@
-﻿using MassTransit;
-using StackUnderflow.WorkerServices.PointServices;
+﻿using System.Threading.Tasks;
+using MassTransit;
 using StackUnderflow.Core.Events;
-using System.Threading.Tasks;
+using StackUnderflow.WorkerServices.PointServices;
 
 namespace StackUnderflow.WorkerServices.PointService
 {
-    class VoteCastConsumer : IConsumer<IVoteCast>
+    public class VoteCastConsumer : IConsumer<IVoteCast>
     {
         private readonly IPointService _pointService;
 
@@ -18,6 +18,7 @@ namespace StackUnderflow.WorkerServices.PointService
         /// Make this method throw if you want to see MassTransit error handling.
         /// in action.
         /// </summary>
+        /// <param name="context">Consumer context.</param>
         public async Task Consume(ConsumeContext<IVoteCast> context) =>
             await _pointService.CalculateAsync(context.Message.UserId, context.Message.VoteType);
     }

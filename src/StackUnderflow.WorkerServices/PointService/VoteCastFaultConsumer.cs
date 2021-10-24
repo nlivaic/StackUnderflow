@@ -1,6 +1,6 @@
-﻿using MassTransit;
+﻿using System.Threading.Tasks;
+using MassTransit;
 using StackUnderflow.Core.Events;
-using System.Threading.Tasks;
 
 namespace StackUnderflow.WorkerServices.PointService
 {
@@ -9,11 +9,9 @@ namespace StackUnderflow.WorkerServices.PointService
     /// I have not thought through a proper error handling strategy.
     /// Make VoteCastConsumer throw in order to kick error handling off.
     /// </summary>
-    class VoteCastFaultConsumer : IConsumer<Fault<IVoteCast>>
+    public class VoteCastFaultConsumer : IConsumer<Fault<IVoteCast>>
     {
-        public Task Consume(ConsumeContext<Fault<IVoteCast>> context)
-        {
-            return Task.CompletedTask;
-        }
+        public Task Consume(ConsumeContext<Fault<IVoteCast>> context) =>
+            Task.CompletedTask;
     }
 }

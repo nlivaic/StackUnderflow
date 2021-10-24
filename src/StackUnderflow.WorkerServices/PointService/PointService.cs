@@ -1,7 +1,7 @@
-﻿using StackUnderflow.Core.Enums;
-using StackUnderflow.Core.Interfaces;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using StackUnderflow.Core.Enums;
+using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.WorkerServices.PointServices
 {
@@ -22,9 +22,7 @@ namespace StackUnderflow.WorkerServices.PointServices
         {
             await _userRepository.CalculatePointsAsync(
                 userId,
-                voteType == VoteTypeEnum.Upvote
-                    ? _limits.UpvotePoints
-                    : _limits.DownvotePoints);
+                voteType == VoteTypeEnum.Upvote ? _limits.UpvotePoints : _limits.DownvotePoints);
         }
     }
 }
