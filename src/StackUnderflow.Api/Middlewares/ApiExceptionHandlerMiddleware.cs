@@ -29,7 +29,6 @@ namespace StackUnderflow.Api.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            context.Request.EnableBuffering();
             try
             {
                 await _next(context);

@@ -39,6 +39,7 @@ namespace StackUnderflow.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<QuestionSummaryGetViewModel>>> GetAsync([FromQuery] QuestionSummaryResourceParameters questionSummaryResourceParameters)
         {
+            throw new System.Exception();
             var questionQueryParameters = _mapper.Map<QuestionQueryParameters>(questionSummaryResourceParameters);
             var getQuestionSummariesQuery = new GetQuestionSummariesQuery
             {

@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using StackUnderflow.Api.Filters;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Middlewares;
 using StackUnderflow.Api.Models;
@@ -55,7 +54,6 @@ namespace StackUnderflow.Api
                     configure.Filters.Add(new ProducesResponseTypeAttribute(typeof(ProblemDetails), StatusCodes.Status404NotFound));
                     configure.Filters.Add(new ProducesResponseTypeAttribute(typeof(object), StatusCodes.Status406NotAcceptable));
                     configure.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
-                    configure.Filters.Add(typeof(LoggingFilter));
                 })
                 .ConfigureApiBehaviorOptions(options =>
                 {
@@ -176,6 +174,11 @@ namespace StackUnderflow.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
+            app.UseHostLoggingMiddleware();
+
+            // First use of Logging Exceptions.
+            // This instance is here to catch and log any exceptions coming from middlewares
+            // executed early in the pipeline.
             app.UseApiExceptionHandler(options =>
             {
                 options.ApiErrorHandler = UpdateApiErrorResponse;
@@ -207,6 +210,22 @@ namespace StackUnderflow.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseUserLoggingMiddleware();
+
+            // Second use of Logging Exceptions.
+            // This instance is here to catch and log any exceptions coming from the controllers.
+            // The reason for two logging middlewares is we can log user id and claims only
+            // after .UseAuthentication() and .UseAuthorization() are executed. So the first
+            // .UseApiExceptionHandler() has no access to user id and claims but has access to
+            // machine name and thus at least provides some insight into any potential exceptions
+            // coming from early in the pipeline. The second .UseApiExceptionHandler() has access
+            // to machine name, user id and claims and can log any exceptions from the controllers.
+            app.UseApiExceptionHandler(options =>
+            {
+                options.ApiErrorHandler = UpdateApiErrorResponse;
+                options.LogLevelHandler = LogLevelHandler;
+            });
 
             app.UseEndpoints(endpoints =>
             {
