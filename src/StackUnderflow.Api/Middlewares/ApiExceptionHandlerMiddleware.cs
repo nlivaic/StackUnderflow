@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Common.Exceptions;
 
@@ -46,7 +46,7 @@ namespace StackUnderflow.Api.Middlewares
                     {
                         { string.Empty, new string[] { ex.Message } }
                     });
-            var result = JsonConvert.SerializeObject(validationProblemDetails);
+            var result = JsonSerializer.Serialize(validationProblemDetails);
             context.Response.ContentType = "application/problem+json";
             context.Response.StatusCode = context.Request.Method == HttpMethods.Delete
                 ? StatusCodes.Status409Conflict
@@ -57,7 +57,7 @@ namespace StackUnderflow.Api.Middlewares
         private static async Task HandleEntityNotFoundException(HttpContext context, Exception ex)
         {
             var problemDetails = ValidationProblemDetailsFactory.CreateNotFoundProblemDetails(context, ex.Message);
-            var result = JsonConvert.SerializeObject(problemDetails);
+            var result = JsonSerializer.Serialize(problemDetails);
             context.Response.ContentType = "application/problem+json";
             context.Response.StatusCode = StatusCodes.Status404NotFound;
             await context.Response.WriteAsync(result);
@@ -109,7 +109,7 @@ namespace StackUnderflow.Api.Middlewares
                     innermostException.Message + " -- {TraceId}",
                     problemDetail.Extensions["traceId"]);
             }
-            var result = JsonConvert.SerializeObject(problemDetail);
+            var result = JsonSerializer.Serialize(problemDetail);
             context.Response.ContentType = "application/problem+json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             await context.Response.WriteAsync(result);

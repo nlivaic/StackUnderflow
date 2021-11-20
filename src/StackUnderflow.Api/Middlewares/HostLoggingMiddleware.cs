@@ -13,7 +13,6 @@ namespace StackUnderflow.Api.Middlewares
         private readonly IScopeInformation _scopeInformation;
         private IDisposable _hostScope;
 
-
         public HostLoggingMiddleware(
             RequestDelegate next,
             ILogger<HostLoggingMiddleware> logger,

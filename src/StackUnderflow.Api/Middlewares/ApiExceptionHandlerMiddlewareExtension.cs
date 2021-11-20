@@ -6,10 +6,7 @@ namespace StackUnderflow.Api.Middlewares
     public static class ApiExceptionHandlerMiddlewareExtension
     {
         public static IApplicationBuilder UseApiExceptionHandler(
-            this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<ApiExceptionHandlerMiddleware>();
-        }
+            this IApplicationBuilder builder) => builder.UseMiddleware<ApiExceptionHandlerMiddleware>();
 
         public static IApplicationBuilder UseApiExceptionHandler(
             this IApplicationBuilder builder,
