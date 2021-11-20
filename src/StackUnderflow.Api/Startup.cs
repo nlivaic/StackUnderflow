@@ -168,6 +168,12 @@ namespace StackUnderflow.Api
             services.AddApiEventPublisher(_configuration["CONNECTIONSTRINGS:MESSAGEBROKER:WRITE"]);
             services.AddStackUnderflowApplicationHandlers();
 
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
+
             services.AddHealthChecks();
         }
 
@@ -186,10 +192,7 @@ namespace StackUnderflow.Api
             });
 
             // Use headers forwarded by reverse proxy.
-            var forwardedHeaderOptions = new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            };
+            app.UseForwardedHeaders();
 
             // if (env.IsProduction())
             // {
