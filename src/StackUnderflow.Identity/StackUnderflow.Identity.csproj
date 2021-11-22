@@ -24,7 +24,6 @@
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StackUnderflow.Common\StackUnderflow.Common.csproj" />
     <ProjectReference Include="..\StackUnderflow.Infrastructure\StackUnderflow.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
