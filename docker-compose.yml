@@ -70,15 +70,18 @@ services:
       - ./sql/InitializeStackUnderflowIdentityDb.sql:/docker-entrypoint-initdb.d/docker_postgres_identity_init.sql
     networks:
       - sunet
-  stackunderflow.migrations:
-    image: ${DOCKER_REGISTRY-}stackunderflowsql
-    depends_on:
-      - stackunderflow.sql
-    build:
-      context: .
-      dockerfile: src/StackUnderflow.Migrations/Dockerfile
-    networks:
-      - sunet
+  # Comment the below service back in if you want
+  # migrations to happen on docker-compose up.
+  # Don't forget to update Migrations project's connection strings.
+  #stackunderflow.migrations:
+  #  image: ${DOCKER_REGISTRY-}stackunderflowsql
+  #  depends_on:
+  #    - stackunderflow.sql
+  #  build:
+  #    context: .
+  #    dockerfile: src/StackUnderflow.Migrations/Dockerfile
+  #  networks:
+  #    - sunet
   stackunderflow.workerservices:
     image: ${DOCKER_REGISTRY-}stackunderflowworkerservices
     env_file: .env
