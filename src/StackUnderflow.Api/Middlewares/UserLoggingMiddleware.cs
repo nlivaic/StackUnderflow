@@ -16,8 +16,7 @@ namespace StackUnderflow.Api.Middlewares
 
         public UserLoggingMiddleware(
             RequestDelegate next,
-            ILogger<UserLoggingMiddleware> logger,
-            IScopeInformation scopeInformation)
+            ILogger<UserLoggingMiddleware> logger)
         {
             _next = next;
             _logger = logger;
