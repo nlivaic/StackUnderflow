@@ -76,6 +76,8 @@ namespace StackUnderflow.Migrations
             {
                 upgraderStackUnderflowIdentity.MarkAsExecuted("0004_InitialData.sql");
                 Console.WriteLine($"Skipping 0004_InitialData.sql since we are not in Development environment.");
+                upgraderStackUnderflowIdentity.MarkAsExecuted("0005_Initial_Configuration_Data.sql");
+                Console.WriteLine($"Skipping 0005_Initial_Configuration_Data.sql since we are not in Development environment.");
             }
             var resultStackUnderflowIdentity = upgraderStackUnderflowIdentity.PerformUpgrade();
 

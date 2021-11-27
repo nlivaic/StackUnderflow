@@ -69,7 +69,7 @@ namespace StackUnderflow.Identity
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryApiResources(Config.ApiResources)
                 .AddInMemoryClients(Config.Clients);
-            // .AddTestUsers(TestUsers.Users)
+            //.AddTestUsers(TestUsers.Users)
 
             var migrationsAssembly = typeof(Startup).Assembly.GetName().Name;
             builder.AddConfigurationStore(options =>
@@ -123,7 +123,7 @@ namespace StackUnderflow.Identity
                 opts.DoNotReplyEmail = _configuration["EmailSettings:DoNotReply"];
                 opts.Host = _configuration["EmailSettings:Host"];
                 opts.Password = _configuration["EmailSettings:Password"];
-                opts.Port = Int32.Parse(_configuration["EmailSettings:Port"]);
+                opts.Port = int.Parse(_configuration["EmailSettings:Port"]);
                 opts.Username = _configuration["EmailSettings:Username"];
             });
             // To be used for simple, non-cryptographically secure random number generation.
@@ -159,37 +159,6 @@ namespace StackUnderflow.Identity
             {
                 endpoints.MapDefaultControllerRoute();
             });
-            SeedTestData(app, _environment);
-        }
-
-        private static void SeedTestData(IApplicationBuilder app, IWebHostEnvironment environment)
-        {
-            if (!environment.IsDevelopment())
-            {
-                return;
-            }
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                var configurationDbContext = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-                var persistedGrantDbContext = scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>();
-                if (!configurationDbContext.Clients.Any())
-                {
-                    configurationDbContext.Clients.AddRange(Config.Clients.Select(c => c.ToEntity()));
-                }
-                if (!configurationDbContext.ApiResources.Any())
-                {
-                    configurationDbContext.ApiResources.AddRange(Config.ApiResources.Select(c => c.ToEntity()));
-                }
-                if (!configurationDbContext.ApiScopes.Any())
-                {
-                    configurationDbContext.ApiScopes.AddRange(Config.ApiScopes.Select(c => c.ToEntity()));
-                }
-                if (!configurationDbContext.IdentityResources.Any())
-                {
-                    configurationDbContext.IdentityResources.AddRange(Config.IdentityResources.Select(c => c.ToEntity()));
-                }
-                configurationDbContext.SaveChanges();
-            }
         }
     }
 }

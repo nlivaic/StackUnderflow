@@ -10,6 +10,10 @@ namespace StackUnderflow.Identity
 {
     public static class Config
     {
+        /// <summary>
+        /// The code below is not used anymore, since all the data is in sql scripts.
+        /// It is left here for reference purposes, because I got used to having it nicely laid out.
+        /// </summary>
         public static IEnumerable<IdentityResource> IdentityResources =>
             new IdentityResource[]
             {
@@ -18,6 +22,10 @@ namespace StackUnderflow.Identity
                 new IdentityResource("email", "Email", new List<string> {"email"})
             };
 
+        /// <summary>
+        /// The code below is not used anymore, since all the data is in sql scripts.
+        /// It is left here for reference purposes, because I got used to having it nicely laid out.
+        /// </summary>
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
@@ -26,6 +34,10 @@ namespace StackUnderflow.Identity
                     "Stack Underflow Api")
             };
 
+        /// <summary>
+        /// The code below is not used anymore, since all the data is in sql scripts.
+        /// It is left here for reference purposes, because I got used to having it nicely laid out.
+        /// </summary>
         public static IEnumerable<ApiResource> ApiResources =>
             new ApiResource[]
             {
@@ -38,6 +50,10 @@ namespace StackUnderflow.Identity
                 }
             };
 
+        /// <summary>
+        /// The code below is not used anymore, since all the data is in sql scripts.
+        /// It is left here for reference purposes, because I got used to having it nicely laid out.
+        /// </summary>
         public static IEnumerable<Client> Clients =>
             new Client[]
             {

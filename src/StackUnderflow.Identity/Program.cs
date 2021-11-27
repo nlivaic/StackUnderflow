@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
-using StackUnderflow.Identity.Seeders;
 using System;
 
 namespace StackUnderflow.Identity
@@ -45,7 +44,6 @@ namespace StackUnderflow.Identity
                 Log.Information("Starting host...");
                 CreateHostBuilder(args)
                     .Build()
-                    .Seed()
                     .Run();
                 return 0;
             }

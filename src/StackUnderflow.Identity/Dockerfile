@@ -22,4 +22,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY ["src/StackUnderflow.Identity/entrypoint.sh", "src/entrypoint.sh"]
-ENTRYPOINT ["/bin/bash", "src/entrypoint.sh"]
+ENTRYPOINT ["dotnet", "./StackUnderflow.Identity.dll"]

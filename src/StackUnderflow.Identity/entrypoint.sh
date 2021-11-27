@@ -1,1 +1,0 @@
-sleep 20s && dotnet ./StackUnderflow.Identity.dll

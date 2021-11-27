@@ -15,7 +15,6 @@ services:
       # On the filesystem nginx.Dockerfile is on the same level as docker-compose.yml
       dockerfile: nginx/nginx.Dockerfile
     depends_on:
-      # Start Identity Server before starting nginx.
       - stackunderflow.identity
     networks:
       sunet:
