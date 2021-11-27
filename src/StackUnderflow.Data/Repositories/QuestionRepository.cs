@@ -34,6 +34,7 @@ namespace StackUnderflow.Data.Repositories
                 .ThenInclude(qt => qt.Tag)
                 .Include(q => q.Votes.Where(v => v.UserId == currentUserId))
                 .AsNoTracking()
+                .AsSingleQuery()
 
                 // Below line commented out because it was messing up
                 // votes - all votes would be included no matter
