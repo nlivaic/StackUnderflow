@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using StackUnderflow.Identity.DbContexts;
 using StackUnderflow.Identity.Services;
 using StackUnderflow.Infrastructure.Email.DependencyInjection;
@@ -41,7 +42,13 @@ namespace StackUnderflow.Identity
 
             services.AddDbContext<AppIdentityDbContext>(options =>
             {
-                options.UseNpgsql(_configuration["ConnectionStrings:StackUnderflowIdentityDb"]);
+
+                var connString = new NpgsqlConnectionStringBuilder(_configuration.GetConnectionString("StackUnderflowIdentityDb"))
+                {
+                    Username = _configuration["POSTGRES_USER"],
+                    Password = _configuration["POSTGRES_PASSWORD"]
+                };
+                options.UseNpgsql(connString.ConnectionString);
             });
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
@@ -76,8 +83,13 @@ namespace StackUnderflow.Identity
             {
                 options.ConfigureDbContext = builder =>
                 {
+                    var connString = new NpgsqlConnectionStringBuilder(_configuration.GetConnectionString("StackUnderflowIdentityDb"))
+                    {
+                        Username = _configuration["POSTGRES_USER"],
+                        Password = _configuration["POSTGRES_PASSWORD"]
+                    };
                     builder.UseNpgsql(
-                        _configuration["ConnectionStrings:StackUnderflowIdentityDb"],
+                        connString.ConnectionString,
                         options => options.MigrationsAssembly(migrationsAssembly)
                     );
                 };
@@ -87,8 +99,13 @@ namespace StackUnderflow.Identity
             {
                 options.ConfigureDbContext = builder =>
                 {
+                    var connString = new NpgsqlConnectionStringBuilder(_configuration.GetConnectionString("StackUnderflowIdentityDb"))
+                    {
+                        Username = _configuration["POSTGRES_USER"],
+                        Password = _configuration["POSTGRES_PASSWORD"]
+                    };
                     builder.UseNpgsql(
-                        _configuration["ConnectionStrings:StackUnderflowIdentityDb"],
+                        connString.ConnectionString,
                         options => options.MigrationsAssembly(migrationsAssembly)
                     );
                 };
