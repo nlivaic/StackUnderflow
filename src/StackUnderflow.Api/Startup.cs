@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Middlewares;
 using StackUnderflow.Api.Models;
@@ -75,7 +76,12 @@ namespace StackUnderflow.Api
 
             services.AddDbContext<StackUnderflowDbContext>(options =>
             {
-                options.UseNpgsql(_configuration.GetConnectionString("StackUnderflowDbConnection"));
+                var connString = new NpgsqlConnectionStringBuilder(_configuration.GetConnectionString("StackUnderflowDbConnection"))
+                {
+                    Username = _configuration["POSTGRES_USER"],
+                    Password = _configuration["POSTGRES_PASSWORD"]
+                };
+                options.UseNpgsql(connString.ConnectionString);
                 if (_hostEnvironment.IsDevelopment())
                 {
                     options.EnableSensitiveDataLogging(true);

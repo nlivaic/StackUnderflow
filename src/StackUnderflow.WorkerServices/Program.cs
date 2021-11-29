@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
 using StackUnderflow.Application;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core;
@@ -30,7 +31,12 @@ namespace StackUnderflow.WorkerServices
                     var hostEnvironment = hostContext.HostingEnvironment;
                     services.AddDbContext<StackUnderflowDbContext>(options =>
                     {
-                        options.UseNpgsql(configuration.GetConnectionString("StackUnderflowDbConnection"));
+                        var connString = new NpgsqlConnectionStringBuilder(configuration.GetConnectionString("StackUnderflowDbConnection"))
+                        {
+                            Username = configuration["POSTGRES_USER"],
+                            Password = configuration["POSTGRES_PASSWORD"]
+                        };
+                        options.UseNpgsql(connString.ConnectionString);
                         if (hostEnvironment.IsDevelopment())
                         {
                             options.EnableSensitiveDataLogging(true);
