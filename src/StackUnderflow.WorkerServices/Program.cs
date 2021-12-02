@@ -6,12 +6,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
 using StackUnderflow.Application;
+using StackUnderflow.Application.PointServices;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Events;
+using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Data;
 using StackUnderflow.Infrastructure.Caching;
+using StackUnderflow.Infrastructure.MessageBroker;
 using StackUnderflow.WorkerServices.FaultService;
 using StackUnderflow.WorkerServices.PointService;
 using StackUnderflow.WorkerServices.PointServices;
@@ -57,7 +60,11 @@ namespace StackUnderflow.WorkerServices
                         x.AddConsumer<FaultConsumer>();
                         x.UsingAzureServiceBus((ctx, cfg) =>
                         {
-                            cfg.Host(configuration["CONNECTIONSTRINGS:MESSAGEBROKER:READ"]);
+                            cfg.Host(
+                                new MessageBrokerConnectionStringBuilder(
+                                    configuration.GetConnectionString("MessageBroker"),
+                                    configuration["MessageBroker:Reader:SharedAccessKeyName"],
+                                    configuration["MessageBroker:Reader:SharedAccessKey"]).ConnectionString );
 
                             // Use the below line if you are not going with
                             // SetKebabCaseEndpointNameFormatter() in the publishing project (see API project),
@@ -85,7 +92,7 @@ namespace StackUnderflow.WorkerServices
                         });
                     });
                     services.AddMassTransitHostedService();
-                    services.AddStackUnderflowApplicationHandlers();
+                    services.AddScoped<ILimitsService, LimitsService>();
                 });
     }
 }

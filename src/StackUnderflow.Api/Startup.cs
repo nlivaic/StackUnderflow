@@ -167,11 +167,15 @@ namespace StackUnderflow.Api
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication("Bearer", options =>
                 {
-                    options.Authority = _configuration["IdP:Authority"];       // Our IDP. Middleware uses this to know where to find public keys and endpoints.
-                    options.ApiName = _configuration["IdP:ApiName"];           // Allows the access token validator to check if the access token `audience` is for this API.
+                    options.Authority = _configuration["IdentityProvider:Authority"];       // Our IDP. Middleware uses this to know where to find public keys and endpoints.
+                    options.ApiName = _configuration["IdentityProvider:ApiName"];           // Allows the access token validator to check if the access token `audience` is for this API.
                 });
             services.AddAuthorization();
-            services.AddApiEventPublisher(_configuration["CONNECTIONSTRINGS:MESSAGEBROKER:WRITE"]);
+            services.AddApiEventPublisher(
+                new MessageBrokerConnectionStringBuilder(
+                    _configuration.GetConnectionString("MessageBroker"),
+                    _configuration["MessageBroker:Writer:SharedAccessKeyName"],
+                    _configuration["MessageBroker:Writer:SharedAccessKey"]).ConnectionString);
             services.AddStackUnderflowApplicationHandlers();
 
             services.Configure<ForwardedHeadersOptions>(options =>

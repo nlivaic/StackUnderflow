@@ -82,6 +82,8 @@ services:
   #  networks:
   #    - sunet
   stackunderflow.workerservices:
+    environment:
+      - DOTNET_ENVIRONMENT=Development
     image: ${DOCKER_REGISTRY-}stackunderflowworkerservices
     env_file: .env
     depends_on:
