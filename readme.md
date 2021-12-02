@@ -1,25 +1,25 @@
-### Getting Started
+# Getting Started
 
-#### Set environment variables
+## Install a Docker host
+
+E.g. Docker Desktop
+
+## Set environment variables
 
 `.env` file example:
 
-    CONNECTIONSTRINGS__STACKUNDERFLOWDBCONNECTION=
-    CONNECTIONSTRINGS__STACKUNDERFLOWIDENTITYDB=
-    IDP__AUTHORITY=
-    IDP__APINAME=
-    LOGS__URL=
-    FACEBOOK__CLIENTSECRET=
-    FACEBOOK__CLIENTID=
-    EMAILSETTINGS__DONOTREPLY=
-    EMAILSETTINGS__HOST=
-    EMAILSETTINGS__PORT=
-    EMAILSETTINGS__USERNAME=
-    EMAILSETTINGS__PASSWORD=
+    MessageBroker__Writer__SharedAccessKeyName=
+    MessageBroker__Writer__SharedAccessKey=
+    MessageBroker__Reader__SharedAccessKeyName=
+    MessageBroker__Reader__SharedAccessKey=
+    Facebook__ClientSecret=
+    Facebook__ClientId=
+    EmailSettings__Username=
+    EmailSettings__Password=
     POSTGRES_USER=
     POSTGRES_PASSWORD=
 
-### Generating cert for your local development box
+# Generating cert for your local development box
 
 `.crt` and `.key` files for Api and Identity Server are committed to source control. These are self-signed certificates with dummy password of `rootpw`, so there is no security leaks there.
 These were created with below commands:
@@ -38,16 +38,10 @@ What you need to do is create the certs yourself and add them to your computers 
 
 For more details consult: https://bit.ly/3eWOHH2
 
-### HOSTS
+# Hosts file
 
 Add to local hosts file:
 
     # Stack Underflow DNS
     127.0.0.1	    api-local.stack-underflow.com
     127.0.0.1	    id-local.stack-underflow.com
-
-### Setting up Kubernetes
-
-1. Enable k8s on Docker Desktop. Make sure you check the `Show system containers (advanced)`.
-2. Add command to Powershell: https://bit.ly/3dDx6BF
-3. Install k8s dashboard: https://bit.ly/3wynUaa
