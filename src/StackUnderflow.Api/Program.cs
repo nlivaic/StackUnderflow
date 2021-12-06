@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +18,10 @@ namespace StackUnderflow.Api
                 .AddEnvironmentVariables()
                 .Build();
             Log.Logger = new LoggerConfiguration()
+
+                // Adding Entrypoint here means it is added to every log,
+                // regardless if it comes from Hosting or the application itself.
+                .Enrich.WithProperty("Entrypoint", Assembly.GetExecutingAssembly().GetName().Name)
                 .ReadFrom.Configuration(configuration)
                 .WriteTo.Console()
                 .WriteTo.Seq(configuration["Logs:Url"])

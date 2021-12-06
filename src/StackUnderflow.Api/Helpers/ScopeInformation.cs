@@ -10,8 +10,7 @@ namespace StackUnderflow.Api.Helpers
         {
             Host = new Dictionary<string, string>
             {
-                { "MachineName", Environment.MachineName },
-                { "Entrypoint", Assembly.GetExecutingAssembly().GetName().Name }
+                { "MachineName", Environment.MachineName }
             };
         }
 
