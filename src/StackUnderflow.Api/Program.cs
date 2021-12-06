@@ -19,7 +19,6 @@ namespace StackUnderflow.Api
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .WriteTo.Console()
-                .WriteTo.File(new JsonFormatter(), @"c:\temp\logs\stack-underflow.json", shared: true)
                 .WriteTo.Seq(configuration["Logs:Url"])
                 .CreateLogger();
 
@@ -27,7 +26,7 @@ namespace StackUnderflow.Api
             {
                 Log.Information("Starting up StackUnderflow.");
                 CreateHostBuilder(args)
-                    .Build() // .Seed()
+                    .Build()
                     .Run();
             }
             catch (Exception ex)
