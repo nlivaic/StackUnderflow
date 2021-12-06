@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace StackUnderflow.Api.Helpers
 {
@@ -9,7 +10,8 @@ namespace StackUnderflow.Api.Helpers
         {
             Host = new Dictionary<string, string>
             {
-                { "MachineName", Environment.MachineName }
+                { "MachineName", Environment.MachineName },
+                { "Entrypoint", Assembly.GetExecutingAssembly().GetName().Name }
             };
         }
 
