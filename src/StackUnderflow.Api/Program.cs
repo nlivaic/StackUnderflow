@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Enrichers.Span;
-using StackUnderflow.Infrastructure.Logging;
+using StackUnderflow.Api.Helpers;
 
 namespace StackUnderflow.Api
 {

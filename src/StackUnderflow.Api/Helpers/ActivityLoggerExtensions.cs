@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace StackUnderflow.Infrastructure.Logging
+namespace StackUnderflow.Api.Helpers
 {
     public static class ActivityLoggerExtensions
     {
