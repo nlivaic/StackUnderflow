@@ -191,7 +191,6 @@ namespace StackUnderflow.Api
         public void Configure(IApplicationBuilder app)
         {
             app.UseHostLoggingMiddleware();
-
             // First use of Logging Exceptions.
             // This instance is here to catch and log any exceptions coming from middlewares
             // executed early in the pipeline.
