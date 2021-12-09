@@ -31,7 +31,7 @@ namespace StackUnderflow.Api
 
             try
             {
-                Log.Information("Starting up StackUnderflow.");
+                Log.Information("Starting up Stack Underflow.");
                 CreateHostBuilder(args)
                     .Build()
                     .AddActivityLogging()
@@ -39,7 +39,7 @@ namespace StackUnderflow.Api
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Application Stack Underflow failed at startup.");
+                Log.Fatal(ex, "Stack Underflow failed at startup.");
             }
             finally
             {
