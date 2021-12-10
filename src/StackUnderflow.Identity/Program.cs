@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Enrichers.Span;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using System;
@@ -24,6 +25,7 @@ namespace StackUnderflow.Identity
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .Enrich.FromLogContext()
+                .Enrich.WithSpan()
                 // uncomment to write to Azure diagnostics stream
                 //.WriteTo.File(
                 //    @"D:\home\LogFiles\Application\identityserver.txt",
