@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Enrichers.Span;
+using Serilog.Exceptions;
 using StackUnderflow.Api.Helpers;
 
 namespace StackUnderflow.Api
@@ -24,6 +25,7 @@ namespace StackUnderflow.Api
                 // regardless if it comes from Hosting or the application itself.
                 .Enrich.WithProperty("Entrypoint", Assembly.GetExecutingAssembly().GetName().Name)
                 .Enrich.WithSpan()
+                .Enrich.WithExceptionDetails()
                 .ReadFrom.Configuration(configuration)
                 .WriteTo.Console()
                 .WriteTo.Seq(configuration["Logs:Url"])

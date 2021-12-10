@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Npgsql;
 using Serilog;
 using Serilog.Enrichers.Span;
+using Serilog.Exceptions;
 using StackUnderflow.Application;
 using StackUnderflow.Application.PointServices;
 using StackUnderflow.Common.Interfaces;
@@ -39,6 +40,7 @@ namespace StackUnderflow.WorkerServices
             // regardless if it comes from Hosting or the application itself.
             .Enrich.WithProperty("Entrypoint", Assembly.GetExecutingAssembly().GetName().Name)
             .Enrich.WithSpan()
+            .Enrich.WithExceptionDetails()
             .ReadFrom.Configuration(configuration)
             .WriteTo.Console()
             .WriteTo.Seq(configuration["Logs:Url"])
