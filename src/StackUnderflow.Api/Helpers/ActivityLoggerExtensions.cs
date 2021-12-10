@@ -17,11 +17,11 @@ namespace StackUnderflow.Api.Helpers
                     ShouldListenTo = _ => true,
                     ActivityStarted = activity =>
                     {
-                        logger.LogInformation("Activity started.");
+                        logger.LogInformation("Activity started: {operationName}.", activity.OperationName);
                     },
                     ActivityStopped = activity =>
                     {
-                        logger.LogInformation("Activity stopped.");
+                        logger.LogInformation("Activity stopped: {operationName}.", activity.OperationName);
                     }
                 });
             }
