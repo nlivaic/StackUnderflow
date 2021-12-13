@@ -19,6 +19,7 @@ using StackUnderflow.Data;
 using StackUnderflow.Infrastructure.Caching;
 using StackUnderflow.Infrastructure.Logging;
 using StackUnderflow.Infrastructure.MessageBroker;
+using StackUnderflow.Infrastructure.MessageBroker.Middlewares.ErrorLogging;
 using StackUnderflow.Infrastructure.MessageBroker.Middlewares.Tracing;
 using StackUnderflow.WorkerServices.FaultService;
 using StackUnderflow.WorkerServices.PointService;
@@ -133,6 +134,7 @@ namespace StackUnderflow.WorkerServices
                             cfg.ConfigureEndpoints(ctx);
 
                             cfg.UseMessageBrokerTracing();
+                            cfg.UseExceptionLogger(services);
                         });
                     });
                     services.AddMassTransitHostedService();
