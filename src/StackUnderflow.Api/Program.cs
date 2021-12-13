@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Enrichers.Span;
 using Serilog.Exceptions;
-using StackUnderflow.Api.Helpers;
+using StackUnderflow.Infrastructure.Logging;
 
 namespace StackUnderflow.Api
 {
@@ -36,7 +36,7 @@ namespace StackUnderflow.Api
                 Log.Information("Starting up Stack Underflow.");
                 CreateHostBuilder(args)
                     .Build()
-                    .AddActivityLogging()
+                    .AddW3CTraceContextActivityLogging()
                     .Run();
             }
             catch (Exception ex)

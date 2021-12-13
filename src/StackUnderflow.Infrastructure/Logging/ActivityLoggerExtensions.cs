@@ -3,12 +3,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace StackUnderflow.Api.Helpers
+namespace StackUnderflow.Infrastructure.Logging
 {
     public static class ActivityLoggerExtensions
     {
-        public static IHost AddActivityLogging(this IHost host)
+        /// <summary>
+        /// Adds a listener so every new Activity is logged.
+        /// Makes sure the tracing is W3C Trace Context compliant.
+        /// Makes tracing easier due to some components (e.g. HttpClient, MassTransit)
+        /// create their own Activity and the attached listener allows end-to-end tracing.
+        /// </summary>
+        /// <param name="host">Host.</param>
+        /// <returns>Host with activity logging configured.</returns>
+        public static IHost AddW3CTraceContextActivityLogging(this IHost host)
         {
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
             using (var scope = host.Services.CreateScope())
             {
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Activity>>();

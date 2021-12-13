@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StackUnderflow.Infrastructure.MessageBroker
+﻿namespace StackUnderflow.Infrastructure.MessageBroker
 {
     public class MessageBrokerConnectionStringBuilder
     {
@@ -22,6 +16,6 @@ namespace StackUnderflow.Infrastructure.MessageBroker
         public string SharedAccessKeyName { get; private set; }
         public string SharedAccessKey { get; private set; }
         public string ConnectionString =>
-            $"{Url};SharedAccessKeyName={SharedAccessKeyName};SharedAccessKey={SharedAccessKey}";
+            $"{Url};{_sharedAccessKeyNameProperty}={SharedAccessKeyName};{_sharedAccessKeyProperty }={SharedAccessKey}";
     }
 }

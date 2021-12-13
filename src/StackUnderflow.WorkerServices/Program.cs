@@ -9,7 +9,6 @@ using Npgsql;
 using Serilog;
 using Serilog.Enrichers.Span;
 using Serilog.Exceptions;
-using StackUnderflow.Application;
 using StackUnderflow.Application.PointServices;
 using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core;
@@ -18,7 +17,9 @@ using StackUnderflow.Core.Events;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Data;
 using StackUnderflow.Infrastructure.Caching;
+using StackUnderflow.Infrastructure.Logging;
 using StackUnderflow.Infrastructure.MessageBroker;
+using StackUnderflow.Infrastructure.MessageBroker.Middlewares.Tracing;
 using StackUnderflow.WorkerServices.FaultService;
 using StackUnderflow.WorkerServices.PointService;
 using StackUnderflow.WorkerServices.PointServices;
@@ -51,7 +52,7 @@ namespace StackUnderflow.WorkerServices
                 Log.Information("Starting up StackUnderflow Worker Services.");
                 CreateHostBuilder(args)
                     .Build()
-                     //.AddActivityLogging()
+                    .AddW3CTraceContextActivityLogging()
                     .Run();
             }
             catch (Exception ex)
@@ -63,9 +64,7 @@ namespace StackUnderflow.WorkerServices
                 Log.CloseAndFlush();
             }
 
-
             CreateHostBuilder(args).Build().Run();
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -107,7 +106,7 @@ namespace StackUnderflow.WorkerServices
                                 new MessageBrokerConnectionStringBuilder(
                                     configuration.GetConnectionString("MessageBroker"),
                                     configuration["MessageBroker:Reader:SharedAccessKeyName"],
-                                    configuration["MessageBroker:Reader:SharedAccessKey"]).ConnectionString );
+                                    configuration["MessageBroker:Reader:SharedAccessKey"]).ConnectionString);
 
                             // Use the below line if you are not going with
                             // SetKebabCaseEndpointNameFormatter() in the publishing project (see API project),
@@ -132,6 +131,8 @@ namespace StackUnderflow.WorkerServices
                                 e.ConfigureConsumer<FaultConsumer>(ctx);
                             });
                             cfg.ConfigureEndpoints(ctx);
+
+                            cfg.UseMessageBrokerTracing();
                         });
                     });
                     services.AddMassTransitHostedService();
