@@ -16,6 +16,6 @@
         public string SharedAccessKeyName { get; private set; }
         public string SharedAccessKey { get; private set; }
         public string ConnectionString =>
-            $"{Url};{_sharedAccessKeyNameProperty}={SharedAccessKeyName};{_sharedAccessKeyProperty }={SharedAccessKey}";
+            $"{Url};{_sharedAccessKeyNameProperty}={SharedAccessKeyName};{_sharedAccessKeyProperty}={SharedAccessKey}";
     }
 }

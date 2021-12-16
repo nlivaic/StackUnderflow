@@ -5,6 +5,7 @@ using System.Reflection;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -29,6 +30,7 @@ using StackUnderflow.Core;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Data;
 using StackUnderflow.Infrastructure.Caching;
+using StackUnderflow.Infrastructure.HealthCheck;
 using StackUnderflow.Infrastructure.MessageBroker;
 
 namespace StackUnderflow.Api
@@ -184,13 +186,16 @@ namespace StackUnderflow.Api
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
-            services.AddHealthChecks();
+            services
+                .AddHealthChecks()
+                .AddDbContextCheck<StackUnderflowDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
             app.UseHostLoggingMiddleware();
+
             // First use of Logging Exceptions.
             // This instance is here to catch and log any exceptions coming from middlewares
             // executed early in the pipeline.
@@ -241,7 +246,18 @@ namespace StackUnderflow.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/health");
+                // Liveness check does not include database connectivity check because even a transient
+                // error will cause the orchestractor/load balancer to take the service down and restart it.
+                // Readiness check includes database connectivity check to tell the orchestractor/load balancer
+                // whether all the project dependencies are up and running.
+                endpoints.MapHealthChecks("/health/live", new HealthCheckOptions
+                {
+                    Predicate = _ => false, // No additional health checks.
+                });
+                endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions
+                {
+                    ResponseWriter = HealthCheckResponses.WriteJsonResponse
+                });
                 endpoints.MapControllers();
             });
 
