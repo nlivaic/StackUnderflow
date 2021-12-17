@@ -24,7 +24,7 @@ namespace StackUnderflow.Infrastructure.MessageBroker.Middlewares.Tracing
             context.Headers.TryGetHeader("MT-Activity-Id", out object traceparentHeader);
             using var activity = new Activity("WorkerServices.Consumer");
             var traceheader = (string)traceparentHeader;
-            if (string.IsNullOrEmpty(traceheader))
+            if (!string.IsNullOrEmpty(traceheader))
             {
                 activity.SetParentId((string)traceparentHeader);
             }
