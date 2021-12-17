@@ -1,7 +1,5 @@
 ﻿using MassTransit;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using StackUnderflow.Common.Interfaces;
 
 namespace StackUnderflow.Infrastructure.MessageBroker
 {

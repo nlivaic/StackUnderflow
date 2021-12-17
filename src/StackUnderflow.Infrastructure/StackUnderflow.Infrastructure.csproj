@@ -21,11 +21,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\StackUnderflow.Common\StackUnderflow.Common.csproj" />
-    <ProjectReference Include="..\StackUnderflow.Core\StackUnderflow.Core.csproj" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

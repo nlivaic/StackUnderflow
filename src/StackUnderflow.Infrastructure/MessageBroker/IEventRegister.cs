@@ -1,4 +1,4 @@
-﻿namespace StackUnderflow.Common.Interfaces
+﻿namespace StackUnderflow.Infrastructure.MessageBroker
 {
     public interface IEventRegister
     {

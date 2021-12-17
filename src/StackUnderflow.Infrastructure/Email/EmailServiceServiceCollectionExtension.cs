@@ -1,7 +1,5 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using StackUnderflow.Common.Email;
-using StackUnderflow.Infrastructure.Email;
 
 namespace StackUnderflow.Infrastructure.Email.DependencyInjection
 {

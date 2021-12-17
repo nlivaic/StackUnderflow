@@ -25,7 +25,6 @@ using StackUnderflow.Application;
 using StackUnderflow.Application.Answers.Models;
 using StackUnderflow.Application.Questions.Models;
 using StackUnderflow.Application.Sorting;
-using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Data;

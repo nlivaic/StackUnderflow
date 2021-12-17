@@ -5,11 +5,11 @@ using AutoMapper;
 using MediatR;
 using StackUnderflow.Application.Votes.Models;
 using StackUnderflow.Common.Exceptions;
-using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Events;
 using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Infrastructure.MessageBroker;
 
 namespace StackUnderflow.Application.Votes.Commands
 {

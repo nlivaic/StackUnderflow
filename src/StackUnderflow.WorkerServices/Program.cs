@@ -10,7 +10,6 @@ using Serilog;
 using Serilog.Enrichers.Span;
 using Serilog.Exceptions;
 using StackUnderflow.Application.PointServices;
-using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Events;

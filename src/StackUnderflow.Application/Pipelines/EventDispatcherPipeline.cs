@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using StackUnderflow.Common.Interfaces;
+using StackUnderflow.Infrastructure.MessageBroker;
 
 namespace StackUnderflow.Application.Pipelines
 {

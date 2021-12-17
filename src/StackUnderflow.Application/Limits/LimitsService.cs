@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Interfaces;
+using StackUnderflow.Infrastructure.Caching;
 
 namespace StackUnderflow.Application.PointServices
 {

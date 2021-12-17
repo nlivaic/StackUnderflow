@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using MimeKit;
 using MimeKit.Text;
-using StackUnderflow.Common.Email;
 
 namespace StackUnderflow.Infrastructure.Email
 {
@@ -23,11 +22,9 @@ namespace StackUnderflow.Infrastructure.Email
             message.To.Add(MailboxAddress.Parse(toEmail));
             message.Subject = subject;
             message.Body = new TextPart(TextFormat.Html) { Text = $"<span>{body}</span>" };
-            using (var client = await _emailClientFactory.CreateConnectedClientAsync())
-            {
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
-            }
+            using var client = await _emailClientFactory.CreateConnectedClientAsync();
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
         }
 
         public async Task SendFromDoNotReplyAsync(string toEmail, string subject, string body) =>

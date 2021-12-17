@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
-using StackUnderflow.Common.Interfaces;
 
 namespace StackUnderflow.Infrastructure.Caching
 {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MassTransit;
-using StackUnderflow.Common.Interfaces;
 
 namespace StackUnderflow.Infrastructure.MessageBroker
 {
