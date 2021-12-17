@@ -1,11 +1,7 @@
 using System;
-using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Enrichers.Span;
-using Serilog.Exceptions;
 using StackUnderflow.Infrastructure.Logging;
 
 namespace StackUnderflow.Api
@@ -14,22 +10,7 @@ namespace StackUnderflow.Api
     {
         public static void Main(string[] args)
         {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
-            Log.Logger = new LoggerConfiguration()
-
-                // Adding Entrypoint here means it is added to every log,
-                // regardless if it comes from Hosting or the application itself.
-                .Enrich.WithProperty("Entrypoint", Assembly.GetExecutingAssembly().GetName().Name)
-                .Enrich.WithSpan()
-                .Enrich.WithExceptionDetails()
-                .ReadFrom.Configuration(configuration)
-                .WriteTo.Console()
-                .WriteTo.Seq(configuration["Logs:Url"])
-                .CreateLogger();
+            Infrastructure.Logging.LoggerExtensions.ConfigureSerilogLogger("ASPNETCORE_ENVIRONMENT");
 
             try
             {

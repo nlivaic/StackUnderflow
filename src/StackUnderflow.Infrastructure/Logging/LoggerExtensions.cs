@@ -1,12 +1,37 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Enrichers.Span;
+using Serilog.Exceptions;
 
 namespace StackUnderflow.Infrastructure.Logging
 {
-    public static class ActivityLoggerExtensions
+    public static class LoggerExtensions
     {
+        public static void ConfigureSerilogLogger(string environmentVariable)
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable(environmentVariable)}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            // Adding Entrypoint here means it is added to every log,
+            // regardless if it comes from Hosting or the application itself.
+            new LoggerConfiguration()
+                .Enrich.WithProperty("Entrypoint", Assembly.GetExecutingAssembly().GetName().Name)
+                .Enrich.WithSpan()
+                .Enrich.WithExceptionDetails()
+                .ReadFrom.Configuration(configuration)
+                .WriteTo.Console()
+                .WriteTo.Seq(configuration["Logs:Url"]);
+        }
+
         /// <summary>
         /// Adds a listener so every new Activity is logged.
         /// Makes sure the tracing is W3C Trace Context compliant.
