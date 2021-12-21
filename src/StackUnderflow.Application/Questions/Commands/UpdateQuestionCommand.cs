@@ -23,13 +23,13 @@ namespace StackUnderflow.Application.Questions.Commands
             private readonly IQuestionRepository _questionRepository;
             private readonly ITagService _tagService;
             private readonly IUserRepository _userRepository;
-            private readonly BaseLimits _limits;
+            private readonly ILimits _limits;
 
             public UpdateQuestionCommandHandler(
                 IQuestionRepository questionRepository,
                 ITagService tagService,
                 IUserRepository userRepository,
-                BaseLimits limits)
+                ILimits limits)
             {
                 _questionRepository = questionRepository;
                 _tagService = tagService;

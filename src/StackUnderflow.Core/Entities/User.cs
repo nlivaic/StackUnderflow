@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using StackUnderflow.Common.Base;
 using StackUnderflow.Common.Exceptions;
+using StackUnderflow.Common.Guards;
 using StackUnderflow.Core.Interfaces;
 
 namespace StackUnderflow.Core.Entities
@@ -26,9 +27,9 @@ namespace StackUnderflow.Core.Entities
         public IEnumerable<Answer> Answers { get; private set; } = new List<Answer>();
         public IEnumerable<Comment> Comments { get; private set; } = new List<Comment>();
 
-        public static User Create(BaseLimits limits, Guid id, string username, string email = null, string websiteUrl = null, string aboutMe = null)
+        public static User Create(ILimits limits, Guid id, string username, string email = null, string websiteUrl = null, string aboutMe = null)
         {
-            Validate(websiteUrl, aboutMe, limits);
+            Validate(username, websiteUrl, aboutMe, email, limits);
             var user = new User
             {
                 Id = id,
@@ -45,9 +46,9 @@ namespace StackUnderflow.Core.Entities
             return user;
         }
 
-        public void Edit(string websiteUrl, string aboutMe, BaseLimits limits)
+        public void Edit(string websiteUrl, string aboutMe, ILimits limits)
         {
-            Validate(websiteUrl, aboutMe, limits);
+            Validate(Username, websiteUrl, aboutMe, Email, limits);
             WebsiteUrl = string.IsNullOrWhiteSpace(websiteUrl)
                 ? null
                 : new Uri(websiteUrl);
@@ -70,8 +71,15 @@ namespace StackUnderflow.Core.Entities
 
         public void PointDown() => Points--;
 
-        private static void Validate(string websiteUrl, string aboutMe, BaseLimits limits)
+        private static void Validate(string username, string websiteUrl, string aboutMe, string email, ILimits limits)
         {
+            if (string.IsNullOrWhiteSpace(username)
+                || username.Length < limits.UsernameMinimumLength
+                || username.Length > limits.UsernameMaximumLength)
+            {
+                throw new BusinessException("Username not valid.");
+            }
+            Guards.ValidEmail(email);
             if (!string.IsNullOrWhiteSpace(websiteUrl) && !Uri.TryCreate(websiteUrl, UriKind.Absolute, out var _))
             {
                 throw new BusinessException("Website Url is not valid.");

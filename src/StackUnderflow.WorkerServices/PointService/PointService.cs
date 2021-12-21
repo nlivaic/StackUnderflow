@@ -7,11 +7,11 @@ namespace StackUnderflow.WorkerServices.PointServices
 {
     public class PointService : IPointService
     {
-        private readonly BaseLimits _limits;
+        private readonly ILimits _limits;
         private readonly IUserRepository _userRepository;
 
         public PointService(
-            BaseLimits limits,
+            ILimits limits,
             IUserRepository userRepository)
         {
             _limits = limits;

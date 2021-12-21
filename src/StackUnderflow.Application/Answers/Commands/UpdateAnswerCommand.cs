@@ -20,12 +20,12 @@ namespace StackUnderflow.Application.Answers.Commands
         {
             private readonly IRepository<Answer> _answerRepository;
             private readonly IUserRepository _userRepository;
-            private readonly BaseLimits _limits;
+            private readonly ILimits _limits;
 
             public UpdateAnswerCommandHandler(
                 IRepository<Answer> answerRepository,
                 IUserRepository userRepository,
-                BaseLimits limits)
+                ILimits limits)
             {
                 _answerRepository = answerRepository;
                 _userRepository = userRepository;

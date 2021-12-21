@@ -7,7 +7,7 @@ namespace StackUnderflow.Core.Tests.Builders
     public class CommentBuilder
     {
         private Comment _target;
-        private BaseLimits _limits = new LimitsBuilder().Build();
+        private ILimits _limits = new LimitsBuilder().Build();
 
         public CommentBuilder SetupValidComment(int orderNumber = 1)
         {

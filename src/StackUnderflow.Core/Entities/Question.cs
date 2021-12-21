@@ -52,12 +52,13 @@ namespace StackUnderflow.Core.Entities
             string title,
             string body,
             IEnumerable<Tag> tags,
-            BaseLimits limits)
+            ILimits limits)
         {
             var question = new Question
             {
                 Id = Guid.NewGuid(),
-                User = user
+                User = user,
+                UserId = user.Id
             };
             Validate(user, title, body, tags, limits);
             question.Title = title;
@@ -68,7 +69,7 @@ namespace StackUnderflow.Core.Entities
             return question;
         }
 
-        public void Edit(User user, string title, string body, IEnumerable<Tag> tags, BaseLimits limits)
+        public void Edit(User user, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {
             if (!CanBeEditedBy(user))
             {
@@ -113,7 +114,7 @@ namespace StackUnderflow.Core.Entities
             HasAcceptedAnswer = true;
         }
 
-        public void UndoAcceptAnswer(Answer answer, BaseLimits limits)
+        public void UndoAcceptAnswer(Answer answer, ILimits limits)
         {
             if (_answers.Find(a => a.Id == answer.Id) == null)
             {
@@ -131,7 +132,7 @@ namespace StackUnderflow.Core.Entities
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 
-        public void RevokeVote(Vote vote, BaseLimits limits) => _voteable.RevokeVote(vote, limits);
+        public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
         public bool CanBeEditedBy(User editingUser) =>
             _owneable.CanBeEditedBy(editingUser);
@@ -153,7 +154,7 @@ namespace StackUnderflow.Core.Entities
             return true;
         }
 
-        private static void Validate(User user, string title, string body, IEnumerable<Tag> tags, BaseLimits limits)
+        private static void Validate(User user, string title, string body, IEnumerable<Tag> tags, ILimits limits)
         {
             if (user.Id == default(Guid))
             {

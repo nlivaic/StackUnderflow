@@ -25,7 +25,7 @@ namespace StackUnderflow.Application.Questions.Commands
             private readonly IUserService _userService;
             private readonly IQuestionRepository _questionRepository;
             private readonly IUserRepository _userRepository;
-            private readonly BaseLimits _limits;
+            private readonly ILimits _limits;
             private readonly IMapper _mapper;
 
             public CreateQuestionCommandHandler(
@@ -33,7 +33,7 @@ namespace StackUnderflow.Application.Questions.Commands
                 IUserService userService,
                 IQuestionRepository questionRepository,
                 IUserRepository userRepository,
-                BaseLimits limits,
+                ILimits limits,
                 IMapper mapper)
             {
                 _tagService = tagService;

@@ -47,7 +47,7 @@ namespace StackUnderflow.Core.Entities
             User user,
             string body,
             int orderNumber,
-            BaseLimits limits)
+            ILimits limits)
         {
             Validate(user, body, limits);
             if (orderNumber < 1)
@@ -58,6 +58,7 @@ namespace StackUnderflow.Core.Entities
             {
                 Id = Guid.NewGuid(),
                 User = user,
+                UserId = user.Id,
                 Body = body,
                 OrderNumber = orderNumber,
                 CreatedOn = DateTime.UtcNow
@@ -65,7 +66,7 @@ namespace StackUnderflow.Core.Entities
             return comment;
         }
 
-        public void Edit(User user, string body, BaseLimits limits)
+        public void Edit(User user, string body, ILimits limits)
         {
             if (!CanBeEditedBy(user))
             {
@@ -81,7 +82,7 @@ namespace StackUnderflow.Core.Entities
 
         public void ApplyVote(Vote vote) => _voteable.ApplyVote(vote);
 
-        public void RevokeVote(Vote vote, BaseLimits limits) => _voteable.RevokeVote(vote, limits);
+        public void RevokeVote(Vote vote, ILimits limits) => _voteable.RevokeVote(vote, limits);
 
         public bool CanBeEditedBy(User editingUser) =>
             _owneable.CanBeEditedBy(editingUser);
@@ -108,7 +109,7 @@ namespace StackUnderflow.Core.Entities
             return true;
         }
 
-        private static void Validate(User user, string body, BaseLimits limits)
+        private static void Validate(User user, string body, ILimits limits)
         {
             if (user.Id == default(Guid))
             {

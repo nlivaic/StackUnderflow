@@ -18,7 +18,6 @@ namespace StackUnderflow.Core.Tests
             target.ApplyVote(vote);
 
             // Assert
-            Assert.Equal(1, target.VotesSum);
             Assert.Contains(vote, target.Votes);
         }
 
@@ -34,7 +33,6 @@ namespace StackUnderflow.Core.Tests
             target.ApplyVote(vote);
 
             // Assert
-            Assert.Equal(1, target.VotesSum);
             Assert.Contains(vote, target.Votes);
         }
 
@@ -49,7 +47,6 @@ namespace StackUnderflow.Core.Tests
             target.ApplyVote(vote);
 
             // Assert
-            Assert.Equal(1, target.VotesSum);
             Assert.Contains(vote, target.Votes);
         }
 
@@ -64,22 +61,6 @@ namespace StackUnderflow.Core.Tests
 
             // Act, Assert
             Assert.Throws<BusinessException>(() => target.ApplyVote(secondVote));
-        }
-
-        [Fact]
-        public void Voteable_CanRevokeVoteWithinDeadline_Successfully()
-        {
-            // Arrange
-            var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var vote = new VoteBuilder(target).SetupValidUpvote().ByOneUser().Build();
-            var limits = new LimitsBuilder().Build();
-            target.ApplyVote(vote);
-
-            // Act
-            target.RevokeVote(vote, limits);
-
-            // Assert
-            Assert.Equal(0, target.VotesSum);
         }
 
         [Fact]

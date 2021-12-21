@@ -7,12 +7,12 @@ namespace StackUnderflow.Core.Tests.Builders
     public class AnswerBuilder
     {
         private Answer _target;
-        private BaseLimits _limits = new LimitsBuilder().Build();
+        private ILimits _limits = new LimitsBuilder().Build();
 
         public AnswerBuilder SetupValidAnswer(Question question, Guid? userId = null)
         {
             string body = "BodyNormal";
-            userId = userId ?? Guid.NewGuid();
+            userId ??= Guid.NewGuid();
             var user = new UserBuilder().BuildUser(userId.Value).Build();
             _target = Answer.Create(user, body, _limits);
             return this;

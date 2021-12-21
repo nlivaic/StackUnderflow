@@ -17,12 +17,12 @@ namespace StackUnderflow.Application.Votes.Commands
         {
             private readonly IVoteRepository _voteRepository;
             private readonly IVoteService _voteService;
-            private readonly BaseLimits _limits;
+            private readonly ILimits _limits;
 
             public RevokeVoteCommandHandler(
                 IVoteRepository voteRepository,
                 IVoteService voteService,
-                BaseLimits limits)
+                ILimits limits)
             {
                 _voteRepository = voteRepository;
                 _voteService = voteService;

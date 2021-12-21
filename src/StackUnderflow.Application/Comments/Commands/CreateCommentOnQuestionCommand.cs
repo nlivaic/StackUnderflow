@@ -24,7 +24,7 @@ namespace StackUnderflow.Application.Comments.Commands
             private readonly ICommentRepository _commentRepository;
             private readonly IUserRepository _userRepository;
             private readonly IUserService _userService;
-            private readonly BaseLimits _limits;
+            private readonly ILimits _limits;
             private readonly IMapper _mapper;
 
             public CreateCommentOnQuestionCommandHandler(
@@ -32,7 +32,7 @@ namespace StackUnderflow.Application.Comments.Commands
                 ICommentRepository commentRepository,
                 IUserRepository userRepository,
                 IUserService userService,
-                BaseLimits limits,
+                ILimits limits,
                 IMapper mapper)
             {
                 _questionRepository = questionRepository;

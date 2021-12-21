@@ -15,7 +15,7 @@ namespace StackUnderflow.Core.Tests
         private readonly Answer _answer;
         private readonly Comment _comment;
         private VoteTypeEnum _voteType;
-        private BaseLimits _limits = new LimitsBuilder().Build();
+        private ILimits _limits = new LimitsBuilder().Build();
         private DateTime? _createdOn;
 
         public VoteBuilder(Question question)

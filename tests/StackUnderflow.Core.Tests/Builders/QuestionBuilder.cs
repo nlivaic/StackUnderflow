@@ -7,7 +7,7 @@ namespace StackUnderflow.Core.Tests.Builders
     public class QuestionBuilder
     {
         private Question _target;
-        private BaseLimits _limits = new LimitsBuilder().Build();
+        private ILimits _limits = new LimitsBuilder().Build();
 
         public QuestionBuilder SetupValidQuestion()
         {
@@ -16,8 +16,6 @@ namespace StackUnderflow.Core.Tests.Builders
             string title = "TitleNormal";
             string body = "BodyNormal";
             var tags = new TagBuilder().Build(tagCount);
-            var voteable = new Voteable();
-            var commentable = new Commentable();
             _target = Question.Create(user, title, body, tags, _limits);
             return this;
         }

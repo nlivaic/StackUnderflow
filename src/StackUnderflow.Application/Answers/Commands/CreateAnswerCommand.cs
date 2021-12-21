@@ -24,7 +24,7 @@ namespace StackUnderflow.Application.Answers.Commands
             private readonly IAnswerRepository _answerRepository;
             private readonly IUserRepository _userRepository;
             private readonly IUserService _userService;
-            private readonly BaseLimits _limits;
+            private readonly ILimits _limits;
             private readonly IMapper _mapper;
 
             public CreateAnswerCommandHandler(
@@ -32,7 +32,7 @@ namespace StackUnderflow.Application.Answers.Commands
                 IAnswerRepository answerRepository,
                 IUserRepository userRepository,
                 IUserService userService,
-                BaseLimits limits,
+                ILimits limits,
                 IMapper mapper)
             {
                 _questionRepository = questionRepository;

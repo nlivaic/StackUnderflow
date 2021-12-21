@@ -8,6 +8,6 @@ namespace StackUnderflow.Core.Interfaces
         IEnumerable<Vote> Votes { get; }
 
         void ApplyVote(Vote vote);
-        void RevokeVote(Vote vote, BaseLimits limits);
+        void RevokeVote(Vote vote, ILimits limits);
     }
 }

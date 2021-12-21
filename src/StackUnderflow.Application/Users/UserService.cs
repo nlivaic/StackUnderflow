@@ -12,12 +12,12 @@ namespace StackUnderflow.Application.Users
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly BaseLimits _limits;
+        private readonly ILimits _limits;
 
         public UserService(
             IUserRepository userRepository,
             IMapper mapper,
-            BaseLimits limits)
+            ILimits limits)
         {
             _userRepository = userRepository;
             _mapper = mapper;

@@ -26,7 +26,7 @@ namespace StackUnderflow.Core.Tests
             // Assert
             var resultWebsiteUrl = result.WebsiteUrl?.ToString();
             Assert.NotNull(result);
-            Assert.NotEqual(result.Id, default(Guid));
+            Assert.NotEqual(default(Guid), result.Id);
             Assert.Equal(result.Username, username);
             Assert.Equal(result.Email, email);
             Assert.Equal(resultWebsiteUrl, string.IsNullOrWhiteSpace(websiteUrl) ? null : websiteUrl);
@@ -79,10 +79,6 @@ namespace StackUnderflow.Core.Tests
         }
 
         [Theory]
-        [InlineData("", "")]
-        [InlineData("http://normal_web_site.com/", "")]
-        [InlineData("http://normal_web_site.com/", "")]
-        [InlineData("http://normal_web_site.com/", "")]
         [InlineData("invalid_web_site/", "")]
         [InlineData("http://normal_web_site/", "very_very_very_very_long_about_me")]
         public void User_EditingWithInvalidData_Throws(string websiteUrl, string aboutMe)

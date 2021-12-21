@@ -194,11 +194,11 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var answer = new AnswerBuilder().SetupValidAnswer(target).Build();
+            var answer = new AnswerBuilder().SetupValidAnswer(target, target.UserId).Build();
             target.Answer(answer);
 
             // Act
-            target.AcceptAnswer(answer);
+            target.AcceptAnswer(answer, answer.UserId);
 
             // Assert
             Assert.True(target.HasAcceptedAnswer);
@@ -209,14 +209,14 @@ namespace StackUnderflow.Core.Tests
         {
             // Arrange
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var firstAnswer = new AnswerBuilder().SetupValidAnswer(target).Build();
+            var firstAnswer = new AnswerBuilder().SetupValidAnswer(target, target.UserId).Build();
             var secondAnswer = new AnswerBuilder().SetupAnotherValidAnswer(target).Build();
             target.Answer(firstAnswer);
             target.Answer(secondAnswer);
-            target.AcceptAnswer(firstAnswer);
+            target.AcceptAnswer(firstAnswer, firstAnswer.UserId);
 
             // Act, Assert
-            Assert.Throws<BusinessException>(() => target.AcceptAnswer(secondAnswer));
+            Assert.Throws<BusinessException>(() => target.AcceptAnswer(secondAnswer, secondAnswer.UserId));
         }
 
         [Fact]
@@ -230,7 +230,7 @@ namespace StackUnderflow.Core.Tests
             target.Answer(firstAnswer);
 
             // Act, Assert
-            Assert.Throws<BusinessException>(() => target.AcceptAnswer(secondAnswer));
+            Assert.Throws<BusinessException>(() => target.AcceptAnswer(secondAnswer, secondAnswer.UserId));
         }
 
         [Fact]
@@ -239,9 +239,9 @@ namespace StackUnderflow.Core.Tests
             // Arrange
             var limits = new LimitsBuilder().Build();
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var answer = new AnswerBuilder().SetupValidAnswer(target).Build();
+            var answer = new AnswerBuilder().SetupValidAnswer(target, target.UserId).Build();
             target.Answer(answer);
-            target.AcceptAnswer(answer);
+            target.AcceptAnswer(answer, answer.UserId);
 
             // Act
             target.UndoAcceptAnswer(answer, limits);
@@ -258,9 +258,9 @@ namespace StackUnderflow.Core.Tests
             // Arrange
             var limits = new LimitsBuilder().Build();
             var target = new QuestionBuilder().SetupValidQuestion().Build();
-            var answer = new AnswerBuilder().SetupValidAnswer(target).Build();
+            var answer = new AnswerBuilder().SetupValidAnswer(target, target.UserId).Build();
             target.Answer(answer);
-            target.AcceptAnswer(answer);
+            target.AcceptAnswer(answer, answer.UserId);
             // 1 minute past deadline
             answer.SetProperty(
                 nameof(answer.AcceptedOn),

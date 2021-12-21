@@ -24,7 +24,7 @@ namespace StackUnderflow.Api.Models
 
         public class QuestionUpdateRequestValidator : AbstractValidator<QuestionUpdateRequest>
         {
-            public QuestionUpdateRequestValidator(BaseLimits limits)
+            public QuestionUpdateRequestValidator(ILimits limits)
             {
                 RuleFor(x => x.Body)
                     .MinimumLength(limits.QuestionBodyMinimumLength)

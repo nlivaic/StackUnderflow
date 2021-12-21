@@ -20,7 +20,7 @@ namespace StackUnderflow.Api.Models
 
         public class CommentCreateRequestValidator : AbstractValidator<CommentCreateRequest>
         {
-            public CommentCreateRequestValidator(BaseLimits limits)
+            public CommentCreateRequestValidator(ILimits limits)
             {
                 RuleFor(x => x.Body)
                     .MinimumLength(limits.CommentBodyMinimumLength)

@@ -20,12 +20,12 @@ namespace StackUnderflow.Application.Comments.Commands
         {
             private readonly ICommentRepository _commentRepository;
             private readonly IUserRepository _userRepository;
-            private readonly BaseLimits _limits;
+            private readonly ILimits _limits;
 
             public UpdateCommentOnAnswerCommandHandler(
                 ICommentRepository commentRepository,
                 IUserRepository userRepository,
-                BaseLimits limits)
+                ILimits limits)
             {
                 _commentRepository = commentRepository;
                 _userRepository = userRepository;

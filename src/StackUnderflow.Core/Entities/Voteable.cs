@@ -26,7 +26,7 @@ namespace StackUnderflow.Core.Entities
             // @nl: initiate point recalculation for (q/a/c) target owner.
         }
 
-        public void RevokeVote(Vote vote, BaseLimits limits)
+        public void RevokeVote(Vote vote, ILimits limits)
         {
             if (_votes.SingleOrDefault(v => v.UserId == vote.UserId) == null)
             {
