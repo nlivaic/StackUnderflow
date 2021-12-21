@@ -1,7 +1,6 @@
 using System;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
-using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Core.Tests.Builders;
 using Xunit;
 

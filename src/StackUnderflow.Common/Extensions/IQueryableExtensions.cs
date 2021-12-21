@@ -10,7 +10,7 @@ namespace StackUnderflow.Common.Extensions
         /// <summary>
         /// Provides an opportunity to project to different types.
         /// If T is an entity (inheriting from BaseEntity of Guid) then pass through.
-        /// If T is not an entity then map to T using AutoMapper.
+        /// If T is not an entity (e.g. a view model) then map to T using AutoMapper.
         /// </summary>
         /// <typeparam name="T">Resulting type.</typeparam>
         /// <param name="query">Query to project from.</param>
@@ -21,7 +21,7 @@ namespace StackUnderflow.Common.Extensions
             var type = typeof(T);
             while (type != typeof(object))
             {
-                if (type == typeof(Common.Base.BaseEntity<Guid>))
+                if (type == typeof(Base.BaseEntity<Guid>))
                 {
                     return query.Cast<T>();
                 }
