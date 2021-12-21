@@ -8,7 +8,7 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using StackUnderflow.Infrastructure.Email;
+using SparkRoseDigital.Infrastructure.Email;
 
 namespace IdentityServerHost.Quickstart.UI
 {

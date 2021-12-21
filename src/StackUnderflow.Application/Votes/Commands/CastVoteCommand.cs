@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using SparkRoseDigital.Infrastructure.MessageBroker;
 using StackUnderflow.Application.Votes.Models;
 using StackUnderflow.Common.Exceptions;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Events;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Infrastructure.MessageBroker;
 
 namespace StackUnderflow.Application.Votes.Commands
 {

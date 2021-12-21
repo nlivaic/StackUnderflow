@@ -18,6 +18,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using SparkRoseDigital.Infrastructure.Caching;
+using SparkRoseDigital.Infrastructure.HealthCheck;
+using SparkRoseDigital.Infrastructure.MessageBroker;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Middlewares;
 using StackUnderflow.Api.Models;
@@ -28,9 +31,6 @@ using StackUnderflow.Application.Sorting;
 using StackUnderflow.Core;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Data;
-using StackUnderflow.Infrastructure.Caching;
-using StackUnderflow.Infrastructure.HealthCheck;
-using StackUnderflow.Infrastructure.MessageBroker;
 
 namespace StackUnderflow.Api
 {

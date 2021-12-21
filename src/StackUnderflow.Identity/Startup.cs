@@ -20,7 +20,7 @@ using Microsoft.Extensions.Logging;
 using Npgsql;
 using StackUnderflow.Identity.DbContexts;
 using StackUnderflow.Identity.Services;
-using StackUnderflow.Infrastructure.Email.DependencyInjection;
+using SparkRoseDigital.Infrastructure.Email.DependencyInjection;
 
 namespace StackUnderflow.Identity
 {

@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using StackUnderflow.Infrastructure.Logging;
+using SparkRoseDigital.Infrastructure.Logging;
 
 namespace StackUnderflow.Api
 {
@@ -10,7 +10,7 @@ namespace StackUnderflow.Api
     {
         public static void Main(string[] args)
         {
-            Infrastructure.Logging.LoggerExtensions.ConfigureSerilogLogger("ASPNETCORE_ENVIRONMENT");
+            SparkRoseDigital.Infrastructure.Logging.LoggerExtensions.ConfigureSerilogLogger("ASPNETCORE_ENVIRONMENT");
 
             try
             {

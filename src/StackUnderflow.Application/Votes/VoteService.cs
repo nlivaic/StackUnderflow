@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using SparkRoseDigital.Infrastructure.Caching;
 using StackUnderflow.Application.Votes.Models;
 using StackUnderflow.Common.Caching;
 using StackUnderflow.Common.Exceptions;
@@ -7,7 +8,6 @@ using StackUnderflow.Common.Interfaces;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Enums;
 using StackUnderflow.Core.Interfaces;
-using StackUnderflow.Infrastructure.Caching;
 
 namespace StackUnderflow.Application.Votes
 {

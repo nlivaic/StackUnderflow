@@ -7,17 +7,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Npgsql;
 using Serilog;
+using SparkRoseDigital.Infrastructure.Caching;
+using SparkRoseDigital.Infrastructure.Logging;
+using SparkRoseDigital.Infrastructure.MessageBroker;
+using SparkRoseDigital.Infrastructure.MessageBroker.Middlewares.ErrorLogging;
+using SparkRoseDigital.Infrastructure.MessageBroker.Middlewares.Tracing;
 using StackUnderflow.Application.PointServices;
 using StackUnderflow.Core;
 using StackUnderflow.Core.Entities;
 using StackUnderflow.Core.Events;
 using StackUnderflow.Core.Interfaces;
 using StackUnderflow.Data;
-using StackUnderflow.Infrastructure.Caching;
-using StackUnderflow.Infrastructure.Logging;
-using StackUnderflow.Infrastructure.MessageBroker;
-using StackUnderflow.Infrastructure.MessageBroker.Middlewares.ErrorLogging;
-using StackUnderflow.Infrastructure.MessageBroker.Middlewares.Tracing;
 using StackUnderflow.WorkerServices.FaultService;
 using StackUnderflow.WorkerServices.PointService;
 using StackUnderflow.WorkerServices.PointServices;
@@ -28,7 +28,7 @@ namespace StackUnderflow.WorkerServices
     {
         public static void Main(string[] args)
         {
-            Infrastructure.Logging.LoggerExtensions.ConfigureSerilogLogger("DOTNET_ENVIRONMENT");
+            SparkRoseDigital.Infrastructure.Logging.LoggerExtensions.ConfigureSerilogLogger("DOTNET_ENVIRONMENT");
 
             try
             {

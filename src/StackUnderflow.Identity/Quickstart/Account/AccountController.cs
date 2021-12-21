@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using StackUnderflow.Identity.Quickstart;
-using StackUnderflow.Infrastructure.Email;
+using SparkRoseDigital.Infrastructure.Email;
 using System;
 using System.Linq;
 using System.Text;
