@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Moq;
 using StackUnderflow.Common.Base;
 using StackUnderflow.Common.Extensions;
 using Xunit;
@@ -15,13 +14,13 @@ namespace StackUnderflow.Common.Tests
         public void IQueryableExtensionsTests_CanProjectEntity_Successfully()
         {
             // Arrange
-            var query = new List<TestEntity>
+            var target = new List<TestEntity>
             {
                 new TestEntity()
             }.AsQueryable();
 
             // Act
-            var result = query.Projector<TestEntity>(null).First();
+            var result = target.Projector<TestEntity>(null).First();
 
             // Assert
             Assert.IsType<TestEntity>(result);
@@ -31,7 +30,7 @@ namespace StackUnderflow.Common.Tests
         public void IQueryableExtensionsTests_CanProjectViewModel_Successfully()
         {
             // Arrange
-            var query = new List<TestEntity>
+            var target = new List<TestEntity>
             {
                 new TestEntity()
             }.AsQueryable();
@@ -39,7 +38,7 @@ namespace StackUnderflow.Common.Tests
                 cfg => cfg.CreateMap<TestEntity, TestEntityDto>());
 
             // Act
-            var result = query.Projector<TestEntityDto>(configurationProvider).First();
+            var result = target.Projector<TestEntityDto>(configurationProvider).First();
 
             // Assert
             Assert.IsType<TestEntityDto>(result);

@@ -5,8 +5,8 @@ namespace StackUnderflow.Common.Extensions
     public static class StringExtensions
     {
         public static string CapitalizeFirstLetter(this string str) =>
-            str.Trim().Length == 0
+            string.IsNullOrWhiteSpace(str)
                 ? str
-                : str.First().ToString().ToUpper() + str.Substring(1);
+                : str.First().ToString().ToUpper() + str[1..];
     }
 }
