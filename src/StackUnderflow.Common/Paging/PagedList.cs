@@ -3,13 +3,24 @@ using System.Collections.Generic;
 
 namespace StackUnderflow.Common.Paging
 {
+    /// <summary>
+    /// Paging information.
+    /// </summary>
+    /// <typeparam name="T">Type of paged elements.</typeparam>
     public class PagedList<T>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PagedList{T}"/> class.
+        /// </summary>
+        /// <param name="items">Items on the current page.</param>
+        /// <param name="currentPage">Number of the current page.</param>
+        /// <param name="totalItems">Total number of items in the result set.</param>
+        /// <param name="pageSize">Number of elements on the current page.</param>
         public PagedList(List<T> items, int currentPage, int totalItems, int pageSize)
         {
             CurrentPage = currentPage;
             TotalItems = totalItems;
-            TotalPages = Convert.ToInt32(Math.Ceiling((decimal)totalItems / pageSize));
+            TotalPages = Math.Max(1, Convert.ToInt32(Math.Ceiling((decimal)totalItems / pageSize)));
             PageSize = pageSize;
             HasNextPage = CurrentPage < TotalPages;
             HasPreviousPage = CurrentPage > 1;
