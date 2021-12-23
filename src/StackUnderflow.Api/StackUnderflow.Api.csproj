@@ -28,7 +28,7 @@
     <PackageReference Include="Serilog.Enrichers.Span" Version="2.0.1" />
     <PackageReference Include="Serilog.Exceptions" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.0" />
-    <PackageReference Include="SparkRoseDigital.Infrastructure" Version="1.0.3" />
+    <PackageReference Include="SparkRoseDigital.Infrastructure" Version="1.0.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
