@@ -17,29 +17,11 @@ namespace StackUnderflow.Identity
     {
         public static int Main(string[] args)
         {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables()
-                .Build();
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration)
-                .Enrich.FromLogContext()
-                .Enrich.WithSpan()
-                // uncomment to write to Azure diagnostics stream
-                //.WriteTo.File(
-                //    @"D:\home\LogFiles\Application\identityserver.txt",
-                //    fileSizeLimitBytes: 1_000_000,
-                //    rollOnFileSizeLimit: true,
-                //    shared: true,
-                //    flushToDiskInterval: TimeSpan.FromSeconds(1))
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Code)
-                .WriteTo.Seq(configuration["Logs:Url"]) // No need for specifying port, 5341 is Seq default port and Seq is already listening.
-                .CreateLogger();
+            SparkRoseDigital.Infrastructure.Logging.LoggerExtensions.ConfigureSerilogLogger("ASPNETCORE_ENVIRONMENT");
 
             try
             {
-                Log.Information("Starting host...");
+                Log.Information("Starting up Stack Underflow Identity Server.");
                 CreateHostBuilder(args)
                     .Build()
                     .Run();
@@ -47,7 +29,7 @@ namespace StackUnderflow.Identity
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Host terminated unexpectedly.");
+                Log.Information("Stack Underflow Identity Server failed at startup.");
                 return 1;
             }
             finally
