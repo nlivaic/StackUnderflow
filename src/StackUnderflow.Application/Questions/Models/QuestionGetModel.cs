@@ -33,7 +33,16 @@ namespace StackUnderflow.Application.Questions.Models
                         opts => opts.MapFrom(src => src.User.Username))
                     .ForMember(
                         dest => dest.Tags,
-                        opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)));
+                        opts => opts.MapFrom(src => src.QuestionTags.Select(qt => qt.Tag)))
+                    .ForMember(
+                        dest => dest.VotesSum,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.IsOwner,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.IsModerator,
+                        opts => opts.Ignore());
             }
         }
     }

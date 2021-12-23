@@ -16,7 +16,6 @@ namespace StackUnderflow.Core.Tests
             var body = "BodyNormal";
             var orderNumber = 1;
             var limits = new LimitsBuilder().Build();
-            var voteable = new Voteable();
 
             // Act
             var result = Comment.Create(user, body, orderNumber, limits);
@@ -55,7 +54,6 @@ namespace StackUnderflow.Core.Tests
             var originalParentQuestion = target.ParentQuestion;
             var originalParentAnswer = target.ParentAnswer;
 
-            var userId = new Guid("00000000-0000-0000-0000-000000000002");
             var newBody = "NewBodyNormal";
             var limits = new LimitsBuilder().Build();
 

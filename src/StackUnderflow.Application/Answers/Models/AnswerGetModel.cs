@@ -24,7 +24,16 @@ namespace StackUnderflow.Application.Answers.Models
                     .ForMember(
                         dest => dest.Username,
                         opts => opts.MapFrom(
-                            src => src.User.Username));
+                            src => src.User.Username))
+                    .ForMember(
+                        dest => dest.VotesSum,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.IsOwner,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.IsModerator,
+                        opts => opts.Ignore());
             }
         }
     }

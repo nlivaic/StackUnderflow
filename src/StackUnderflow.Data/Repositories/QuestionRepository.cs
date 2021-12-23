@@ -66,6 +66,7 @@ namespace StackUnderflow.Data.Repositories
             return await query
 
                 // .OrderBy(q => q.Id)           // @nl: ordering on Guid. Think this through!
+                .Where(q => q.Id == new Guid("d88c7e3f-9c5d-4ee7-aa69-f8eea15b82aa"))
                 .Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .ThenInclude(qt => qt.Tag)

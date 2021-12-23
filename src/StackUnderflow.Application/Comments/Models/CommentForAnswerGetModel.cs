@@ -30,7 +30,16 @@ namespace StackUnderflow.Application.Comments.Models
                         opts => opts.MapFrom(src => src.ParentAnswer.QuestionId))
                     .ForMember(
                         dest => dest.Username,
-                        opts => opts.MapFrom(src => src.User.Username));
+                        opts => opts.MapFrom(src => src.User.Username))
+                    .ForMember(
+                        dest => dest.VotesSum,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.IsOwner,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.IsModerator,
+                        opts => opts.Ignore());
             }
         }
     }
