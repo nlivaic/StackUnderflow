@@ -20,6 +20,7 @@ using Microsoft.OpenApi.Models;
 using Npgsql;
 using SparkRoseDigital.Infrastructure.Caching;
 using SparkRoseDigital.Infrastructure.HealthCheck;
+using SparkRoseDigital.Infrastructure.Logging;
 using SparkRoseDigital.Infrastructure.MessageBroker;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Middlewares;
@@ -108,8 +109,7 @@ namespace StackUnderflow.Api
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddSingleton<IScopeInformation, ScopeInformation>();
-
+            services.AddLoggingScopes();
             services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(Comment).Assembly);
 
             services.AddSingleton<ICache, Cache>();

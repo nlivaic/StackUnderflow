@@ -20,8 +20,6 @@ namespace StackUnderflow.Core.Tests
             string body = "BodyNormal";
             var tags = new TagBuilder().Build(tagCount);
             var limits = new LimitsBuilder().Build();
-            var voteable = new Voteable();
-            var commentable = new Commentable();
 
             // Act
             var result = Question.Create(user, title, body, tags, limits);
