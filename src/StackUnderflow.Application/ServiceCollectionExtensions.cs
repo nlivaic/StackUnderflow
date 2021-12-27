@@ -19,9 +19,7 @@ namespace StackUnderflow.Application
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILimitsService, LimitsService>();
             services.AddScoped<ITagService, TagService>();
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipeline<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(EventDispatcherPipeline<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkPipeline<,>));
+            services.AddPipelines();
 
             services.AddAutoMapper(typeof(ServiceCollectionExtensions).Assembly);
         }

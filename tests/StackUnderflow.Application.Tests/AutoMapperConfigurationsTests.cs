@@ -19,8 +19,6 @@ namespace StackUnderflow.Application.Tests
                 {
                     cfg.AddProfile(profile);
                 }
-                //cfg.AddProfile(typeof(QuestionSummaryGetModelProfile));
-                //cfg.AddProfile(typeof(TagProfile));
             }).CreateMapper();
 
             // Assert
