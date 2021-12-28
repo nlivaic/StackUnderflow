@@ -18,17 +18,8 @@ namespace StackUnderflow.Application.Sorting
             var propertyMapping = _propertyMappings
                 .OfType<PropertyMapping<TSource, TTarget>>()
                 .FirstOrDefault()
-                ?? throw new ArgumentException($"Unknown property mapping types: {typeof(TSource)}, {typeof(TTarget)}.");
+                ?? throw new InvalidPropertyMappingException($"Unknown property mapping types: {typeof(TSource)}, {typeof(TTarget)}.");
             return propertyMapping.GetMapping(sourcePropertyName);
-        }
-
-        public IEnumerable<PropertyMappingValue> GetMappings<TSource, TTarget>(params string[] sourcePropertyNames)
-        {
-            var propertyMapping = _propertyMappings
-                .OfType<PropertyMapping<TSource, TTarget>>()
-                .FirstOrDefault()
-                ?? throw new ArgumentException($"Unknown property mapping types: {typeof(TSource)}, {typeof(TTarget)}.");
-            return propertyMapping.GetMappings(sourcePropertyNames);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StackUnderflow.Application.Sorting
 {
@@ -25,22 +26,6 @@ namespace StackUnderflow.Application.Sorting
             return
                 propertyMappingValue
                 ?? throw new InvalidPropertyMappingException($"Source property name '{sourcePropertyName}' for source type {typeof(TSource)} not mapped to target type {typeof(TTarget)}.");
-        }
-
-        public IEnumerable<PropertyMappingValue> GetMappings(params string[] sourcePropertyNames)
-        {
-            PropertyMappingValue propertyMappingValue = null;
-            var propertyMappingValues = new List<PropertyMappingValue>();
-            Array.ForEach(sourcePropertyNames, sourcePropertyName =>
-            {
-                _propertyMappingValues.TryGetValue(sourcePropertyName, out propertyMappingValue);
-                if (propertyMappingValue == null)
-                {
-                    throw new InvalidPropertyMappingException($"Source property name '{sourcePropertyName}' for source type {typeof(TSource)} not mapped to target type {typeof(TTarget)}.");
-                }
-                propertyMappingValues.Add(propertyMappingValue);
-            });
-            return propertyMappingValues;
         }
     }
 }
