@@ -7,20 +7,22 @@ namespace StackUnderflow.Core.Entities
 {
     public class Vote : BaseEntity<Guid>
     {
+        private Vote()
+        {
+        }
+
         private Vote(Guid userId, Question question, VoteTypeEnum voteType)
         {
+            Id = Guid.NewGuid();
             UserId = userId;
             QuestionId = question.Id;
             VoteType = voteType;
             CreatedOn = DateTime.UtcNow;
         }
 
-        private Vote()
-        {
-        }
-
         private Vote(Guid userId, Answer answer, VoteTypeEnum voteType)
         {
+            Id = Guid.NewGuid();
             UserId = userId;
             AnswerId = answer.Id;
             VoteType = voteType;
@@ -29,6 +31,7 @@ namespace StackUnderflow.Core.Entities
 
         private Vote(Guid userId, Comment comment, VoteTypeEnum voteType)
         {
+            Id = Guid.NewGuid();
             UserId = userId;
             CommentId = comment.Id;
             VoteType = voteType;
