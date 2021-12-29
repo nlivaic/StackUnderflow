@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using StackUnderflow.Application.Sorting.Models;
 
 namespace StackUnderflow.Application.Sorting
 {
     public interface IPropertyMappingService
     {
-        PropertyMappingValue GetMapping<TSource, TTarget>(string sourcePropertyName);
+        IEnumerable<SortCriteria> Resolve<TSource, TTarget>(ISortable sortableSource);
     }
 }

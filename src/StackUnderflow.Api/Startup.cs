@@ -100,11 +100,9 @@ namespace StackUnderflow.Api
                     new PropertyMapping<QuestionSummaryGetViewModel, QuestionSummaryGetModel>()
                         .Add(nameof(QuestionSummaryGetViewModel.Username), $"{nameof(User)}.{nameof(User.Username)}")
                         .Add(nameof(QuestionSummaryGetViewModel.HasAcceptedAnswer), nameof(QuestionSummaryGetModel.HasAcceptedAnswer))
-                        .Add(nameof(QuestionSummaryGetViewModel.CreatedOn), nameof(QuestionSummaryGetModel.CreatedOn))
-                        .Add(nameof(QuestionSummaryGetViewModel.VotesSum), nameof(QuestionSummaryGetModel.VotesSum)),
+                        .Add(nameof(QuestionSummaryGetViewModel.CreatedOn), nameof(QuestionSummaryGetModel.CreatedOn)),
                     new PropertyMapping<AnswerGetViewModel, AnswerGetModel>()
                         .Add(nameof(AnswerGetViewModel.CreatedOn), nameof(AnswerGetModel.CreatedOn))
-                        .Add(nameof(AnswerGetViewModel.VotesSum), nameof(AnswerGetModel.VotesSum))
                 });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
