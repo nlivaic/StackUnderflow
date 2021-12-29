@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using StackUnderflow.Application.Answers.Models;
 
 namespace StackUnderflow.Application.Sorting.Models
 {
-    public class AnswerQueryParameters : ISortable
+    public class AnswerQueryParameters : BaseSortable<AnswerGetModel>
     {
         private int _pageSize = 3;
         public int PageSize
@@ -12,6 +13,6 @@ namespace StackUnderflow.Application.Sorting.Models
         }
         public int MaximumPageSize { get; set; } = 5;
         public int PageNumber { get; set; } = 1;
-        public IEnumerable<SortCriteria> SortBy { get; set; }
+        public override IEnumerable<SortCriteria> SortBy { get; set; }
     }
 }

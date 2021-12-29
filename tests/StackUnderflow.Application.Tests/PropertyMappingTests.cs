@@ -21,14 +21,14 @@ namespace StackUnderflow.Application.Tests
                         .Add(nameof(MappingSourceModel1.SourceProperty1), $"{nameof(MappingTargetModel1.TargetProperty1)}")
                 }
             };
-            var sortable = new SortableModel
+            var resourceParameters = new ResourceParameters1
             {
                 SortBy = new List<SortCriteria> { new SortCriteria { SortByCriteria = nameof(MappingSourceModel1.SourceProperty1) } }
             };
             var target = new PropertyMappingService(options);
 
             // Act
-            var result = target.Resolve<MappingSourceModel1, MappingTargetModel1>(sortable).ToList();
+            var result = target.Resolve(resourceParameters, new TargetParameters1()).ToList();
 
             // Assert
             Assert.Single(result);
@@ -48,14 +48,14 @@ namespace StackUnderflow.Application.Tests
                         .Add(true, nameof(MappingSourceModel1.SourceProperty1), $"{nameof(MappingTargetModel1.TargetProperty1)}")
                 }
             };
-            var sortable = new SortableModel
+            var resourceParameters = new ResourceParameters1
             {
                 SortBy = new List<SortCriteria> { new SortCriteria { SortByCriteria = nameof(MappingSourceModel1.SourceProperty1) } }
             };
             var target = new PropertyMappingService(options);
 
             // Act
-            var result = target.Resolve<MappingSourceModel1, MappingTargetModel1>(sortable).ToList();
+            var result = target.Resolve(resourceParameters, new TargetParameters1()).ToList();
 
             // Assert
             Assert.Single(result);
@@ -76,14 +76,14 @@ namespace StackUnderflow.Application.Tests
                         .Add(nameof(MappingSourceModel1.SourceProperty2), $"{nameof(MappingTargetModel1.TargetProperty2)}")
                 }
             };
-            var sortable = new SortableModel
+            var resourceParameters = new ResourceParameters1
             {
                 SortBy = new List<SortCriteria> { new SortCriteria { SortByCriteria = nameof(MappingSourceModel1.SourceProperty1) } }
             };
             var target = new PropertyMappingService(options);
 
             // Act
-            var result = target.Resolve<MappingSourceModel1, MappingTargetModel1>(sortable).ToList();
+            var result = target.Resolve(resourceParameters, new TargetParameters1()).ToList();
 
             // Assert
             Assert.Single(result);
@@ -104,7 +104,7 @@ namespace StackUnderflow.Application.Tests
                         .Add(nameof(MappingSourceModel1.SourceProperty2), $"{nameof(MappingTargetModel1.TargetProperty2)}")
                 }
             };
-            var sortable = new SortableModel
+            var resourceParameters = new ResourceParameters1
             {
                 SortBy = new List<SortCriteria>
                 {
@@ -115,7 +115,7 @@ namespace StackUnderflow.Application.Tests
             var target = new PropertyMappingService(options);
 
             // Act
-            var result = target.Resolve<MappingSourceModel1, MappingTargetModel1>(sortable).ToList();
+            var result = target.Resolve(resourceParameters, new TargetParameters1()).ToList();
 
             // Assert
             Assert.Equal(2, result.Count());
@@ -138,7 +138,7 @@ namespace StackUnderflow.Application.Tests
                         .Add(nameof(MappingSourceModel1.SourceProperty2), $"{nameof(MappingTargetModel1.TargetProperty3)}", $"{nameof(MappingTargetModel1.TargetProperty4)}")
                 }
             };
-            var sortable = new SortableModel
+            var resourceParameters = new ResourceParameters1
             {
                 SortBy = new List<SortCriteria>
                 {
@@ -149,7 +149,7 @@ namespace StackUnderflow.Application.Tests
             var target = new PropertyMappingService(options);
 
             // Act
-            var result = target.Resolve<MappingSourceModel1, MappingTargetModel1>(sortable).ToList();
+            var result = target.Resolve(resourceParameters, new TargetParameters1()).ToList();
 
             // Assert - first mapping
             Assert.Equal(4, result.Count());
@@ -179,7 +179,7 @@ namespace StackUnderflow.Application.Tests
                         .Add(true, nameof(MappingSourceModel2.SourceProperty2), $"{nameof(MappingTargetModel2.TargetProperty3)}", $"{nameof(MappingTargetModel2.TargetProperty4)}")
                 }
             };
-            var sortable1 = new SortableModel
+            var resourceParameters1 = new ResourceParameters1
             {
                 SortBy = new List<SortCriteria>
                 {
@@ -187,7 +187,7 @@ namespace StackUnderflow.Application.Tests
                     new SortCriteria { SortByCriteria = nameof(MappingSourceModel1.SourceProperty2) }
                 }
             };
-            var sortable2 = new SortableModel
+            var resourceParameters2 = new ResourceParameters2
             {
                 SortBy = new List<SortCriteria>
                 {
@@ -198,9 +198,9 @@ namespace StackUnderflow.Application.Tests
             var target = new PropertyMappingService(options);
 
             // Act - first mapping
-            var result1 = target.Resolve<MappingSourceModel1, MappingTargetModel1>(sortable1).ToList();
+            var result1 = target.Resolve(resourceParameters1, new TargetParameters1()).ToList();
             // Act - second mapping
-            var result2 = target.Resolve<MappingSourceModel2, MappingTargetModel2>(sortable2).ToList();
+            var result2 = target.Resolve(resourceParameters2, new TargetParameters2()).ToList();
 
             // Assert - first mapping
             Assert.Equal(4, result1.Count());
@@ -238,14 +238,14 @@ namespace StackUnderflow.Application.Tests
                         .Add(nameof(MappingSourceModel1.SourceProperty2), $"{nameof(MappingTargetModel1.TargetProperty2)}")
                 }
             };
-            var sortable = new SortableModel
+            var resourceParameters = new ResourceParameters1
             {
                 SortBy = new List<SortCriteria> { new SortCriteria { SortByCriteria = nameof(MappingSourceModel1.SourceProperty3) } }
             };
             var target = new PropertyMappingService(options);
 
             // Act
-            var result = target.Resolve<MappingSourceModel1, MappingTargetModel1>(sortable).ToList();
+            var result = target.Resolve(resourceParameters, new TargetParameters1()).ToList();
 
             // Assert
             Assert.Empty(result);
@@ -264,14 +264,14 @@ namespace StackUnderflow.Application.Tests
                         .Add(nameof(MappingSourceModel1.SourceProperty2), $"{nameof(MappingTargetModel1.TargetProperty2)}")
                 }
             };
-            var sortable = new SortableModel
+            var resourceParameters = new ResourceParameters1
             {
                 SortBy = new List<SortCriteria> { new SortCriteria { SortByCriteria = nameof(MappingSourceModel1.SourceProperty3) } }
             };
             var target = new PropertyMappingService(options);
 
             // Act
-            var result = target.Resolve<MappingSourceModel1, MappingTargetModel2>(sortable).ToList();
+            var result = target.Resolve(resourceParameters, new TargetParameters2()).ToList();
 
             // Assert
             Assert.Empty(result);

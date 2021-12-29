@@ -4,10 +4,10 @@ using StackUnderflow.Application.Sorting.Models;
 
 namespace StackUnderflow.Application.Sorting
 {
-    public class SortCriteriaResolver<TResource, TEntity, TSource, TTarget>
+    public class SortCriteriaResolver<TSource, TTarget>
         : IValueResolver<TSource, TTarget, IEnumerable<SortCriteria>>
-        where TSource : ISortable
-        where TTarget : ISortable
+        where TSource : BaseSortable
+        where TTarget : BaseSortable
     {
         private readonly IPropertyMappingService _propertyMappingService;
 
@@ -21,6 +21,6 @@ namespace StackUnderflow.Application.Sorting
             TTarget target,
             IEnumerable<SortCriteria> destMember,
             ResolutionContext context) =>
-            _propertyMappingService.Resolve<TResource, TEntity>(source);
+            _propertyMappingService.Resolve(source, target);
     }
 }

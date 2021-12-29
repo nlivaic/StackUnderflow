@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using StackUnderflow.Application.Sorting.Models;
@@ -19,11 +20,10 @@ namespace StackUnderflow.Application.Sorting
         /// in the AutoMapper profile (e.g. `Question.Answers.Count()` mapping to `QuestionSummariesGetViewModel.Answers`,
         /// because the resulting Linq query will cause EF Core to break.
         /// </summary>
-        /// <typeparam name="TSource">Source Resource Parameters type.</typeparam>
-        /// <typeparam name="TTarget">Target Query Parameters type.</typeparam>
-        /// <param name="source">Instance of source object, with zero or more properties to source from.</param>
+        /// <param name="source">Resource parameters, with zero or more properties to source from.</param>
+        /// <param name="target">Target (query) parameters.</param>
         /// <returns>A list of properties to execute the ordering on.</returns>
-        public IEnumerable<SortCriteria> Resolve<TSource, TTarget>(ISortable source)
+        public IEnumerable<SortCriteria> Resolve(BaseSortable source, BaseSortable target)
         {
             var sortCriterias = new List<SortCriteria>();
             foreach (var s in source.SortBy)
@@ -31,7 +31,7 @@ namespace StackUnderflow.Application.Sorting
                 PropertyMappingValue targetMapping = null;
                 try
                 {
-                    targetMapping = GetMapping<TSource, TTarget>(s.SortByCriteria);
+                    targetMapping = GetMapping(source.ResourceType, s.SortByCriteria, target.ResourceType);
                 }
                 catch (InvalidPropertyMappingException)
                 {
@@ -55,12 +55,11 @@ namespace StackUnderflow.Application.Sorting
             return sortCriterias;
         }
 
-        private PropertyMappingValue GetMapping<TSource, TTarget>(string sourcePropertyName)
+        private PropertyMappingValue GetMapping(Type source, string sourcePropertyName, Type target)
         {
             var propertyMapping = _propertyMappings
-                .OfType<PropertyMapping<TSource, TTarget>>()
-                .FirstOrDefault()
-                ?? throw new InvalidPropertyMappingException($"Unknown property mapping types: {typeof(TSource)}, {typeof(TTarget)}.");
+                .SingleOrDefault(pm => pm.Source == source && pm.Target == target)
+                ?? throw new InvalidPropertyMappingException($"Unknown property mapping types: {source}, {target}.");
             return propertyMapping.GetMapping(sourcePropertyName);
         }
     }

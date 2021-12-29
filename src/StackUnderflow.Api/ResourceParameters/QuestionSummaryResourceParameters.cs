@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using StackUnderflow.Api.Helpers;
 using StackUnderflow.Api.Models;
-using StackUnderflow.Application.Questions.Models;
 using StackUnderflow.Application.Sorting;
 using StackUnderflow.Application.Sorting.Models;
 
 namespace StackUnderflow.Api.ResourceParameters
 {
-    public class QuestionSummaryResourceParameters : ISortable
+    public class QuestionSummaryResourceParameters : BaseSortable<QuestionSummaryGetViewModel>
     {
         public int PageSize { get; set; } = 3;
         [BindNever]
@@ -23,14 +22,14 @@ namespace StackUnderflow.Api.ResourceParameters
         public IEnumerable<Guid> Users { get; set; }
         public string SearchQuery { get; set; }
         [BindProperty(BinderType = typeof(ArrayModelBinder))]
-        public IEnumerable<SortCriteria> SortBy { get; set; }
+        public override IEnumerable<SortCriteria> SortBy { get; set; }
 
         public class QuestionSummaryResourceParametersProfile : Profile
         {
             public QuestionSummaryResourceParametersProfile()
             {
                 CreateMap<QuestionSummaryResourceParameters, QuestionQueryParameters>()
-                    .ForSortableMembers<QuestionSummaryGetViewModel, QuestionSummaryGetModel, QuestionSummaryResourceParameters, QuestionQueryParameters>();
+                    .ForSortableMembers();
             }
         }
     }

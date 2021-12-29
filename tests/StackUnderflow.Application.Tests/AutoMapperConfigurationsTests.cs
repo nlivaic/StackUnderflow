@@ -10,7 +10,7 @@ namespace StackUnderflow.Application.Tests
         public void AutoMapperConfigurations_AreAllValid()
         {
             // Arrange - get all profiles in the StackUnderflow.Application assembly.
-            var profiles = AssemblyInfo.Value.GetTypes().Where(t => typeof(Profile).IsAssignableFrom(t));
+            var profiles = ApplicationAssemblyInfo.Value.GetTypes().Where(t => typeof(Profile).IsAssignableFrom(t));
 
             // Act
             var target = new MapperConfiguration(cfg =>

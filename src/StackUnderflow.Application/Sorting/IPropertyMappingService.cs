@@ -5,6 +5,6 @@ namespace StackUnderflow.Application.Sorting
 {
     public interface IPropertyMappingService
     {
-        IEnumerable<SortCriteria> Resolve<TSource, TTarget>(ISortable sortableSource);
+        IEnumerable<SortCriteria> Resolve(BaseSortable sortableSource, BaseSortable sortableTarget);
     }
 }
