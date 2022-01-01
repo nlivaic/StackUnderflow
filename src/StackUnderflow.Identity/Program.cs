@@ -27,9 +27,9 @@ namespace StackUnderflow.Identity
                     .Run();
                 return 0;
             }
-            catch (Exception x)
+            catch (Exception ex)
             {
-                Log.Information("Stack Underflow Identity Server failed at startup.");
+                Log.Fatal(ex, "Stack Underflow Identity Server failed at startup.");
                 return 1;
             }
             finally
