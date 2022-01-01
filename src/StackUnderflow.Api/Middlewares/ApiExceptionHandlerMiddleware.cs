@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -11,6 +12,11 @@ using StackUnderflow.Common.Exceptions;
 
 namespace StackUnderflow.Api.Middlewares
 {
+    /// <summary>
+    /// Handles exceptions by logging the exception object.
+    /// Buffers incoming Http requests so body can be logged
+    /// in case of a 500 error.
+    /// </summary>
     public class ApiExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
@@ -29,6 +35,7 @@ namespace StackUnderflow.Api.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
+            context.Request.EnableBuffering();
             try
             {
                 await _next(context);
@@ -86,7 +93,7 @@ namespace StackUnderflow.Api.Middlewares
 
             _options.ApiErrorHandler?.Invoke(context, ex, problemDetail);
             var logLevel = _options.LogLevelHandler?.Invoke(context, ex) ?? LogLevel.Error;
-            if (context.Request.Method == "POST" || context.Request.Method == "PUT")
+            if (context.Request.Method == HttpMethods.Post || context.Request.Method == HttpMethods.Put)
             {
                 string body = string.Empty;
                 using (var reader = new StreamReader(context.Request.Body))
@@ -97,8 +104,11 @@ namespace StackUnderflow.Api.Middlewares
                 _logger.Log(
                     logLevel,
                     innermostException,
-                    innermostException.Message + " -- {TraceId} -- {Body}",
+                    innermostException.Message + " -- {TraceId} -- {Headers} -- {Body}",
                     problemDetail.Extensions["traceId"],
+                    string.Join(
+                        Environment.NewLine,
+                        context.Request.Headers.Select(h => h.Key != "Authorization" ? $"{h.Key}={h.Value}" : $"{h.Key}=****")),
                     body);
             }
             else
