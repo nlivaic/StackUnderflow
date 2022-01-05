@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using StackUnderflow.Api.Profiles;
+using StackUnderflow.Api.Helpers;
 using StackUnderflow.Application.Votes.Commands;
 using StackUnderflow.Core.Enums;
 

@@ -1,9 +1,8 @@
 using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using StackUnderflow.Api.Helpers;
 
-namespace StackUnderflow.Api.Profiles
+namespace StackUnderflow.Api.Helpers
 {
     public class UserIdResolver<TSource, TDestination>
         : IValueResolver<TSource, TDestination, Guid?>

@@ -11,7 +11,16 @@ namespace StackUnderflow.Api.Models
         {
             public AnswerProfile()
             {
-                CreateMap<AnswerUpdateRequest, AnswerEditModel>();
+                CreateMap<AnswerUpdateRequest, AnswerEditModel>()
+                    .ForMember(
+                        dest => dest.QuestionId,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.UserId,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.AnswerId,
+                        opts => opts.Ignore());
             }
         }
     }

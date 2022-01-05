@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using StackUnderflow.Api.Profiles;
+using StackUnderflow.Api.Helpers;
 using StackUnderflow.Application.Questions.Commands;
 
 namespace StackUnderflow.Api.Models.Questions

@@ -18,7 +18,10 @@ namespace StackUnderflow.Api.Models
         {
             public QuestionProfile()
             {
-                CreateMap<QuestionCreateRequest, QuestionCreateModel>();
+                CreateMap<QuestionCreateRequest, QuestionCreateModel>()
+                    .ForMember(
+                        dest => dest.UserId,
+                        opts => opts.Ignore());
             }
         }
 

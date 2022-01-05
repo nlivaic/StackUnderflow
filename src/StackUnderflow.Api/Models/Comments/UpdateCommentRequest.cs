@@ -13,7 +13,19 @@ namespace StackUnderflow.Api.Models
         {
             public CommentProfile()
             {
-                CreateMap<UpdateCommentRequest, CommentEditModel>();
+                CreateMap<UpdateCommentRequest, CommentEditModel>()
+                    .ForMember(
+                        dest => dest.ParentQuestionId,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.ParentAnswerId,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.UserId,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.CommentId,
+                        opts => opts.Ignore());
             }
         }
 

@@ -13,7 +13,13 @@ namespace StackUnderflow.Api.Models
         {
             public AnswerProfile()
             {
-                CreateMap<AnswerCreateRequest, AnswerCreateModel>();
+                CreateMap<AnswerCreateRequest, AnswerCreateModel>()
+                    .ForMember(
+                        dest => dest.QuestionId,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.UserId,
+                        opts => opts.Ignore());
             }
         }
 

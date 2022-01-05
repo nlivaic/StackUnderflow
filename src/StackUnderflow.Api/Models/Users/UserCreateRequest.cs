@@ -12,7 +12,10 @@ namespace StackUnderflow.Api.Models
         {
             public UserCreateRequestProfile()
             {
-                CreateMap<UserCreateRequest, UserCreateModel>();
+                CreateMap<UserCreateRequest, UserCreateModel>()
+                    .ForMember(
+                        dest => dest.Id,
+                        opts => opts.Ignore());
             }
         }
     }

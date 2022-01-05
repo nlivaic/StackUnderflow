@@ -13,8 +13,23 @@ namespace StackUnderflow.Api.Models
         {
             public CommentProfile()
             {
-                CreateMap<CommentCreateRequest, CommentOnQuestionCreateModel>();
-                CreateMap<CommentCreateRequest, CommentOnAnswerCreateModel>();
+                CreateMap<CommentCreateRequest, CommentOnQuestionCreateModel>()
+                    .ForMember(
+                        dest => dest.QuestionId,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.UserId,
+                        opts => opts.Ignore());
+                CreateMap<CommentCreateRequest, CommentOnAnswerCreateModel>()
+                    .ForMember(
+                        dest => dest.QuestionId,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.UserId,
+                        opts => opts.Ignore())
+                    .ForMember(
+                        dest => dest.AnswerId,
+                        opts => opts.Ignore());
             }
         }
 
