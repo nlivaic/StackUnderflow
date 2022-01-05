@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace StackUnderflow.Application
+namespace StackUnderflow.Api
 {
     // A convenient class to make the assembly information more accessible.
     public static class ApiAssemblyInfo
