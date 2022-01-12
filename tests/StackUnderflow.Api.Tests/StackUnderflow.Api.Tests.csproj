@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.13" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -22,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\StackUnderflow.Api\StackUnderflow.Api.csproj" />
+    <ProjectReference Include="..\StackUnderflow.Tests.Common\StackUnderflow.Tests.Common.csproj" />
   </ItemGroup>
 
 </Project>
